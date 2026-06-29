@@ -7,6 +7,7 @@ import React, { useState, useEffect } from "react";
 import { Search, Calendar, User, ArrowLeft, Share2, FileText, ChevronRight, Award, MapPin, Cpu, BookOpen, ShieldCheck, CheckCircle2, ChevronDown } from "lucide-react";
 import { Language, translations } from "../lib/translations.js";
 import { BlogPost } from "../types.js";
+import { updateMetaTags } from "../lib/seo.js";
 
 interface BlogPreviewProps {
   currentLang: Language;
@@ -56,6 +57,35 @@ export default function BlogPreview({ currentLang, blogs, onRefresh }: BlogPrevi
       if (scriptToRemove) scriptToRemove.remove();
     };
   }, [activeArticle]);
+
+  // Dynamic SEO Page Title, Meta description & keywords update for Blog catalog & specific articles
+  useEffect(() => {
+    if (activeArticle) {
+      const metaTitle = activeArticle.metaTitle || `${activeArticle.title} | GBC Colombo`;
+      const metaDesc = activeArticle.metaDescription || `Read "${activeArticle.title}" by ${activeArticle.author} on Gold Buyers Colombo (GBC) - expert guidance for selling gold in Sri Lanka.`;
+      const metaKeywords = activeArticle.focusKeyword 
+        ? `${activeArticle.focusKeyword}, gold price colombo, sell gold sri lanka, ${activeArticle.category.toLowerCase()}`
+        : `gold price colombo, sell gold sri lanka, ${activeArticle.category.toLowerCase()}`;
+      
+      updateMetaTags(metaTitle, metaDesc, metaKeywords);
+    } else {
+      const title = currentLang === "si"
+        ? "රන් මාර්ගෝපදේශ බ්ලොග් අඩවිය | ගෝල්ඩ් බයර්ස් කොළඹ"
+        : currentLang === "ta"
+        ? "தங்க வழிகாட்டி வலைப்பதிவு | கோல்ட் பையர்ஸ் கொழும்பு"
+        : "Colombo Gold Selling Guides & Market Insights Blog | GBC";
+
+      const desc = currentLang === "si"
+        ? "ශ්‍රී ලංකාවේ රන් විකිණීම, පෙට්ටා රන් වංචාවලින් බේරීම, උකස් අනුපාත සංසන්දනය සහ 916 මුද්‍රා පිළිබඳ ගැඹුරු විශ්ලේෂණාත්මක මාර්ගෝපදේශ."
+        : currentLang === "ta"
+        ? "இலங்கையில் தங்கம் விற்பது, பெட்டா தங்க மோசடிகளில் இருந்து தப்பிப்பது, அடகு விகிதங்களை ஒப்பிடுவது பற்றிய விரிவான வழிகாட்டிகள்."
+        : "Read comprehensive analysis and expert guidance on gold prices, pawn-liquidation, genuine jewelry valuations, and avoiding local market pitfalls in Colombo, Sri Lanka.";
+
+      const keywords = "colombo gold blog, sri lanka gold news, gold price analysis, sell gold tips colombo, pawn gold liquidation sri lanka, gbc articles";
+
+      updateMetaTags(title, desc, keywords);
+    }
+  }, [activeArticle, currentLang]);
 
   // Available categories
   const categories = ["All", "Gold Price", "Gold Investment", "Selling Gold", "Jewelry", "Sri Lanka News"];
