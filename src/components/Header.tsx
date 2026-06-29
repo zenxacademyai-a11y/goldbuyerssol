@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from "react";
-import { Phone, Globe, Menu, X, Lock, FileText, LayoutDashboard } from "lucide-react";
+import { Phone, Globe, Menu, X, Lock, FileText, LayoutDashboard, ChevronDown } from "lucide-react";
 import { Language, translations } from "../lib/translations.js";
 import InstallWebAppButton from "./InstallWebAppButton.js";
 
@@ -31,6 +31,7 @@ export default function Header({
 }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [langMenuOpen, setLangMenuOpen] = useState(false);
+  const [moreMenuOpen, setMoreMenuOpen] = useState(false);
   const t = translations[currentLang];
 
   const handleNav = (view: "home" | "blog" | "admin" | "about" | "contact") => {
@@ -47,6 +48,17 @@ export default function Header({
         return "සිංහල";
       case "ta":
         return "தமிழ்";
+    }
+  };
+
+  const getMoreText = (lang: Language) => {
+    switch (lang) {
+      case "si":
+        return "තවත්";
+      case "ta":
+        return "மேலும்";
+      default:
+        return "More";
     }
   };
 
@@ -74,87 +86,131 @@ export default function Header({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20 items-center">
           {/* Brand Logo & Name */}
-          <div className="flex items-center gap-3 cursor-pointer" onClick={() => handleNav("home")}>
+          <div className="flex items-center gap-2.5 sm:gap-3 cursor-pointer min-w-0" onClick={() => handleNav("home")}>
             {/* Custom Golden circular GBC Vector Emblem */}
             <div 
               onClick={(e) => {
                 e.stopPropagation();
                 if (onLogoClick) onLogoClick();
               }}
-              className="h-12 w-12 rounded-full border border-amber-500 bg-gradient-to-tr from-amber-600 via-yellow-300 to-amber-600 flex items-center justify-center shadow-lg shadow-amber-500/10 hover:brightness-110 active:scale-95 transition-all"
+              className="h-10 w-10 sm:h-12 sm:w-12 rounded-full border border-amber-500 bg-gradient-to-tr from-amber-600 via-yellow-300 to-amber-600 flex items-center justify-center shadow-lg shadow-amber-500/10 hover:brightness-110 active:scale-95 transition-all shrink-0"
             >
-              <span className="text-black font-serif font-black text-lg tracking-tighter">GBC</span>
+              <span className="text-black font-serif font-black text-base sm:text-lg tracking-tighter">GBC</span>
             </div>
-            <div>
-              <h1 className="text-neutral-950 font-serif font-bold text-lg tracking-wider hover:text-amber-600 transition-colors">
+            <div className="min-w-0 flex flex-col justify-center">
+              <h1 className="text-neutral-950 font-serif font-black text-sm sm:text-base md:text-lg tracking-wide hover:text-amber-600 transition-colors whitespace-nowrap overflow-hidden text-ellipsis">
                 {t.fullName}
               </h1>
-              <p className="text-[10px] text-amber-600 font-mono uppercase tracking-widest">
+              <p className="text-[9px] sm:text-[10px] text-amber-600 font-mono uppercase tracking-widest hidden sm:block whitespace-nowrap overflow-hidden text-ellipsis">
                 {t.tagline}
               </p>
             </div>
           </div>
 
           {/* Desktop Nav Items */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden md:flex items-center gap-6 lg:gap-8">
             <button
               onClick={() => handleNav("home")}
-              className={`text-sm font-medium tracking-wide transition-colors ${
+              className={`text-sm font-semibold tracking-wide transition-colors ${
                 activeView === "home" ? "text-amber-600 font-bold" : "text-neutral-600 hover:text-amber-600"
               }`}
             >
               {t.home}
             </button>
-            <button
-              onClick={() => handleNav("about")}
-              className={`text-sm font-medium tracking-wide transition-colors ${
-                activeView === "about" ? "text-amber-600 font-bold" : "text-neutral-600 hover:text-amber-600"
-              }`}
-            >
-              {t.about}
-            </button>
             <a
               href="#rates"
               onClick={() => handleNav("home")}
-              className="text-sm font-medium tracking-wide text-neutral-600 hover:text-amber-600 transition-colors"
+              className="text-sm font-semibold tracking-wide text-neutral-600 hover:text-amber-600 transition-colors"
             >
               {t.rates}
             </a>
             <a
               href="#calculator"
               onClick={() => handleNav("home")}
-              className="text-sm font-medium tracking-wide text-neutral-600 hover:text-amber-600 transition-colors"
+              className="text-sm font-semibold tracking-wide text-neutral-600 hover:text-amber-600 transition-colors"
             >
               {t.calculator}
             </a>
-            <button
-              onClick={() => handleNav("blog")}
-              className={`text-sm font-medium tracking-wide transition-colors flex items-center gap-1 ${
-                activeView === "blog" ? "text-amber-600 font-bold" : "text-neutral-600 hover:text-amber-600"
-              }`}
+            
+            {/* More Menu Dropdown */}
+            <div 
+              className="relative"
+              onMouseEnter={() => setMoreMenuOpen(true)}
+              onMouseLeave={() => setMoreMenuOpen(false)}
             >
-              <FileText className="h-3.5 w-3.5" />
-              {t.blog}
-            </button>
-            <button
-              onClick={() => handleNav("contact")}
-              className={`text-sm font-medium tracking-wide transition-colors ${
-                activeView === "contact" ? "text-amber-600 font-bold" : "text-neutral-600 hover:text-amber-600"
-              }`}
-            >
-              {t.contact}
-            </button>
-            {showAdmin && (
               <button
-                onClick={() => handleNav("admin")}
-                className={`text-sm font-medium tracking-wide transition-colors flex items-center gap-1 border border-amber-500/30 px-3 py-1.5 rounded-md hover:bg-amber-500/10 ${
-                  activeView === "admin" ? "text-amber-600 bg-amber-500/10 border-amber-500" : "text-neutral-600 hover:text-amber-600"
+                onClick={() => setMoreMenuOpen(!moreMenuOpen)}
+                className={`text-sm font-semibold tracking-wide transition-colors flex items-center gap-1 py-2 focus:outline-none ${
+                  ["about", "blog", "contact", "admin"].includes(activeView)
+                    ? "text-amber-600 font-bold"
+                    : "text-neutral-600 hover:text-amber-600"
                 }`}
               >
-                <Lock className="h-3 w-3" />
-                {t.admin}
+                <span>{getMoreText(currentLang)}</span>
+                <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${moreMenuOpen ? "rotate-180" : ""}`} />
               </button>
-            )}
+
+              {moreMenuOpen && (
+                <div className="absolute right-0 mt-1 w-48 rounded-xl bg-white border border-neutral-200 shadow-xl overflow-hidden z-50 py-1.5 animate-in fade-in slide-in-from-top-2 duration-150">
+                  <button
+                    onClick={() => {
+                      handleNav("about");
+                      setMoreMenuOpen(false);
+                    }}
+                    className={`w-full text-left px-4 py-2.5 text-xs font-semibold transition-colors flex items-center gap-2 ${
+                      activeView === "about"
+                        ? "bg-amber-500/10 text-amber-600 font-bold"
+                        : "text-neutral-700 hover:bg-neutral-50 hover:text-amber-600"
+                    }`}
+                  >
+                    <span>{t.about}</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      handleNav("blog");
+                      setMoreMenuOpen(false);
+                    }}
+                    className={`w-full text-left px-4 py-2.5 text-xs font-semibold transition-colors flex items-center gap-2 ${
+                      activeView === "blog"
+                        ? "bg-amber-500/10 text-amber-600 font-bold"
+                        : "text-neutral-700 hover:bg-neutral-50 hover:text-amber-600"
+                    }`}
+                  >
+                    <FileText className="h-3.5 w-3.5 shrink-0" />
+                    <span>{t.blog}</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      handleNav("contact");
+                      setMoreMenuOpen(false);
+                    }}
+                    className={`w-full text-left px-4 py-2.5 text-xs font-semibold transition-colors flex items-center gap-2 ${
+                      activeView === "contact"
+                        ? "bg-amber-500/10 text-amber-600 font-bold"
+                        : "text-neutral-700 hover:bg-neutral-50 hover:text-amber-600"
+                    }`}
+                  >
+                    <span>{t.contact}</span>
+                  </button>
+                  {showAdmin && (
+                    <button
+                      onClick={() => {
+                        handleNav("admin");
+                        setMoreMenuOpen(false);
+                      }}
+                      className={`w-full text-left px-4 py-2.5 text-xs font-semibold transition-colors flex items-center gap-2 border-t border-neutral-100 ${
+                        activeView === "admin"
+                          ? "bg-amber-500/10 text-amber-600 font-bold"
+                          : "text-neutral-700 hover:bg-neutral-50 hover:text-amber-600"
+                      }`}
+                    >
+                      <Lock className="h-3.5 w-3.5 shrink-0" />
+                      <span>{t.admin}</span>
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
           </nav>
 
           {/* Desktop Right Buttons (Language + Call CTAs) */}

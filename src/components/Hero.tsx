@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { Phone, CheckCircle, ShieldCheck, Award, MessageCircle } from "lucide-react";
+import { Phone, CheckCircle, ShieldCheck, Award, MessageCircle, Coins, Gem, Scale, Sparkles, Flame } from "lucide-react";
 import { Language, translations } from "../lib/translations.js";
 import { motion } from "motion/react";
 
@@ -79,8 +79,143 @@ export default function Hero({ currentLang }: HeroProps) {
       {/* Grid Pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#e5e7eb_1px,transparent_1px),linear-gradient(to_bottom,#e5e7eb_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-40 z-0"></div>
  
+      {/* Floating Gold-Related Icons with Mild Looping Animations & Depth-Of-Field Blur */}
+      
+      {/* Layer 1: Blurred/Ambient Floating Gold Elements (Far Field) */}
+      <motion.div
+        className="absolute top-1/4 left-1/6 text-amber-600/10 hidden md:block z-0 pointer-events-none blur-[4px]"
+        animate={{
+          y: [0, -30, 0],
+          x: [0, 15, 0],
+          rotate: [0, 15, -15, 0],
+        }}
+        transition={{
+          duration: 14,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      >
+        <Coins className="h-24 w-24 stroke-[1] filter drop-shadow-[0_15px_30px_rgba(245,158,11,0.2)]" />
+      </motion.div>
+
+      <motion.div
+        className="absolute bottom-1/4 right-1/12 text-amber-500/10 hidden md:block z-0 pointer-events-none blur-[3px]"
+        animate={{
+          y: [0, 25, 0],
+          x: [0, -20, 0],
+          rotate: [0, -20, 20, 0],
+        }}
+        transition={{
+          duration: 16,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 1,
+        }}
+      >
+        <Gem className="h-20 w-20 stroke-[1] filter drop-shadow-[0_15px_25px_rgba(245,158,11,0.15)]" />
+      </motion.div>
+
+      <motion.div
+        className="absolute top-1/10 right-1/4 text-amber-500/8 hidden lg:block z-0 pointer-events-none blur-[5px]"
+        animate={{
+          scale: [1, 1.2, 0.8, 1],
+          y: [0, 15, -15, 0],
+        }}
+        transition={{
+          duration: 18,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 2,
+        }}
+      >
+        <Scale className="h-28 w-28 stroke-[0.8] filter drop-shadow-[0_20px_40px_rgba(245,158,11,0.1)]" />
+      </motion.div>
+
+      {/* Layer 2: Sharp / In-Focus Floating Gold Elements (Mid Field) */}
+      <motion.div
+        className="absolute top-1/3 right-1/12 text-amber-500/25 hidden md:block z-0 pointer-events-none"
+        animate={{
+          y: [0, -18, 0],
+          rotate: [0, 8, -8, 0],
+          scale: [1, 1.05, 0.95, 1],
+        }}
+        transition={{
+          duration: 9,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      >
+        <Coins className="h-16 w-16 stroke-[1.25] drop-shadow-[0_8px_20px_rgba(245,158,11,0.25)]" />
+      </motion.div>
+
+      <motion.div
+        className="absolute top-1/3 left-1/12 text-amber-500/20 hidden md:block z-0 pointer-events-none"
+        animate={{
+          y: [0, 15, 0],
+          rotate: [0, -10, 10, 0],
+          scale: [1, 0.95, 1.05, 1],
+        }}
+        transition={{
+          duration: 11,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 1.5,
+        }}
+      >
+        <Gem className="h-14 w-14 stroke-[1.25] drop-shadow-[0_8px_18px_rgba(245,158,11,0.2)]" />
+      </motion.div>
+
+      <motion.div
+        className="absolute bottom-1/4 left-1/10 text-amber-500/20 hidden md:block z-0 pointer-events-none"
+        animate={{
+          y: [0, -14, 0],
+          rotate: [-6, 6, -6],
+          scale: [1, 1.03, 0.97, 1],
+        }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 0.5,
+        }}
+      >
+        <Scale className="h-16 w-16 stroke-[1.25] drop-shadow-[0_8px_18px_rgba(245,158,11,0.18)]" />
+      </motion.div>
+
+      <motion.div
+        className="absolute bottom-1/3 right-1/10 text-amber-500/30 hidden md:block z-0 pointer-events-none"
+        animate={{
+          scale: [1, 1.3, 0.7, 1],
+          opacity: [0.2, 0.5, 0.2],
+        }}
+        transition={{
+          duration: 7,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 2,
+        }}
+      >
+        <Sparkles className="h-12 w-12 stroke-[1.25] drop-shadow-[0_6px_15px_rgba(245,158,11,0.3)]" />
+      </motion.div>
+
+      <motion.div
+        className="absolute top-16 right-1/3 text-amber-500/15 hidden lg:block z-0 pointer-events-none"
+        animate={{
+          y: [0, -22, 0],
+          rotate: [0, 12, -12, 0],
+        }}
+        transition={{
+          duration: 12,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 3,
+        }}
+      >
+        <Flame className="h-10 w-10 stroke-[1.25] drop-shadow-[0_6px_14px_rgba(245,158,11,0.2)]" />
+      </motion.div>
+ 
       {/* Content Container with custom requested Glass-morphism effect */}
-      <div className="relative max-w-5xl mx-auto text-center z-10 bg-white/10 backdrop-blur-md border border-white/30 rounded-3xl p-8 sm:p-12 md:p-16 shadow-[0_20px_50px_rgba(245,158,11,0.06)]">
+      <div className="relative max-w-5xl mx-auto text-center z-10 bg-white/15 backdrop-blur-xl border border-white/30 rounded-3xl p-8 sm:p-12 md:p-16 shadow-[0_30px_70px_-10px_rgba(245,158,11,0.1)]">
         {/* Luxury Sub-header */}
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-amber-500/25 bg-white/80 backdrop-blur-md text-amber-700 text-xs tracking-widest uppercase mb-8 font-mono font-semibold shadow-sm">
           <Award className="h-4 w-4 text-amber-600 animate-pulse" />
