@@ -1,0 +1,18 @@
+{
+  "short_name": "GBC Colombo",
+  "name": "Gold Buyers Colombo (GBC) - Payout Calculator & Live Rates",
+  "description": "Calculate and lock in the highest gold payout rates in Sri Lanka, view live gold spot rates, and contact the Colombo appraisal desk.",
+  "icons": [
+    {
+      "src": "/icon.jpg",
+      "type": "image/jpeg",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#0a0a0a",
+  "theme_color": "#d97706",
+  "display": "standalone",
+  "orientation": "portrait"
+}

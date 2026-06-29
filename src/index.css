@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Poppins", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Poppins", "Playfair Display", ui-serif, Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --animate-float-slow: float-slow 15s ease-in-out infinite;
+  --animate-float-slower: float-slower 20s ease-in-out infinite;
+
+  @keyframes float-slow {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(30px, -40px) scale(1.1); }
+  }
+  @keyframes float-slower {
+    0%, 100% { transform: translate(0, 0) scale(1.1); }
+    50% { transform: translate(-40px, 30px) scale(0.9); }
+  }
+}
+
+/* Print Stylesheet integration for Gold Calculator Valuation vouchers */
+@media print {
+  body {
+    background-color: white !important;
+    color: black !important;
+  }
+  header, footer, nav, button, form, section:not(#calculator) {
+    display: none !important;
+  }
+  #calculator {
+    display: block !important;
+    color: black !important;
+    background: white !important;
+    border: none !important;
+    padding: 0 !important;
+  }
+  #calculator * {
+    color: black !important;
+    border-color: #ddd !important;
+  }
+  #calc_share_wa, #calc_print_pdf {
+    display: none !important;
+  }
+}
