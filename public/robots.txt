@@ -1,0 +1,9 @@
+# robots.txt for Gold Buyers Colombo (GBC)
+# Optimized for Google, Bing, and LLM web crawlers
+
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+Sitemap: https://goldbuyerscolombo.com/sitemap.xml

@@ -1,0 +1,32 @@
+# Gold Buyers Colombo (GBC)
+
+> High-integrity computerized precious metal appraisal & liquidation platform in Colombo, Sri Lanka.
+
+Gold Buyers Colombo (GBC) is the leading technical and corporate gold buying office in Sri Lanka. It provides high-accuracy, transparent gold appraisals using computerized XRF spectrometry and digital scales, bypassing traditional deductions and Sea Street / Pettah middleman practices.
+
+## Core Features & Functionality
+
+- **Live Gold Rates**: Displays daily updated buying prices for 24K, 22K (916), 21K, and 18K gold per gram in Sri Lankan Rupees (LKR).
+- **Computerized Gold Calculator**: Allows users to enter gold karat and weight (grams or sovereigns/pavan) to calculate their exact cash payout. Features dynamic live calculations, factoring in GBC's loyalty cash premium bonuses and minimal testing fee transparency.
+- **Pawn Release (Ugas Bera Ganeema)**: Step-by-step guidance and service pipeline to help individuals release high-interest pawned gold from commercial banks and liquidate it for maximum market profits.
+- **Security & Integrity**: High-security private lounge transaction processing with instant bank transfers directly to leading commercial bank accounts.
+
+## Core Technical Reference Pages
+
+- [Home](https://goldbuyerscolombo.com/): Interactive gold price widget, real-time computerized calculator, multi-lingual layout, and customer lead form.
+- [About](https://goldbuyerscolombo.com/about): GBC's mission, team, and introduction to non-destructive XRF spectrometer testing technology.
+- [Contact](https://goldbuyerscolombo.com/contact): Store location map, secure lounge directions, phone support details, and booking coordinates.
+- [Blog Catalog](https://goldbuyerscolombo.com/blog): Complete archive of technical and macroeconomic insights on physical gold holdings in South Asia.
+
+## Technical Guides & Articles
+
+- [The Definitive Guide to Selling Gold](https://goldbuyerscolombo.com/blog/gold-price-trends-sri-lanka-2026): Roadmap to payout maximization, avoiding weight manipulation, and checking live LKR spot rates.
+- [Pawn vs. Selling Gold Cost-Benefit](https://goldbuyerscolombo.com/blog/pawn-vs-selling-gold-colombo): Direct financial analysis of pawning interest accrual rates versus GBC cash-out returns.
+- [Colombo's Gold Market Evolution](https://goldbuyerscolombo.com/blog/colombo-gold-market-traditional-vs-modern): Comparing historic Sea Street trading customs with computerized modern gold office appraisers.
+- [Step-by-Step Guide to Releasing Pawned Gold](https://goldbuyerscolombo.com/blog/release-and-sell-pawned-gold-sri-lanka): Clear operations guide on the financial redemption process of ugas bera ganeema.
+- [The Investor's Guide to Physical Gold](https://goldbuyerscolombo.com/blog/investors-guide-physical-gold-sri-lanka): Technical breakdown of gold sovereigns (pavan), gold biscuits, and solid jewelry wealth-building.
+- [Deciphering Gold Hallmarks](https://goldbuyerscolombo.com/blog/deciphering-gold-hallmarks-sri-lanka): Karat purity standards, interpreting hallmark symbols (916, 22K, 840), and the physical chemistry of alloys.
+- [7 Scams to Avoid When Selling Gold](https://goldbuyerscolombo.com/blog/avoid-gold-selling-scams-colombo): Advice from chief appraisers on identifying rigged scales, counterfeit acid tests, and concealed deductions.
+- [Guide to Selling Family Heirloom and Antique Jewelry](https://goldbuyerscolombo.com/blog/selling-antique-family-gold-colombo): Separating aesthetic and emotional premium valuations from baseline metallurgical purity.
+- [LKR Exchange Rate & Central Bank Policies](https://goldbuyerscolombo.com/blog/macroeconomics-colombo-gold-prices-lkr): How CBSL policies, currency depreciation, and LBMA international spot rates impact local Sri Lankan gold rates.
+- [Scrap and Broken Gold Selling Checklist](https://goldbuyerscolombo.com/blog/scrap-broken-gold-selling-checklist-colombo): Operational guidelines for cleaning, preparing, and extracting maximum value from damaged gold.

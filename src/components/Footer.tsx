@@ -17,56 +17,21 @@ interface FooterProps {
 export default function Footer({ currentLang, setView, showAdmin = false, onLogoClick }: FooterProps) {
   const t = translations[currentLang];
 
-  // LocalBusiness Schema markup injection for Google AI Search
-  const localBusinessSchema = {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "name": "Gold Buyers Colombo (GBC)",
-    "image": "https://ais-pre-dyuherzilrm6vpvwg3vmbk-934405636140.asia-east1.run.app/favicon.ico",
-    "@id": "https://ais-pre-dyuherzilrm6vpvwg3vmbk-934405636140.asia-east1.run.app",
-    "url": "https://ais-pre-dyuherzilrm6vpvwg3vmbk-934405636140.asia-east1.run.app",
-    "telephone": "+94718321321",
-    "priceRange": "$$$$",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "GBC Building, Galle Road",
-      "addressLocality": "Colombo 03",
-      "postalCode": "00300",
-      "addressCountry": "LK",
-    },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": 6.9271,
-      "longitude": 79.8612,
-    },
-    "openingHoursSpecification": {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-      "opens": "09:00",
-      "closes": "18:00",
-    },
-    "sameAs": [
-      "https://facebook.com/GoldBuyersColombo",
-      "https://instagram.com/GoldBuyersColombo",
-    ],
-  };
-
   return (
     <footer className="bg-white text-neutral-900 border-t border-neutral-200 pt-16 pb-28 md:pb-12 px-4 relative">
-      
-      {/* Schema Injection */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
-      />
  
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-10 items-start">
         
         {/* Brand Column (md:col-span-5) */}
         <div className="md:col-span-5 space-y-6">
           <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-full border border-amber-500 bg-gradient-to-tr from-amber-600 via-yellow-300 to-amber-600 flex items-center justify-center">
-              <span className="text-black font-serif font-black text-sm tracking-tighter">GBC</span>
+            <div className="relative h-10 w-10 rounded-full overflow-hidden border border-amber-500/30 bg-neutral-900 flex items-center justify-center shadow-md">
+              <img 
+                src="/logo_exact.jpg" 
+                alt="GBC Colombo Logo" 
+                className="h-full w-full object-cover"
+                referrerPolicy="no-referrer"
+              />
             </div>
             <div>
               <h3 className="font-serif font-bold text-lg text-neutral-950 tracking-wider">

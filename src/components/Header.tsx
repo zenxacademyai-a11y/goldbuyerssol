@@ -87,15 +87,20 @@ export default function Header({
         <div className="flex justify-between h-20 items-center">
           {/* Brand Logo & Name */}
           <div className="flex items-center gap-2.5 sm:gap-3 cursor-pointer min-w-0" onClick={() => handleNav("home")}>
-            {/* Custom Golden circular GBC Vector Emblem */}
+            {/* High-Resolution Luxury Gold Logo Image */}
             <div 
               onClick={(e) => {
                 e.stopPropagation();
                 if (onLogoClick) onLogoClick();
               }}
-              className="h-10 w-10 sm:h-12 sm:w-12 rounded-full border border-amber-500 bg-gradient-to-tr from-amber-600 via-yellow-300 to-amber-600 flex items-center justify-center shadow-lg shadow-amber-500/10 hover:brightness-110 active:scale-95 transition-all shrink-0"
+              className="relative h-10 w-10 sm:h-12 sm:w-12 rounded-full overflow-hidden border border-amber-500/30 shadow-md hover:brightness-110 active:scale-95 transition-all shrink-0 bg-neutral-900 flex items-center justify-center"
             >
-              <span className="text-black font-serif font-black text-base sm:text-lg tracking-tighter">GBC</span>
+              <img 
+                src="/logo_exact.jpg" 
+                alt="GBC Colombo Logo" 
+                className="h-full w-full object-cover"
+                referrerPolicy="no-referrer"
+              />
             </div>
             <div className="min-w-0 flex flex-col justify-center">
               <h1 className="text-neutral-950 font-serif font-black text-sm sm:text-base md:text-lg tracking-wide hover:text-amber-600 transition-colors whitespace-nowrap overflow-hidden text-ellipsis">

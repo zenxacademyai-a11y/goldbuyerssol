@@ -7,6 +7,7 @@ import React, { useState, useEffect } from "react";
 import { Lock, Settings, RefreshCw, Trash2, Edit, Plus, FileText, Check, Sparkles, AlertCircle, BarChart3, TrendingUp } from "lucide-react";
 import { Language, translations } from "../lib/translations.js";
 import { GoldRate, SystemSettings, CustomerLead, BlogPost } from "../types.js";
+import RichTextEditor from "./RichTextEditor.js";
 
 interface AdminDashboardProps {
   currentLang: Language;
@@ -51,6 +52,32 @@ export default function AdminDashboard({
   const [blogTags, setBlogTags] = useState("");
   const [blogAuthor, setBlogAuthor] = useState("Chief Appraiser");
   const [isBlogSaving, setIsBlogSaving] = useState(false);
+
+  // Predefined blog topics for SEO campaign
+  const PREDEFINED_TOPICS = [
+    "10 Best Gold Buyers in Colombo (2026)",
+    "15 Best Places to Sell Gold in Colombo",
+    "12 Trusted Gold Buyers in Sri Lanka",
+    "8 Best Cash for Gold Services in Colombo",
+    "Top 10 Jewellery Buyers in Colombo",
+    "20 Tips Before Selling Gold in Colombo",
+    "9 Best Gold Exchange Companies in Colombo",
+    "10 Best Gold Dealers in Colombo",
+    "Top Gold Buying Companies in Sri Lanka",
+    "15 Highest Paying Gold Buyers in Colombo",
+    "Top Gold Jewellery Buyers Near Colombo",
+    "18 Gold Selling Tips That Save You Money",
+    "10 Best Gold Appraisal Services in Colombo",
+    "Top Gold Testing Centres in Colombo",
+    "Best Gold Buyers for Old Jewellery",
+    "Best Gold Buyers for Broken Jewellery",
+    "Best Gold Buyers for Antique Jewellery",
+    "Best Gold Buyers for Gold Coins",
+    "Best Gold Buyers for Bullion",
+    "Top Gold Shops That Buy Jewellery"
+  ];
+
+  const [selectedPredefinedTopic, setSelectedPredefinedTopic] = useState(PREDEFINED_TOPICS[0]);
 
   // AI Prompt Assistant state
   const [aiPrompt, setAiPrompt] = useState("Write a highly optimized Colombo SEO guide titled 'How to Avoid Gold Buying Frauds in Colombo 03'. Include details on XRF spectrometer testing.");
@@ -124,6 +151,57 @@ export default function AdminDashboard({
     } catch (e) {
       console.error(e);
       alert("Error generating content from server-side Gemini endpoint.");
+    } finally {
+      setIsAiGenerating(false);
+    }
+  };
+
+  const handleGeneratePredefinedTopic = async () => {
+    setIsAiGenerating(true);
+    try {
+      // Build a specialized, comprehensive SEO/AEO/GEO prompt incorporating 'GBC' brand
+      // and explicit instructions to write and position GBC as the leading Colombo authority.
+      // Instructs Gemini to write natural, contextual reference links to internal service & contact anchors
+      // and external authorities.
+      const promptText = `Write an optimized blog post titled "${selectedPredefinedTopic}".
+Target: Colombo Sri Lanka Gold search market.
+Brand mention: "GBC" or "Gold Buyers Colombo".
+Tone: premium, trustworthy, and expert.
+Length: approx 600-900 words.
+
+Ensure you integrate:
+1. Internal hyperlinking references:
+   - To the Gold Value Calculator using the exact link URL '#calculator'
+   - To the Live Gold Rates using the exact link URL '#rates'
+   - To the GBC About page/section using the exact link URL '#about'
+   - To the GBC Contact page/section using the exact link URL '#contact'
+2. External authority links to reputable Sri Lankan institutions:
+   - Central Bank of Sri Lanka (https://www.cbsl.gov.lk)
+   - National Gem and Jewellery Authority (http://www.gemandjewelleryauthority.gov.lk)
+
+Position GBC as the ultra-transparent, Rolex/Cartier-level premium financial exchange offering computerized XRF testing and certified dual-display weighing.
+Include relevant Colombo landmarks (Sea Street Pettah, Wellawatte, Bambalapitiya Galle Road) for local GEO-relevance.`;
+
+      const response = await fetch("/api/ai-writer", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt: promptText }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setBlogContent(data.content);
+        if (data.title) setBlogTitle(data.title);
+        if (data.category) setBlogCategory(data.category);
+        if (data.tags) setBlogTags(data.tags.join(", "));
+        alert(`AI Article for "${selectedPredefinedTopic}" composed successfully with 'GBC' brand and hyperlinking patterns! Feel free to edit or refine the populated content below.`);
+      } else {
+        const errorText = await response.text();
+        alert(`AI Writer returned error: ${errorText}`);
+      }
+    } catch (e) {
+      console.error(e);
+      alert("Error generating predefined topic content from server-side Gemini endpoint.");
     } finally {
       setIsAiGenerating(false);
     }
@@ -390,6 +468,41 @@ export default function AdminDashboard({
                 <Sparkles className="h-4.5 w-4.5 text-black" />
                 <span>{isAiGenerating ? "Composing article..." : "Generate with AI Writer"}</span>
               </button>
+
+              <div className="border-t border-neutral-800 pt-4 mt-4 space-y-3">
+                <div className="flex items-center gap-1.5 text-xs text-amber-400 font-mono font-semibold">
+                  <Sparkles className="h-3.5 w-3.5" />
+                  <span>Predefined GBC Campaigns</span>
+                </div>
+                
+                <p className="text-[11px] text-neutral-450 leading-normal">
+                  Select one of GBC's 20 requested high-relevance Colombo gold selling topics to auto-compose a complete, hyperlinked blog article.
+                </p>
+
+                <div className="space-y-2">
+                  <select
+                    value={selectedPredefinedTopic}
+                    onChange={(e) => setSelectedPredefinedTopic(e.target.value)}
+                    className="w-full bg-black border border-neutral-800 rounded px-2.5 py-2 text-xs text-neutral-300 focus:outline-none focus:border-amber-500 font-sans"
+                  >
+                    {PREDEFINED_TOPICS.map((topic, index) => (
+                      <option key={index} value={topic}>
+                        {index + 1}. {topic}
+                      </option>
+                    ))}
+                  </select>
+
+                  <button
+                    type="button"
+                    onClick={handleGeneratePredefinedTopic}
+                    disabled={isAiGenerating}
+                    className="w-full py-2.5 bg-neutral-900 hover:bg-neutral-850 text-amber-400 border border-amber-500/30 hover:border-amber-500/55 font-extrabold text-xs uppercase tracking-wider rounded transition-all flex items-center justify-center gap-2"
+                  >
+                    <Sparkles className="h-4 w-4 text-amber-400" />
+                    <span>{isAiGenerating ? "Generating Topic..." : "Generate Predefined Topic"}</span>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -430,15 +543,12 @@ export default function AdminDashboard({
               </div>
 
               <div>
-                <label className="block text-neutral-400 mb-1">Article Content (Markdown supported)</label>
-                <textarea
-                  rows={8}
-                  required
+                <label className="block text-neutral-400 mb-2">Article Content (WYSIWYG Rich Editor / Supports Google Docs Paste)</label>
+                <RichTextEditor
                   value={blogContent}
-                  onChange={(e) => setBlogContent(e.target.value)}
-                  placeholder="Type your content or generate using the AI assistant..."
-                  className="w-full bg-black border border-neutral-800 rounded px-3 py-2 text-neutral-300 focus:outline-none focus:border-amber-500 font-sans"
-                ></textarea>
+                  onChange={(val) => setBlogContent(val)}
+                  placeholder="Type your content, paste straight from Google Docs (formatting preserved), or generate using the AI assistant..."
+                />
               </div>
 
               <div className="grid grid-cols-2 gap-4">

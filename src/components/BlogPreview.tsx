@@ -13,14 +13,61 @@ interface BlogPreviewProps {
   currentLang: Language;
   blogs: BlogPost[];
   onRefresh?: () => void;
+  initialActiveBlogSlug?: string | null;
+  onBackToCatalog?: () => void;
+  onNavigateHomeSection?: (sectionId: string) => void;
 }
 
-export default function BlogPreview({ currentLang, blogs, onRefresh }: BlogPreviewProps) {
+export default function BlogPreview({ 
+  currentLang, 
+  blogs, 
+  onRefresh, 
+  initialActiveBlogSlug, 
+  onBackToCatalog,
+  onNavigateHomeSection
+}: BlogPreviewProps) {
   const t = translations[currentLang];
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [activeArticle, setActiveArticle] = useState<BlogPost | null>(null);
   const [expandedFaqIndex, setExpandedFaqIndex] = useState<number | null>(null);
+
+  // Extract all headings in the article for TOC
+  const getArticleHeadings = (content: string) => {
+    if (!content) return [];
+    const isHtml = content.trim().startsWith("<") || /<[a-z][\s\S]*>/i.test(content);
+    if (isHtml) {
+      const headings: { id: string; title: string }[] = [];
+      const regex = /<(h[1-4])[^>]*>(.*?)<\/h[1-4]>/gi;
+      let match;
+      let index = 0;
+      while ((match = regex.exec(content)) !== null) {
+        const headingText = match[2].replace(/<[^>]*>/g, "").trim();
+        if (headingText) {
+          headings.push({ id: `html-heading-${index++}`, title: headingText });
+        }
+      }
+      return headings;
+    } else {
+      return content
+        .split("\n")
+        .filter(l => l.startsWith("### "))
+        .map((h, i) => ({
+          id: `heading-${i}`,
+          title: h.replace("### ", "").trim()
+        }));
+    }
+  };
+
+  // Auto-activate article if slug is passed
+  useEffect(() => {
+    if (initialActiveBlogSlug) {
+      const found = blogs.find(b => b.slug === initialActiveBlogSlug);
+      if (found) {
+        setActiveArticle(found);
+      }
+    }
+  }, [initialActiveBlogSlug, blogs]);
 
   // Dynamic FAQ Schema injection for AEO / GEO SEO optimization
   useEffect(() => {
@@ -111,21 +158,246 @@ export default function BlogPreview({ currentLang, blogs, onRefresh }: BlogPrevi
     }
   };
 
-  // Renders beautiful markdown lines as visual HTML
-  const renderMarkdown = (text: string) => {
-    return text.split("\n").map((line, idx) => {
-      if (line.startsWith("### ")) {
-        return <h3 key={idx} className="text-xl font-serif font-black text-neutral-950 mt-6 mb-3">{line.replace("### ", "")}</h3>;
+  // Helper to resolve highly descriptive, SEO-friendly anchor texts targeting 'Gold Buyer in Colombo'
+  // for all outgoing internal links referencing Service, Contact, and About pages or sections.
+  const getSeoAnchorText = (url: string, originalText: string): string => {
+    const lowerUrl = url.toLowerCase();
+    if (lowerUrl.includes("calculator") || lowerUrl.includes("#calculator")) {
+      return "GBC Gold Buyer in Colombo Valuation Calculator";
+    }
+    if (lowerUrl.includes("rates") || lowerUrl.includes("#rates")) {
+      return "Live Gold Payout Rates at GBC - Top Gold Buyer in Colombo";
+    }
+    if (lowerUrl.includes("contact") || lowerUrl.includes("#contact")) {
+      return "Schedule a Free Valuation at GBC - Trusted Gold Buyer in Colombo";
+    }
+    if (lowerUrl.includes("about") || lowerUrl.includes("#about")) {
+      return "About GBC - Leading Gold Buyer in Colombo";
+    }
+    return originalText;
+  };
+
+  // Parsers for bold formatting and hyperlinks inside text strings
+  const renderTextWithFormatting = (text: string): React.ReactNode => {
+    if (!text) return "";
+    
+    // Split by bold (**text**) and markdown links ([text](url))
+    const parts = text.split(/(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\))/g);
+    return parts.map((part, i) => {
+      if (part.startsWith("**") && part.endsWith("**")) {
+        return <strong key={i} className="font-extrabold text-neutral-950">{part.slice(2, -2)}</strong>;
       }
-      if (line.startsWith("#### ")) {
-        return <h4 key={idx} className="text-lg font-serif font-bold text-amber-700 mt-4 mb-2">{line.replace("#### ", "")}</h4>;
+      if (part.startsWith("[") && part.includes("](") && part.endsWith(")")) {
+        const match = part.match(/\[([^\]]+)\]\(([^)]+)\)/);
+        if (match) {
+          const [, anchor, url] = match;
+          const seoAnchor = getSeoAnchorText(url, anchor);
+          return (
+            <a 
+              key={i} 
+              href={url} 
+              className="text-amber-700 hover:text-amber-900 underline font-semibold transition-colors"
+              target={url.startsWith("http") ? "_blank" : undefined}
+              rel={url.startsWith("http") ? "noopener noreferrer" : undefined}
+            >
+              {seoAnchor}
+            </a>
+          );
+        }
       }
-      if (line.startsWith("* ")) {
-        return <li key={idx} className="list-disc list-inside text-neutral-700 text-xs sm:text-sm pl-4 leading-relaxed mb-2">{line.replace("* ", "")}</li>;
-      }
-      if (line.trim() === "") return <div key={idx} className="h-4"></div>;
-      return <p key={idx} className="text-xs sm:text-sm text-neutral-700 leading-relaxed mb-4">{line}</p>;
+      return part;
     });
+  };
+
+  const handleContentClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLElement;
+    const anchor = target.closest("a");
+    if (!anchor) return;
+
+    const href = anchor.getAttribute("href");
+    if (!href) return;
+
+    // Handle internal blog links (e.g. /blog/some-slug)
+    if (href.startsWith("/blog/")) {
+      e.preventDefault();
+      const slug = href.replace("/blog/", "");
+      const found = blogs.find(b => b.slug === slug);
+      if (found) {
+        setActiveArticle(found);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    } else if (href.startsWith("#")) {
+      e.preventDefault();
+      const sectionId = href.substring(1);
+      
+      // If the element exists on this page, scroll to it
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      } else if (onNavigateHomeSection) {
+        // Otherwise, ask parent to switch to home and scroll
+        onNavigateHomeSection(sectionId);
+      }
+    }
+  };
+
+  // Main markdown body parser that structuralizes headers, paragraphs, lists, and tables
+  const renderMarkdownContent = (content: string) => {
+    if (!content) return "";
+
+    const isHtml = content.trim().startsWith("<") || /<[a-z][\s\S]*>/i.test(content);
+    if (isHtml) {
+      // Inject IDs for dynamic scrolling TOC links matching HTML headings
+      let headingIndex = 0;
+      const htmlWithIds = content.replace(/<(h[1-4])([^>]*)>(.*?)<\/h[1-4]>/gi, (match, tag, attrs, text) => {
+        if (attrs.includes("id=")) {
+          return match;
+        }
+        const id = `html-heading-${headingIndex++}`;
+        return `<${tag}${attrs} id="${id}">${text}</${tag}>`;
+      });
+
+      // Post-process HTML anchor tags to automatically use descriptive SEO-friendly anchor text
+      const htmlWithSeoLinks = htmlWithIds.replace(/<a\s+([^>]*href=["']([^"']+)["']?[^>]*)>(.*?)<\/a>/gi, (match, attrs, href, innerText) => {
+        const seoAnchor = getSeoAnchorText(href, innerText);
+        return `<a ${attrs}>${seoAnchor}</a>`;
+      });
+
+      return (
+        <div 
+          className="rich-text-content prose prose-amber max-w-none text-neutral-800 leading-relaxed text-sm sm:text-base space-y-4"
+          dangerouslySetInnerHTML={{ __html: htmlWithSeoLinks }}
+          onClick={handleContentClick}
+        />
+      );
+    }
+
+    const lines = content.split("\n");
+    const elements: React.ReactNode[] = [];
+    let headingCounter = 0;
+    
+    let i = 0;
+    while (i < lines.length) {
+      const line = lines[i];
+      
+      // 1. Skip empty lines
+      if (line.trim() === "") {
+        elements.push(<div key={`space-${i}`} className="h-4"></div>);
+        i++;
+        continue;
+      }
+      
+      // 2. Handle Headings
+      if (line.startsWith("### ")) {
+        const headingText = line.replace("### ", "").trim();
+        const headingId = `heading-${headingCounter++}`;
+        elements.push(
+          <h3 
+            key={`h3-${i}`} 
+            id={headingId}
+            className="text-2xl font-serif font-black text-neutral-950 mt-10 mb-4 scroll-mt-24 border-b border-neutral-100 pb-2"
+          >
+            {renderTextWithFormatting(headingText)}
+          </h3>
+        );
+        i++;
+        continue;
+      }
+      
+      if (line.startsWith("#### ")) {
+        const headingText = line.replace("#### ", "").trim();
+        elements.push(
+          <h4 key={`h4-${i}`} className="text-xl font-serif font-extrabold text-amber-800 mt-6 mb-3">
+            {renderTextWithFormatting(headingText)}
+          </h4>
+        );
+        i++;
+        continue;
+      }
+      
+      // 3. Handle Tables (consecutive lines starting with |)
+      if (line.startsWith("|")) {
+        const tableLines: string[] = [];
+        while (i < lines.length && lines[i].startsWith("|")) {
+          tableLines.push(lines[i]);
+          i++;
+        }
+        
+        const rows = tableLines.map(tl => {
+          const cells = tl.split("|").map(cell => cell.trim());
+          if (cells[0] === "") cells.shift();
+          if (cells[cells.length - 1] === "") cells.pop();
+          return cells;
+        });
+        
+        if (rows.length > 0) {
+          const headerRow = rows[0];
+          let bodyRows = rows.slice(1);
+          
+          if (bodyRows.length > 0 && bodyRows[0].every(cell => cell.includes("-") || cell.includes(":"))) {
+            bodyRows = bodyRows.slice(1);
+          }
+          
+          elements.push(
+            <div key={`table-${i}`} className="my-8 overflow-x-auto rounded-xl border border-neutral-200 shadow-sm">
+              <table className="w-full text-left border-collapse bg-white text-xs sm:text-sm">
+                <thead>
+                  <tr className="bg-neutral-50 border-b border-neutral-200">
+                    {headerRow.map((cell, idx) => (
+                      <th key={idx} className="p-3 sm:p-4 font-mono font-bold text-neutral-800 uppercase tracking-wider">
+                        {renderTextWithFormatting(cell)}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-neutral-100">
+                  {bodyRows.map((row, rowIdx) => (
+                    <tr key={rowIdx} className="hover:bg-neutral-50/50 transition-colors">
+                      {row.map((cell, cellIdx) => (
+                        <td key={cellIdx} className="p-3 sm:p-4 text-neutral-700 leading-relaxed">
+                          {renderTextWithFormatting(cell)}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          );
+        }
+        continue;
+      }
+      
+      // 4. Handle Lists (consecutive lines starting with * )
+      if (line.startsWith("* ")) {
+        const listItems: string[] = [];
+        while (i < lines.length && lines[i].startsWith("* ")) {
+          listItems.push(lines[i].replace("* ", "").trim());
+          i++;
+        }
+        
+        elements.push(
+          <ul key={`list-${i}`} className="my-4 space-y-2.5 pl-5 list-disc text-sm sm:text-base text-neutral-800 leading-relaxed">
+            {listItems.map((item, idx) => (
+              <li key={idx} className="pl-1">
+                {renderTextWithFormatting(item)}
+              </li>
+            ))}
+          </ul>
+        );
+        continue;
+      }
+      
+      // 5. Standard paragraph
+      elements.push(
+        <p key={`p-${i}`} className="text-sm sm:text-base text-neutral-800 leading-relaxed mb-4">
+          {renderTextWithFormatting(line)}
+        </p>
+      );
+      i++;
+    }
+    
+    return elements;
   };
 
   if (activeArticle) {
@@ -138,6 +410,7 @@ export default function BlogPreview({ currentLang, blogs, onRefresh }: BlogPrevi
             onClick={() => {
               setActiveArticle(null);
               setExpandedFaqIndex(null);
+              onBackToCatalog?.();
               window.scrollTo({ top: 0 });
             }}
             className="inline-flex items-center gap-2 text-xs uppercase tracking-widest font-mono text-amber-750 hover:text-amber-600 transition-colors mb-8 focus:outline-none font-bold"
@@ -195,15 +468,12 @@ export default function BlogPreview({ currentLang, blogs, onRefresh }: BlogPrevi
                   <li className="flex items-center gap-1 text-neutral-950 font-bold border-l-2 border-amber-700 pl-2">
                     <a href="#overview" className="hover:text-amber-700 transition-colors">Article Overview</a>
                   </li>
-                  {activeArticle.content.split("\n").filter(l => l.startsWith("### ")).map((h, i) => {
-                    const title = h.replace("### ", "");
-                    return (
-                      <li key={i} className="hover:text-amber-700 transition-colors flex items-center gap-1.5 pl-2">
-                        <ChevronRight className="h-3 w-3 text-neutral-400" />
-                        <a href={`#heading-${i}`} className="hover:underline">{title}</a>
-                      </li>
-                    );
-                  })}
+                  {getArticleHeadings(activeArticle.content).map((h, i) => (
+                    <li key={i} className="hover:text-amber-700 transition-colors flex items-center gap-1.5 pl-2">
+                      <ChevronRight className="h-3 w-3 text-neutral-400" />
+                      <a href={`#${h.id}`} className="hover:underline">{h.title}</a>
+                    </li>
+                  ))}
                   {activeArticle.questions && activeArticle.questions.length > 0 && (
                     <li key="faq-toc" className="hover:text-amber-700 transition-colors flex items-center gap-1.5 pl-2 font-semibold text-neutral-800">
                       <ChevronRight className="h-3 w-3 text-neutral-500" />
@@ -273,31 +543,7 @@ export default function BlogPreview({ currentLang, blogs, onRefresh }: BlogPrevi
 
               {/* Enhanced markdown renderer with headings mapped to anchor IDs */}
               <div className="prose prose-amber max-w-none">
-                {(() => {
-                  let headingCounter = 0;
-                  return activeArticle.content.split("\n").map((line, idx) => {
-                    if (line.startsWith("### ")) {
-                      const headingId = `heading-${headingCounter++}`;
-                      return (
-                        <h3 
-                          key={idx} 
-                          id={headingId} 
-                          className="text-2xl font-serif font-black text-neutral-950 mt-10 mb-4 scroll-mt-24 border-b border-neutral-100 pb-2"
-                        >
-                          {line.replace("### ", "")}
-                        </h3>
-                      );
-                    }
-                    if (line.startsWith("#### ")) {
-                      return <h4 key={idx} className="text-xl font-serif font-extrabold text-amber-800 mt-6 mb-3">{line.replace("#### ", "")}</h4>;
-                    }
-                    if (line.startsWith("* ")) {
-                      return <li key={idx} className="list-disc list-inside text-neutral-800 text-sm sm:text-base pl-4 leading-relaxed mb-2">{line.replace("* ", "")}</li>;
-                    }
-                    if (line.trim() === "") return <div key={idx} className="h-4"></div>;
-                    return <p key={idx} className="text-sm sm:text-base text-neutral-800 leading-relaxed mb-4">{line}</p>;
-                  });
-                })()}
+                {renderMarkdownContent(activeArticle.content)}
               </div>
 
               {/* Tags Display */}
@@ -510,7 +756,13 @@ export default function BlogPreview({ currentLang, blogs, onRefresh }: BlogPrevi
 
                   {/* Body preview */}
                   <p className="text-xs text-neutral-600 line-clamp-3 leading-relaxed">
-                    {post.content.replace(/[#*`]/g, "").substring(0, 160)}...
+                    {(() => {
+                      const isHtml = post.content.trim().startsWith("<") || /<[a-z][\s\S]*>/i.test(post.content);
+                      const cleanText = isHtml
+                        ? post.content.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim()
+                        : post.content.replace(/[#*`]/g, "");
+                      return cleanText.substring(0, 160) + "...";
+                    })()}
                   </p>
                 </div>
 

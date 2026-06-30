@@ -410,7 +410,7 @@ The article must target the primary Colombo search market. Focus on positioning 
 
 You must return your output ONLY as a JSON object of type Type.OBJECT with the exact structure:
 - title: A compelling, clickable, SEO-friendly headline.
-- content: Full article body in Markdown format with subheadings (H3/H4), bullet points, and high-quality details (approx 500-800 words). Do not include the title inside the body.
+- content: Full article body in semantic HTML format with subheadings (H2/H3/H4), bullet points/numbered lists, styled italic/bold/underlined text, and blockquotes for high-quality details (approx 500-800 words). Do not include the title inside the body. Do not use Markdown, return pure HTML tags.
 - metaTitle: A premium SEO title tag (under 60 characters).
 - metaDescription: A compelling SEO meta description with CTAs (under 160 characters).
 - tags: A JSON array of 4-5 relevant SEO tags.
@@ -452,6 +452,63 @@ You must return your output ONLY as a JSON object of type Type.OBJECT with the e
         error: "AI Generation failed.",
         details: error instanceof Error ? error.message : String(error),
       });
+    }
+  });
+
+  // --- DYNAMIC SITEMAP XML ENDPOINT ---
+  app.get("/sitemap.xml", (req: Request, res: Response) => {
+    try {
+      const db = readDb();
+      const host = req.headers.host || "goldbuyerscolombo.com";
+      const protocol = req.secure || (req.headers["x-forwarded-proto"] === "https") ? "https" : "http";
+      const baseUrl = `${protocol}://${host}`;
+      const todayStr = new Date().toISOString().split("T")[0];
+
+      let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
+      xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+
+      // Main static pages
+      xml += `  <url>\n`;
+      xml += `    <loc>${baseUrl}/</loc>\n`;
+      xml += `    <lastmod>${todayStr}</lastmod>\n`;
+      xml += `    <changefreq>daily</changefreq>\n`;
+      xml += `    <priority>1.0</priority>\n`;
+      xml += `  </url>\n`;
+
+      xml += `  <url>\n`;
+      xml += `    <loc>${baseUrl}/about</loc>\n`;
+      xml += `    <lastmod>${todayStr}</lastmod>\n`;
+      xml += `    <changefreq>weekly</changefreq>\n`;
+      xml += `    <priority>0.8</priority>\n`;
+      xml += `  </url>\n`;
+
+      xml += `  <url>\n`;
+      xml += `    <loc>${baseUrl}/contact</loc>\n`;
+      xml += `    <lastmod>${todayStr}</lastmod>\n`;
+      xml += `    <changefreq>weekly</changefreq>\n`;
+      xml += `    <priority>0.8</priority>\n`;
+      xml += `  </url>\n`;
+
+      // Dynamic blog articles
+      if (db.blogs && Array.isArray(db.blogs)) {
+        db.blogs.forEach((blog: BlogPost) => {
+          const lastModDate = blog.date || todayStr;
+          xml += `  <url>\n`;
+          xml += `    <loc>${baseUrl}/blog/${blog.slug}</loc>\n`;
+          xml += `    <lastmod>${lastModDate}</lastmod>\n`;
+          xml += `    <changefreq>weekly</changefreq>\n`;
+          xml += `    <priority>0.6</priority>\n`;
+          xml += `  </url>\n`;
+        });
+      }
+
+      xml += `</urlset>`;
+
+      res.header("Content-Type", "application/xml");
+      res.status(200).send(xml);
+    } catch (e) {
+      console.error("Error generating sitemap:", e);
+      res.status(550).send("Error generating sitemap XML");
     }
   });
 
