@@ -22,6 +22,7 @@ export const translations = {
     faq: "FAQ",
     blog: "Blog",
     contact: "Contact",
+    branches: "16 Branches",
     admin: "Admin Panel",
     
     // Buttons & CTAs
@@ -131,6 +132,7 @@ export const translations = {
     faq: "ප්‍රශ්න සහ පිළිතුරු",
     blog: "බ්ලොග් ලිපි",
     contact: "සම්බන්ධ වන්න",
+    branches: "ශාඛා 16",
     admin: "පාලක පුවරුව",
     
     // Buttons & CTAs
@@ -240,6 +242,7 @@ export const translations = {
     faq: "கேள்வி பதில்",
     blog: "வலைப்பதிவு",
     contact: "தொடர்பு கொள்ள",
+    branches: "16 கிளைகள்",
     admin: "நிர்வாகக் குழு",
     
     // Buttons & CTAs

@@ -18,10 +18,12 @@ import BlogPreview from "./components/BlogPreview.js";
 import AdminDashboard from "./components/AdminDashboard.js";
 import AboutPage from "./components/AboutPage.js";
 import ContactPage from "./components/ContactPage.js";
+import BranchesPage from "./components/BranchesPage.js";
 import InstallWebAppButton from "./components/InstallWebAppButton.js";
 import Footer from "./components/Footer.js";
 import ExitIntentPopup from "./components/ExitIntentPopup.js";
 import RecentPosts from "./components/RecentPosts.js";
+import ChatWithConsultant from "./components/ChatWithConsultant.js";
 import { Language } from "./lib/translations.js";
 import { GoldRate, SystemSettings, CustomerLead, BlogPost, HistoricalRate } from "./types.js";
 import { updateMetaTags } from "./lib/seo.js";
@@ -66,7 +68,7 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem("gbc_user_lang", currentLang);
   }, [currentLang]);
-  const [activeView, setActiveView] = useState<"home" | "blog" | "admin" | "about" | "contact">("home");
+  const [activeView, setActiveView] = useState<"home" | "blog" | "admin" | "about" | "contact" | "branches">("home");
   const [selectedBlogSlug, setSelectedBlogSlug] = useState<string | null>(null);
   const [showAdmin, setShowAdmin] = useState(false);
   const [logoClicks, setLogoClicks] = useState(0);
@@ -125,6 +127,22 @@ export default function App() {
       const keywords = "contact gold buyers colombo, colombo gold buyer phone number, gbc branch address, find gold buyers colombo, sell gold colombo location";
 
       updateMetaTags(title, desc, keywords);
+    } else if (activeView === "branches") {
+      const title = currentLang === "si"
+        ? "කොළඹ ශාඛා 16 - ගෝල්ඩ් බයර්ස් කොළඹ (GBC) | රන් ගැනුම්කරුවන්"
+        : currentLang === "ta"
+        ? "கொழும்பில் 16 கிளைகள் - கோல்ட் பையர்ஸ் கொழும்பு (GBC)"
+        : "16 Branches in Colombo - GBC (Gold Buyers Colombo) | Gold Buyer Address";
+
+      const desc = currentLang === "si"
+        ? "කොළඹ පිහිටි GBC රන් ඇගයීම් සහ මිලදී ගැනීමේ ශාඛා 16 බලන්න. දෙහිවල, බම්බලපිටිය, කොහුවල, බත්තරමුල්ල ඇතුළු සියලුම ශාඛා වල ලිපින සහ සම්බන්ධතා තොරතුරු මෙහි දැක්වේ."
+        : currentLang === "ta"
+        ? "கொழும்பில் உள்ள 16 GBC தங்க மதிப்பீட்டு மற்றும் கொள்முதல் கிளைகளைக் கண்டறியவும். தெஹிவளை, பம்பலபிட்டி, கோஹுவளை, பத்தரமுல்லை உள்ளிட்ட முகவரிகள்."
+        : "Find our 16 gold appraisal & buying branches in Colombo. Addresses and contact details for Dehiwala, Bambalapitiya, Kohuwala, Nugegoda, Wellawatta, and more. Call 0718 321 321.";
+
+      const keywords = "gold buyer branches colombo, dehiwala gold buyer, kohuwala gold shop, bambalapitiya gold buyer, sell gold nugegoda, gold buyers near me colombo";
+
+      updateMetaTags(title, desc, keywords);
     } else if (activeView === "admin") {
       updateMetaTags(
         "Secure Admin Dashboard | GBC (Gold Buyers Colombo)",
@@ -134,7 +152,43 @@ export default function App() {
     }
   }, [activeView, currentLang]);
 
+  // Synchronize state to URL path
   useEffect(() => {
+    const currentPath = window.location.pathname.toLowerCase().replace(/\/$/, "");
+    let targetPath = activeView === "home" ? "" : `/${activeView}`;
+    
+    // Preserve sub-routes for admin if needed
+    if (activeView === "admin" && (currentPath === "/admin/leads" || currentPath === "/admin/rates" || currentPath === "/admin/blog")) {
+      targetPath = currentPath;
+    }
+    
+    if (currentPath !== targetPath) {
+      window.history.pushState({ view: activeView }, "", targetPath || "/");
+    }
+  }, [activeView]);
+
+  // Pathname routing on load & popstate + Admin check
+  useEffect(() => {
+    const handleUrlRouting = () => {
+      const path = window.location.pathname.toLowerCase().replace(/\/$/, "");
+      if (path === "/about") {
+        setActiveView("about");
+      } else if (path === "/contact") {
+        setActiveView("contact");
+      } else if (path === "/branches") {
+        setActiveView("branches");
+      } else if (path === "/blog") {
+        setActiveView("blog");
+      } else if (path === "/admin" || path.startsWith("/admin/")) {
+        setActiveView("admin");
+      } else {
+        setActiveView("home");
+      }
+    };
+
+    handleUrlRouting();
+    window.addEventListener("popstate", handleUrlRouting);
+
     const isUrlAdmin = window.location.search.includes("admin=true") || window.location.hash === "#admin";
     const isLocalAdmin = localStorage.getItem("gbc_admin_mode") === "true";
     if (isUrlAdmin || isLocalAdmin) {
@@ -143,6 +197,8 @@ export default function App() {
         localStorage.setItem("gbc_admin_mode", "true");
       }
     }
+
+    return () => window.removeEventListener("popstate", handleUrlRouting);
   }, []);
 
   const handleLogoClick = () => {
@@ -373,6 +429,8 @@ export default function App() {
           <AboutPage currentLang={currentLang} setView={setActiveView} />
         ) : activeView === "contact" ? (
           <ContactPage currentLang={currentLang} />
+        ) : activeView === "branches" ? (
+          <BranchesPage currentLang={currentLang} />
         ) : activeView === "blog" ? (
           <BlogPreview
             currentLang={currentLang}
@@ -415,6 +473,9 @@ export default function App() {
 
       {/* Exit Intent conversion pop-up */}
       <ExitIntentPopup currentLang={currentLang} />
+
+      {/* Floating 'Chat with Consultant' WhatsApp desk */}
+      <ChatWithConsultant currentLang={currentLang} />
 
       {/* Footer */}
       <Footer currentLang={currentLang} setView={setActiveView} showAdmin={showAdmin} onLogoClick={handleLogoClick} />

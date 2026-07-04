@@ -11,8 +11,8 @@ import InstallWebAppButton from "./InstallWebAppButton.js";
 interface HeaderProps {
   currentLang: Language;
   setLang: (lang: Language) => void;
-  activeView: "home" | "blog" | "admin" | "about" | "contact";
-  setView: (view: "home" | "blog" | "admin" | "about" | "contact") => void;
+  activeView: "home" | "blog" | "admin" | "about" | "contact" | "branches";
+  setView: (view: "home" | "blog" | "admin" | "about" | "contact" | "branches") => void;
   todayRate24k: number;
   todayRate22k: number;
   showAdmin?: boolean;
@@ -34,7 +34,7 @@ export default function Header({
   const [moreMenuOpen, setMoreMenuOpen] = useState(false);
   const t = translations[currentLang];
 
-  const handleNav = (view: "home" | "blog" | "admin" | "about" | "contact") => {
+  const handleNav = (view: "home" | "blog" | "admin" | "about" | "contact" | "branches") => {
     setView(view);
     setMobileMenuOpen(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -146,7 +146,7 @@ export default function Header({
               <button
                 onClick={() => setMoreMenuOpen(!moreMenuOpen)}
                 className={`text-sm font-semibold tracking-wide transition-colors flex items-center gap-1 py-2 focus:outline-none ${
-                  ["about", "blog", "contact", "admin"].includes(activeView)
+                  ["about", "blog", "contact", "admin", "branches"].includes(activeView)
                     ? "text-amber-600 font-bold"
                     : "text-neutral-600 hover:text-amber-600"
                 }`}
@@ -169,6 +169,19 @@ export default function Header({
                     }`}
                   >
                     <span>{t.about}</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      handleNav("branches");
+                      setMoreMenuOpen(false);
+                    }}
+                    className={`w-full text-left px-4 py-2.5 text-xs font-semibold transition-colors flex items-center gap-2 ${
+                      activeView === "branches"
+                        ? "bg-amber-500/10 text-amber-600 font-bold"
+                        : "text-neutral-700 hover:bg-neutral-50 hover:text-amber-600"
+                    }`}
+                  >
+                    <span>{t.branches}</span>
                   </button>
                   <button
                     onClick={() => {
@@ -343,6 +356,14 @@ export default function Header({
             }`}
           >
             {t.contact}
+          </button>
+          <button
+            onClick={() => handleNav("branches")}
+            className={`text-left text-base py-2 border-b border-neutral-100 ${
+              activeView === "branches" ? "text-amber-600 font-bold" : "text-neutral-700"
+            }`}
+          >
+            {t.branches}
           </button>
           {showAdmin && (
             <button

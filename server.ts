@@ -489,6 +489,13 @@ You must return your output ONLY as a JSON object of type Type.OBJECT with the e
       xml += `    <priority>0.8</priority>\n`;
       xml += `  </url>\n`;
 
+      xml += `  <url>\n`;
+      xml += `    <loc>${baseUrl}/branches</loc>\n`;
+      xml += `    <lastmod>${todayStr}</lastmod>\n`;
+      xml += `    <changefreq>weekly</changefreq>\n`;
+      xml += `    <priority>0.9</priority>\n`;
+      xml += `  </url>\n`;
+
       // Dynamic blog articles
       if (db.blogs && Array.isArray(db.blogs)) {
         db.blogs.forEach((blog: BlogPost) => {
