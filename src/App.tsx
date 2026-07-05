@@ -81,64 +81,64 @@ export default function App() {
 
     if (activeView === "home") {
       const title = currentLang === "si" 
-        ? "රන් බයර්ස් කොළඹ (GBC) | ලංකාවේ රන් සඳහා ඉහළම මුදලක්"
+        ? "රන් බයර්ස් කොළඹ (GBC) | ලංකාවේ රන් සඳහා ඉහළම මිල | Gold Buyers Colombo"
         : currentLang === "ta"
-        ? "கோல்ட் பையர்ஸ் கொழும்பு (GBC) | இலங்கையில் தங்கத்திற்கு மிக உயர்ந்த விலை"
+        ? "கோல்ட் பையர்ஸ் கொழும்பு (GBC) | இலங்கையில் தங்கத்திற்கு அதிகபட்ச விலை | Gold Buyers Colombo"
         : "Gold Buyers Colombo (GBC) | Highest Cash Price for Gold in Sri Lanka";
 
       const desc = currentLang === "si"
-        ? "GBC (ගෝල්ඩ් බයර්ස් කොළඹ) වෙතින් කොළඹින් රන් සඳහා ඉහළම මුදලක් ලබා ගන්න. 100% විනිවිද පෙනෙන පරිගණකගත XRF පරීක්ෂාව, සහතික කළ ඩිජිටල් තරාදි සහ ක්ෂණික මුදල් හෝ බැංකු මාරු කිරීම්."
+        ? "GBC (ගෝල්ඩ් බයර්ස් කොළඹ) වෙතින් ඔබගේ රන් සඳහා ඉහළම මුදලක් ලබා ගන්න. 100% විනිවිද පෙනෙන පරිගණකගත XRF පරීක්ෂාව, සහතික කළ ඩිජිටල් තරාදි සහ ක්ෂණික මුදල්. අදම අපව අමතන්න."
         : currentLang === "ta"
-        ? "GBC (கோல்ட் பையர்ஸ் கொழும்பு) மூலம் கொழும்பில் தங்கத்திற்கு மிக உயர்ந்த தொகையைப் பெறுங்கள். 100% வெளிப்படையான கணினிமயமாக்கப்பட்ட XRF சோதனை, சான்றளிக்கப்பட்ட டிஜிட்டல் தராசுகள் மற்றும் உடனடி ரொக்கம்."
-        : "Sell gold in Colombo for the highest payout at GBC (Gold Buyers Colombo). 100% transparent computerized XRF spectroscopic testing, certified digital scales, and instant cash or bank transfers.";
+        ? "GBC (கோல்ட் பையர்ஸ் கொழும்பு) மூலம் உங்கள் தங்கத்திற்கு அதிகபட்ச ரொக்கப் பணத்தைப் பெறுங்கள். 100% வெளிப்படையான கணினி XRF சோதனை மற்றும் உடனடி ரொக்கம். இன்றே அணுகவும்."
+        : "Sell your gold jewelry for the highest cash payout in Colombo, Sri Lanka at GBC. 100% transparent computerized XRF testing, certified digital scales, and instant cash.";
 
       const keywords = "gold buyer in colombo, gold price today colombo, sell gold sri lanka, highest gold price colombo, 22k gold rate colombo, pawning gold colombo, gbc gold buyers, colombo gold merchants";
       
       updateMetaTags(title, desc, keywords);
     } else if (activeView === "about") {
       const title = currentLang === "si"
-        ? "අප ගැන - ගෝල්ඩ් බයර්ස් කොළඹ (GBC) | සහතික ලත් රන් පරීක්ෂකවරුන්"
+        ? "අප ගැන - ගෝල්ඩ් බයර්ස් කොළඹ (GBC) | විශ්වාසදායක රන් ගැනුම්කරුවන්"
         : currentLang === "ta"
-        ? "எங்களைப் பற்றி - கோல்ட் பையர்ஸ் கொழும்பு (GBC) | சான்றளிக்கப்பட்ட தங்க மதிப்பீட்டாளர்கள்"
-        : "About Us - GBC (Gold Buyers Colombo) | Certified Assayers & Metallurgical Desk";
+        ? "எங்களைப் பற்றி - கோல்ட் பையர்ஸ் கொழும்பு (GBC) | நம்பகமான தங்க கொள்வனவாளர்"
+        : "About Us - GBC (Gold Buyers Colombo) | Sri Lanka's Most Trusted Gold Buyers";
 
       const desc = currentLang === "si"
-        ? "GBC (ගෝල්ඩ් බයර්ස් කොළඹ) හි විනිවිදභාවය, වෘත්තීය XRF රන් සත්‍යාපනය, සහතික කළ SLSI බර මැනීමේ ප්‍රමිතීන් සහ අපගේ ජ්‍යෙෂ්ඨ ලෝහ විද්‍යා මණ්ඩලය පිළිබඳව දැනගන්න."
+        ? "GBC හි විනිවිදභාවය, වෘත්තීය XRF රන් සත්‍යාපනය සහ ලෝහ විද්‍යා මණ්ඩලය පිළිබඳව දැනගන්න. වසර ගණනාවක විශ්වාසය සමගින් කොළඹ ප්‍රමුඛතම රන් ගැනුම්කරුවා."
         : currentLang === "ta"
-        ? "GBC (கோல்ட் பையர்ஸ் கொழும்பு) இன் வெளிப்படைத்தன்மை, தொழில்முறை XRF தங்க சரிபார்ப்பு, சான்றளிக்கப்பட்ட SLSI எடை அளவீட்டு தரநிலைகள் மற்றும் எங்கள் மூத்த உலோகவியல் குழு பற்றி அறியவும்."
-        : "Learn about GBC's (Gold Buyers Colombo) commitment to transparency, professional XRF gold verification, certified SLSI weighing standards, and our senior metallurgical board.";
+        ? "GBC இன் வெளிப்படைத்தன்மை, தொழில்முறை XRF தங்க சரிபார்ப்பு பற்றி அறியவும். பல வருட நம்பிக்கையுடன் கொழும்பின் முன்னணி தங்க கொள்வனவாளர்."
+        : "Learn about GBC's commitment to absolute transparency, professional XRF gold verification, certified SLSI weighing standards, and our senior metallurgical board.";
 
       const keywords = "about gold buyers colombo, trusted gold assayers sri lanka, computer gold testing colombo, gbc history, colombo certified gold buyers";
 
       updateMetaTags(title, desc, keywords);
     } else if (activeView === "contact") {
       const title = currentLang === "si"
-        ? "සම්බන්ධ වන්න - ගෝල්ඩ් බයර්ස් කොළඹ (GBC) | ආරක්ෂිත ශාඛා පිහිටීම සහ දුරකථනය"
+        ? "සම්බන්ධ වන්න - ගෝල්ඩ් බයර්ස් කොළඹ (GBC) | අපගේ ශාඛාව සහ දුරකථන අංක"
         : currentLang === "ta"
-        ? "தொடர்புகொள்ள - கோல்ட் பையர்ஸ் கொழும்பு (GBC) | பாதுகாப்பான கிளை முகவரி மற்றும் தொலைபேசி"
-        : "Contact GBC (Gold Buyers Colombo) | Secure Appraisal Branch Location & Phone";
+        ? "தொடர்புகொள்ள - கோல்ட் பையர்ஸ் கொழும்பு (GBC) | கிளை முகவரி மற்றும் தொலைபேசி"
+        : "Contact GBC (Gold Buyers Colombo) | Branch Locations & Phone Numbers";
 
       const desc = currentLang === "si"
-        ? "රන් ක්ෂණිකව තක්සේරු කර ගැනීමට GBC (ගෝල්ඩ් බයර්ස් කොළඹ) අමතන්න. කොළඹ 03, ගාලු පාරේ පිහිටි අපගේ ආරක්ෂිත ශාඛාවට පැමිණෙන්න හෝ අප අමතන්න."
+        ? "ඔබගේ රන් ක්ෂණිකව තක්සේරු කර ගැනීමට අදම GBC අමතන්න. කොළඹ ප්‍රමුඛතම රන් ගැනුම්කරුවන් වන අපගේ ආරක්ෂිත ශාඛාවට පැමිණෙන්න."
         : currentLang === "ta"
-        ? "உடனடி தங்க மதிப்பீடுகளுக்கு GBC (கோல்ட் பையர்ஸ் கொழும்பு) ஐ தொடர்பு கொள்ளவும். கொழும்பு 03, காலி வீதியில் உள்ள எங்கள் பாதுகாப்பான கிளைக்கு வருகை தரவும்."
-        : "Contact GBC (Gold Buyers Colombo) for instant gold valuations. Get directions to our secure Galle Road, Colombo 03 branch or speak directly with our senior valuation desk.";
+        ? "உங்கள் தங்கத்தை உடனடியாக மதிப்பிட இன்றே GBC ஐ தொடர்பு கொள்ளவும். கொழும்பின் முன்னணி தங்க கொள்வனவாளரான எங்களை அணுகவும்."
+        : "Contact GBC for instant gold valuations and market rates. Get directions to our secure Colombo branches or speak directly with our senior valuation desk today.";
 
       const keywords = "contact gold buyers colombo, colombo gold buyer phone number, gbc branch address, find gold buyers colombo, sell gold colombo location";
 
       updateMetaTags(title, desc, keywords);
     } else if (activeView === "branches") {
       const title = currentLang === "si"
-        ? "කොළඹ ශාඛා 16 - ගෝල්ඩ් බයර්ස් කොළඹ (GBC) | රන් ගැනුම්කරුවන්"
+        ? "කොළඹ ශාඛා 16ක් - ගෝල්ඩ් බයර්ස් කොළඹ (GBC) | ඔබ ළඟම ඇති ශාඛාව"
         : currentLang === "ta"
-        ? "கொழும்பில் 16 கிளைகள் - கோல்ட் பையர்ஸ் கொழும்பு (GBC)"
-        : "16 Branches in Colombo - GBC (Gold Buyers Colombo) | Gold Buyer Address";
+        ? "கொழும்பில் 16 கிளைகள் - கோல்ட் பையர்ஸ் கொழும்பு (GBC) | அருகில் உள்ள கிளை"
+        : "16 Branches in Colombo - GBC (Gold Buyers Colombo) | Find Your Nearest Branch";
 
       const desc = currentLang === "si"
-        ? "කොළඹ පිහිටි GBC රන් ඇගයීම් සහ මිලදී ගැනීමේ ශාඛා 16 බලන්න. දෙහිවල, බම්බලපිටිය, කොහුවල, බත්තරමුල්ල ඇතුළු සියලුම ශාඛා වල ලිපින සහ සම්බන්ධතා තොරතුරු මෙහි දැක්වේ."
+        ? "කොළඹ වටා පිහිටි අපගේ GBC ශාඛා 16 බලන්න. දෙහිවල, බම්බලපිටිය, කොහුවල ඇතුළු ප්‍රධාන නගර වල අපගේ ශාඛා පිහිටා ඇත. ඔබ ළඟම ඇති රන් ගැනුම්කරු."
         : currentLang === "ta"
-        ? "கொழும்பில் உள்ள 16 GBC தங்க மதிப்பீட்டு மற்றும் கொள்முதல் கிளைகளைக் கண்டறியவும். தெஹிவளை, பம்பலபிட்டி, கோஹுவளை, பத்தரமுல்லை உள்ளிட்ட முகவரிகள்."
-        : "Find our 16 gold appraisal & buying branches in Colombo. Addresses and contact details for Dehiwala, Bambalapitiya, Kohuwala, Nugegoda, Wellawatta, and more. Call 0718 321 321.";
+        ? "கொழும்பில் உள்ள எங்களது 16 GBC கிளைகளைக் கண்டறியவும். தெஹிவளை, பம்பலபிட்டி, கோஹுவளை உள்ளிட்ட இடங்களில் எங்கள் கிளைகள் உள்ளன."
+        : "Find one of our 16 gold appraisal & buying branches in Colombo. Secure, private locations in Dehiwala, Bambalapitiya, Kohuwala, Nugegoda, and more.";
 
       const keywords = "gold buyer branches colombo, dehiwala gold buyer, kohuwala gold shop, bambalapitiya gold buyer, sell gold nugegoda, gold buyers near me colombo";
 
