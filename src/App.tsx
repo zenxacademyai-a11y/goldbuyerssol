@@ -68,8 +68,26 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem("gbc_user_lang", currentLang);
   }, [currentLang]);
-  const [activeView, setActiveView] = useState<"home" | "blog" | "admin" | "about" | "contact" | "branches">("home");
-  const [selectedBlogSlug, setSelectedBlogSlug] = useState<string | null>(null);
+  const [activeView, setActiveView] = useState<"home" | "blog" | "admin" | "about" | "contact" | "branches">(() => {
+    if (typeof window !== "undefined") {
+      const path = window.location.pathname.toLowerCase().replace(/\/$/, "");
+      if (path === "/about") return "about";
+      if (path === "/contact") return "contact";
+      if (path === "/branches") return "branches";
+      if (path === "/blog" || path.startsWith("/blog/")) return "blog";
+      if (path === "/admin" || path.startsWith("/admin/")) return "admin";
+    }
+    return "home";
+  });
+  const [selectedBlogSlug, setSelectedBlogSlug] = useState<string | null>(() => {
+    if (typeof window !== "undefined") {
+      const path = window.location.pathname.toLowerCase().replace(/\/$/, "");
+      if (path.startsWith("/blog/") && path.length > 6) {
+        return path.substring(6);
+      }
+    }
+    return null;
+  });
   const [showAdmin, setShowAdmin] = useState(false);
   const [logoClicks, setLogoClicks] = useState(0);
 
@@ -162,6 +180,11 @@ export default function App() {
       targetPath = currentPath;
     }
     
+    // Preserve sub-routes for blog if needed
+    if (activeView === "blog" && currentPath.startsWith("/blog/")) {
+      targetPath = currentPath;
+    }
+    
     if (currentPath !== targetPath) {
       window.history.pushState({ view: activeView }, "", targetPath || "/");
     }
@@ -177,8 +200,13 @@ export default function App() {
         setActiveView("contact");
       } else if (path === "/branches") {
         setActiveView("branches");
-      } else if (path === "/blog") {
+      } else if (path === "/blog" || path.startsWith("/blog/")) {
         setActiveView("blog");
+        if (path.startsWith("/blog/") && path.length > 6) {
+          setSelectedBlogSlug(path.substring(6));
+        } else {
+          setSelectedBlogSlug(null);
+        }
       } else if (path === "/admin" || path.startsWith("/admin/")) {
         setActiveView("admin");
       } else {
