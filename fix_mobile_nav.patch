@@ -1,0 +1,24 @@
+--- src/components/Header.tsx
++++ src/components/Header.tsx
+@@ -359,15 +359,15 @@
+           </a>
+           <a
+-            href="#rates"
+-            onClick={(e) => { e.preventDefault(); handleNav("home"); document.getElementById("rates")?.scrollIntoView({ behavior: "smooth" }); setMobileMenuOpen(false); }}
+-            className="text-left text-base py-2 border-b border-neutral-100 text-neutral-700 hover:text-amber-600"
++            href="/rates"
++            onClick={(e) => { e.preventDefault(); handleNav("rates"); setMobileMenuOpen(false); }}
++            className={`text-left text-base py-2 border-b border-neutral-100 ${activeView === "rates" ? "text-amber-600 font-bold" : "text-neutral-700"}`}
+           >
+             {t.rates}
+           </a>
+           <a
+-            href="#calculator"
+-            onClick={(e) => { e.preventDefault(); handleNav("home"); document.getElementById("calculator")?.scrollIntoView({ behavior: "smooth" }); setMobileMenuOpen(false); }}
+-            className="text-left text-base py-2 border-b border-neutral-100 text-neutral-700 hover:text-amber-600"
++            href="/calculator"
++            onClick={(e) => { e.preventDefault(); handleNav("calculator"); setMobileMenuOpen(false); }}
++            className={`text-left text-base py-2 border-b border-neutral-100 ${activeView === "calculator" ? "text-amber-600 font-bold" : "text-neutral-700"}`}
+           >
+             {t.calculator}
+           </a>

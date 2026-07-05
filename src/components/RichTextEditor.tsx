@@ -693,7 +693,7 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
             onPaste={handlePaste}
             className="rich-text-editor prose prose-amber max-w-none flex-1 p-6 text-sm text-neutral-800 outline-none overflow-y-auto min-h-full leading-relaxed"
             style={{ fontFamily: activeFont, fontSize: activeSize }}
-            placeholder={placeholder || "Start typing or paste from Google Docs with full formatting intact..."}
+            data-placeholder={placeholder || "Start typing or paste from Google Docs with full formatting intact..."}
           />
         )}
       </div>

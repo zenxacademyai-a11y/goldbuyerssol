@@ -1,0 +1,32 @@
+--- src/App.tsx
++++ src/App.tsx
+@@ -70,12 +70,15 @@
+   useEffect(() => {
+     localStorage.setItem("gbc_user_lang", currentLang);
+   }, [currentLang]);
+-  const [activeView, setActiveView] = useState<"home" | "blog" | "admin" | "about" | "contact" | "branches">(() => {
++  const [activeView, setActiveView] = useState<"home" | "blog" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "faq">(() => {
+     if (typeof window !== "undefined") {
+       const path = window.location.pathname.toLowerCase().replace(/\/$/, "");
+       if (path === "/about") return "about";
+       if (path === "/contact") return "contact";
+       if (path === "/branches") return "branches";
++      if (path === "/rates") return "rates";
++      if (path === "/calculator") return "calculator";
++      if (path === "/faq") return "faq";
+       if (path === "/blog" || path.startsWith("/blog/")) return "blog";
+       if (path === "/admin" || path.startsWith("/admin/")) return "admin";
+     }
+@@ -198,6 +201,12 @@
+         setActiveView("contact");
+       } else if (path === "/branches") {
+         setActiveView("branches");
++      } else if (path === "/rates") {
++        setActiveView("rates");
++      } else if (path === "/calculator") {
++        setActiveView("calculator");
++      } else if (path === "/faq") {
++        setActiveView("faq");
+       } else if (path === "/blog" || path.startsWith("/blog/")) {
+         setActiveView("blog");
+         if (path.startsWith("/blog/") && path.length > 6) {

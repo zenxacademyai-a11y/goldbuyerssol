@@ -1,0 +1,42 @@
+--- src/App.tsx
++++ src/App.tsx
+@@ -468,6 +468,36 @@
+           <ContactPage currentLang={currentLang} />
+         ) : activeView === "branches" ? (
+           <BranchesPage currentLang={currentLang} />
++        ) : activeView === "rates" ? (
++          <div className="pt-8 pb-12 min-h-[60vh]">
++            <LiveRateWidget
++              currentLang={currentLang}
++              rates={rates.length > 0 ? rates : [
++                { karat: "24K", purity: 0.999, ratePerGram: 31250 },
++                { karat: "22K", purity: 0.916, ratePerGram: 28650 },
++                { karat: "21K", purity: 0.875, ratePerGram: 27350 },
++                { karat: "18K", purity: 0.75, ratePerGram: 23450 },
++              ]}
++              settings={activeSettings}
++              historicalRates={historicalRates}
++              onRefresh={fetchAllData}
++              isLoading={isLoading}
++            />
++          </div>
++        ) : activeView === "calculator" ? (
++          <div className="pt-8 pb-12 min-h-[60vh]">
++            <GoldCalculator
++              currentLang={currentLang}
++              rates={rates.length > 0 ? rates : [
++                { karat: "24K", purity: 0.999, ratePerGram: 31250 },
++                { karat: "22K", purity: 0.916, ratePerGram: 28650 },
++                { karat: "21K", purity: 0.875, ratePerGram: 27350 },
++                { karat: "18K", purity: 0.75, ratePerGram: 23450 },
++              ]}
++              settings={activeSettings}
++              isLoading={isLoading}
++            />
++          </div>
++        ) : activeView === "faq" ? (
++          <div className="pt-8 pb-12 min-h-[60vh]">
++            <FAQSection currentLang={currentLang} />
++          </div>
+         ) : activeView === "blog" ? (
+           <BlogPreview

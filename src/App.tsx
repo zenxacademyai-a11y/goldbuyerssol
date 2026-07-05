@@ -25,7 +25,7 @@ import ExitIntentPopup from "./components/ExitIntentPopup.js";
 import RecentPosts from "./components/RecentPosts.js";
 import ChatWithConsultant from "./components/ChatWithConsultant.js";
 import { Language } from "./lib/translations.js";
-import { GoldRate, SystemSettings, CustomerLead, BlogPost, HistoricalRate } from "./types.js";
+import { GoldKarat, GoldRate, SystemSettings, CustomerLead, BlogPost, HistoricalRate } from "./types.js";
 import { updateMetaTags } from "./lib/seo.js";
 import SEOSchemas from "./components/SEOSchemas.js";
 
@@ -68,12 +68,15 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem("gbc_user_lang", currentLang);
   }, [currentLang]);
-  const [activeView, setActiveView] = useState<"home" | "blog" | "admin" | "about" | "contact" | "branches">(() => {
+  const [activeView, setActiveView] = useState<"home" | "blog" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "faq">(() => {
     if (typeof window !== "undefined") {
       const path = window.location.pathname.toLowerCase().replace(/\/$/, "");
       if (path === "/about") return "about";
       if (path === "/contact") return "contact";
       if (path === "/branches") return "branches";
+      if (path === "/rates") return "rates";
+      if (path === "/calculator") return "calculator";
+      if (path === "/faq") return "faq";
       if (path === "/blog" || path.startsWith("/blog/")) return "blog";
       if (path === "/admin" || path.startsWith("/admin/")) return "admin";
     }
@@ -199,6 +202,12 @@ export default function App() {
       } else if (path === "/contact") {
         setActiveView("contact");
       } else if (path === "/branches") {
+      } else if (path === "/rates") {
+        setActiveView("rates");
+      } else if (path === "/calculator") {
+        setActiveView("calculator");
+      } else if (path === "/faq") {
+        setActiveView("faq");
         setActiveView("branches");
       } else if (path === "/blog" || path.startsWith("/blog/")) {
         setActiveView("blog");
@@ -401,10 +410,10 @@ export default function App() {
             <LiveRateWidget
               currentLang={currentLang}
               rates={rates.length > 0 ? rates : [
-                { karat: "24K", purity: 0.999, ratePerGram: 31250 },
-                { karat: "22K", purity: 0.916, ratePerGram: 28650 },
-                { karat: "21K", purity: 0.875, ratePerGram: 27350 },
-                { karat: "18K", purity: 0.75, ratePerGram: 23450 },
+                { karat: GoldKarat.K24, purity: 0.999, ratePerGram: 31250 },
+                { karat: GoldKarat.K22, purity: 0.916, ratePerGram: 28650 },
+                { karat: GoldKarat.K21, purity: 0.875, ratePerGram: 27350 },
+                { karat: GoldKarat.K18, purity: 0.75, ratePerGram: 23450 },
               ]}
               settings={activeSettings}
               historicalRates={historicalRates}
@@ -415,10 +424,10 @@ export default function App() {
             <GoldCalculator
               currentLang={currentLang}
               rates={rates.length > 0 ? rates : [
-                { karat: "24K", purity: 0.999, ratePerGram: 31250 },
-                { karat: "22K", purity: 0.916, ratePerGram: 28650 },
-                { karat: "21K", purity: 0.875, ratePerGram: 27350 },
-                { karat: "18K", purity: 0.75, ratePerGram: 23450 },
+                { karat: GoldKarat.K24, purity: 0.999, ratePerGram: 31250 },
+                { karat: GoldKarat.K22, purity: 0.916, ratePerGram: 28650 },
+                { karat: GoldKarat.K21, purity: 0.875, ratePerGram: 27350 },
+                { karat: GoldKarat.K18, purity: 0.75, ratePerGram: 23450 },
               ]}
               settings={activeSettings}
               isLoading={isLoading}
@@ -459,6 +468,40 @@ export default function App() {
           <ContactPage currentLang={currentLang} />
         ) : activeView === "branches" ? (
           <BranchesPage currentLang={currentLang} />
+        ) : activeView === "rates" ? (
+          <div className="pt-8 pb-12 min-h-[60vh] bg-white">
+            <LiveRateWidget
+              currentLang={currentLang}
+              rates={rates.length > 0 ? rates : [
+                { karat: GoldKarat.K24, purity: 0.999, ratePerGram: 31250 },
+                { karat: GoldKarat.K22, purity: 0.916, ratePerGram: 28650 },
+                { karat: GoldKarat.K21, purity: 0.875, ratePerGram: 27350 },
+                { karat: GoldKarat.K18, purity: 0.75, ratePerGram: 23450 },
+              ]}
+              settings={activeSettings}
+              historicalRates={historicalRates}
+              onRefresh={fetchAllData}
+              isLoading={isLoading}
+            />
+          </div>
+        ) : activeView === "calculator" ? (
+          <div className="pt-8 pb-12 min-h-[60vh] bg-neutral-50">
+            <GoldCalculator
+              currentLang={currentLang}
+              rates={rates.length > 0 ? rates : [
+                { karat: GoldKarat.K24, purity: 0.999, ratePerGram: 31250 },
+                { karat: GoldKarat.K22, purity: 0.916, ratePerGram: 28650 },
+                { karat: GoldKarat.K21, purity: 0.875, ratePerGram: 27350 },
+                { karat: GoldKarat.K18, purity: 0.75, ratePerGram: 23450 },
+              ]}
+              settings={activeSettings}
+              isLoading={isLoading}
+            />
+          </div>
+        ) : activeView === "faq" ? (
+          <div className="pt-8 pb-12 min-h-[60vh] bg-white">
+            <FAQSection currentLang={currentLang} />
+          </div>
         ) : activeView === "blog" ? (
           <BlogPreview
             currentLang={currentLang}

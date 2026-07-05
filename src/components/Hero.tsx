@@ -93,14 +93,14 @@ const containerVariants = {
   }
 };
 
-const itemVariants = {
+const itemVariants: any = {
   hidden: { opacity: 0, y: 30 },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
       duration: 0.85,
-      ease: [0.16, 1, 0.3, 1], // premium smooth feel
+      ease: "easeOut", // premium smooth feel
     }
   }
 };
@@ -561,7 +561,7 @@ export default function Hero({ currentLang }: HeroProps) {
               className="relative flex-1 flex flex-col justify-center min-h-[220px]"
               style={{ transformStyle: "preserve-3d" }}
             >
-              <GoldIngot purity={selectedPurity} weight={selectedWeight} />
+              <GoldIngot purity={selectedPurity === "24K" ? 24 : selectedPurity === "22K" ? 22 : 18} weight={selectedWeight} />
             </div>
 
             {/* Dynamic Value Readout Panel */}

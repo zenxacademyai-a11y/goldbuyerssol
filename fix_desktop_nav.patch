@@ -1,0 +1,34 @@
+--- src/components/Header.tsx
++++ src/components/Header.tsx
+@@ -123,17 +123,17 @@
+               {t.home}
+             </a>
+             <a
+-              href="#rates"
+-              onClick={(e) => { e.preventDefault(); handleNav("home"); document.getElementById("rates")?.scrollIntoView({ behavior: "smooth" }); }}
+-              className="text-sm font-semibold tracking-wide text-neutral-600 hover:text-amber-600 transition-colors"
++              href="/rates"
++              onClick={(e) => { e.preventDefault(); handleNav("rates"); }}
++              className={`text-sm font-semibold tracking-wide transition-colors ${activeView === "rates" ? "text-amber-600 font-bold" : "text-neutral-600 hover:text-amber-600"}`}
+             >
+               {t.rates}
+             </a>
+             <a
+-              href="#calculator"
+-              onClick={(e) => { e.preventDefault(); handleNav("home"); document.getElementById("calculator")?.scrollIntoView({ behavior: "smooth" }); }}
+-              className="text-sm font-semibold tracking-wide text-neutral-600 hover:text-amber-600 transition-colors"
++              href="/calculator"
++              onClick={(e) => { e.preventDefault(); handleNav("calculator"); }}
++              className={`text-sm font-semibold tracking-wide transition-colors ${activeView === "calculator" ? "text-amber-600 font-bold" : "text-neutral-600 hover:text-amber-600"}`}
+             >
+               {t.calculator}
+             </a>
+@@ -147,7 +147,7 @@
+                 type="button"
+                 onClick={() => setMoreMenuOpen(!moreMenuOpen)}
+                 className={`text-sm font-semibold tracking-wide transition-colors flex items-center gap-1 py-2 focus:outline-none ${
+-                  ["about", "blog", "contact", "admin", "branches"].includes(activeView)
++                  ["about", "blog", "contact", "admin", "branches", "faq"].includes(activeView)
+                     ? "text-amber-600 font-bold"
+                     : "text-neutral-600 hover:text-amber-600"
+                 }`}

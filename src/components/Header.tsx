@@ -11,8 +11,8 @@ import InstallWebAppButton from "./InstallWebAppButton.js";
 interface HeaderProps {
   currentLang: Language;
   setLang: (lang: Language) => void;
-  activeView: "home" | "blog" | "admin" | "about" | "contact" | "branches";
-  setView: (view: "home" | "blog" | "admin" | "about" | "contact" | "branches") => void;
+  activeView: "home" | "blog" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "faq";
+  setView: (view: "home" | "blog" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "faq") => void;
   todayRate24k: number;
   todayRate22k: number;
   showAdmin?: boolean;
@@ -34,7 +34,7 @@ export default function Header({
   const [moreMenuOpen, setMoreMenuOpen] = useState(false);
   const t = translations[currentLang];
 
-  const handleNav = (view: "home" | "blog" | "admin" | "about" | "contact" | "branches") => {
+  const handleNav = (view: "home" | "blog" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "faq") => {
     setView(view);
     setMobileMenuOpen(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -86,7 +86,7 @@ export default function Header({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20 items-center">
           {/* Brand Logo & Name */}
-          <div className="flex items-center gap-2.5 sm:gap-3 cursor-pointer min-w-0" onClick={() => handleNav("home")}>
+          <a href="/" className="flex items-center gap-2.5 sm:gap-3 cursor-pointer min-w-0 no-underline" onClick={(e) => { e.preventDefault(); handleNav("home"); }}>
             {/* High-Resolution Luxury Gold Logo Image */}
             <div 
               onClick={(e) => {
@@ -103,36 +103,36 @@ export default function Header({
               />
             </div>
             <div className="min-w-0 flex flex-col justify-center">
-              <h1 className="text-neutral-950 font-serif font-black text-sm sm:text-base md:text-lg tracking-wide hover:text-amber-600 transition-colors whitespace-nowrap overflow-hidden text-ellipsis">
+              <h1 className="text-neutral-950 font-serif font-black text-sm sm:text-base md:text-lg tracking-wide hover:text-amber-600 transition-colors whitespace-nowrap overflow-hidden text-ellipsis m-0">
                 {t.fullName}
               </h1>
-              <p className="text-[9px] sm:text-[10px] text-amber-600 font-mono uppercase tracking-widest hidden sm:block whitespace-nowrap overflow-hidden text-ellipsis">
+              <p className="text-[9px] sm:text-[10px] text-amber-600 font-mono uppercase tracking-widest hidden sm:block whitespace-nowrap overflow-hidden text-ellipsis m-0">
                 {t.tagline}
               </p>
             </div>
-          </div>
+          </a>
 
           {/* Desktop Nav Items */}
           <nav className="hidden md:flex items-center gap-6 lg:gap-8">
-            <button
-              onClick={() => handleNav("home")}
+            <a href="/"
+              onClick={(e) => { e.preventDefault(); handleNav("home"); }}
               className={`text-sm font-semibold tracking-wide transition-colors ${
                 activeView === "home" ? "text-amber-600 font-bold" : "text-neutral-600 hover:text-amber-600"
               }`}
             >
               {t.home}
-            </button>
+            </a>
             <a
-              href="#rates"
-              onClick={() => handleNav("home")}
-              className="text-sm font-semibold tracking-wide text-neutral-600 hover:text-amber-600 transition-colors"
+              href="/rates"
+              onClick={(e) => { e.preventDefault(); handleNav("rates"); }}
+              className={`text-sm font-semibold tracking-wide transition-colors ${activeView === "rates" ? "text-amber-600 font-bold" : "text-neutral-600 hover:text-amber-600"}`}
             >
               {t.rates}
             </a>
             <a
-              href="#calculator"
-              onClick={() => handleNav("home")}
-              className="text-sm font-semibold tracking-wide text-neutral-600 hover:text-amber-600 transition-colors"
+              href="/calculator"
+              onClick={(e) => { e.preventDefault(); handleNav("calculator"); }}
+              className={`text-sm font-semibold tracking-wide transition-colors ${activeView === "calculator" ? "text-amber-600 font-bold" : "text-neutral-600 hover:text-amber-600"}`}
             >
               {t.calculator}
             </a>
@@ -144,9 +144,10 @@ export default function Header({
               onMouseLeave={() => setMoreMenuOpen(false)}
             >
               <button
+                type="button"
                 onClick={() => setMoreMenuOpen(!moreMenuOpen)}
                 className={`text-sm font-semibold tracking-wide transition-colors flex items-center gap-1 py-2 focus:outline-none ${
-                  ["about", "blog", "contact", "admin", "branches"].includes(activeView)
+                  ["about", "blog", "contact", "admin", "branches", "faq"].includes(activeView)
                     ? "text-amber-600 font-bold"
                     : "text-neutral-600 hover:text-amber-600"
                 }`}
@@ -157,8 +158,10 @@ export default function Header({
 
               {moreMenuOpen && (
                 <div className="absolute right-0 mt-1 w-48 rounded-xl bg-white border border-neutral-200 shadow-xl overflow-hidden z-50 py-1.5 animate-in fade-in slide-in-from-top-2 duration-150">
-                  <button
-                    onClick={() => {
+                  <a
+                    href="/about"
+                    onClick={(e) => {
+                      e.preventDefault();
                       handleNav("about");
                       setMoreMenuOpen(false);
                     }}
@@ -169,9 +172,11 @@ export default function Header({
                     }`}
                   >
                     <span>{t.about}</span>
-                  </button>
-                  <button
-                    onClick={() => {
+                  </a>
+                  <a
+                    href="/branches"
+                    onClick={(e) => {
+                      e.preventDefault();
                       handleNav("branches");
                       setMoreMenuOpen(false);
                     }}
@@ -182,9 +187,11 @@ export default function Header({
                     }`}
                   >
                     <span>{t.branches}</span>
-                  </button>
-                  <button
-                    onClick={() => {
+                  </a>
+                  <a
+                    href="/blog"
+                    onClick={(e) => {
+                      e.preventDefault();
                       handleNav("blog");
                       setMoreMenuOpen(false);
                     }}
@@ -196,9 +203,11 @@ export default function Header({
                   >
                     <FileText className="h-3.5 w-3.5 shrink-0" />
                     <span>{t.blog}</span>
-                  </button>
-                  <button
-                    onClick={() => {
+                  </a>
+                  <a
+                    href="/contact"
+                    onClick={(e) => {
+                      e.preventDefault();
                       handleNav("contact");
                       setMoreMenuOpen(false);
                     }}
@@ -209,10 +218,27 @@ export default function Header({
                     }`}
                   >
                     <span>{t.contact}</span>
-                  </button>
+                  </a>
+                  <a
+                    href="/faq"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleNav("faq");
+                      setMoreMenuOpen(false);
+                    }}
+                    className={`w-full text-left px-4 py-2.5 text-xs font-semibold transition-colors flex items-center gap-2 ${
+                      activeView === "faq"
+                        ? "bg-amber-500/10 text-amber-600 font-bold"
+                        : "text-neutral-700 hover:bg-neutral-50 hover:text-amber-600"
+                    }`}
+                  >
+                    <span>{t.faq}</span>
+                  </a>
                   {showAdmin && (
-                    <button
-                      onClick={() => {
+                    <a
+                      href="/admin"
+                      onClick={(e) => {
+                        e.preventDefault();
                         handleNav("admin");
                         setMoreMenuOpen(false);
                       }}
@@ -224,7 +250,7 @@ export default function Header({
                     >
                       <Lock className="h-3.5 w-3.5 shrink-0" />
                       <span>{t.admin}</span>
-                    </button>
+                    </a>
                   )}
                 </div>
               )}
@@ -310,71 +336,91 @@ export default function Header({
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
         <div className="md:hidden bg-white/98 border-b border-neutral-200 absolute left-0 right-0 py-6 px-4 flex flex-col gap-4 shadow-2xl z-40 animate-in fade-in slide-in-from-top-4 duration-200">
-          <button
-            onClick={() => handleNav("home")}
+          <a
+            href="/"
+            onClick={(e) => { e.preventDefault(); handleNav("home"); }}
             className={`text-left text-base py-2 border-b border-neutral-100 ${
               activeView === "home" ? "text-amber-600 font-bold" : "text-neutral-700"
             }`}
           >
             {t.home}
-          </button>
-          <button
-            onClick={() => handleNav("about")}
+          </a>
+          <a
+            href="/about"
+            onClick={(e) => { e.preventDefault(); handleNav("about"); }}
             className={`text-left text-base py-2 border-b border-neutral-100 ${
               activeView === "about" ? "text-amber-600 font-bold" : "text-neutral-700"
             }`}
           >
             {t.about}
-          </button>
+          </a>
           <a
             href="#rates"
-            onClick={() => setMobileMenuOpen(false)}
+            onClick={(e) => { e.preventDefault(); handleNav("home"); document.getElementById("rates")?.scrollIntoView({ behavior: "smooth" }); setMobileMenuOpen(false); }}
             className="text-left text-base py-2 border-b border-neutral-100 text-neutral-700 hover:text-amber-600"
           >
             {t.rates}
           </a>
           <a
-            href="#calculator"
-            onClick={() => setMobileMenuOpen(false)}
-            className="text-left text-base py-2 border-b border-neutral-100 text-neutral-700 hover:text-amber-600"
+            href="/rates"
+            onClick={(e) => { e.preventDefault(); handleNav("rates"); setMobileMenuOpen(false); }}
+            className={`text-left text-base py-2 border-b border-neutral-100 ${activeView === "rates" ? "text-amber-600 font-bold" : "text-neutral-700"}`}
+          >
+            {t.rates}
+          </a>
+          <a
+            href="/calculator"
+            onClick={(e) => { e.preventDefault(); handleNav("calculator"); setMobileMenuOpen(false); }}
+            className={`text-left text-base py-2 border-b border-neutral-100 ${activeView === "calculator" ? "text-amber-600 font-bold" : "text-neutral-700"}`}
           >
             {t.calculator}
           </a>
-          <button
-            onClick={() => handleNav("blog")}
+          <a
+            href="/blog"
+            onClick={(e) => { e.preventDefault(); handleNav("blog"); }}
             className={`text-left text-base py-2 border-b border-neutral-100 flex items-center gap-2 ${
               activeView === "blog" ? "text-amber-600 font-bold" : "text-neutral-700"
             }`}
           >
             <FileText className="h-4 w-4 text-amber-500" />
             {t.blog}
-          </button>
-          <button
-            onClick={() => handleNav("contact")}
+          </a>
+          <a
+            href="/contact"
+            onClick={(e) => { e.preventDefault(); handleNav("contact"); }}
             className={`text-left text-base py-2 border-b border-neutral-100 ${
               activeView === "contact" ? "text-amber-600 font-bold" : "text-neutral-700"
             }`}
           >
             {t.contact}
-          </button>
-          <button
-            onClick={() => handleNav("branches")}
+          </a>
+          <a
+            href="/branches"
+            onClick={(e) => { e.preventDefault(); handleNav("branches"); }}
             className={`text-left text-base py-2 border-b border-neutral-100 ${
               activeView === "branches" ? "text-amber-600 font-bold" : "text-neutral-700"
             }`}
           >
             {t.branches}
-          </button>
+          </a>
+          <a
+            href="/faq"
+            onClick={(e) => { e.preventDefault(); handleNav("faq"); setMobileMenuOpen(false); }}
+            className={`text-left text-base py-2 border-b border-neutral-100 ${activeView === "faq" ? "text-amber-600 font-bold" : "text-neutral-700"}`}
+          >
+            {t.faq}
+          </a>
           {showAdmin && (
-            <button
-              onClick={() => handleNav("admin")}
+            <a
+              href="/admin"
+              onClick={(e) => { e.preventDefault(); handleNav("admin"); }}
               className={`text-left text-base py-2 border-b border-neutral-100 flex items-center gap-2 ${
                 activeView === "admin" ? "text-amber-600 font-bold" : "text-neutral-700"
               }`}
             >
               <LayoutDashboard className="h-4 w-4 text-amber-500" />
               {t.admin}
-            </button>
+            </a>
           )}
 
           {/* PWA Installer inside drawer */}

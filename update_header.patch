@@ -1,0 +1,102 @@
+--- src/components/Header.tsx
++++ src/components/Header.tsx
+@@ -157,74 +157,84 @@
+ 
+               {moreMenuOpen && (
+                 <div className="absolute right-0 mt-1 w-48 rounded-xl bg-white border border-neutral-200 shadow-xl overflow-hidden z-50 py-1.5 animate-in fade-in slide-in-from-top-2 duration-150">
+-                  <button
+-                    onClick={() => {
++                  <a
++                    href="/about"
++                    onClick={(e) => {
++                      e.preventDefault();
+                       handleNav("about");
+                       setMoreMenuOpen(false);
+                     }}
+                     className={`w-full text-left px-4 py-2.5 text-xs font-semibold transition-colors flex items-center gap-2 ${
+                       activeView === "about"
+                         ? "bg-amber-500/10 text-amber-600 font-bold"
+                         : "text-neutral-700 hover:bg-neutral-50 hover:text-amber-600"
+                     }`}
+                   >
+                     <span>{t.about}</span>
+-                  </button>
+-                  <button
+-                    onClick={() => {
++                  </a>
++                  <a
++                    href="/branches"
++                    onClick={(e) => {
++                      e.preventDefault();
+                       handleNav("branches");
+                       setMoreMenuOpen(false);
+                     }}
+                     className={`w-full text-left px-4 py-2.5 text-xs font-semibold transition-colors flex items-center gap-2 ${
+                       activeView === "branches"
+                         ? "bg-amber-500/10 text-amber-600 font-bold"
+                         : "text-neutral-700 hover:bg-neutral-50 hover:text-amber-600"
+                     }`}
+                   >
+                     <span>{t.branches}</span>
+-                  </button>
+-                  <button
+-                    onClick={() => {
++                  </a>
++                  <a
++                    href="/blog"
++                    onClick={(e) => {
++                      e.preventDefault();
+                       handleNav("blog");
+                       setMoreMenuOpen(false);
+                     }}
+                     className={`w-full text-left px-4 py-2.5 text-xs font-semibold transition-colors flex items-center gap-2 ${
+                       activeView === "blog"
+                         ? "bg-amber-500/10 text-amber-600 font-bold"
+                         : "text-neutral-700 hover:bg-neutral-50 hover:text-amber-600"
+                     }`}
+                   >
+                     <FileText className="h-3.5 w-3.5 shrink-0" />
+                     <span>{t.blog}</span>
+-                  </button>
+-                  <button
+-                    onClick={() => {
++                  </a>
++                  <a
++                    href="/contact"
++                    onClick={(e) => {
++                      e.preventDefault();
+                       handleNav("contact");
+                       setMoreMenuOpen(false);
+                     }}
+                     className={`w-full text-left px-4 py-2.5 text-xs font-semibold transition-colors flex items-center gap-2 ${
+                       activeView === "contact"
+                         ? "bg-amber-500/10 text-amber-600 font-bold"
+                         : "text-neutral-700 hover:bg-neutral-50 hover:text-amber-600"
+                     }`}
+                   >
+                     <span>{t.contact}</span>
+-                  </button>
++                  </a>
+                   {showAdmin && (
+-                    <button
+-                      onClick={() => {
++                    <a
++                      href="/admin"
++                      onClick={(e) => {
++                        e.preventDefault();
+                         handleNav("admin");
+                         setMoreMenuOpen(false);
+                       }}
+                       className={`w-full text-left px-4 py-2.5 text-xs font-semibold transition-colors flex items-center gap-2 border-t border-neutral-100 ${
+                         activeView === "admin"
+                           ? "bg-amber-500/10 text-amber-600 font-bold"
+                           : "text-neutral-700 hover:bg-neutral-50 hover:text-amber-600"
+                       }`}
+                     >
+                       <Lock className="h-3.5 w-3.5 shrink-0" />
+                       <span>{t.admin}</span>
+-                    </button>
++                    </a>
+                   )}
+                 </div>
+               )}

@@ -9,7 +9,7 @@ import { Language, translations } from "../lib/translations.js";
 
 interface FooterProps {
   currentLang: Language;
-  setView: (view: "home" | "blog" | "admin" | "about" | "contact" | "branches") => void;
+  setView: (view: "home" | "blog" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "faq") => void;
   showAdmin?: boolean;
   onLogoClick?: () => void;
 }
@@ -67,45 +67,45 @@ export default function Footer({ currentLang, setView, showAdmin = false, onLogo
           </h4>
           <ul className="space-y-2 text-xs text-neutral-600">
             <li>
-              <button onClick={() => setView("home")} className="hover:text-amber-700 transition-colors cursor-pointer text-left">
+              <a href="/" onClick={(e) => { e.preventDefault(); setView("home"); window.scrollTo(0,0); }} className="hover:text-amber-700 transition-colors cursor-pointer block text-left">
                 {t.home}
-              </button>
+              </a>
             </li>
             <li>
-              <button onClick={() => setView("about")} className="hover:text-amber-700 transition-colors cursor-pointer text-left">
+              <a href="/about" onClick={(e) => { e.preventDefault(); setView("about"); window.scrollTo(0,0); }} className="hover:text-amber-700 transition-colors cursor-pointer block text-left">
                 {t.about}
-              </button>
+              </a>
             </li>
             <li>
-              <button onClick={() => setView("branches")} className="hover:text-amber-700 transition-colors cursor-pointer text-left font-bold text-amber-800">
+              <a href="/branches" onClick={(e) => { e.preventDefault(); setView("branches"); window.scrollTo(0,0); }} className="hover:text-amber-700 transition-colors cursor-pointer block text-left font-bold text-amber-800">
                 {t.branches}
-              </button>
+              </a>
             </li>
             <li>
-              <a href="#rates" onClick={() => setView("home")} className="hover:text-amber-700 transition-colors block text-left">
+              <a href="/rates" onClick={(e) => { e.preventDefault(); setView("rates"); window.scrollTo(0,0); }} className="hover:text-amber-700 transition-colors block text-left">
                 {t.liveRatesTitle}
               </a>
             </li>
             <li>
-              <a href="#calculator" onClick={() => setView("home")} className="hover:text-amber-700 transition-colors block text-left">
+              <a href="/calculator" onClick={(e) => { e.preventDefault(); setView("calculator"); window.scrollTo(0,0); }} className="hover:text-amber-700 transition-colors block text-left">
                 {t.calcTitle}
               </a>
             </li>
             <li>
-              <button onClick={() => setView("blog")} className="hover:text-amber-700 transition-colors cursor-pointer text-left">
+              <a href="/blog" onClick={(e) => { e.preventDefault(); setView("blog"); window.scrollTo(0,0); }} className="hover:text-amber-700 transition-colors cursor-pointer block text-left">
                 {t.blog}
-              </button>
+              </a>
             </li>
             <li>
-              <button onClick={() => setView("contact")} className="hover:text-amber-700 transition-colors cursor-pointer text-left">
+              <a href="/contact" onClick={(e) => { e.preventDefault(); setView("contact"); window.scrollTo(0,0); }} className="hover:text-amber-700 transition-colors cursor-pointer block text-left">
                 {t.contact}
-              </button>
+              </a>
             </li>
             {showAdmin && (
               <li>
-                <button onClick={() => setView("admin")} className="hover:text-amber-700 transition-colors cursor-pointer text-left">
+                <a href="/admin" onClick={(e) => { e.preventDefault(); setView("admin"); window.scrollTo(0,0); }} className="hover:text-amber-700 transition-colors cursor-pointer block text-left">
                   {t.admin}
-                </button>
+                </a>
               </li>
             )}
           </ul>
