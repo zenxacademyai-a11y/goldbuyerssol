@@ -278,7 +278,7 @@ export default function LiveRateWidget({
                         itemStyle={{ color: "#111827", fontSize: "12px" }}
                         formatter={(value: any) => [`LKR ${Number(value).toLocaleString()}`, "22K Per Gram"]}
                       />
-                      <Area
+                      <Area isAnimationActive={false}
                         type="monotone"
                         dataKey="22K"
                         stroke="#d97706"

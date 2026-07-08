@@ -4,6 +4,7 @@
  */
 
 import express, { Request, Response } from "express";
+import compression from "compression";
 import path from "path";
 import { createServer as createViteServer } from "vite";
 import { GoogleGenAI, Type } from "@google/genai";
@@ -40,6 +41,8 @@ async function startServer() {
   const PORT = 3000;
 
   // JSON and URL-encoded body parsers
+  // Compress all routes for faster loading
+  app.use(compression());
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 

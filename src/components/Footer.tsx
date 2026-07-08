@@ -26,7 +26,7 @@ export default function Footer({ currentLang, setView, showAdmin = false, onLogo
         <div className="md:col-span-5 space-y-6">
           <div className="flex items-center gap-3">
             <div className="relative h-10 w-10 rounded-full overflow-hidden border border-amber-500/30 bg-neutral-900 flex items-center justify-center shadow-md">
-              <img 
+              <img loading="lazy" decoding="async" 
                 src="/logo_exact.jpg" 
                 alt="GBC Colombo Logo" 
                 className="h-full w-full object-cover"

@@ -1,0 +1,45 @@
+--- src/App.tsx
++++ src/App.tsx
+@@ -4,26 +4,28 @@
+  */
+ 
+-import React, { useState, useEffect } from "react";
++import React, { useState, useEffect, Suspense, lazy } from "react";
+ import Header from "./components/Header.js";
+ import MobileStickyBar from "./components/MobileStickyBar.js";
+ import Hero from "./components/Hero.js";
+ import LiveRateWidget from "./components/LiveRateWidget.js";
+-import GoldCalculator from "./components/GoldCalculator.js";
+-import SellingProcess from "./components/SellingProcess.js";
+-import WhyChooseUs from "./components/WhyChooseUs.js";
+-import Testimonials from "./components/Testimonials.js";
+-import FAQSection from "./components/FAQSection.js";
+-import ContactSection from "./components/ContactSection.js";
+-import BlogPreview from "./components/BlogPreview.js";
+-import AdminDashboard from "./components/AdminDashboard.js";
+-import AboutPage from "./components/AboutPage.js";
+-import ContactPage from "./components/ContactPage.js";
+-import BranchesPage from "./components/BranchesPage.js";
+ import InstallWebAppButton from "./components/InstallWebAppButton.js";
+ import Footer from "./components/Footer.js";
+ import ExitIntentPopup from "./components/ExitIntentPopup.js";
+-import RecentPosts from "./components/RecentPosts.js";
+-import ChatWithConsultant from "./components/ChatWithConsultant.js";
+ import { Language } from "./lib/translations.js";
+ import { GoldKarat, GoldRate, SystemSettings, CustomerLead, BlogPost, HistoricalRate } from "./types.js";
+ import { updateMetaTags } from "./lib/seo.js";
+ import SEOSchemas from "./components/SEOSchemas.js";
++
++const GoldCalculator = lazy(() => import("./components/GoldCalculator.js"));
++const SellingProcess = lazy(() => import("./components/SellingProcess.js"));
++const WhyChooseUs = lazy(() => import("./components/WhyChooseUs.js"));
++const Testimonials = lazy(() => import("./components/Testimonials.js"));
++const FAQSection = lazy(() => import("./components/FAQSection.js"));
++const ContactSection = lazy(() => import("./components/ContactSection.js"));
++const BlogPreview = lazy(() => import("./components/BlogPreview.js"));
++const AdminDashboard = lazy(() => import("./components/AdminDashboard.js"));
++const AboutPage = lazy(() => import("./components/AboutPage.js"));
++const ContactPage = lazy(() => import("./components/ContactPage.js"));
++const BranchesPage = lazy(() => import("./components/BranchesPage.js"));
++const RecentPosts = lazy(() => import("./components/RecentPosts.js"));
++const ChatWithConsultant = lazy(() => import("./components/ChatWithConsultant.js"));

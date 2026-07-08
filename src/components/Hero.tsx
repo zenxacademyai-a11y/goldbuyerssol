@@ -3,12 +3,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, lazy, Suspense } from "react";
 import { Phone, CheckCircle, ShieldCheck, Award, MessageCircle, Coins, Gem, Scale, Sparkles, Flame, Move, Rotate3d, Compass, Users, Calendar, Building2, ChevronDown } from "lucide-react";
 import { Language, translations } from "../lib/translations.js";
 import { motion, useAnimation } from "motion/react";
 import CSSSparkles from "./CSSSparkles.js";
-import GoldIngot from "./GoldIngot.js";
+const GoldIngot = lazy(() => import("./GoldIngot.js"));
 
 interface AnimatedCounterProps {
   value: number;
@@ -561,7 +561,7 @@ export default function Hero({ currentLang }: HeroProps) {
               className="relative flex-1 flex flex-col justify-center min-h-[220px]"
               style={{ transformStyle: "preserve-3d" }}
             >
-              <GoldIngot purity={selectedPurity === "24K" ? 24 : selectedPurity === "22K" ? 22 : 18} weight={selectedWeight} />
+              <Suspense fallback={<div className="w-full h-[250px] flex items-center justify-center text-amber-500/50">Loading 3D Model...</div>}><GoldIngot purity={selectedPurity === "24K" ? 24 : selectedPurity === "22K" ? 22 : 18} weight={selectedWeight} /></Suspense>
             </div>
 
             {/* Dynamic Value Readout Panel */}

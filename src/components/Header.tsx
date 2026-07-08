@@ -95,7 +95,7 @@ export default function Header({
               }}
               className="relative h-10 w-10 sm:h-12 sm:w-12 rounded-full overflow-hidden border border-amber-500/30 shadow-md hover:brightness-110 active:scale-95 transition-all shrink-0 bg-neutral-900 flex items-center justify-center"
             >
-              <img 
+              <img fetchPriority="high" decoding="async" 
                 src="/logo_exact.jpg" 
                 alt="GBC Colombo Logo" 
                 className="h-full w-full object-cover"
