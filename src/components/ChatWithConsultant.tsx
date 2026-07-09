@@ -231,7 +231,7 @@ export default function ChatWithConsultant({ currentLang }: ChatWithConsultantPr
                 <div>
                   <h4 className="font-serif font-black text-base tracking-wide flex items-center gap-1">
                     <span>{t.title}</span>
-                    <span className="inline-flex h-2 w-2 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span className="inline-flex h-2 w-2 rounded-full bg-amber-400 animate-ping"></span>
                   </h4>
                   <p className="text-[11px] text-amber-100 font-sans mt-0.5 leading-tight">
                     {t.subtitle}
@@ -274,7 +274,7 @@ export default function ChatWithConsultant({ currentLang }: ChatWithConsultantPr
                       )}
                     </div>
                     <p className="text-[10px] text-neutral-500 mt-0.5 leading-tight flex items-center gap-1 font-medium">
-                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0"></span>
+                      <span className="h-1.5 w-1.5 rounded-full bg-amber-500 shrink-0"></span>
                       <span>{option.status[currentLang] || option.status.en}</span>
                     </p>
                   </div>
@@ -284,8 +284,8 @@ export default function ChatWithConsultant({ currentLang }: ChatWithConsultantPr
 
             {/* Assurances footer */}
             <div className="p-3.5 bg-neutral-100 border-t border-neutral-200/80 flex items-center justify-between text-[10px] font-mono text-neutral-500">
-              <span className="flex items-center gap-1 text-emerald-700 font-bold">
-                <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
+              <span className="flex items-center gap-1 text-amber-700 font-bold">
+                <ShieldCheck className="h-3.5 w-3.5 text-amber-600" />
                 <span>{t.licensed}</span>
               </span>
               <span className="flex items-center gap-1 font-bold text-amber-700">
@@ -302,11 +302,11 @@ export default function ChatWithConsultant({ currentLang }: ChatWithConsultantPr
         onClick={() => setIsOpen(!isOpen)}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className="flex items-center gap-2 px-4.5 py-3 rounded-full bg-gradient-to-r from-emerald-600 to-emerald-500 text-white shadow-lg shadow-emerald-600/25 hover:shadow-emerald-600/40 border border-emerald-500/20 group hover:from-emerald-500 hover:to-emerald-400 transition-all duration-300 cursor-pointer"
+        className="flex items-center gap-2 px-4.5 py-3 rounded-full bg-gradient-to-r from-amber-600 to-amber-500 text-white shadow-lg shadow-amber-600/25 hover:shadow-amber-600/40 border border-amber-500/20 group hover:from-amber-500 hover:to-amber-400 transition-all duration-300 cursor-pointer"
       >
         <div className="relative">
-          <span className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-emerald-400 border border-white animate-ping"></span>
-          <span className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-emerald-400 border border-white"></span>
+          <span className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-amber-400 border border-white animate-ping"></span>
+          <span className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-amber-400 border border-white"></span>
           <MessageCircle className="h-5.5 w-5.5" />
         </div>
         <span className="font-sans font-extrabold text-xs tracking-wider uppercase hidden sm:inline-block">

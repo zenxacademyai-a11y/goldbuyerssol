@@ -299,9 +299,9 @@ export default function ContactPage({ currentLang }: ContactPageProps) {
               </p>
 
               {isSuccess ? (
-                <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-2xl p-8 text-center animate-fade-in flex flex-col justify-center items-center">
-                  <CheckCircle2 className="h-12 w-12 text-emerald-600 mb-4 animate-bounce" />
-                  <p className="text-sm text-emerald-800 font-sans font-bold leading-relaxed">
+                <div className="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-8 text-center animate-fade-in flex flex-col justify-center items-center">
+                  <CheckCircle2 className="h-12 w-12 text-amber-600 mb-4 animate-bounce" />
+                  <p className="text-sm text-amber-800 font-sans font-bold leading-relaxed">
                     {g.submitSuccess}
                   </p>
                   <button
@@ -393,7 +393,7 @@ export default function ContactPage({ currentLang }: ContactPageProps) {
                   href="https://wa.me/94718321321"
                   target="_blank"
                   rel="noreferrer"
-                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-mono font-bold shadow-sm flex items-center gap-1.5 transition-colors"
+                  className="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded-lg text-xs font-mono font-bold shadow-sm flex items-center gap-1.5 transition-colors"
                 >
                   <MessageCircle className="h-4.5 w-4.5" />
                   <span>WhatsApp Chat</span>

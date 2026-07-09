@@ -188,9 +188,9 @@ export default function ContactSection({ currentLang }: ContactSectionProps) {
               </h3>
  
               {isSuccess ? (
-                <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-6 text-center animate-fade-in h-full flex flex-col justify-center items-center">
-                  <CheckCircle className="h-10 w-10 text-emerald-600 mb-3 animate-bounce" />
-                  <p className="text-xs text-emerald-800 font-sans leading-relaxed">
+                <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-6 text-center animate-fade-in h-full flex flex-col justify-center items-center">
+                  <CheckCircle className="h-10 w-10 text-amber-600 mb-3 animate-bounce" />
+                  <p className="text-xs text-amber-800 font-sans leading-relaxed">
                     {t.formSuccess}
                   </p>
                   <button

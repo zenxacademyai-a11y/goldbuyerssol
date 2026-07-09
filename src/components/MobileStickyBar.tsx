@@ -21,7 +21,7 @@ export default function MobileStickyBar({ currentLang, todayRate24k, todayRate22
       {/* Rate ticker */}
       <div className="flex flex-col text-[10px] sm:text-[11px] font-mono text-neutral-700 min-w-0 shrink">
         <div className="flex items-center gap-1 text-amber-700 font-bold whitespace-nowrap">
-          <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span className="h-1.5 w-1.5 rounded-full bg-amber-500 animate-pulse"></span>
           <span>{t.rates}:</span>
         </div>
         <div className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5 mt-0.5 whitespace-nowrap text-neutral-600">
@@ -46,7 +46,7 @@ export default function MobileStickyBar({ currentLang, todayRate24k, todayRate22
           target="_blank"
           rel="noreferrer"
           id="sticky_mobile_wa"
-          className="flex items-center justify-center bg-emerald-600 text-white px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-full text-[10px] sm:text-xs font-bold shadow-md whitespace-nowrap transition-transform active:scale-95"
+          className="flex items-center justify-center bg-amber-600 text-white px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-full text-[10px] sm:text-xs font-bold shadow-md whitespace-nowrap transition-transform active:scale-95"
         >
           <span>WhatsApp</span>
         </a>

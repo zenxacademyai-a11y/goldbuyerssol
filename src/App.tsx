@@ -7,6 +7,7 @@ import React, { useState, useEffect, Suspense, lazy } from "react";
 import Header from "./components/Header.js";
 import MobileStickyBar from "./components/MobileStickyBar.js";
 import Hero from "./components/Hero.js";
+import ScrollReveal from "./components/ScrollReveal.js";
 const LiveRateWidget = lazy(() => import("./components/LiveRateWidget.js"));
 import InstallWebAppButton from "./components/InstallWebAppButton.js";
 import Footer from "./components/Footer.js";
@@ -425,8 +426,10 @@ export default function App() {
         <Suspense fallback={<div className="flex justify-center items-center h-64"><div className="w-8 h-8 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div></div>}>
         {activeView === "home" ? (
           <>
-            <Hero currentLang={currentLang} />
-            
+            <ScrollReveal>
+              <Hero currentLang={currentLang} />
+            </ScrollReveal>
+<ScrollReveal>
             <LiveRateWidget
               currentLang={currentLang}
               rates={rates.length > 0 ? rates : [
@@ -440,7 +443,8 @@ export default function App() {
               onRefresh={fetchAllData}
               isLoading={isLoading}
             />
-
+            </ScrollReveal>
+            <ScrollReveal>
             <GoldCalculator
               currentLang={currentLang}
               rates={rates.length > 0 ? rates : [
@@ -452,16 +456,13 @@ export default function App() {
               settings={activeSettings}
               isLoading={isLoading}
             />
-
-            <Services currentLang={currentLang} />
-            <SellingProcess currentLang={currentLang} />
-
-            <WhyChooseUs currentLang={currentLang} />
-
-            <Testimonials currentLang={currentLang} />
-
-            <FAQSection currentLang={currentLang} />
-
+            </ScrollReveal>
+            <ScrollReveal><Services currentLang={currentLang} /></ScrollReveal>
+            <ScrollReveal><SellingProcess currentLang={currentLang} /></ScrollReveal>
+            <ScrollReveal><WhyChooseUs currentLang={currentLang} /></ScrollReveal>
+            <ScrollReveal><Testimonials currentLang={currentLang} /></ScrollReveal>
+            <ScrollReveal><FAQSection currentLang={currentLang} /></ScrollReveal>
+            <ScrollReveal>
             <RecentPosts
               currentLang={currentLang}
               blogs={blogs}
@@ -476,12 +477,15 @@ export default function App() {
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
             />
-
+            </ScrollReveal>
+            <ScrollReveal>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12" id="download-app">
               <InstallWebAppButton currentLang={currentLang} variant="footer" />
             </div>
-
+            </ScrollReveal>
+            <ScrollReveal>
             <ContactSection currentLang={currentLang} />
+            </ScrollReveal>
           </>
         ) : activeView === "about" ? (
           <AboutPage currentLang={currentLang} setView={setActiveView} />

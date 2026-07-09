@@ -446,8 +446,8 @@ export default function BlogPreview({
                 <span>Last Updated: {activeArticle.date}</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <ShieldCheck className="h-4 w-4 text-emerald-600" />
-                <span className="text-emerald-700">Verified EEAT Authority</span>
+                <ShieldCheck className="h-4 w-4 text-amber-600" />
+                <span className="text-amber-700">Verified EEAT Authority</span>
               </div>
             </div>
           </header>
@@ -619,7 +619,7 @@ export default function BlogPreview({
                 <div className="space-y-3">
                   <div className="flex flex-wrap items-center gap-2.5">
                     <h4 className="text-lg font-serif font-black text-neutral-950">{activeArticle.author}</h4>
-                    <span className="text-[10px] font-mono bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider flex items-center gap-1">
+                    <span className="text-[10px] font-mono bg-amber-50 text-amber-700 border border-amber-200 px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider flex items-center gap-1">
                       <ShieldCheck className="h-3 w-3" /> Senior Assayer & CFO
                     </span>
                   </div>

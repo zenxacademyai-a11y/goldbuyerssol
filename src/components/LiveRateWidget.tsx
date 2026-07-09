@@ -48,7 +48,7 @@ export default function LiveRateWidget({
         {/* Header Block */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-1 text-amber-700 font-mono text-xs uppercase tracking-widest mb-3 font-semibold">
-            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span className="h-2 w-2 rounded-full bg-amber-500 animate-pulse"></span>
             <span>Live Price Dashboard</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-serif font-bold text-neutral-950 mb-4">

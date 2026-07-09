@@ -387,7 +387,7 @@ I'd like to book an appointment to test and sell my gold today.`
                         <span>{t.marketValue}</span>
                         <span className="text-neutral-900 font-bold">LKR {Math.round(calcResult.marketValue).toLocaleString()}</span>
                       </div>
-                      <div className="flex justify-between text-emerald-700 font-semibold">
+                      <div className="flex justify-between text-amber-700 font-semibold">
                         <span>GBC Payout Premium (+{settings.bonusPremiumRate}%)</span>
                         <span>+LKR {Math.round(calcResult.premiumBonus).toLocaleString()}</span>
                       </div>
@@ -439,9 +439,9 @@ I'd like to book an appointment to test and sell my gold today.`
                     </p>
      
                     {isSuccess ? (
-                      <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-4 text-center animate-fade-in my-4">
-                        <Check className="h-8 w-8 text-emerald-600 mx-auto mb-2" />
-                        <p className="text-xs text-emerald-800 font-sans leading-relaxed">
+                      <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4 text-center animate-fade-in my-4">
+                        <Check className="h-8 w-8 text-amber-600 mx-auto mb-2" />
+                        <p className="text-xs text-amber-800 font-sans leading-relaxed">
                           {t.formSuccess}
                         </p>
                         <button

@@ -891,7 +891,7 @@ Include relevant Colombo landmarks (Sea Street Pettah, Wellawatte, Bambalapitiya
             <div className="flex items-center gap-3">
               <span className="text-xs font-mono text-neutral-400">Overall Health:</span>
               <div className="flex items-center gap-2 bg-neutral-950 px-3 py-1.5 rounded-lg border border-neutral-800">
-                <div className={`h-2.5 w-2.5 rounded-full ${averageHealthScore >= 90 ? 'bg-emerald-500' : averageHealthScore >= 60 ? 'bg-amber-500' : 'bg-rose-500'}`}></div>
+                <div className={`h-2.5 w-2.5 rounded-full ${averageHealthScore >= 90 ? 'bg-amber-500' : averageHealthScore >= 60 ? 'bg-amber-500' : 'bg-rose-500'}`}></div>
                 <span className="text-sm font-mono font-bold text-white">{averageHealthScore}%</span>
               </div>
             </div>
@@ -907,7 +907,7 @@ Include relevant Colombo landmarks (Sea Street Pettah, Wellawatte, Bambalapitiya
               </div>
               <div className="bg-black/40 border border-neutral-850 p-4 rounded-lg flex flex-col justify-between">
                 <span className="text-[10px] uppercase font-mono text-neutral-500 tracking-wider">Article Schema Pass Rate</span>
-                <span className="text-2xl font-bold text-emerald-400 mt-1">{articleCoverage}%</span>
+                <span className="text-2xl font-bold text-amber-400 mt-1">{articleCoverage}%</span>
                 <span className="text-[10px] text-neutral-400 mt-1">{articlePerfectCount} of {totalArticles} fully optimized</span>
               </div>
               <div className="bg-black/40 border border-neutral-850 p-4 rounded-lg flex flex-col justify-between">
@@ -969,7 +969,7 @@ Include relevant Colombo landmarks (Sea Street Pettah, Wellawatte, Bambalapitiya
                           <span className="text-[9px] uppercase font-mono text-neutral-500 block">Article</span>
                           <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-mono font-bold mt-0.5 ${
                             diagnostic.article.status === "pass" 
-                              ? "bg-emerald-950/60 text-emerald-400 border border-emerald-850" 
+                              ? "bg-amber-950/60 text-amber-400 border border-amber-850" 
                               : diagnostic.article.status === "warn"
                               ? "bg-amber-950/60 text-amber-400 border border-amber-850"
                               : "bg-rose-950/60 text-rose-400 border border-rose-850"
@@ -983,7 +983,7 @@ Include relevant Colombo landmarks (Sea Street Pettah, Wellawatte, Bambalapitiya
                           <span className="text-[9px] uppercase font-mono text-neutral-500 block">FAQ</span>
                           <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-mono font-bold mt-0.5 ${
                             diagnostic.faq.status === "pass" 
-                              ? "bg-emerald-950/60 text-emerald-400 border border-emerald-850" 
+                              ? "bg-amber-950/60 text-amber-400 border border-amber-850" 
                               : diagnostic.faq.status === "warn"
                               ? "bg-amber-950/60 text-amber-400 border border-amber-850"
                               : "bg-rose-950/60 text-rose-400 border border-rose-850"
@@ -997,7 +997,7 @@ Include relevant Colombo landmarks (Sea Street Pettah, Wellawatte, Bambalapitiya
                           <span className="text-[9px] uppercase font-mono text-neutral-500 block">LocalBusiness</span>
                           <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-mono font-bold mt-0.5 ${
                             diagnostic.localBusiness.status === "pass" 
-                              ? "bg-emerald-950/60 text-emerald-400 border border-emerald-850" 
+                              ? "bg-amber-950/60 text-amber-400 border border-amber-850" 
                               : diagnostic.localBusiness.status === "warn"
                               ? "bg-amber-950/60 text-amber-400 border border-amber-850"
                               : "bg-rose-950/60 text-rose-400 border border-rose-850"
@@ -1057,7 +1057,7 @@ Include relevant Colombo landmarks (Sea Street Pettah, Wellawatte, Bambalapitiya
                                 <FileText className="h-3.5 w-3.5 text-neutral-400" />
                                 Article Schema
                               </span>
-                              <span className={`text-[10px] font-mono font-bold ${diagnostic.article.status === 'pass' ? 'text-emerald-400' : 'text-amber-400'}`}>
+                              <span className={`text-[10px] font-mono font-bold ${diagnostic.article.status === 'pass' ? 'text-amber-400' : 'text-amber-400'}`}>
                                 {diagnostic.article.score}%
                               </span>
                             </div>
@@ -1067,7 +1067,7 @@ Include relevant Colombo landmarks (Sea Street Pettah, Wellawatte, Bambalapitiya
                               <div className="space-y-1.5">
                                 {diagnostic.article.passed.map((msg, i) => (
                                   <div key={i} className="flex items-start gap-1.5 text-[11px] text-neutral-300">
-                                    <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 shrink-0 mt-0.5" />
+                                    <CheckCircle2 className="h-3.5 w-3.5 text-amber-500 shrink-0 mt-0.5" />
                                     <span>{msg}</span>
                                   </div>
                                 ))}
@@ -1095,7 +1095,7 @@ Include relevant Colombo landmarks (Sea Street Pettah, Wellawatte, Bambalapitiya
                                 <HelpCircle className="h-3.5 w-3.5 text-neutral-400" />
                                 FAQ Schema
                               </span>
-                              <span className={`text-[10px] font-mono font-bold ${diagnostic.faq.status === 'pass' ? 'text-emerald-400' : 'text-amber-400'}`}>
+                              <span className={`text-[10px] font-mono font-bold ${diagnostic.faq.status === 'pass' ? 'text-amber-400' : 'text-amber-400'}`}>
                                 {diagnostic.faq.score}%
                               </span>
                             </div>
@@ -1105,7 +1105,7 @@ Include relevant Colombo landmarks (Sea Street Pettah, Wellawatte, Bambalapitiya
                               <div className="space-y-1.5">
                                 {diagnostic.faq.passed.map((msg, i) => (
                                   <div key={i} className="flex items-start gap-1.5 text-[11px] text-neutral-300">
-                                    <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 shrink-0 mt-0.5" />
+                                    <CheckCircle2 className="h-3.5 w-3.5 text-amber-500 shrink-0 mt-0.5" />
                                     <span>{msg}</span>
                                   </div>
                                 ))}
@@ -1133,7 +1133,7 @@ Include relevant Colombo landmarks (Sea Street Pettah, Wellawatte, Bambalapitiya
                                 <ShieldCheck className="h-3.5 w-3.5 text-neutral-400" />
                                 LocalBusiness Grounding
                               </span>
-                              <span className={`text-[10px] font-mono font-bold ${diagnostic.localBusiness.status === 'pass' ? 'text-emerald-400' : 'text-amber-400'}`}>
+                              <span className={`text-[10px] font-mono font-bold ${diagnostic.localBusiness.status === 'pass' ? 'text-amber-400' : 'text-amber-400'}`}>
                                 {diagnostic.localBusiness.score}%
                               </span>
                             </div>
@@ -1143,7 +1143,7 @@ Include relevant Colombo landmarks (Sea Street Pettah, Wellawatte, Bambalapitiya
                               <div className="space-y-1.5">
                                 {diagnostic.localBusiness.passed.map((msg, i) => (
                                   <div key={i} className="flex items-start gap-1.5 text-[11px] text-neutral-300">
-                                    <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 shrink-0 mt-0.5" />
+                                    <CheckCircle2 className="h-3.5 w-3.5 text-amber-500 shrink-0 mt-0.5" />
                                     <span>{msg}</span>
                                   </div>
                                 ))}

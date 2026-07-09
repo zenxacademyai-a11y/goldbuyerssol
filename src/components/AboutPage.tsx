@@ -209,7 +209,7 @@ export default function AboutPage({ currentLang, setView }: AboutPageProps) {
               <div className="bg-white rounded-2xl p-6 md:p-8 space-y-6">
                 <div className="flex justify-between items-center pb-4 border-b border-neutral-100">
                   <span className="text-[10px] font-mono tracking-wider uppercase text-amber-700 font-bold">Scientific Validation</span>
-                  <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                  <span className="h-2 w-2 rounded-full bg-amber-500 animate-pulse"></span>
                 </div>
                 
                 <h3 className="text-lg font-serif font-bold text-neutral-950">

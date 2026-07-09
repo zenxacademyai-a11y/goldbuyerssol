@@ -68,7 +68,7 @@ export default function Header({
       <div className="hidden md:flex justify-between items-center px-6 py-2 bg-neutral-950 text-xs border-b border-amber-500/10 text-amber-400 font-mono">
         <div className="flex items-center gap-6">
           <span className="flex items-center gap-1.5">
-            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span className="h-2 w-2 rounded-full bg-amber-500 animate-pulse"></span>
             LIVE COLOMBO MARKET:
           </span>
           <span>24K: LKR {todayRate24k.toLocaleString()}/g</span>
@@ -443,7 +443,7 @@ export default function Header({
               target="_blank"
               rel="noreferrer"
               id="drawer_cta_wa"
-              className="flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white p-3 rounded-md text-xs font-bold text-center"
+              className="flex items-center justify-center gap-2 bg-amber-600 hover:bg-amber-500 text-white p-3 rounded-md text-xs font-bold text-center"
             >
               {/* WhatsApp custom text styling/icon */}
               <span>WhatsApp</span>

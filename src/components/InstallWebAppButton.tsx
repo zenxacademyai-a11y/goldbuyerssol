@@ -263,15 +263,15 @@ export default function InstallWebAppButton({ currentLang, variant = "header" }:
             {/* Benefits list */}
             <div className="space-y-2 pt-2">
               <div className="flex items-center gap-2 text-xs text-neutral-700">
-                <CheckCircle className="h-4 w-4 text-emerald-600 flex-shrink-0" />
+                <CheckCircle className="h-4 w-4 text-amber-600 flex-shrink-0" />
                 <span>{t.benefit1}</span>
               </div>
               <div className="flex items-center gap-2 text-xs text-neutral-700">
-                <CheckCircle className="h-4 w-4 text-emerald-600 flex-shrink-0" />
+                <CheckCircle className="h-4 w-4 text-amber-600 flex-shrink-0" />
                 <span>{t.benefit2}</span>
               </div>
               <div className="flex items-center gap-2 text-xs text-neutral-700">
-                <ShieldCheck className="h-4 w-4 text-emerald-600 flex-shrink-0" />
+                <ShieldCheck className="h-4 w-4 text-amber-600 flex-shrink-0" />
                 <span>{t.benefit3}</span>
               </div>
             </div>

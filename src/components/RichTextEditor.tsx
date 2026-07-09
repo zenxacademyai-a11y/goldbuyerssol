@@ -579,7 +579,7 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
           <button
             type="button"
             onClick={handleImageUrlPrompt}
-            className="p-1 hover:bg-neutral-200 rounded transition-colors text-emerald-700"
+            className="p-1 hover:bg-neutral-200 rounded transition-colors text-amber-700"
             title="Insert Image by URL"
           >
             <Image className="h-3.5 w-3.5" />
@@ -681,7 +681,7 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
           <textarea
             value={value}
             onChange={(e) => onChange(e.target.value)}
-            className="w-full flex-1 p-4 font-mono text-xs text-neutral-800 bg-neutral-950 text-emerald-400 border-none outline-none resize-none h-full"
+            className="w-full flex-1 p-4 font-mono text-xs text-neutral-800 bg-neutral-950 text-amber-400 border-none outline-none resize-none h-full"
             placeholder="Type raw HTML directly here..."
           />
         ) : (

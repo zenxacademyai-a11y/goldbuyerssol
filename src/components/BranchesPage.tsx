@@ -523,7 +523,7 @@ export default function BranchesPage({ currentLang }: BranchesPageProps) {
             <a href="tel:${branch.phone}" class="py-1.5 bg-neutral-950 text-white rounded text-[10px] font-bold text-center no-underline hover:bg-neutral-800 transition-colors flex items-center justify-center gap-1">
               📞 Call
             </a>
-            <a href="https://wa.me/94718321321?text=Hello%20GBC%20Gold%20Buyers%20Colombo,%20I%20want%20to%20visit%20your%20${encodeURIComponent(branch.name.en)}%20for%20a%20valuation." target="_blank" class="py-1.5 bg-emerald-600 text-white rounded text-[10px] font-bold text-center no-underline hover:bg-emerald-500 transition-colors flex items-center justify-center gap-1">
+            <a href="https://wa.me/94718321321?text=Hello%20GBC%20Gold%20Buyers%20Colombo,%20I%20want%20to%20visit%20your%20${encodeURIComponent(branch.name.en)}%20for%20a%20valuation." target="_blank" class="py-1.5 bg-amber-600 text-white rounded text-[10px] font-bold text-center no-underline hover:bg-amber-500 transition-colors flex items-center justify-center gap-1">
               💬 WhatsApp
             </a>
           </div>
@@ -747,7 +747,7 @@ export default function BranchesPage({ currentLang }: BranchesPageProps) {
                       href={`https://wa.me/94718321321?text=Hello%20GBC%20Gold%20Buyers%20Colombo,%20I%20want%20to%20visit%20your%20${encodeURIComponent(branch.name.en)}%20for%20a%20valuation.`}
                       target="_blank"
                       rel="noreferrer"
-                      className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-mono font-bold flex items-center justify-center gap-1.5 transition-colors"
+                      className="w-full py-2.5 bg-amber-600 hover:bg-amber-500 text-white rounded-lg text-xs font-mono font-bold flex items-center justify-center gap-1.5 transition-colors"
                     >
                       <MessageCircle className="h-3.5 w-3.5" />
                       <span>{whatsappText}</span>
@@ -775,8 +775,8 @@ export default function BranchesPage({ currentLang }: BranchesPageProps) {
                 >
                   <div>
                     <div className="flex items-center gap-2 mb-3">
-                      <div className="h-2 w-2 rounded-full bg-emerald-500"></div>
-                      <span className="text-[10px] text-emerald-800 bg-emerald-50 font-mono uppercase tracking-wider font-bold px-2 py-0.5 rounded">
+                      <div className="h-2 w-2 rounded-full bg-amber-500"></div>
+                      <span className="text-[10px] text-amber-800 bg-amber-50 font-mono uppercase tracking-wider font-bold px-2 py-0.5 rounded">
                         Available Securely
                       </span>
                     </div>
@@ -809,7 +809,7 @@ export default function BranchesPage({ currentLang }: BranchesPageProps) {
                         href={`https://wa.me/94718321321?text=Hello%20GBC%20Gold%20Buyers%20Colombo,%20I%20want%20to%20arrange%20a%20valuation%20near%20your%20${encodeURIComponent(branch.name.en)}.`}
                         target="_blank"
                         rel="noreferrer"
-                        className="py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-md text-[10px] font-mono font-bold flex items-center justify-center gap-1 transition-colors text-center"
+                        className="py-2 bg-amber-600 hover:bg-amber-500 text-white rounded-md text-[10px] font-mono font-bold flex items-center justify-center gap-1 transition-colors text-center"
                       >
                         <MessageCircle className="h-3 w-3" />
                         <span>WhatsApp</span>
