@@ -15,8 +15,10 @@ import { Language } from "./lib/translations.js";
 import { GoldKarat, GoldRate, SystemSettings, CustomerLead, BlogPost, HistoricalRate } from "./types.js";
 import { updateMetaTags } from "./lib/seo.js";
 import SEOSchemas from "./components/SEOSchemas.js";
+import { localDb, fetchFallbackData } from "./lib/localDb.js";
 const GoldCalculator = lazy(() => import("./components/GoldCalculator.js"));
 const SellingProcess = lazy(() => import("./components/SellingProcess.js"));
+const Services = lazy(() => import("./components/Services.js"));
 const WhyChooseUs = lazy(() => import("./components/WhyChooseUs.js"));
 const Testimonials = lazy(() => import("./components/Testimonials.js"));
 const FAQSection = lazy(() => import("./components/FAQSection.js"));
@@ -111,9 +113,9 @@ export default function App() {
         ? "GBC (ගෝල්ඩ් බයර්ස් කොළඹ) වෙතින් ඔබගේ රන් සඳහා ඉහළම මුදලක් ලබා ගන්න. 100% විනිවිද පෙනෙන පරිගණකගත XRF පරීක්ෂාව, සහතික කළ ඩිජිටල් තරාදි සහ ක්ෂණික මුදල්. අදම අපව අමතන්න."
         : currentLang === "ta"
         ? "GBC (கோல்ட் பையர்ஸ் கொழும்பு) மூலம் உங்கள் தங்கத்திற்கு அதிகபட்ச ரொக்கப் பணத்தைப் பெறுங்கள். 100% வெளிப்படையான கணினி XRF சோதனை மற்றும் உடனடி ரொக்கம். இன்றே அணுகவும்."
-        : "Sell your gold jewelry for the highest cash payout in Colombo, Sri Lanka at GBC. 100% transparent computerized XRF testing, certified digital scales, and instant cash.";
+        : "Sell your gold jewelry, diamonds, gemstones, and luxury watches for the highest cash payout in Colombo, Sri Lanka at GBC. 100% transparent testing and instant cash.";
 
-      const keywords = "gold buyer in colombo, gold price today colombo, sell gold sri lanka, highest gold price colombo, 22k gold rate colombo, pawning gold colombo, gbc gold buyers, colombo gold merchants";
+      const keywords = "gold buyer in colombo, gold price today colombo, sell gold sri lanka, highest gold price colombo, diamond buyers Sri Lanka, sell gemstones Sri Lanka, luxury watch buyers Colombo, cash for diamonds, Rolex buyers Sri Lanka, gbc gold buyers";
       
       updateMetaTags(title, desc, keywords);
     } else if (activeView === "about") {
@@ -127,9 +129,9 @@ export default function App() {
         ? "GBC හි විනිවිදභාවය, වෘත්තීය XRF රන් සත්‍යාපනය සහ ලෝහ විද්‍යා මණ්ඩලය පිළිබඳව දැනගන්න. වසර ගණනාවක විශ්වාසය සමගින් කොළඹ ප්‍රමුඛතම රන් ගැනුම්කරුවා."
         : currentLang === "ta"
         ? "GBC இன் வெளிப்படைத்தன்மை, தொழில்முறை XRF தங்க சரிபார்ப்பு பற்றி அறியவும். பல வருட நம்பிக்கையுடன் கொழும்பின் முன்னணி தங்க கொள்வனவாளர்."
-        : "Learn about GBC's commitment to absolute transparency, professional XRF gold verification, certified SLSI weighing standards, and our senior metallurgical board.";
+        : "Learn about GBC's commitment to absolute transparency, professional XRF verification, and buying gold, diamonds, gems, and luxury watches.";
 
-      const keywords = "about gold buyers colombo, trusted gold assayers sri lanka, computer gold testing colombo, gbc history, colombo certified gold buyers";
+      const keywords = "about gold buyers colombo, trusted gold assayers sri lanka, computer gold testing colombo, diamond buyers Sri Lanka, luxury watch buyers Colombo, gbc history";
 
       updateMetaTags(title, desc, keywords);
     } else if (activeView === "contact") {
@@ -143,9 +145,9 @@ export default function App() {
         ? "ඔබගේ රන් ක්ෂණිකව තක්සේරු කර ගැනීමට අදම GBC අමතන්න. කොළඹ ප්‍රමුඛතම රන් ගැනුම්කරුවන් වන අපගේ ආරක්ෂිත ශාඛාවට පැමිණෙන්න."
         : currentLang === "ta"
         ? "உங்கள் தங்கத்தை உடனடியாக மதிப்பிட இன்றே GBC ஐ தொடர்பு கொள்ளவும். கொழும்பின் முன்னணி தங்க கொள்வனவாளரான எங்களை அணுகவும்."
-        : "Contact GBC for instant gold valuations and market rates. Get directions to our secure Colombo branches or speak directly with our senior valuation desk today.";
+        : "Contact GBC for instant valuations of gold, diamonds, gemstones, and luxury watches. Get directions to our secure Colombo branches today.";
 
-      const keywords = "contact gold buyers colombo, colombo gold buyer phone number, gbc branch address, find gold buyers colombo, sell gold colombo location";
+      const keywords = "contact gold buyers colombo, colombo gold buyer phone number, sell diamonds Sri Lanka, watch buyers Colombo, gbc branch address, find gold buyers colombo";
 
       updateMetaTags(title, desc, keywords);
     } else if (activeView === "branches") {
@@ -159,9 +161,9 @@ export default function App() {
         ? "කොළඹ වටා පිහිටි අපගේ GBC ශාඛා 16 බලන්න. දෙහිවල, බම්බලපිටිය, කොහුවල ඇතුළු ප්‍රධාන නගර වල අපගේ ශාඛා පිහිටා ඇත. ඔබ ළඟම ඇති රන් ගැනුම්කරු."
         : currentLang === "ta"
         ? "கொழும்பில் உள்ள எங்களது 16 GBC கிளைகளைக் கண்டறியவும். தெஹிவளை, பம்பலபிட்டி, கோஹுவளை உள்ளிட்ட இடங்களில் எங்கள் கிளைகள் உள்ளன."
-        : "Find one of our 16 gold appraisal & buying branches in Colombo. Secure, private locations in Dehiwala, Bambalapitiya, Kohuwala, Nugegoda, and more.";
+        : "Find one of our 16 buying branches in Colombo for gold, diamonds, gems, and watches. Secure, private locations in Dehiwala, Bambalapitiya, Kohuwala, Nugegoda, and more.";
 
-      const keywords = "gold buyer branches colombo, dehiwala gold buyer, kohuwala gold shop, bambalapitiya gold buyer, sell gold nugegoda, gold buyers near me colombo";
+      const keywords = "gold buyer branches colombo, diamond jewelry buyers Sri Lanka, sell luxury watches Colombo, dehiwala gold buyer, kohuwala gold shop, bambalapitiya gold buyer";
 
       updateMetaTags(title, desc, keywords);
     } else if (activeView === "admin") {
@@ -265,11 +267,11 @@ export default function App() {
     try {
       setIsLoading(true);
       const [ratesRes, settingsRes, leadsRes, blogsRes, histRes] = await Promise.all([
-        fetch("/api/rates").then((r) => r.json()),
-        fetch("/api/settings").then((r) => r.json()),
-        fetch("/api/leads").then((r) => r.json()),
-        fetch("/api/blogs").then((r) => r.json()),
-        fetch("/api/historical").then((r) => r.json()),
+        fetch("/api/rates").then((r) => r.ok ? r.json() : Promise.reject()),
+        fetch("/api/settings").then((r) => r.ok ? r.json() : Promise.reject()),
+        fetch("/api/leads").then((r) => r.ok ? r.json() : Promise.reject()),
+        fetch("/api/blogs").then((r) => r.ok ? r.json() : Promise.reject()),
+        fetch("/api/historical").then((r) => r.ok ? r.json() : Promise.reject()),
       ]);
 
       setRates(ratesRes);
@@ -278,7 +280,13 @@ export default function App() {
       setBlogs(blogsRes);
       setHistoricalRates(histRes);
     } catch (e) {
-      console.error("Error fetching full-stack data from Express:", e);
+      console.warn("Backend unavailable (Hostinger Static Hosting), falling back to localDb...");
+      const fallback = fetchFallbackData();
+      setRates(fallback.rates);
+      setSettings(fallback.settings);
+      setLeads(fallback.leads);
+      setBlogs(fallback.blogs);
+      setHistoricalRates(fallback.historical);
     } finally {
       setIsLoading(false);
     }
@@ -288,7 +296,7 @@ export default function App() {
     fetchAllData();
   }, []);
 
-  // API Call Handlers to write updates back to db.json
+  // API Call Handlers to write updates back to db.json or localDb
   const handleUpdateRates = async (updatedRates: GoldRate[]) => {
     try {
       const response = await fetch("/api/rates", {
@@ -298,13 +306,17 @@ export default function App() {
       });
       if (response.ok) {
         setRates(updatedRates);
-        // Refresh last updated in settings
         const freshSettings = await fetch("/api/settings").then((r) => r.json());
         setSettings(freshSettings);
-      }
+      } else throw new Error("API not ok");
     } catch (e) {
-      console.error(e);
-      throw e;
+      console.warn("Saving to localDb (Static Hosting Mode)");
+      localDb.set("rates", updatedRates);
+      setRates(updatedRates);
+      
+      const newSettings = { ...settings!, lastUpdated: new Date().toISOString() };
+      localDb.set("settings", newSettings);
+      setSettings(newSettings);
     }
   };
 
@@ -317,10 +329,11 @@ export default function App() {
       });
       if (response.ok) {
         setSettings(updatedSettings);
-      }
+      } else throw new Error("API not ok");
     } catch (e) {
-      console.error(e);
-      throw e;
+      console.warn("Saving to localDb (Static Hosting Mode)");
+      localDb.set("settings", updatedSettings);
+      setSettings(updatedSettings);
     }
   };
 
@@ -329,10 +342,12 @@ export default function App() {
       const response = await fetch(`/api/leads/${id}`, { method: "DELETE" });
       if (response.ok) {
         setLeads(leads.filter((l) => l.id !== id));
-      }
+      } else throw new Error("API not ok");
     } catch (e) {
-      console.error(e);
-      throw e;
+      console.warn("Deleting from localDb (Static Hosting Mode)");
+      const updated = leads.filter((l) => l.id !== id);
+      localDb.set("leads", updated);
+      setLeads(updated);
     }
   };
 
@@ -344,13 +359,15 @@ export default function App() {
         body: JSON.stringify(newBlog),
       });
       if (response.ok) {
-        // Refresh blog list
         const freshBlogs = await fetch("/api/blogs").then((r) => r.json());
         setBlogs(freshBlogs);
-      }
+      } else throw new Error("API not ok");
     } catch (e) {
-      console.error(e);
-      throw e;
+      console.warn("Saving to localDb (Static Hosting Mode)");
+      const blogToSave = { ...newBlog, id: newBlog.id || Date.now().toString() } as BlogPost;
+      const updated = newBlog.id ? blogs.map(b => b.id === newBlog.id ? blogToSave : b) : [...blogs, blogToSave];
+      localDb.set("blogs", updated);
+      setBlogs(updated);
     }
   };
 
@@ -359,10 +376,12 @@ export default function App() {
       const response = await fetch(`/api/blogs/${id}`, { method: "DELETE" });
       if (response.ok) {
         setBlogs(blogs.filter((b) => b.id !== id));
-      }
+      } else throw new Error("API not ok");
     } catch (e) {
-      console.error(e);
-      throw e;
+      console.warn("Deleting from localDb (Static Hosting Mode)");
+      const updated = blogs.filter((b) => b.id !== id);
+      localDb.set("blogs", updated);
+      setBlogs(updated);
     }
   };
 
@@ -434,6 +453,7 @@ export default function App() {
               isLoading={isLoading}
             />
 
+            <Services currentLang={currentLang} />
             <SellingProcess currentLang={currentLang} />
 
             <WhyChooseUs currentLang={currentLang} />

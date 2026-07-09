@@ -117,7 +117,7 @@ export default function Footer({ currentLang, setView, showAdmin = false, onLogo
             Regional Hub & SEO
           </h4>
           <p className="text-neutral-600 leading-relaxed">
-            Registered office centered in Colombo, serving clients across Kollupitiya, Bambalapitiya, Wellawatte, Havelock, Dehiwala, Nugegoda, and Mount Lavinia. Highly optimized for <strong>"Gold Buyer in Colombo"</strong>.
+            Registered office centered in Colombo, serving clients across Kollupitiya, Bambalapitiya, Wellawatte, Havelock, Dehiwala, Nugegoda, and Mount Lavinia. Highly optimized for <strong>"Gold Buyer in Colombo"</strong>, <strong>"Diamond buyers Sri Lanka"</strong>, <strong>"Sell gemstones Sri Lanka"</strong>, and <strong>"Luxury watch buyers Colombo"</strong>. We buy natural diamonds, certified diamonds, precious gemstones, loose stones, diamond jewelry, and luxury watches.
           </p>
           
           <div className="flex items-center gap-2 text-neutral-500 mt-2">

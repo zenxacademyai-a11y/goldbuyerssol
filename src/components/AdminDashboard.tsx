@@ -323,20 +323,32 @@ export default function AdminDashboard({
     if (!aiPrompt) return;
     setIsAiGenerating(true);
     try {
-      const response = await fetch("/api/ai-writer", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: aiPrompt }),
-      });
+      let isOk = false;
+      let data: any = null;
+      let errorText = "";
+      try {
+        const response = await fetch("/api/ai-writer", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt: aiPrompt }),
+        });
+        isOk = response.ok;
+        if (isOk) {
+          data = await response.json();
+        } else {
+          errorText = await response.text();
+        }
+      } catch (err) {
+        isOk = false;
+        errorText = "Static hosting mode: AI writing requires a Node.js backend. Please paste content manually.";
+      }
 
-      if (response.ok) {
-        const data = await response.json();
+      if (isOk && data) {
         // Dynamically auto-fill blog form content with the generated article!
         setBlogContent(data.content);
         if (data.title) setBlogTitle(data.title);
         alert("AI Article composed successfully! Feel free to edit or refine before publishing.");
       } else {
-        const errorText = await response.text();
         alert(`AI Writer returned error: ${errorText}`);
       }
     } catch (e) {
@@ -373,21 +385,33 @@ Ensure you integrate:
 Position GBC as the ultra-transparent, Rolex/Cartier-level premium financial exchange offering computerized XRF testing and certified dual-display weighing.
 Include relevant Colombo landmarks (Sea Street Pettah, Wellawatte, Bambalapitiya Galle Road) for local GEO-relevance.`;
 
-      const response = await fetch("/api/ai-writer", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: promptText }),
-      });
+      let isOk = false;
+      let data: any = null;
+      let errorText = "";
+      try {
+        const response = await fetch("/api/ai-writer", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt: promptText }),
+        });
+        isOk = response.ok;
+        if (isOk) {
+          data = await response.json();
+        } else {
+          errorText = await response.text();
+        }
+      } catch (err) {
+        isOk = false;
+        errorText = "Static hosting mode: AI writing requires a Node.js backend.";
+      }
 
-      if (response.ok) {
-        const data = await response.json();
+      if (isOk && data) {
         setBlogContent(data.content);
         if (data.title) setBlogTitle(data.title);
         if (data.category) setBlogCategory(data.category);
         if (data.tags) setBlogTags(data.tags.join(", "));
         alert(`AI Article for "${selectedPredefinedTopic}" composed successfully with 'GBC' brand and hyperlinking patterns! Feel free to edit or refine the populated content below.`);
       } else {
-        const errorText = await response.text();
         alert(`AI Writer returned error: ${errorText}`);
       }
     } catch (e) {

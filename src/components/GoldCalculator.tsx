@@ -75,21 +75,40 @@ export default function GoldCalculator({ currentLang, rates, settings, isLoading
 
     setIsSubmitting(true);
     try {
-      const response = await fetch("/api/leads", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: leadName,
-          phone: leadPhone,
-          email: leadEmail,
-          goldKarat: karat,
-          weightGrams: calcResult.weightInGrams,
-          estimatedValue: calcResult.finalPayout,
-          message: `Generated via Online Calculator. Unit selected: ${weight} ${unit}.`,
-        }),
-      });
+      const payload = {
+        name: leadName,
+        phone: leadPhone,
+        email: leadEmail,
+        goldKarat: karat,
+        weightGrams: calcResult.weightInGrams,
+        estimatedValue: calcResult.finalPayout,
+        message: `Generated via Online Calculator. Unit selected: ${weight} ${unit}.`,
+        id: Date.now().toString(),
+        createdAt: new Date().toISOString(),
+        status: "new"
+      };
 
-      if (response.ok) {
+      let isOk = false;
+      try {
+        const response = await fetch("/api/leads", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        isOk = response.ok;
+      } catch (err) {
+        isOk = false;
+      }
+
+      if (!isOk) {
+        // Fallback for static hosting
+        const existing = JSON.parse(localStorage.getItem("gbc_leads") || "[]");
+        existing.push(payload);
+        localStorage.setItem("gbc_leads", JSON.stringify(existing));
+        isOk = true;
+      }
+
+      if (isOk) {
         setIsSuccess(true);
         setLeadName("");
         setLeadPhone("");

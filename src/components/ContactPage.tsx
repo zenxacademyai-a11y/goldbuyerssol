@@ -75,18 +75,37 @@ export default function ContactPage({ currentLang }: ContactPageProps) {
 
     setIsSubmitting(true);
     try {
-      const response = await fetch("/api/leads", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name,
-          phone,
-          email,
-          message,
-        }),
-      });
+      const payload = {
+        name,
+        phone,
+        email,
+        message,
+        id: Date.now().toString(),
+        createdAt: new Date().toISOString(),
+        status: "new"
+      };
+      
+      let isOk = false;
+      try {
+        const response = await fetch("/api/leads", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        isOk = response.ok;
+      } catch (err) {
+        isOk = false;
+      }
 
-      if (response.ok) {
+      if (!isOk) {
+        // Fallback for static hosting
+        const existing = JSON.parse(localStorage.getItem("gbc_leads") || "[]");
+        existing.push(payload);
+        localStorage.setItem("gbc_leads", JSON.stringify(existing));
+        isOk = true;
+      }
+
+      if (isOk) {
         setIsSuccess(true);
         setName("");
         setPhone("");

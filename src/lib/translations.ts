@@ -38,8 +38,8 @@ export const translations = {
     aiWriting: "Generate with AI Writer",
     
     // Hero Section
-    heroTitle: "Sell Your Gold for the Highest Market Price in Colombo",
-    heroSubtitle: "Experience complete transparency, certified testing equipment, and instant cash payouts. Trusted for generations since 1976.",
+    heroTitle: "Sell Your Gold, Diamonds & Luxury Watches for the Highest Price in Colombo",
+    heroSubtitle: "Experience complete transparency, certified testing, and instant cash payouts for gold, gems, and luxury timepieces. Trusted since 1976.",
     yearsExperience: "50+ Years Legacy",
     happyCustomers: "3,500+ Happy Sellers",
     ratingTitle: "4.9 Google Maps Rating",
