@@ -19,22 +19,6 @@ export default defineConfig(() => {
     },
     build: {
       rollupOptions: {
-        output: {
-          manualChunks(id) {
-            if (id.includes("node_modules")) {
-              if (id.includes("three") || id.includes("react-three")) {
-                return "three";
-              }
-              if (id.includes("recharts") || id.includes("d3-") || id.includes("recharts-scale") || id.includes("eventemitter3")) {
-                return "charts";
-              }
-              if (id.includes("motion") || id.includes("framer-motion")) {
-                return "motion";
-              }
-              return "vendor";
-            }
-          }
-        }
       }
     },
   };
