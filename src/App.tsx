@@ -401,7 +401,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-neutral-900 font-sans selection:bg-amber-500 selection:text-black">
+    <div className="min-h-screen bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 font-sans selection:bg-amber-500 selection:text-black">
       {/* Dynamic SEO Schemas */}
       <SEOSchemas rates={rates} />
 

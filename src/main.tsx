@@ -2,6 +2,7 @@ import {StrictMode} from 'react';
 import {createRoot} from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
+import { ThemeProvider } from './components/ThemeProvider.js';
 
 // Register PWA service worker
 if ('serviceWorker' in navigator && (import.meta as any).env?.PROD) {
@@ -18,6 +19,8 @@ if ('serviceWorker' in navigator && (import.meta as any).env?.PROD) {
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <ThemeProvider defaultTheme="light">
+      <App />
+    </ThemeProvider>
   </StrictMode>,
 );

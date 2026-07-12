@@ -7,6 +7,7 @@ import React, { useState } from "react";
 import { Phone, Globe, Menu, X, Lock, FileText, LayoutDashboard, ChevronDown } from "lucide-react";
 import { Language, translations } from "../lib/translations.js";
 import InstallWebAppButton from "./InstallWebAppButton.js";
+import { ThemeToggle } from "./ThemeToggle.js";
 
 interface HeaderProps {
   currentLang: Language;
@@ -63,7 +64,7 @@ export default function Header({
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 border-b border-neutral-200/80 backdrop-blur-md shadow-sm">
+    <header className="sticky top-0 z-50 bg-white dark:bg-neutral-900/95 border-b border-neutral-200 dark:border-neutral-800/80 backdrop-blur-md shadow-sm">
       {/* Upper Rates/Ticker Bar */}
       <div className="hidden md:flex justify-between items-center px-6 py-2 bg-neutral-950 text-xs border-b border-amber-500/10 text-amber-400 font-mono">
         <div className="flex items-center gap-6">
@@ -117,7 +118,7 @@ export default function Header({
             <a href="/"
               onClick={(e) => { e.preventDefault(); handleNav("home"); }}
               className={`text-sm font-semibold tracking-wide transition-colors ${
-                activeView === "home" ? "text-amber-600 font-bold" : "text-neutral-600 hover:text-amber-600"
+                activeView === "home" ? "text-amber-600 font-bold" : "text-neutral-600 dark:text-neutral-400 hover:text-amber-600"
               }`}
             >
               {t.home}
@@ -125,21 +126,21 @@ export default function Header({
             <a
               href="/services"
               onClick={(e) => { e.preventDefault(); handleNav("services"); }}
-              className={`text-sm font-semibold tracking-wide transition-colors ${activeView === "services" ? "text-amber-600 font-bold" : "text-neutral-600 hover:text-amber-600"}`}
+              className={`text-sm font-semibold tracking-wide transition-colors ${activeView === "services" ? "text-amber-600 font-bold" : "text-neutral-600 dark:text-neutral-400 hover:text-amber-600"}`}
             >
               {t.services}
             </a>
             <a
               href="/rates"
               onClick={(e) => { e.preventDefault(); handleNav("rates"); }}
-              className={`text-sm font-semibold tracking-wide transition-colors ${activeView === "rates" ? "text-amber-600 font-bold" : "text-neutral-600 hover:text-amber-600"}`}
+              className={`text-sm font-semibold tracking-wide transition-colors ${activeView === "rates" ? "text-amber-600 font-bold" : "text-neutral-600 dark:text-neutral-400 hover:text-amber-600"}`}
             >
               {t.rates}
             </a>
             <a
               href="/calculator"
               onClick={(e) => { e.preventDefault(); handleNav("calculator"); }}
-              className={`text-sm font-semibold tracking-wide transition-colors ${activeView === "calculator" ? "text-amber-600 font-bold" : "text-neutral-600 hover:text-amber-600"}`}
+              className={`text-sm font-semibold tracking-wide transition-colors ${activeView === "calculator" ? "text-amber-600 font-bold" : "text-neutral-600 dark:text-neutral-400 hover:text-amber-600"}`}
             >
               {t.calculator}
             </a>
@@ -156,7 +157,7 @@ export default function Header({
                 className={`text-sm font-semibold tracking-wide transition-colors flex items-center gap-1 py-2 focus:outline-none ${
                   ["about", "blog", "contact", "admin", "branches", "faq"].includes(activeView)
                     ? "text-amber-600 font-bold"
-                    : "text-neutral-600 hover:text-amber-600"
+                    : "text-neutral-600 dark:text-neutral-400 hover:text-amber-600"
                 }`}
               >
                 <span>{getMoreText(currentLang)}</span>
@@ -164,7 +165,7 @@ export default function Header({
               </button>
 
               {moreMenuOpen && (
-                <div className="absolute right-0 mt-1 w-48 rounded-xl bg-white border border-neutral-200 shadow-xl overflow-hidden z-50 py-1.5 animate-in fade-in slide-in-from-top-2 duration-150">
+                <div className="absolute right-0 mt-1 w-48 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-xl overflow-hidden z-50 py-1.5 animate-in fade-in slide-in-from-top-2 duration-150">
                   <a
                     href="/about"
                     onClick={(e) => {
@@ -175,7 +176,7 @@ export default function Header({
                     className={`w-full text-left px-4 py-2.5 text-xs font-semibold transition-colors flex items-center gap-2 ${
                       activeView === "about"
                         ? "bg-amber-500/10 text-amber-600 font-bold"
-                        : "text-neutral-700 hover:bg-neutral-50 hover:text-amber-600"
+                        : "text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800 hover:text-amber-600"
                     }`}
                   >
                     <span>{t.about}</span>
@@ -190,7 +191,7 @@ export default function Header({
                     className={`w-full text-left px-4 py-2.5 text-xs font-semibold transition-colors flex items-center gap-2 ${
                       activeView === "branches"
                         ? "bg-amber-500/10 text-amber-600 font-bold"
-                        : "text-neutral-700 hover:bg-neutral-50 hover:text-amber-600"
+                        : "text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800 hover:text-amber-600"
                     }`}
                   >
                     <span>{t.branches}</span>
@@ -205,7 +206,7 @@ export default function Header({
                     className={`w-full text-left px-4 py-2.5 text-xs font-semibold transition-colors flex items-center gap-2 ${
                       activeView === "blog"
                         ? "bg-amber-500/10 text-amber-600 font-bold"
-                        : "text-neutral-700 hover:bg-neutral-50 hover:text-amber-600"
+                        : "text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800 hover:text-amber-600"
                     }`}
                   >
                     <FileText className="h-3.5 w-3.5 shrink-0" />
@@ -221,7 +222,7 @@ export default function Header({
                     className={`w-full text-left px-4 py-2.5 text-xs font-semibold transition-colors flex items-center gap-2 ${
                       activeView === "contact"
                         ? "bg-amber-500/10 text-amber-600 font-bold"
-                        : "text-neutral-700 hover:bg-neutral-50 hover:text-amber-600"
+                        : "text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800 hover:text-amber-600"
                     }`}
                   >
                     <span>{t.contact}</span>
@@ -236,7 +237,7 @@ export default function Header({
                     className={`w-full text-left px-4 py-2.5 text-xs font-semibold transition-colors flex items-center gap-2 ${
                       activeView === "faq"
                         ? "bg-amber-500/10 text-amber-600 font-bold"
-                        : "text-neutral-700 hover:bg-neutral-50 hover:text-amber-600"
+                        : "text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800 hover:text-amber-600"
                     }`}
                   >
                     <span>{t.faq}</span>
@@ -249,10 +250,10 @@ export default function Header({
                         handleNav("admin");
                         setMoreMenuOpen(false);
                       }}
-                      className={`w-full text-left px-4 py-2.5 text-xs font-semibold transition-colors flex items-center gap-2 border-t border-neutral-100 ${
+                      className={`w-full text-left px-4 py-2.5 text-xs font-semibold transition-colors flex items-center gap-2 border-t border-neutral-100 dark:border-neutral-800 ${
                         activeView === "admin"
                           ? "bg-amber-500/10 text-amber-600 font-bold"
-                          : "text-neutral-700 hover:bg-neutral-50 hover:text-amber-600"
+                          : "text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800 hover:text-amber-600"
                       }`}
                     >
                       <Lock className="h-3.5 w-3.5 shrink-0" />
@@ -266,6 +267,7 @@ export default function Header({
 
           {/* Desktop Right Buttons (Language + Call CTAs) */}
           <div className="hidden md:flex items-center gap-4">
+            <ThemeToggle />
             {/* Web App Installer */}
             <InstallWebAppButton currentLang={currentLang} variant="header" />
 
@@ -273,14 +275,14 @@ export default function Header({
             <div className="relative">
               <button
                 onClick={() => setLangMenuOpen(!langMenuOpen)}
-                className="flex items-center gap-1.5 text-xs text-neutral-700 hover:text-amber-600 border border-neutral-200 px-3 py-1.5 rounded-full transition-colors bg-white shadow-sm"
+                className="flex items-center gap-1.5 text-xs text-neutral-700 dark:text-neutral-300 hover:text-amber-600 border border-neutral-200 dark:border-neutral-800 px-3 py-1.5 rounded-full transition-colors bg-white dark:bg-neutral-900 shadow-sm"
               >
                 <Globe className="h-3.5 w-3.5 text-amber-500" />
                 <span>{getLangName(currentLang)}</span>
               </button>
 
               {langMenuOpen && (
-                <div className="absolute right-0 mt-2 w-32 rounded-md bg-white border border-neutral-200 shadow-xl overflow-hidden z-50">
+                <div className="absolute right-0 mt-2 w-32 rounded-md bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-xl overflow-hidden z-50">
                   <div className="py-1">
                     {(["en", "si", "ta"] as Language[]).map((lang) => (
                       <button
@@ -292,7 +294,7 @@ export default function Header({
                         className={`w-full text-left px-4 py-2 text-xs transition-colors ${
                           currentLang === lang
                             ? "bg-amber-500/10 text-amber-600 font-semibold"
-                            : "text-neutral-700 hover:bg-neutral-50"
+                            : "text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800"
                         }`}
                       >
                         {getLangName(lang)}
@@ -323,7 +325,7 @@ export default function Header({
                   currentLang === "en" ? "si" : currentLang === "si" ? "ta" : "en";
                 setLang(nextLang);
               }}
-              className="flex items-center gap-1 text-xs text-neutral-700 border border-neutral-200 px-2 py-1 rounded-full bg-white shadow-sm"
+              className="flex items-center gap-1 text-xs text-neutral-700 dark:text-neutral-300 border border-neutral-200 dark:border-neutral-800 px-2 py-1 rounded-full bg-white dark:bg-neutral-900 shadow-sm"
             >
               <Globe className="h-3 w-3 text-amber-500" />
               <span>{currentLang.toUpperCase()}</span>
@@ -332,7 +334,7 @@ export default function Header({
             {/* Mobile Menu Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="text-neutral-700 hover:text-amber-600 transition-colors p-1"
+              className="text-neutral-700 dark:text-neutral-300 hover:text-amber-600 transition-colors p-1"
             >
               {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
@@ -342,12 +344,12 @@ export default function Header({
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-white/98 border-b border-neutral-200 absolute left-0 right-0 py-6 px-4 flex flex-col gap-4 shadow-2xl z-40 animate-in fade-in slide-in-from-top-4 duration-200">
+        <div className="md:hidden bg-white dark:bg-neutral-900/98 dark:bg-neutral-950/98 border-b border-neutral-200 dark:border-neutral-800 dark:border-neutral-800 absolute left-0 right-0 py-6 px-4 flex flex-col gap-4 shadow-2xl z-40 animate-in fade-in slide-in-from-top-4 duration-200">
           <a
             href="/"
             onClick={(e) => { e.preventDefault(); handleNav("home"); }}
-            className={`text-left text-base py-2 border-b border-neutral-100 ${
-              activeView === "home" ? "text-amber-600 font-bold" : "text-neutral-700"
+            className={`text-left text-base py-2 border-b border-neutral-100 dark:border-neutral-800 ${
+              activeView === "home" ? "text-amber-600 font-bold" : "text-neutral-700 dark:text-neutral-300"
             }`}
           >
             {t.home}
@@ -355,8 +357,8 @@ export default function Header({
           <a
             href="/about"
             onClick={(e) => { e.preventDefault(); handleNav("about"); }}
-            className={`text-left text-base py-2 border-b border-neutral-100 ${
-              activeView === "about" ? "text-amber-600 font-bold" : "text-neutral-700"
+            className={`text-left text-base py-2 border-b border-neutral-100 dark:border-neutral-800 ${
+              activeView === "about" ? "text-amber-600 font-bold" : "text-neutral-700 dark:text-neutral-300"
             }`}
           >
             {t.about}
@@ -364,29 +366,29 @@ export default function Header({
           <a
             href="#rates"
             onClick={(e) => { e.preventDefault(); handleNav("home"); document.getElementById("rates")?.scrollIntoView({ behavior: "smooth" }); setMobileMenuOpen(false); }}
-            className="text-left text-base py-2 border-b border-neutral-100 text-neutral-700 hover:text-amber-600"
+            className="text-left text-base py-2 border-b border-neutral-100 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300 hover:text-amber-600"
           >
             {t.rates}
           </a>
           <a
             href="/rates"
             onClick={(e) => { e.preventDefault(); handleNav("rates"); setMobileMenuOpen(false); }}
-            className={`text-left text-base py-2 border-b border-neutral-100 ${activeView === "rates" ? "text-amber-600 font-bold" : "text-neutral-700"}`}
+            className={`text-left text-base py-2 border-b border-neutral-100 dark:border-neutral-800 ${activeView === "rates" ? "text-amber-600 font-bold" : "text-neutral-700 dark:text-neutral-300"}`}
           >
             {t.rates}
           </a>
           <a
             href="/calculator"
             onClick={(e) => { e.preventDefault(); handleNav("calculator"); setMobileMenuOpen(false); }}
-            className={`text-left text-base py-2 border-b border-neutral-100 ${activeView === "calculator" ? "text-amber-600 font-bold" : "text-neutral-700"}`}
+            className={`text-left text-base py-2 border-b border-neutral-100 dark:border-neutral-800 ${activeView === "calculator" ? "text-amber-600 font-bold" : "text-neutral-700 dark:text-neutral-300"}`}
           >
             {t.calculator}
           </a>
           <a
             href="/blog"
             onClick={(e) => { e.preventDefault(); handleNav("blog"); }}
-            className={`text-left text-base py-2 border-b border-neutral-100 flex items-center gap-2 ${
-              activeView === "blog" ? "text-amber-600 font-bold" : "text-neutral-700"
+            className={`text-left text-base py-2 border-b border-neutral-100 dark:border-neutral-800 flex items-center gap-2 ${
+              activeView === "blog" ? "text-amber-600 font-bold" : "text-neutral-700 dark:text-neutral-300"
             }`}
           >
             <FileText className="h-4 w-4 text-amber-500" />
@@ -395,8 +397,8 @@ export default function Header({
           <a
             href="/contact"
             onClick={(e) => { e.preventDefault(); handleNav("contact"); }}
-            className={`text-left text-base py-2 border-b border-neutral-100 ${
-              activeView === "contact" ? "text-amber-600 font-bold" : "text-neutral-700"
+            className={`text-left text-base py-2 border-b border-neutral-100 dark:border-neutral-800 ${
+              activeView === "contact" ? "text-amber-600 font-bold" : "text-neutral-700 dark:text-neutral-300"
             }`}
           >
             {t.contact}
@@ -404,8 +406,8 @@ export default function Header({
           <a
             href="/branches"
             onClick={(e) => { e.preventDefault(); handleNav("branches"); }}
-            className={`text-left text-base py-2 border-b border-neutral-100 ${
-              activeView === "branches" ? "text-amber-600 font-bold" : "text-neutral-700"
+            className={`text-left text-base py-2 border-b border-neutral-100 dark:border-neutral-800 ${
+              activeView === "branches" ? "text-amber-600 font-bold" : "text-neutral-700 dark:text-neutral-300"
             }`}
           >
             {t.branches}
@@ -413,7 +415,7 @@ export default function Header({
           <a
             href="/faq"
             onClick={(e) => { e.preventDefault(); handleNav("faq"); setMobileMenuOpen(false); }}
-            className={`text-left text-base py-2 border-b border-neutral-100 ${activeView === "faq" ? "text-amber-600 font-bold" : "text-neutral-700"}`}
+            className={`text-left text-base py-2 border-b border-neutral-100 dark:border-neutral-800 ${activeView === "faq" ? "text-amber-600 font-bold" : "text-neutral-700 dark:text-neutral-300"}`}
           >
             {t.faq}
           </a>
@@ -421,8 +423,8 @@ export default function Header({
             <a
               href="/admin"
               onClick={(e) => { e.preventDefault(); handleNav("admin"); }}
-              className={`text-left text-base py-2 border-b border-neutral-100 flex items-center gap-2 ${
-                activeView === "admin" ? "text-amber-600 font-bold" : "text-neutral-700"
+              className={`text-left text-base py-2 border-b border-neutral-100 dark:border-neutral-800 flex items-center gap-2 ${
+                activeView === "admin" ? "text-amber-600 font-bold" : "text-neutral-700 dark:text-neutral-300"
               }`}
             >
               <LayoutDashboard className="h-4 w-4 text-amber-500" />
@@ -440,7 +442,7 @@ export default function Header({
             <a
               href="tel:0718321321"
               id="drawer_cta_call"
-              className="flex items-center justify-center gap-2 bg-neutral-100 hover:bg-neutral-250 border border-neutral-200 text-neutral-900 p-3 rounded-md text-xs font-bold text-center"
+              className="flex items-center justify-center gap-2 bg-neutral-100 hover:bg-neutral-250 border border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-neutral-100 p-3 rounded-md text-xs font-bold text-center"
             >
               <Phone className="h-3.5 w-3.5 text-amber-500" />
               <span>0718 321 321</span>
