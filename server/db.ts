@@ -30,7 +30,6 @@ export function initializeDb(): DatabaseSchema {
     { karat: GoldKarat.K24, purity: 0.999, ratePerGram: 25500 },
     { karat: GoldKarat.K22, purity: 0.916, ratePerGram: 23380 },
     { karat: GoldKarat.K21, purity: 0.875, ratePerGram: 22310 },
-    { karat: GoldKarat.K18, purity: 0.750, ratePerGram: 19125 },
   ];
 
   const defaultSettings: SystemSettings = {

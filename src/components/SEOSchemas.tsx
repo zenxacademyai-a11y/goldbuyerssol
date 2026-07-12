@@ -16,7 +16,6 @@ export default function SEOSchemas({ rates }: SEOSchemasProps) {
     const rate24k = rates.find((r) => r.karat === "24K")?.ratePerGram || 31250;
     const rate22k = rates.find((r) => r.karat === "22K")?.ratePerGram || 28650;
     const rate21k = rates.find((r) => r.karat === "21K")?.ratePerGram || 27350;
-    const rate18k = rates.find((r) => r.karat === "18K")?.ratePerGram || 23450;
 
     // Get today's ISO date
     const todayStr = new Date().toISOString().split("T")[0];
@@ -150,21 +149,7 @@ export default function SEOSchemas({ rates }: SEOSchemasProps) {
             "validFrom": todayStr
           }
         },
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Product",
-            "name": "18K Gold Buying Price (Per Gram)",
-            "description": "Daily live buying price for 18K (750) white or yellow gold per gram in Colombo, Sri Lanka by Gold Buyers Colombo."
-          },
-          "priceSpecification": {
-            "@type": "PriceSpecification",
-            "price": rate18k,
-            "priceCurrency": "LKR",
-            "valueAddedTaxIncluded": false,
-            "validFrom": todayStr
-          }
-        }
+
       ]
     };
 

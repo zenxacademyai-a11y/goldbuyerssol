@@ -22,7 +22,7 @@ export default function FAQSection({ currentLang }: FAQSectionProps) {
     },
     {
       q: "What types of gold do you buy at your Colombo office?",
-      a: "We buy all forms of gold including 24K, 22K, 21K, 18K jewelry, sovereign coins (pavans), gold biscuits, gold bullion bars, broken gold pieces, scrap jewelry, and dental gold. Payout rates are based entirely on weight and verified purity.",
+      a: "We buy all forms of gold including 24K, 22K, 21K jewelry, sovereign coins (pavans), gold biscuits, gold bullion bars, broken gold pieces, scrap jewelry, and dental gold. Payout rates are based entirely on weight and verified purity.",
     },
     {
       q: "Why is selling gold to GBC better than pawning (Ugas) in Sri Lanka?",

@@ -4,7 +4,6 @@ const DEFAULT_RATES: GoldRate[] = [
   { karat: GoldKarat.K24, purity: 0.999, ratePerGram: 31250 },
   { karat: GoldKarat.K22, purity: 0.916, ratePerGram: 28650 },
   { karat: GoldKarat.K21, purity: 0.875, ratePerGram: 27350 },
-  { karat: GoldKarat.K18, purity: 0.75, ratePerGram: 23450 },
 ];
 
 const DEFAULT_SETTINGS: SystemSettings = {
@@ -15,12 +14,12 @@ const DEFAULT_SETTINGS: SystemSettings = {
 };
 
 const DEFAULT_HISTORICAL: HistoricalRate[] = [
-  { date: "2024-05-01", "24K": 29500, "22K": 27100, "21K": 26000, "18K": 22000 },
-  { date: "2024-05-05", "24K": 29800, "22K": 27300, "21K": 26200, "18K": 22100 },
-  { date: "2024-05-10", "24K": 30100, "22K": 27600, "21K": 26500, "18K": 22400 },
-  { date: "2024-05-15", "24K": 30500, "22K": 28000, "21K": 26800, "18K": 22800 },
-  { date: "2024-05-20", "24K": 30900, "22K": 28300, "21K": 27100, "18K": 23100 },
-  { date: "2024-05-25", "24K": 31250, "22K": 28650, "21K": 27350, "18K": 23450 },
+  { date: "2024-05-01", "24K": 29500, "22K": 27100, "21K": 26000 },
+  { date: "2024-05-05", "24K": 29800, "22K": 27300, "21K": 26200 },
+  { date: "2024-05-10", "24K": 30100, "22K": 27600, "21K": 26500 },
+  { date: "2024-05-15", "24K": 30500, "22K": 28000, "21K": 26800 },
+  { date: "2024-05-20", "24K": 30900, "22K": 28300, "21K": 27100 },
+  { date: "2024-05-25", "24K": 31250, "22K": 28650, "21K": 27350 },
 ];
 
 export const localDb = {

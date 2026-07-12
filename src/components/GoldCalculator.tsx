@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect } from "react";
-import { Calculator, Phone, Share2, Printer, Check, Info, FileText } from "lucide-react";
+import { Calculator, Scale, FileText, Share2, Printer, Check, Info } from "lucide-react";
 import { Language, translations } from "../lib/translations.js";
 import { GoldKarat, GoldRate, SystemSettings } from "../types.js";
 
@@ -157,12 +157,12 @@ I'd like to book an appointment to test and sell my gold today.`
         </div>
 
         {/* Calculator Main Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+        <div className="max-w-xl mx-auto w-full">
           
           {isLoading ? (
             <>
               {/* Inputs Section Skeleton (lg:col-span-5) */}
-              <div className="lg:col-span-5 bg-neutral-50 rounded-xl border border-neutral-200 p-6 flex flex-col justify-between shadow-sm min-h-[450px] animate-pulse">
+              <div className="bg-neutral-50 rounded-xl border border-neutral-200 p-6 flex flex-col justify-between shadow-sm  animate-pulse">
                 <div className="space-y-6">
                   <div className="h-5 w-44 bg-neutral-200 rounded mb-4"></div>
                   
@@ -205,48 +205,12 @@ I'd like to book an appointment to test and sell my gold today.`
                 <div className="h-12 w-full bg-neutral-150 rounded mt-6"></div>
               </div>
 
-              {/* Outputs Section Skeleton (lg:col-span-7) */}
-              <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch animate-pulse">
-                {/* Visual Value Card Skeleton */}
-                <div className="bg-neutral-50 rounded-xl border border-neutral-200 p-6 flex flex-col justify-between shadow-sm">
-                  <div className="space-y-6">
-                    <div className="h-4.5 w-32 bg-neutral-200 rounded"></div>
-                    
-                    <div className="space-y-2 py-4">
-                      <div className="h-3 w-20 bg-neutral-200 rounded"></div>
-                      <div className="h-10 w-44 bg-neutral-200 rounded"></div>
-                    </div>
 
-                    <div className="space-y-4 pt-4 border-t border-neutral-200/60">
-                      <div className="flex justify-between"><div className="h-3.5 w-20 bg-neutral-200 rounded"></div><div className="h-3.5 w-16 bg-neutral-200 rounded"></div></div>
-                      <div className="flex justify-between"><div className="h-3.5 w-24 bg-neutral-200 rounded"></div><div className="h-3.5 w-16 bg-neutral-200 rounded"></div></div>
-                      <div className="flex justify-between"><div className="h-3.5 w-24 bg-neutral-200 rounded"></div><div className="h-3.5 w-16 bg-neutral-200 rounded"></div></div>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-2 gap-2 mt-6 pt-4 border-t border-neutral-200/60">
-                    <div className="h-9 bg-neutral-200 rounded"></div>
-                    <div className="h-9 bg-neutral-200 rounded"></div>
-                  </div>
-                </div>
-
-                {/* Lead capture skeleton */}
-                <div className="bg-neutral-50 rounded-xl border border-neutral-200 p-6 flex flex-col justify-between shadow-sm">
-                  <div className="space-y-4">
-                    <div className="h-5 w-40 bg-neutral-200 rounded"></div>
-                    <div className="h-3.5 w-48 bg-neutral-200 rounded"></div>
-                    <div className="space-y-3 pt-4">
-                      <div className="h-10 bg-neutral-200 rounded"></div>
-                      <div className="h-10 bg-neutral-200 rounded"></div>
-                    </div>
-                  </div>
-                  <div className="h-11 w-full bg-neutral-200 rounded mt-6"></div>
-                </div>
-              </div>
             </>
           ) : (
             <>
               {/* Inputs Section (lg:col-span-5) */}
-              <div className="lg:col-span-5 bg-neutral-50 rounded-xl border border-neutral-200 p-6 flex flex-col justify-between shadow-sm">
+              <div className="bg-neutral-50 rounded-xl border border-neutral-200 p-6 flex flex-col justify-between shadow-sm">
                 <div className="space-y-6">
                   <h3 className="text-lg font-serif font-bold text-neutral-950 border-b border-neutral-200 pb-3">
                     1. Specify Gold Specifications
@@ -360,146 +324,7 @@ I'd like to book an appointment to test and sell my gold today.`
                 </div>
               </div>
 
-              {/* Outputs & Breakdown Section (lg:col-span-7) */}
-              <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
-                
-                {/* Visual Value Card */}
-                <div className="bg-gradient-to-b from-neutral-50 via-neutral-50 to-neutral-100 rounded-xl border border-neutral-200 p-6 flex flex-col justify-between shadow-sm">
-                  <div>
-                    <h3 className="text-sm uppercase tracking-widest font-mono text-neutral-600 mb-6 flex items-center gap-1.5 font-semibold">
-                      <span className="h-2 w-2 rounded-full bg-amber-600 animate-pulse"></span>
-                      Payout Estimate
-                    </h3>
-     
-                    {/* Main Estimated Value */}
-                    <div className="mb-6">
-                      <span className="text-xs uppercase tracking-wider font-mono text-neutral-500 block">
-                        {t.finalPayout}
-                      </span>
-                      <div className="text-2xl sm:text-3xl font-serif font-black text-amber-700 mt-1">
-                        LKR {Math.round(calcResult.finalPayout).toLocaleString()}
-                      </div>
-                    </div>
-     
-                    {/* Financial Breakdown List */}
-                    <div className="space-y-3.5 text-xs border-t border-neutral-200 pt-4 font-mono text-neutral-600">
-                      <div className="flex justify-between">
-                        <span>{t.marketValue}</span>
-                        <span className="text-neutral-900 font-bold">LKR {Math.round(calcResult.marketValue).toLocaleString()}</span>
-                      </div>
-                      <div className="flex justify-between text-amber-700 font-semibold">
-                        <span>GBC Payout Premium (+{settings.bonusPremiumRate}%)</span>
-                        <span>+LKR {Math.round(calcResult.premiumBonus).toLocaleString()}</span>
-                      </div>
-                      <div className="flex justify-between text-neutral-500">
-                        <span>Computerized Testing Fee</span>
-                        <span>-LKR {Math.round(calcResult.testingDeductions).toLocaleString()}</span>
-                      </div>
-                      {makingCharges > 0 && (
-                        <div className="flex justify-between text-rose-700 font-semibold">
-                          <span>Stones / Impurities deduction</span>
-                          <span>-LKR {makingCharges.toLocaleString()}</span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-     
-                  {/* Interactive Share / Print Utility */}
-                  <div className="grid grid-cols-2 gap-2 mt-6 border-t border-neutral-200 pt-4">
-                    <a
-                      href={whatsappUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      id="calc_share_wa"
-                      className="flex items-center justify-center gap-1.5 py-2.5 rounded border border-neutral-200 hover:border-amber-500/40 text-xs font-mono font-bold text-neutral-700 hover:text-amber-700 bg-white hover:bg-neutral-50 shadow-sm transition-all"
-                    >
-                      <Share2 className="h-3.5 w-3.5" />
-                      <span>{t.shareEstimate}</span>
-                    </a>
-                    <button
-                      onClick={handlePrint}
-                      id="calc_print_pdf"
-                      className="flex items-center justify-center gap-1.5 py-2.5 rounded border border-neutral-200 hover:border-amber-500/40 text-xs font-mono font-bold text-neutral-700 hover:text-amber-700 bg-white hover:bg-neutral-50 shadow-sm transition-all cursor-pointer"
-                    >
-                      <Printer className="h-3.5 w-3.5" />
-                      <span>{t.printPDF}</span>
-                    </button>
-                  </div>
-                </div>
 
-                {/* Instant Rate Lock Lead Form */}
-                <div className="bg-neutral-50 rounded-xl border border-neutral-200 p-6 flex flex-col justify-between shadow-sm">
-                  <div>
-                    <h3 className="text-sm uppercase tracking-widest font-mono text-neutral-600 mb-4 flex items-center gap-1.5 font-semibold">
-                      <FileText className="h-4 w-4 text-amber-600" />
-                      Lock Your Price Out
-                    </h3>
-                    <p className="text-xs text-neutral-600 leading-relaxed mb-4">
-                      Colombo gold prices fluctuate by the hour. Submit this form to lock this rate in for the next 24 hours. Our officer will call you.
-                    </p>
-     
-                    {isSuccess ? (
-                      <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4 text-center animate-fade-in my-4">
-                        <Check className="h-8 w-8 text-amber-600 mx-auto mb-2" />
-                        <p className="text-xs text-amber-800 font-sans leading-relaxed">
-                          {t.formSuccess}
-                        </p>
-                        <button
-                          onClick={() => setIsSuccess(false)}
-                          className="text-[10px] text-amber-700 underline uppercase tracking-wider mt-3 block mx-auto hover:text-amber-600 font-bold"
-                        >
-                          Calculate New Value
-                        </button>
-                      </div>
-                    ) : (
-                      <form onSubmit={handleLeadSubmit} className="space-y-3 text-xs">
-                        <div>
-                          <input
-                            type="text"
-                            placeholder={t.formName}
-                            value={leadName}
-                            onChange={(e) => setLeadName(e.target.value)}
-                            required
-                            className="w-full bg-white border border-neutral-250 rounded px-3 py-2 font-sans text-neutral-800 focus:outline-none focus:border-amber-500 shadow-sm"
-                          />
-                        </div>
-                        <div>
-                          <input
-                            type="tel"
-                            placeholder={t.formPhone}
-                            value={leadPhone}
-                            onChange={(e) => setLeadPhone(e.target.value)}
-                            required
-                            className="w-full bg-white border border-neutral-250 rounded px-3 py-2 font-mono text-neutral-800 focus:outline-none focus:border-amber-500 shadow-sm"
-                          />
-                        </div>
-                        <div>
-                          <input
-                            type="email"
-                            placeholder={t.formEmail}
-                            value={leadEmail}
-                            onChange={(e) => setLeadEmail(e.target.value)}
-                            className="w-full bg-white border border-neutral-250 rounded px-3 py-2 font-sans text-neutral-800 focus:outline-none focus:border-amber-500 shadow-sm"
-                          />
-                        </div>
-                        <button
-                          type="submit"
-                          disabled={isSubmitting}
-                          className="w-full py-2.5 bg-amber-600 hover:bg-amber-500 disabled:bg-neutral-200 disabled:text-neutral-450 text-black font-extrabold uppercase tracking-widest text-xs rounded transition-all mt-2 cursor-pointer"
-                        >
-                          {isSubmitting ? t.calculating : "Submit Payout Request"}
-                        </button>
-                      </form>
-                    )}
-                  </div>
-     
-                  {/* Footer Trust Signals */}
-                  <div className="text-[10px] text-neutral-500 text-center border-t border-neutral-200 pt-4 font-mono">
-                    No obligations. Free valuations.
-                  </div>
-                </div>
-
-              </div>
             </>
           )}
 

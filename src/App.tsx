@@ -436,7 +436,6 @@ export default function App() {
                 { karat: GoldKarat.K24, purity: 0.999, ratePerGram: 31250 },
                 { karat: GoldKarat.K22, purity: 0.916, ratePerGram: 28650 },
                 { karat: GoldKarat.K21, purity: 0.875, ratePerGram: 27350 },
-                { karat: GoldKarat.K18, purity: 0.75, ratePerGram: 23450 },
               ]}
               settings={activeSettings}
               historicalRates={historicalRates}
@@ -451,7 +450,6 @@ export default function App() {
                 { karat: GoldKarat.K24, purity: 0.999, ratePerGram: 31250 },
                 { karat: GoldKarat.K22, purity: 0.916, ratePerGram: 28650 },
                 { karat: GoldKarat.K21, purity: 0.875, ratePerGram: 27350 },
-                { karat: GoldKarat.K18, purity: 0.75, ratePerGram: 23450 },
               ]}
               settings={activeSettings}
               isLoading={isLoading}
@@ -501,7 +499,6 @@ export default function App() {
                 { karat: GoldKarat.K24, purity: 0.999, ratePerGram: 31250 },
                 { karat: GoldKarat.K22, purity: 0.916, ratePerGram: 28650 },
                 { karat: GoldKarat.K21, purity: 0.875, ratePerGram: 27350 },
-                { karat: GoldKarat.K18, purity: 0.75, ratePerGram: 23450 },
               ]}
               settings={activeSettings}
               historicalRates={historicalRates}
@@ -517,7 +514,6 @@ export default function App() {
                 { karat: GoldKarat.K24, purity: 0.999, ratePerGram: 31250 },
                 { karat: GoldKarat.K22, purity: 0.916, ratePerGram: 28650 },
                 { karat: GoldKarat.K21, purity: 0.875, ratePerGram: 27350 },
-                { karat: GoldKarat.K18, purity: 0.75, ratePerGram: 23450 },
               ]}
               settings={activeSettings}
               isLoading={isLoading}
