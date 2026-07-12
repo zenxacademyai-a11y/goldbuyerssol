@@ -72,6 +72,9 @@ export default function Footer({ currentLang, setView, showAdmin = false, onLogo
               </a>
             </li>
             <li>
+                            <a href="/services" onClick={(e) => { e.preventDefault(); setView("services"); window.scrollTo(0,0); }} className="hover:text-amber-700 transition-colors cursor-pointer block text-left">
+                {t.services}
+              </a>
               <a href="/about" onClick={(e) => { e.preventDefault(); setView("about"); window.scrollTo(0,0); }} className="hover:text-amber-700 transition-colors cursor-pointer block text-left">
                 {t.about}
               </a>

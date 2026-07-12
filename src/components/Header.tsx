@@ -123,6 +123,13 @@ export default function Header({
               {t.home}
             </a>
             <a
+              href="/services"
+              onClick={(e) => { e.preventDefault(); handleNav("services"); }}
+              className={`text-sm font-semibold tracking-wide transition-colors ${activeView === "services" ? "text-amber-600 font-bold" : "text-neutral-600 hover:text-amber-600"}`}
+            >
+              {t.services}
+            </a>
+            <a
               href="/rates"
               onClick={(e) => { e.preventDefault(); handleNav("rates"); }}
               className={`text-sm font-semibold tracking-wide transition-colors ${activeView === "rates" ? "text-amber-600 font-bold" : "text-neutral-600 hover:text-amber-600"}`}

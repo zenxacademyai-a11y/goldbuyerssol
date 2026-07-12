@@ -14,6 +14,7 @@ export const translations = {
     
     // Navigation
     home: "Home",
+    services: "Services",
     about: "About Us",
     rates: "Gold Rate",
     calculator: "Calculator",
@@ -124,6 +125,7 @@ export const translations = {
     
     // Navigation
     home: "මුල් පිටුව",
+    services: "සේවාවන්",
     about: "අප ගැන",
     rates: "අද රන් මිල",
     calculator: "ගණකය (Calculator)",
@@ -234,6 +236,7 @@ export const translations = {
     
     // Navigation
     home: "முகப்பு",
+    services: "சேவைகள்",
     about: "எங்களைப் பற்றி",
     rates: "இன்றைய தங்க விலை",
     calculator: "மதிப்பீட்டாளர்",

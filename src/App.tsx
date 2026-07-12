@@ -28,6 +28,7 @@ const BlogPreview = lazy(() => import("./components/BlogPreview.js"));
 const AdminDashboard = lazy(() => import("./components/AdminDashboard.js"));
 const AboutPage = lazy(() => import("./components/AboutPage.js"));
 const ContactPage = lazy(() => import("./components/ContactPage.js"));
+const ServicesPage = lazy(() => import("./components/ServicesPage.js"));
 const BranchesPage = lazy(() => import("./components/BranchesPage.js"));
 const RecentPosts = lazy(() => import("./components/RecentPosts.js"));
 const ChatWithConsultant = lazy(() => import("./components/ChatWithConsultant.js"));
@@ -71,7 +72,7 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem("gbc_user_lang", currentLang);
   }, [currentLang]);
-  const [activeView, setActiveView] = useState<"home" | "blog" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "faq">(() => {
+  const [activeView, setActiveView] = useState<"home" | "blog" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "faq" | "services">(() => {
     if (typeof window !== "undefined") {
       const path = window.location.pathname.toLowerCase().replace(/\/$/, "");
       if (path === "/about") return "about";
@@ -119,6 +120,9 @@ export default function App() {
       const keywords = "gold buyer in colombo, gold price today colombo, sell gold sri lanka, highest gold price colombo, diamond buyers Sri Lanka, sell gemstones Sri Lanka, luxury watch buyers Colombo, cash for diamonds, Rolex buyers Sri Lanka, gbc gold buyers";
       
       updateMetaTags(title, desc, keywords);
+    } else if (activeView === "services") {
+      document.title = "Our Services | Gold Buyers Colombo";
+      updateMetaTags("Our Services | Gold Buyers Colombo", "Explore our gold, diamond, and watch buying services.");
     } else if (activeView === "about") {
       const title = currentLang === "si"
         ? "අප ගැන - ගෝල්ඩ් බයර්ස් කොළඹ (GBC) | විශ්වාසදායක රන් ගැනුම්කරුවන්"
@@ -485,6 +489,8 @@ export default function App() {
             <ContactSection currentLang={currentLang} />
             </ScrollReveal>
           </>
+        ) : activeView === "services" ? (
+          <ServicesPage currentLang={currentLang} />
         ) : activeView === "about" ? (
           <AboutPage currentLang={currentLang} setView={setActiveView} />
         ) : activeView === "contact" ? (
