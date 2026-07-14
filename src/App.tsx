@@ -9,7 +9,6 @@ import MobileStickyBar from "./components/MobileStickyBar.js";
 import Hero from "./components/Hero.js";
 import ScrollReveal from "./components/ScrollReveal.js";
 const LiveRateWidget = lazy(() => import("./components/LiveRateWidget.js"));
-import InstallWebAppButton from "./components/InstallWebAppButton.js";
 import Footer from "./components/Footer.js";
 import ExitIntentPopup from "./components/ExitIntentPopup.js";
 import { Language } from "./lib/translations.js";
@@ -122,7 +121,7 @@ export default function App() {
       updateMetaTags(title, desc, keywords);
     } else if (activeView === "services") {
       document.title = "Our Services | Gold Buyers Colombo";
-      updateMetaTags("Our Services | Gold Buyers Colombo", "Explore our gold, diamond, and watch buying services.");
+      updateMetaTags("Our Services | Gold Buyers Colombo", "Explore our gold, diamond, and watch buying services.", "gold buying service, diamond buyer, colombo, sri lanka");
     } else if (activeView === "about") {
       const title = currentLang === "si"
         ? "අප ගැන - ගෝල්ඩ් බයර්ස් කොළඹ (GBC) | විශ්වාසදායක රන් ගැනුම්කරුවන්"
@@ -480,11 +479,7 @@ export default function App() {
               }}
             />
             </ScrollReveal>
-            <ScrollReveal>
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12" id="download-app">
-              <InstallWebAppButton currentLang={currentLang} variant="footer" />
-            </div>
-            </ScrollReveal>
+            
             <ScrollReveal>
             <ContactSection currentLang={currentLang} />
             </ScrollReveal>

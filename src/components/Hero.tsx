@@ -95,10 +95,13 @@ export default function Hero({ currentLang }: { currentLang: Language }) {
 
         {/* Actions */}
         <div className="pointer-events-auto flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
-          <button className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-amber-500 hover:bg-amber-600 text-black font-bold text-sm md:text-base transition-colors duration-200">
+          <a 
+            href="tel:0718321321" 
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-amber-500 hover:bg-amber-600 text-black font-bold text-sm md:text-base transition-colors duration-200 no-underline cursor-pointer"
+          >
             0718 321 321
             <Phone className="h-4 w-4" />
-          </button>
+          </a>
           
           <button onClick={() => setIsModalOpen(true)} className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-white border border-neutral-300 hover:bg-neutral-50 text-neutral-900 font-bold text-sm md:text-base transition-colors duration-200 shadow-sm">
             <Calendar className="h-4 w-4 text-amber-500" />

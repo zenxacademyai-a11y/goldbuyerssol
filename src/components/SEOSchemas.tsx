@@ -25,7 +25,7 @@ export default function SEOSchemas({ rates }: SEOSchemasProps) {
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
       "name": "Gold Buyers Colombo (GBC)",
-      "image": "https://ais-pre-dyuherzilrm6vpvwg3vmbk-934405636140.asia-east1.run.app/logo_exact.jpg",
+      "image": "https://ais-pre-dyuherzilrm6vpvwg3vmbk-934405636140.asia-east1.run.app/gbc-logo-original.png",
       "@id": "https://ais-pre-dyuherzilrm6vpvwg3vmbk-934405636140.asia-east1.run.app",
       "url": "https://ais-pre-dyuherzilrm6vpvwg3vmbk-934405636140.asia-east1.run.app",
       "telephone": "+94718321321",

@@ -9,7 +9,7 @@ import { Language, translations } from "../lib/translations.js";
 
 interface FooterProps {
   currentLang: Language;
-  setView: (view: "home" | "blog" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "faq") => void;
+  setView: (view: "home" | "blog" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "faq" | "services") => void;
   showAdmin?: boolean;
   onLogoClick?: () => void;
 }
@@ -27,7 +27,7 @@ export default function Footer({ currentLang, setView, showAdmin = false, onLogo
           <div className="flex items-center gap-3">
             <div className="relative h-10 w-10 rounded-full overflow-hidden border border-amber-500/30 bg-neutral-900 flex items-center justify-center shadow-md">
               <img loading="lazy" decoding="async" 
-                src="/logo_exact.jpg" 
+                src="/gbc-logo-original.png" 
                 alt="GBC Colombo Logo" 
                 className="h-full w-full object-cover"
                 referrerPolicy="no-referrer"

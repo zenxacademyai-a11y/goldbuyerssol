@@ -6,14 +6,13 @@
 import React, { useState } from "react";
 import { Phone, Globe, Menu, X, Lock, FileText, LayoutDashboard, ChevronDown } from "lucide-react";
 import { Language, translations } from "../lib/translations.js";
-import InstallWebAppButton from "./InstallWebAppButton.js";
 import { ThemeToggle } from "./ThemeToggle.js";
 
 interface HeaderProps {
   currentLang: Language;
   setLang: (lang: Language) => void;
-  activeView: "home" | "blog" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "faq";
-  setView: (view: "home" | "blog" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "faq") => void;
+  activeView: "home" | "blog" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "faq" | "services";
+  setView: (view: "home" | "blog" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "faq" | "services") => void;
   todayRate24k: number;
   todayRate22k: number;
   showAdmin?: boolean;
@@ -35,7 +34,7 @@ export default function Header({
   const [moreMenuOpen, setMoreMenuOpen] = useState(false);
   const t = translations[currentLang];
 
-  const handleNav = (view: "home" | "blog" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "faq") => {
+  const handleNav = (view: "home" | "blog" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "faq" | "services") => {
     setView(view);
     setMobileMenuOpen(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -97,7 +96,7 @@ export default function Header({
               className="relative h-10 w-10 sm:h-12 sm:w-12 rounded-full overflow-hidden border border-amber-500/30 shadow-md hover:brightness-110 active:scale-95 transition-all shrink-0 bg-neutral-900 flex items-center justify-center"
             >
               <img fetchPriority="high" decoding="async" 
-                src="/logo_exact.jpg" 
+                src="/gbc-logo-original.png" 
                 alt="GBC Colombo Logo" 
                 className="h-full w-full object-cover"
                 referrerPolicy="no-referrer"
@@ -268,8 +267,6 @@ export default function Header({
           {/* Desktop Right Buttons (Language + Call CTAs) */}
           <div className="hidden md:flex items-center gap-4">
             <ThemeToggle />
-            {/* Web App Installer */}
-            <InstallWebAppButton currentLang={currentLang} variant="header" />
 
             {/* Language Selection */}
             <div className="relative">
@@ -434,7 +431,6 @@ export default function Header({
 
           {/* PWA Installer inside drawer */}
           <div className="pt-4 border-t border-neutral-150">
-            <InstallWebAppButton currentLang={currentLang} variant="header" />
           </div>
 
           {/* Quick CTAs inside drawer */}
