@@ -1,24 +1,66 @@
 import React, { useState } from "react";
 import { Coins, Gem, Watch, CheckCircle2, ShieldCheck, Eye, X, ZoomIn } from "lucide-react";
 import { Language } from "../lib/translations.js";
+import ResponsiveImage from "./ResponsiveImage.js";
 
+// Import original JPG files
 import gallery1 from "../assets/images/gallery-1.jpg";
 import gallery2 from "../assets/images/gallery-2.jpg";
 import gallery3 from "../assets/images/gallery-3.jpg";
 import gallery4 from "../assets/images/gallery-4.jpg";
 import gallery5 from "../assets/images/gallery-5.jpg";
 
+// Import generated WebP images and blur placeholders
+import gallery1Sm from "../assets/images/gallery-1-sm.webp";
+import gallery1Md from "../assets/images/gallery-1-md.webp";
+import gallery1Lg from "../assets/images/gallery-1-lg.webp";
+import gallery1Blur from "../assets/images/gallery-1-blur.webp";
+
+import gallery2Sm from "../assets/images/gallery-2-sm.webp";
+import gallery2Md from "../assets/images/gallery-2-md.webp";
+import gallery2Lg from "../assets/images/gallery-2-lg.webp";
+import gallery2Blur from "../assets/images/gallery-2-blur.webp";
+
+import gallery3Sm from "../assets/images/gallery-3-sm.webp";
+import gallery3Md from "../assets/images/gallery-3-md.webp";
+import gallery3Lg from "../assets/images/gallery-3-lg.webp";
+import gallery3Blur from "../assets/images/gallery-3-blur.webp";
+
+import gallery4Sm from "../assets/images/gallery-4-sm.webp";
+import gallery4Md from "../assets/images/gallery-4-md.webp";
+import gallery4Lg from "../assets/images/gallery-4-lg.webp";
+import gallery4Blur from "../assets/images/gallery-4-blur.webp";
+
+import gallery5Sm from "../assets/images/gallery-5-sm.webp";
+import gallery5Md from "../assets/images/gallery-5-md.webp";
+import gallery5Lg from "../assets/images/gallery-5-lg.webp";
+import gallery5Blur from "../assets/images/gallery-5-blur.webp";
+
 interface ServicesProps {
   currentLang: Language;
 }
 
+interface GalleryItemType {
+  src: string;
+  srcSm: string;
+  srcMd: string;
+  srcLg: string;
+  srcBlur: string;
+  title: string;
+  desc: string;
+}
+
 export default function Services({ currentLang }: ServicesProps) {
-  const [activePhoto, setActivePhoto] = useState<string | null>(null);
+  const [activePhoto, setActivePhoto] = useState<GalleryItemType | null>(null);
 
   const services = [
     {
       icon: <Coins className="h-6 w-6 text-amber-500" />,
       image: gallery1,
+      imageSm: gallery1Sm,
+      imageMd: gallery1Md,
+      imageLg: gallery1Lg,
+      imageBlur: gallery1Blur,
       title: "Gold Buying Service",
       subtitle: "Highest Cash Prices in Sri Lanka",
       desc: "Looking for a trusted gold buying service in Sri Lanka? We offer competitive prices for all types of gold, including gold jewelry, gold coins, gold bars, and scrap gold. Our experienced team provides free evaluations, transparent pricing based on the latest gold market rates, and instant cash payments.",
@@ -32,6 +74,10 @@ export default function Services({ currentLang }: ServicesProps) {
     {
       icon: <Gem className="h-6 w-6 text-amber-500" />,
       image: gallery2,
+      imageSm: gallery2Sm,
+      imageMd: gallery2Md,
+      imageLg: gallery2Lg,
+      imageBlur: gallery2Blur,
       title: "Diamond & Gem Buying",
       subtitle: "Certified & Precious Gemstones",
       desc: "Looking for a trusted diamond and gem buyer in Sri Lanka? We buy natural diamonds, certified diamonds, precious gemstones, loose stones, and diamond jewelry at competitive market prices. We ensure a secure, confidential, and hassle-free experience for rubies, sapphires, emeralds, and more.",
@@ -45,6 +91,10 @@ export default function Services({ currentLang }: ServicesProps) {
     {
       icon: <Watch className="h-6 w-6 text-amber-500" />,
       image: gallery3,
+      imageSm: gallery3Sm,
+      imageMd: gallery3Md,
+      imageLg: gallery3Lg,
+      imageBlur: gallery3Blur,
       title: "Luxury Watch Buyers",
       subtitle: "Rolex, Patek Philippe, Omega & More",
       desc: "Looking to sell your luxury watch? We are trusted luxury watch buyers in Sri Lanka, offering competitive prices for authentic luxury timepieces. We buy pre-owned and new luxury watches providing professional evaluations, fair market prices, and instant payments.",
@@ -57,29 +107,49 @@ export default function Services({ currentLang }: ServicesProps) {
     }
   ];
 
-  const galleryItems = [
+  const galleryItems: GalleryItemType[] = [
     {
       src: gallery1,
+      srcSm: gallery1Sm,
+      srcMd: gallery1Md,
+      srcLg: gallery1Lg,
+      srcBlur: gallery1Blur,
       title: "Precision Gold Inspection",
       desc: "Evaluating gold weight and testing purity with high-precision instrumentation."
     },
     {
       src: gallery2,
+      srcSm: gallery2Sm,
+      srcMd: gallery2Md,
+      srcLg: gallery2Lg,
+      srcBlur: gallery2Blur,
       title: "XRF Computerized Testing",
       desc: "Using advanced XRF spectrometer technology for 100% non-destructive purity analysis."
     },
     {
       src: gallery3,
+      srcSm: gallery3Sm,
+      srcMd: gallery3Md,
+      srcLg: gallery3Lg,
+      srcBlur: gallery3Blur,
       title: "Professional Appraisal Desk",
       desc: "Providing a secure, private, and confidential environment for asset valuations."
     },
     {
       src: gallery4,
+      srcSm: gallery4Sm,
+      srcMd: gallery4Md,
+      srcLg: gallery4Lg,
+      srcBlur: gallery4Blur,
       title: "Certified Digital Scales",
       desc: "Government-approved and calibrated state-of-the-art scale readouts."
     },
     {
       src: gallery5,
+      srcSm: gallery5Sm,
+      srcMd: gallery5Md,
+      srcLg: gallery5Lg,
+      srcBlur: gallery5Blur,
       title: "Instant Secure Cash Out",
       desc: "Instant cash payouts or bank transfers with fully transparent receipts."
     }
@@ -109,15 +179,18 @@ export default function Services({ currentLang }: ServicesProps) {
             >
               {/* Image Header with Zoom Hover */}
               <div className="relative h-56 sm:h-64 w-full overflow-hidden bg-neutral-950">
-                <img
-                  src={service.image}
+                <ResponsiveImage
+                  srcSm={service.imageSm}
+                  srcMd={service.imageMd}
+                  srcLg={service.imageLg}
+                  srcFallback={service.image}
+                  blurPlaceholder={service.imageBlur}
                   alt={service.title}
-                  className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                  loading="lazy"
-                  referrerPolicy="no-referrer"
+                  className="h-full w-full"
+                  imgClassName="transition-transform duration-700 ease-out group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/20 to-transparent" />
-                <div className="absolute top-4 left-4 h-12 w-12 rounded-full bg-neutral-900/90 border border-amber-500/40 flex items-center justify-center backdrop-blur-sm shadow-md">
+                <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/20 to-transparent pointer-events-none" />
+                <div className="absolute top-4 left-4 h-12 w-12 rounded-full bg-neutral-900/90 border border-amber-500/40 flex items-center justify-center backdrop-blur-sm shadow-md z-10">
                   {service.icon}
                 </div>
               </div>
@@ -163,20 +236,23 @@ export default function Services({ currentLang }: ServicesProps) {
             {galleryItems.map((item, index) => (
               <div 
                 key={index}
-                onClick={() => setActivePhoto(item.src)}
+                onClick={() => setActivePhoto(item)}
                 className="group relative h-48 md:h-56 rounded-xl overflow-hidden border border-neutral-800 bg-neutral-950 cursor-pointer hover:border-amber-500/40 transition-all duration-300 shadow-md"
               >
-                <img 
-                  src={item.src} 
-                  alt={item.title} 
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  loading="lazy"
-                  referrerPolicy="no-referrer"
+                <ResponsiveImage
+                  srcSm={item.srcSm}
+                  srcMd={item.srcMd}
+                  srcLg={item.srcLg}
+                  srcFallback={item.src}
+                  blurPlaceholder={item.srcBlur}
+                  alt={item.title}
+                  className="h-full w-full"
+                  imgClassName="transition-transform duration-500 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/90 via-neutral-950/20 to-transparent opacity-60 group-hover:opacity-100 transition-opacity" />
+                <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/90 via-neutral-950/20 to-transparent opacity-60 group-hover:opacity-100 transition-opacity pointer-events-none" />
                 
                 {/* Overlay Text & Icon */}
-                <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4 text-left flex flex-col justify-end translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4 text-left flex flex-col justify-end translate-y-2 group-hover:translate-y-0 transition-transform duration-300 z-10 pointer-events-none">
                   <span className="text-[10px] text-amber-500 font-mono font-bold uppercase tracking-wider block mb-0.5">Appraisal Lounge</span>
                   <h4 className="text-xs font-serif font-bold text-white line-clamp-1 group-hover:text-amber-300 transition-colors">
                     {item.title}
@@ -186,7 +262,7 @@ export default function Services({ currentLang }: ServicesProps) {
                   </p>
                 </div>
 
-                <div className="absolute top-3 right-3 h-7 w-7 rounded-full bg-neutral-900/80 border border-neutral-700/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="absolute top-3 right-3 h-7 w-7 rounded-full bg-neutral-900/80 border border-neutral-700/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10">
                   <ZoomIn className="h-3.5 w-3.5 text-amber-500" />
                 </div>
               </div>
@@ -222,31 +298,28 @@ export default function Services({ currentLang }: ServicesProps) {
         >
           <button 
             onClick={() => setActivePhoto(null)}
-            className="absolute top-6 right-6 text-neutral-400 hover:text-white transition-colors bg-neutral-900/60 p-2.5 rounded-full border border-neutral-800"
+            className="absolute top-6 right-6 text-neutral-400 hover:text-white transition-colors bg-neutral-900/60 p-2.5 rounded-full border border-neutral-800 z-50"
           >
             <X className="h-5 w-5" />
           </button>
           
-          <div className="relative max-w-4xl max-h-[85vh] w-full flex items-center justify-center">
-            <img 
-              src={activePhoto} 
-              alt="GBC Appraisal Office" 
-              className="max-w-full max-h-[80vh] rounded-xl object-contain border border-neutral-800 shadow-2xl animate-zoom-in"
-              referrerPolicy="no-referrer"
+          <div className="relative max-w-4xl max-h-[85vh] w-full flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
+            <ResponsiveImage
+              srcSm={activePhoto.srcSm}
+              srcMd={activePhoto.srcMd}
+              srcLg={activePhoto.srcLg}
+              srcFallback={activePhoto.src}
+              blurPlaceholder={activePhoto.srcBlur}
+              alt={activePhoto.title}
+              className="max-w-full max-h-[80vh] rounded-xl border border-neutral-800 shadow-2xl animate-zoom-in"
+              imgClassName="object-contain max-h-[80vh]"
+              priority={true}
             />
             {/* Description matching the active photo */}
-            {(() => {
-              const matchedItem = galleryItems.find(item => item.src === activePhoto);
-              if (matchedItem) {
-                return (
-                  <div className="absolute bottom-[-50px] left-1/2 -translate-x-1/2 text-center w-full max-w-lg px-4">
-                    <h4 className="text-sm font-serif font-bold text-amber-400">{matchedItem.title}</h4>
-                    <p className="text-xs text-neutral-400 mt-1">{matchedItem.desc}</p>
-                  </div>
-                );
-              }
-              return null;
-            })()}
+            <div className="absolute bottom-[-60px] left-1/2 -translate-x-1/2 text-center w-full max-w-lg px-4">
+              <h4 className="text-sm font-serif font-bold text-amber-400">{activePhoto.title}</h4>
+              <p className="text-xs text-neutral-400 mt-1">{activePhoto.desc}</p>
+            </div>
           </div>
         </div>
       )}
