@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-const CACHE_NAME = "gbc-cache-v2";
+const CACHE_NAME = "gbc-cache-v4";
 const ASSETS_TO_CACHE = [
   "/",
   "/index.html",

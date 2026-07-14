@@ -2,6 +2,12 @@ import React, { useState } from "react";
 import { Coins, Gem, Watch, CheckCircle2, ShieldCheck, Eye, X, ZoomIn } from "lucide-react";
 import { Language } from "../lib/translations.js";
 
+import gallery1 from "../assets/images/gallery-1.jpg";
+import gallery2 from "../assets/images/gallery-2.jpg";
+import gallery3 from "../assets/images/gallery-3.jpg";
+import gallery4 from "../assets/images/gallery-4.jpg";
+import gallery5 from "../assets/images/gallery-5.jpg";
+
 interface ServicesProps {
   currentLang: Language;
 }
@@ -12,7 +18,7 @@ export default function Services({ currentLang }: ServicesProps) {
   const services = [
     {
       icon: <Coins className="h-6 w-6 text-amber-500" />,
-      image: "/images/gallery-1.jpg",
+      image: gallery1,
       title: "Gold Buying Service",
       subtitle: "Highest Cash Prices in Sri Lanka",
       desc: "Looking for a trusted gold buying service in Sri Lanka? We offer competitive prices for all types of gold, including gold jewelry, gold coins, gold bars, and scrap gold. Our experienced team provides free evaluations, transparent pricing based on the latest gold market rates, and instant cash payments.",
@@ -25,7 +31,7 @@ export default function Services({ currentLang }: ServicesProps) {
     },
     {
       icon: <Gem className="h-6 w-6 text-amber-500" />,
-      image: "/images/gallery-2.jpg",
+      image: gallery2,
       title: "Diamond & Gem Buying",
       subtitle: "Certified & Precious Gemstones",
       desc: "Looking for a trusted diamond and gem buyer in Sri Lanka? We buy natural diamonds, certified diamonds, precious gemstones, loose stones, and diamond jewelry at competitive market prices. We ensure a secure, confidential, and hassle-free experience for rubies, sapphires, emeralds, and more.",
@@ -38,7 +44,7 @@ export default function Services({ currentLang }: ServicesProps) {
     },
     {
       icon: <Watch className="h-6 w-6 text-amber-500" />,
-      image: "/images/gallery-3.jpg",
+      image: gallery3,
       title: "Luxury Watch Buyers",
       subtitle: "Rolex, Patek Philippe, Omega & More",
       desc: "Looking to sell your luxury watch? We are trusted luxury watch buyers in Sri Lanka, offering competitive prices for authentic luxury timepieces. We buy pre-owned and new luxury watches providing professional evaluations, fair market prices, and instant payments.",
@@ -53,27 +59,27 @@ export default function Services({ currentLang }: ServicesProps) {
 
   const galleryItems = [
     {
-      src: "/images/gallery-1.jpg",
+      src: gallery1,
       title: "Precision Gold Inspection",
       desc: "Evaluating gold weight and testing purity with high-precision instrumentation."
     },
     {
-      src: "/images/gallery-2.jpg",
+      src: gallery2,
       title: "XRF Computerized Testing",
       desc: "Using advanced XRF spectrometer technology for 100% non-destructive purity analysis."
     },
     {
-      src: "/images/gallery-3.jpg",
+      src: gallery3,
       title: "Professional Appraisal Desk",
       desc: "Providing a secure, private, and confidential environment for asset valuations."
     },
     {
-      src: "/images/gallery-4.jpg",
+      src: gallery4,
       title: "Certified Digital Scales",
       desc: "Government-approved and calibrated state-of-the-art scale readouts."
     },
     {
-      src: "/images/gallery-5.jpg",
+      src: gallery5,
       title: "Instant Secure Cash Out",
       desc: "Instant cash payouts or bank transfers with fully transparent receipts."
     }
