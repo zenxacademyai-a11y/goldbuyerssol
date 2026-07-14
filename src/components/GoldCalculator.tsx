@@ -159,59 +159,10 @@ I'd like to book an appointment to test and sell my gold today.`
         {/* Calculator Main Grid */}
         <div className="max-w-xl mx-auto w-full">
           
-          {isLoading ? (
-            <>
-              {/* Inputs Section Skeleton (lg:col-span-5) */}
-              <div className="bg-neutral-50 rounded-xl border border-neutral-200 p-6 flex flex-col justify-between shadow-sm  animate-pulse">
-                <div className="space-y-6">
-                  <div className="h-5 w-44 bg-neutral-200 rounded mb-4"></div>
-                  
-                  {/* Karat selection skeleton */}
-                  <div className="space-y-2">
-                    <div className="h-3 w-16 bg-neutral-200 rounded"></div>
-                    <div className="grid grid-cols-4 gap-2">
-                      {[1, 2, 3, 4].map((i) => (
-                        <div key={i} className="h-11 bg-neutral-200 rounded"></div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Weight unit selection skeleton */}
-                  <div className="space-y-2">
-                    <div className="h-3 w-20 bg-neutral-200 rounded"></div>
-                    <div className="grid grid-cols-2 gap-2">
-                      <div className="h-9 bg-neutral-200 rounded"></div>
-                      <div className="h-9 bg-neutral-200 rounded"></div>
-                    </div>
-                  </div>
-
-                  {/* Slider & inputs skeleton */}
-                  <div className="space-y-3">
-                    <div className="flex justify-between">
-                      <div className="h-3.5 w-24 bg-neutral-200 rounded"></div>
-                      <div className="h-7 w-20 bg-neutral-200 rounded"></div>
-                    </div>
-                    <div className="h-4 bg-neutral-200 rounded"></div>
-                    <div className="h-3.5 w-36 bg-neutral-200 rounded"></div>
-                  </div>
-
-                  {/* Deduction field skeleton */}
-                  <div className="space-y-2">
-                    <div className="h-3.5 w-44 bg-neutral-200 rounded"></div>
-                    <div className="h-10 bg-neutral-200 rounded"></div>
-                  </div>
-                </div>
-
-                <div className="h-12 w-full bg-neutral-150 rounded mt-6"></div>
-              </div>
-
-
-            </>
-          ) : (
-            <>
-              {/* Inputs Section (lg:col-span-5) */}
-              <div className="bg-neutral-50 rounded-xl border border-neutral-200 p-6 flex flex-col justify-between shadow-sm">
-                <div className="space-y-6">
+              <>
+                {/* Inputs Section (lg:col-span-5) */}
+                <div className="bg-neutral-50 rounded-xl border border-neutral-200 p-6 flex flex-col justify-between shadow-sm">
+                  <div className="space-y-6">
                   <h3 className="text-lg font-serif font-bold text-neutral-950 border-b border-neutral-200 pb-3">
                     1. Specify Gold Specifications
                   </h3>
@@ -326,7 +277,7 @@ I'd like to book an appointment to test and sell my gold today.`
 
 
             </>
-          )}
+          
 
         </div>
       </div>

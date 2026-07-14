@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface ScrollRevealProps {
   children: React.ReactNode;
@@ -8,38 +8,21 @@ interface ScrollRevealProps {
 
 export default function ScrollReveal({ children, className = "", delay = 0 }: ScrollRevealProps) {
   const [isVisible, setIsVisible] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const currentRef = ref.current;
-    if (!currentRef) return;
+    // Set to visible almost immediately on mount so content renders instantly
+    // and doesn't suffer from iframe intersection observer issues/delays.
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, 50);
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(currentRef);
-        }
-      },
-      {
-        root: null,
-        rootMargin: "0px",
-        threshold: 0.1,
-      }
-    );
-
-    observer.observe(currentRef);
-
-    return () => {
-      if (currentRef) observer.unobserve(currentRef);
-    };
+    return () => clearTimeout(timer);
   }, []);
 
   return (
     <div
-      ref={ref}
-      className={`transition-all duration-1000 ease-out ${
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
+      className={`transition-all duration-700 ease-out ${
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
       } ${className}`}
       style={{ transitionDelay: `${delay}ms` }}
     >
@@ -47,3 +30,4 @@ export default function ScrollReveal({ children, className = "", delay = 0 }: Sc
     </div>
   );
 }
+

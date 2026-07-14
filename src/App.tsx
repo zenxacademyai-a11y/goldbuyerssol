@@ -3,12 +3,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect, Suspense, lazy } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import Header from "./components/Header.js";
 import MobileStickyBar from "./components/MobileStickyBar.js";
 import Hero from "./components/Hero.js";
 import ScrollReveal from "./components/ScrollReveal.js";
-const LiveRateWidget = lazy(() => import("./components/LiveRateWidget.js"));
+import LiveRateWidget from "./components/LiveRateWidget.js";
 import Footer from "./components/Footer.js";
 import ExitIntentPopup from "./components/ExitIntentPopup.js";
 import { Language } from "./lib/translations.js";
@@ -16,21 +16,21 @@ import { GoldKarat, GoldRate, SystemSettings, CustomerLead, BlogPost, Historical
 import { updateMetaTags } from "./lib/seo.js";
 import SEOSchemas from "./components/SEOSchemas.js";
 import { localDb, fetchFallbackData } from "./lib/localDb.js";
-const GoldCalculator = lazy(() => import("./components/GoldCalculator.js"));
-const SellingProcess = lazy(() => import("./components/SellingProcess.js"));
-const Services = lazy(() => import("./components/Services.js"));
-const WhyChooseUs = lazy(() => import("./components/WhyChooseUs.js"));
-const Testimonials = lazy(() => import("./components/Testimonials.js"));
-const FAQSection = lazy(() => import("./components/FAQSection.js"));
-const ContactSection = lazy(() => import("./components/ContactSection.js"));
-const BlogPreview = lazy(() => import("./components/BlogPreview.js"));
-const AdminDashboard = lazy(() => import("./components/AdminDashboard.js"));
-const AboutPage = lazy(() => import("./components/AboutPage.js"));
-const ContactPage = lazy(() => import("./components/ContactPage.js"));
-const ServicesPage = lazy(() => import("./components/ServicesPage.js"));
-const BranchesPage = lazy(() => import("./components/BranchesPage.js"));
-const RecentPosts = lazy(() => import("./components/RecentPosts.js"));
-const ChatWithConsultant = lazy(() => import("./components/ChatWithConsultant.js"));
+import GoldCalculator from "./components/GoldCalculator.js";
+import SellingProcess from "./components/SellingProcess.js";
+import Services from "./components/Services.js";
+import WhyChooseUs from "./components/WhyChooseUs.js";
+import Testimonials from "./components/Testimonials.js";
+import FAQSection from "./components/FAQSection.js";
+import ContactSection from "./components/ContactSection.js";
+import BlogPreview from "./components/BlogPreview.js";
+import AdminDashboard from "./components/AdminDashboard.js";
+import AboutPage from "./components/AboutPage.js";
+import ContactPage from "./components/ContactPage.js";
+import ServicesPage from "./components/ServicesPage.js";
+import BranchesPage from "./components/BranchesPage.js";
+import RecentPosts from "./components/RecentPosts.js";
+import ChatWithConsultant from "./components/ChatWithConsultant.js";
 
 export default function App() {
   // Navigation & Language
@@ -258,12 +258,15 @@ export default function App() {
     });
   };
 
+  // Pre-populate with fallback data from localDb so pages render instantly without blank frames or layout shifts
+  const initialData = fetchFallbackData();
+
   // Dynamic state loaded from Express Backend
-  const [rates, setRates] = useState<GoldRate[]>([]);
-  const [settings, setSettings] = useState<SystemSettings | null>(null);
-  const [leads, setLeads] = useState<CustomerLead[]>([]);
-  const [blogs, setBlogs] = useState<BlogPost[]>([]);
-  const [historicalRates, setHistoricalRates] = useState<HistoricalRate[]>([]);
+  const [rates, setRates] = useState<GoldRate[]>(initialData.rates);
+  const [settings, setSettings] = useState<SystemSettings | null>(initialData.settings);
+  const [leads, setLeads] = useState<CustomerLead[]>(initialData.leads);
+  const [blogs, setBlogs] = useState<BlogPost[]>(initialData.blogs);
+  const [historicalRates, setHistoricalRates] = useState<HistoricalRate[]>(initialData.historical);
   const [isLoading, setIsLoading] = useState(true);
 
   // Fetch initial data from server
@@ -415,14 +418,6 @@ export default function App() {
         showAdmin={showAdmin}
         onLogoClick={handleLogoClick}
       />
-
-      {/* Loading state bar */}
-      {isLoading && (
-        <div className="bg-amber-500 text-black text-center py-1.5 text-xs font-mono font-bold tracking-widest flex items-center justify-center gap-1.5">
-          <span className="h-2 w-2 rounded-full bg-black animate-ping"></span>
-          <span>CONNECTING SECURE DATABASE PIPELINE...</span>
-        </div>
-      )}
 
       {/* Primary Views Route Switcher */}
       <main className="pb-16 md:pb-0">

@@ -65,33 +65,6 @@ export default function LiveRateWidget({
           {/* Main Table/Cards (lg:col-span-7) */}
           <div className="lg:col-span-7 bg-neutral-50 rounded-xl border border-neutral-200 p-6 shadow-sm min-h-[400px]">
             
-            {isLoading ? (
-              <div className="space-y-6 animate-pulse">
-                <div className="flex justify-between items-center mb-6">
-                  <div className="flex items-center gap-2">
-                    <div className="h-3 w-20 bg-neutral-200 rounded"></div>
-                    <div className="h-3.5 w-32 bg-neutral-200 rounded"></div>
-                  </div>
-                  <div className="h-8 w-8 bg-neutral-200 rounded-full"></div>
-                </div>
-
-                {/* Skeletons for rates row block */}
-                <div className="space-y-6">
-                  {[1, 2, 3, 4].map((i) => (
-                    <div key={i} className="flex justify-between items-center py-4 border-b border-neutral-200/60 last:border-0">
-                      <div className="space-y-2">
-                        <div className="h-5 w-36 bg-neutral-200 rounded"></div>
-                        <div className="h-3 w-20 bg-neutral-200 rounded"></div>
-                      </div>
-                      <div className="flex gap-4 sm:gap-12 text-right">
-                        <div className="h-5 w-20 sm:w-24 bg-neutral-200 rounded"></div>
-                        <div className="h-5 w-24 sm:w-28 bg-neutral-200 rounded"></div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ) : (
               <>
                 {/* Table Header Controls */}
                 <div className="flex justify-between items-center mb-6">
@@ -193,36 +166,10 @@ export default function LiveRateWidget({
                   {t.ratesDisclaimer}
                 </p>
               </>
-            )}
           </div>
  
           {/* Historical Trends Chart (lg:col-span-5) */}
           <div className="lg:col-span-5 bg-neutral-50 rounded-xl border border-neutral-200 p-6 shadow-sm min-h-[400px]">
-            {isLoading ? (
-              <div className="animate-pulse space-y-6">
-                <div className="flex justify-between items-center mb-6">
-                  <div className="h-4 w-48 bg-neutral-200 rounded"></div>
-                  <div className="h-7 w-20 bg-neutral-200 rounded"></div>
-                </div>
-                {/* Simulated Chart Wave */}
-                <div className="h-64 w-full bg-neutral-100 rounded-lg flex items-end p-4 gap-2 justify-between relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-neutral-200/20 to-transparent -translate-x-full animate-[shimmer_1.5s_infinite]"></div>
-                  <div className="w-[8%] h-[20%] bg-neutral-200/80 rounded-t"></div>
-                  <div className="w-[8%] h-[35%] bg-neutral-200/80 rounded-t"></div>
-                  <div className="w-[8%] h-[25%] bg-neutral-200/80 rounded-t"></div>
-                  <div className="w-[8%] h-[45%] bg-neutral-200/80 rounded-t"></div>
-                  <div className="w-[8%] h-[55%] bg-neutral-200/80 rounded-t"></div>
-                  <div className="w-[8%] h-[50%] bg-neutral-200/80 rounded-t"></div>
-                  <div className="w-[8%] h-[70%] bg-neutral-200/80 rounded-t"></div>
-                  <div className="w-[8%] h-[60%] bg-neutral-200/80 rounded-t"></div>
-                  <div className="w-[8%] h-[80%] bg-neutral-200/80 rounded-t"></div>
-                  <div className="w-[8%] h-[75%] bg-neutral-200/80 rounded-t"></div>
-                  <div className="w-[8%] h-[90%] bg-neutral-200/80 rounded-t"></div>
-                </div>
-                {/* Simulated bonus banner card */}
-                <div className="h-16 w-full bg-neutral-100 border border-neutral-200/40 rounded-lg"></div>
-              </div>
-            ) : (
               <>
                 <div className="flex justify-between items-center mb-6">
                   <h3 className="text-sm font-mono uppercase tracking-widest text-neutral-600 flex items-center gap-1.5 font-semibold">
@@ -305,7 +252,6 @@ export default function LiveRateWidget({
                   </div>
                 </div>
               </>
-            )}
           </div>
 
         </div>
