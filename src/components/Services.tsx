@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Coins, Gem, Watch, CheckCircle2, ShieldCheck, Eye, X, ZoomIn } from "lucide-react";
+import { Coins, Gem, Watch, CheckCircle2, ShieldCheck, X, ZoomIn } from "lucide-react";
 import { Language } from "../lib/translations.js";
 import ResponsiveImage from "./ResponsiveImage.js";
 
@@ -10,31 +10,26 @@ import gallery3 from "../assets/images/gallery-3.jpg";
 import gallery4 from "../assets/images/gallery-4.jpg";
 import gallery5 from "../assets/images/gallery-5.jpg";
 
-// Import generated WebP images and blur placeholders
+// Import generated WebP images
 import gallery1Sm from "../assets/images/gallery-1-sm.webp";
 import gallery1Md from "../assets/images/gallery-1-md.webp";
 import gallery1Lg from "../assets/images/gallery-1-lg.webp";
-import gallery1Blur from "../assets/images/gallery-1-blur.webp";
 
 import gallery2Sm from "../assets/images/gallery-2-sm.webp";
 import gallery2Md from "../assets/images/gallery-2-md.webp";
 import gallery2Lg from "../assets/images/gallery-2-lg.webp";
-import gallery2Blur from "../assets/images/gallery-2-blur.webp";
 
 import gallery3Sm from "../assets/images/gallery-3-sm.webp";
 import gallery3Md from "../assets/images/gallery-3-md.webp";
 import gallery3Lg from "../assets/images/gallery-3-lg.webp";
-import gallery3Blur from "../assets/images/gallery-3-blur.webp";
 
 import gallery4Sm from "../assets/images/gallery-4-sm.webp";
 import gallery4Md from "../assets/images/gallery-4-md.webp";
 import gallery4Lg from "../assets/images/gallery-4-lg.webp";
-import gallery4Blur from "../assets/images/gallery-4-blur.webp";
 
 import gallery5Sm from "../assets/images/gallery-5-sm.webp";
 import gallery5Md from "../assets/images/gallery-5-md.webp";
 import gallery5Lg from "../assets/images/gallery-5-lg.webp";
-import gallery5Blur from "../assets/images/gallery-5-blur.webp";
 
 interface ServicesProps {
   currentLang: Language;
@@ -45,7 +40,6 @@ interface GalleryItemType {
   srcSm: string;
   srcMd: string;
   srcLg: string;
-  srcBlur: string;
   title: string;
   desc: string;
 }
@@ -60,7 +54,6 @@ export default function Services({ currentLang }: ServicesProps) {
       imageSm: gallery1Sm,
       imageMd: gallery1Md,
       imageLg: gallery1Lg,
-      imageBlur: gallery1Blur,
       title: "Gold Buying Service",
       subtitle: "Highest Cash Prices in Sri Lanka",
       desc: "Looking for a trusted gold buying service in Sri Lanka? We offer competitive prices for all types of gold, including gold jewelry, gold coins, gold bars, and scrap gold. Our experienced team provides free evaluations, transparent pricing based on the latest gold market rates, and instant cash payments.",
@@ -77,7 +70,6 @@ export default function Services({ currentLang }: ServicesProps) {
       imageSm: gallery2Sm,
       imageMd: gallery2Md,
       imageLg: gallery2Lg,
-      imageBlur: gallery2Blur,
       title: "Diamond & Gem Buying",
       subtitle: "Certified & Precious Gemstones",
       desc: "Looking for a trusted diamond and gem buyer in Sri Lanka? We buy natural diamonds, certified diamonds, precious gemstones, loose stones, and diamond jewelry at competitive market prices. We ensure a secure, confidential, and hassle-free experience for rubies, sapphires, emeralds, and more.",
@@ -94,7 +86,6 @@ export default function Services({ currentLang }: ServicesProps) {
       imageSm: gallery3Sm,
       imageMd: gallery3Md,
       imageLg: gallery3Lg,
-      imageBlur: gallery3Blur,
       title: "Luxury Watch Buyers",
       subtitle: "Rolex, Patek Philippe, Omega & More",
       desc: "Looking to sell your luxury watch? We are trusted luxury watch buyers in Sri Lanka, offering competitive prices for authentic luxury timepieces. We buy pre-owned and new luxury watches providing professional evaluations, fair market prices, and instant payments.",
@@ -113,7 +104,6 @@ export default function Services({ currentLang }: ServicesProps) {
       srcSm: gallery1Sm,
       srcMd: gallery1Md,
       srcLg: gallery1Lg,
-      srcBlur: gallery1Blur,
       title: "Precision Gold Inspection",
       desc: "Evaluating gold weight and testing purity with high-precision instrumentation."
     },
@@ -122,7 +112,6 @@ export default function Services({ currentLang }: ServicesProps) {
       srcSm: gallery2Sm,
       srcMd: gallery2Md,
       srcLg: gallery2Lg,
-      srcBlur: gallery2Blur,
       title: "XRF Computerized Testing",
       desc: "Using advanced XRF spectrometer technology for 100% non-destructive purity analysis."
     },
@@ -131,7 +120,6 @@ export default function Services({ currentLang }: ServicesProps) {
       srcSm: gallery3Sm,
       srcMd: gallery3Md,
       srcLg: gallery3Lg,
-      srcBlur: gallery3Blur,
       title: "Professional Appraisal Desk",
       desc: "Providing a secure, private, and confidential environment for asset valuations."
     },
@@ -140,7 +128,6 @@ export default function Services({ currentLang }: ServicesProps) {
       srcSm: gallery4Sm,
       srcMd: gallery4Md,
       srcLg: gallery4Lg,
-      srcBlur: gallery4Blur,
       title: "Certified Digital Scales",
       desc: "Government-approved and calibrated state-of-the-art scale readouts."
     },
@@ -149,7 +136,6 @@ export default function Services({ currentLang }: ServicesProps) {
       srcSm: gallery5Sm,
       srcMd: gallery5Md,
       srcLg: gallery5Lg,
-      srcBlur: gallery5Blur,
       title: "Instant Secure Cash Out",
       desc: "Instant cash payouts or bank transfers with fully transparent receipts."
     }
@@ -184,7 +170,6 @@ export default function Services({ currentLang }: ServicesProps) {
                   srcMd={service.imageMd}
                   srcLg={service.imageLg}
                   srcFallback={service.image}
-                  blurPlaceholder={service.imageBlur}
                   alt={service.title}
                   className="h-full w-full"
                   imgClassName="transition-transform duration-700 ease-out group-hover:scale-110"
@@ -244,7 +229,6 @@ export default function Services({ currentLang }: ServicesProps) {
                   srcMd={item.srcMd}
                   srcLg={item.srcLg}
                   srcFallback={item.src}
-                  blurPlaceholder={item.srcBlur}
                   alt={item.title}
                   className="h-full w-full"
                   imgClassName="transition-transform duration-500 group-hover:scale-105"
@@ -309,7 +293,6 @@ export default function Services({ currentLang }: ServicesProps) {
               srcMd={activePhoto.srcMd}
               srcLg={activePhoto.srcLg}
               srcFallback={activePhoto.src}
-              blurPlaceholder={activePhoto.srcBlur}
               alt={activePhoto.title}
               className="max-w-full max-h-[80vh] rounded-xl border border-neutral-800 shadow-2xl animate-zoom-in"
               imgClassName="object-contain max-h-[80vh]"
