@@ -48,26 +48,32 @@ export default function Hero({ currentLang }: { currentLang: Language }) {
         <div className="pointer-events-auto inline-flex items-center justify-center gap-1.5 px-4 py-1.5 rounded-full border border-neutral-200 bg-neutral-50 mb-8">
           <span className="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
           <span className="text-[10px] md:text-xs font-bold tracking-widest text-neutral-600 uppercase">
-            {currentLang === "si" ? "කොළඹ රන් ගැනුම්කරුවන්" : currentLang === "ta" ? "கொழும்பில் தங்கம் வாங்குபவர்கள்" : "Gold Buyers in Colombo"}
+            {currentLang === "si" ? "කොළඹ නො.1 විශ්වාසදායක රන් ගැනුම්කරුවන්" : currentLang === "ta" ? "கொழும்பின் No.1 நம்பகமான தங்கம் வாங்குபவர்கள்" : "No.1 Trusted Gold Buyer in Colombo, Sri Lanka"}
           </span>
         </div>
 
         {/* Big Heading */}
         <h1 className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tight leading-[1.1] mb-6">
-          <span className="text-neutral-900 block md:inline">Trusted </span>
-          <span className="text-neutral-900 block md:inline">Gold Buyers</span>
+          <span className="text-neutral-900 block md:inline">
+            {currentLang === "si" ? "නො.1 විශ්වාසදායක " : currentLang === "ta" ? "No.1 நம்பகமான " : "No.1 Trusted "}
+          </span>
+          <span className="text-neutral-900 block md:inline">
+            {currentLang === "si" ? "රන් ගැනුම්කරුවෝ" : currentLang === "ta" ? "தங்கம் வாங்குபவர்" : "Gold Buyer"}
+          </span>
           <br className="hidden md:block" />
           <span className="text-neutral-900"> in </span>
-          <span className="text-amber-500">Colombo</span>
+          <span className="text-amber-500">
+            {currentLang === "si" ? "කොළඹ, ශ්‍රී ලංකාව" : currentLang === "ta" ? "கொழும்பு, இலங்கை" : "Colombo, Sri Lanka"}
+          </span>
         </h1>
 
         {/* Description */}
         <p className="max-w-2xl text-neutral-600 text-sm md:text-base leading-relaxed mb-10">
           {currentLang === "si" ? 
-            "කොළඹ වඩාත්ම විශ්වාසදායක රන් ගැනුම්කරුවන් — ඔබගේ රන් ආභරණ, රන් කාසි සහ රන් බාර් සඳහා ඉහළම මුදල් ගෙවීම් ශ්‍රී ලංකාව පුරා ලබා දීම." : 
+            "කොළඹ නො.1 විශ්වාසදායක රන් ගැනුම්කරුවන් — ඔබගේ රන් ආභරණ, රන් කාසි සහ රන් බාර් සඳහා ඉහළම මුදල් ගෙවීම් ශ්‍රී ලංකාව පුරා ලබා දීම." : 
            currentLang === "ta" ? 
-            "கொழும்பின் மிகவும் நம்பகமான தங்கம் வாங்குபவர்கள் - உங்கள் தங்க நகைகள், தங்க நாணயங்கள் மற்றும் தங்கக் கட்டிகளுக்கு அதிகபட்ச பணத்தை வழங்குகிறோம்." : 
-            "Colombo's most trusted gold buyers and gold merchants — delivering the highest cash payout for your gold jewelry, gold coins, scrap gold & more across Sri Lanka."}
+            "கொழும்பின் No.1 நம்பகமான தங்கம் வாங்குபவர்கள் - உங்கள் தங்க நகைகள், தங்க நாணயங்கள் மற்றும் தங்கக் கட்டிகளுக்கு அதிகபட்ச பணத்தை வழங்குகிறோம்." : 
+            "No.1 Trusted Gold Buyer in Colombo, Sri Lanka — delivering the highest cash payout for your gold jewelry, gold coins, scrap gold & more across Sri Lanka."}
         </p>
 
         {/* Chips - Scrolling Marquee */}

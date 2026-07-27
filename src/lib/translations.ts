@@ -39,8 +39,8 @@ export const translations = {
     aiWriting: "Generate with AI Writer",
     
     // Hero Section
-    heroTitle: "Sell Your Gold, Diamonds & Luxury Watches for the Highest Price in Colombo",
-    heroSubtitle: "Experience complete transparency, certified testing, and instant cash payouts for gold, gems, and luxury timepieces. Trusted since 1976.",
+    heroTitle: "No.1 Trusted Gold Buyer in Colombo, Sri Lanka",
+    heroSubtitle: "Experience complete transparency, certified XRF testing, and instant cash payouts for gold jewelry, coins & bullion. Sri Lanka's No.1 trusted gold exchange since 1976.",
     yearsExperience: "50+ Years Legacy",
     happyCustomers: "3,500+ Happy Sellers",
     ratingTitle: "4.9 Google Maps Rating",
@@ -150,8 +150,8 @@ export const translations = {
     aiWriting: "AI මගින් ලිපියක් ලියන්න",
     
     // Hero Section
-    heroTitle: "කොළඹ ඉහළම වෙළඳපල මිලට ඔබේ රත්තරන් විකුණන්න",
-    heroSubtitle: "පූර්ණ විනිවිදභාවය, සහතික කළ පරිගණක පරීක්ෂණ සහ ක්ෂණික මුදල් ගෙවීම්. පරම්පරා ගණනාවක විශ්වාසය.",
+    heroTitle: "කොළඹ නො.1 විශ්වාසදායක රන් ගැනුම්කරුවෝ - ශ්‍රී ලංකාව",
+    heroSubtitle: "පූර්ණ විනිවිදභාවය, සහතික කළ පරිගණක පරීක්ෂණ සහ ක්ෂණික මුදල් ගෙවීම්. ශ්‍රී ලංකාවේ නො.1 විශ්වාසනීය රන් හුවමාරුව.",
     yearsExperience: "වසර 50ක විශ්වාසය",
     happyCustomers: "3,500+ සතුටුදායක ගනුදෙනුකරුවන්",
     ratingTitle: "4.9 ගූගල් ඇගයීම්",
@@ -261,8 +261,8 @@ export const translations = {
     aiWriting: "AI மூலம் கட்டுரை எழுதுக",
     
     // Hero Section
-    heroTitle: "கொழும்பில் மிக உயர்ந்த சந்தை விலைக்கு உங்கள் தங்கத்தை விற்கவும்",
-    heroSubtitle: "முழுமையான வெளிப்படைத்தன்மை, சான்றளிக்கப்பட்ட கணினி சோதனை மற்றும் உடனடி பண பட்டுவாடா. தலைமுறைகளாக நம்பப்படும் சேவை.",
+    heroTitle: "கொழும்பின் No.1 நம்பகமான தங்கம் வாங்குபவர் - இலங்கை",
+    heroSubtitle: "முழுமையான வெளிப்படைத்தன்மை, சான்றளிக்கப்பட்ட கணினி சோதனை மற்றும் உடனடி பண பட்டுவாடா. இலங்கையின் No.1 நம்பகமான தங்கம் மாற்று நிறுவனம்.",
     yearsExperience: "50+ வருட பாரம்பரியம்",
     happyCustomers: "3,500+ மகிழ்ச்சியான வாடிக்கையாளர்கள்",
     ratingTitle: "4.9 கூகுள் மதிப்பீடு",
