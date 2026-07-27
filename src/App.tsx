@@ -31,6 +31,9 @@ import ServicesPage from "./components/ServicesPage.js";
 import BranchesPage from "./components/BranchesPage.js";
 import RecentPosts from "./components/RecentPosts.js";
 import ChatWithConsultant from "./components/ChatWithConsultant.js";
+import FairValuationSection from "./components/FairValuationSection.js";
+import HomeAboutSection from "./components/HomeAboutSection.js";
+import FinalCTASection from "./components/FinalCTASection.js";
 
 export default function App() {
   // Navigation & Language
@@ -424,59 +427,102 @@ export default function App() {
         <Suspense fallback={<div className="flex justify-center items-center h-64"><div className="w-8 h-8 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div></div>}>
         {activeView === "home" ? (
           <>
+            {/* 1. Hero Section */}
             <ScrollReveal>
               <Hero currentLang={currentLang} />
             </ScrollReveal>
-<ScrollReveal>
-            <LiveRateWidget
-              currentLang={currentLang}
-              rates={rates.length > 0 ? rates : [
-                { karat: GoldKarat.K24, purity: 0.999, ratePerGram: 31250 },
-                { karat: GoldKarat.K22, purity: 0.916, ratePerGram: 28650 },
-                { karat: GoldKarat.K21, purity: 0.875, ratePerGram: 27350 },
-              ]}
-              settings={activeSettings}
-              historicalRates={historicalRates}
-              onRefresh={fetchAllData}
-              isLoading={isLoading}
-            />
-            </ScrollReveal>
+
+            {/* 2. Why Choose Gold Buyers Colombo */}
             <ScrollReveal>
-            <GoldCalculator
-              currentLang={currentLang}
-              rates={rates.length > 0 ? rates : [
-                { karat: GoldKarat.K24, purity: 0.999, ratePerGram: 31250 },
-                { karat: GoldKarat.K22, purity: 0.916, ratePerGram: 28650 },
-                { karat: GoldKarat.K21, purity: 0.875, ratePerGram: 27350 },
-              ]}
-              settings={activeSettings}
-              isLoading={isLoading}
-            />
+              <WhyChooseUs currentLang={currentLang} />
             </ScrollReveal>
-            <ScrollReveal><Services currentLang={currentLang} /></ScrollReveal>
-            <ScrollReveal><SellingProcess currentLang={currentLang} /></ScrollReveal>
-            <ScrollReveal><WhyChooseUs currentLang={currentLang} /></ScrollReveal>
-            <ScrollReveal><Testimonials currentLang={currentLang} /></ScrollReveal>
-            <ScrollReveal><FAQSection currentLang={currentLang} /></ScrollReveal>
+
+            {/* 3. How It Works (4-Step Visual Timeline) */}
             <ScrollReveal>
-            <RecentPosts
-              currentLang={currentLang}
-              blogs={blogs}
-              onSelectBlog={(slug) => {
-                setSelectedBlogSlug(slug);
-                setActiveView("blog");
-                window.scrollTo({ top: 0, behavior: "smooth" });
-              }}
-              onViewAll={() => {
-                setSelectedBlogSlug(null);
-                setActiveView("blog");
-                window.scrollTo({ top: 0, behavior: "smooth" });
-              }}
-            />
+              <SellingProcess currentLang={currentLang} />
+            </ScrollReveal>
+
+            {/* 4. Live Gold Price Dashboard & Calculator */}
+            <div id="live-rates">
+              <ScrollReveal>
+                <LiveRateWidget
+                  currentLang={currentLang}
+                  rates={rates.length > 0 ? rates : [
+                    { karat: GoldKarat.K24, purity: 0.999, ratePerGram: 31250 },
+                    { karat: GoldKarat.K22, purity: 0.916, ratePerGram: 28650 },
+                    { karat: GoldKarat.K21, purity: 0.875, ratePerGram: 27350 },
+                  ]}
+                  settings={activeSettings}
+                  historicalRates={historicalRates}
+                  onRefresh={fetchAllData}
+                  isLoading={isLoading}
+                />
+              </ScrollReveal>
+
+              <ScrollReveal>
+                <GoldCalculator
+                  currentLang={currentLang}
+                  rates={rates.length > 0 ? rates : [
+                    { karat: GoldKarat.K24, purity: 0.999, ratePerGram: 31250 },
+                    { karat: GoldKarat.K22, purity: 0.916, ratePerGram: 28650 },
+                    { karat: GoldKarat.K21, purity: 0.875, ratePerGram: 27350 },
+                  ]}
+                  settings={activeSettings}
+                  isLoading={isLoading}
+                />
+              </ScrollReveal>
+            </div>
+
+            {/* 5. What We Buy */}
+            <ScrollReveal>
+              <Services currentLang={currentLang} />
+            </ScrollReveal>
+
+            {/* 6. Why Our Valuation Is Fair */}
+            <ScrollReveal>
+              <FairValuationSection currentLang={currentLang} />
+            </ScrollReveal>
+
+            {/* 7. Customer Testimonials */}
+            <ScrollReveal>
+              <Testimonials currentLang={currentLang} />
+            </ScrollReveal>
+
+            {/* 8. About Section / Company Story */}
+            <ScrollReveal>
+              <HomeAboutSection currentLang={currentLang} setView={setActiveView} />
+            </ScrollReveal>
+
+            {/* 9. FAQ Section */}
+            <ScrollReveal>
+              <FAQSection currentLang={currentLang} />
+            </ScrollReveal>
+
+            {/* 10. Educational Resources / Blog Posts */}
+            <ScrollReveal>
+              <RecentPosts
+                currentLang={currentLang}
+                blogs={blogs}
+                onSelectBlog={(slug) => {
+                  setSelectedBlogSlug(slug);
+                  setActiveView("blog");
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+                onViewAll={() => {
+                  setSelectedBlogSlug(null);
+                  setActiveView("blog");
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+              />
             </ScrollReveal>
             
+            {/* 11. Final High-Converting CTA & Contact Location */}
             <ScrollReveal>
-            <ContactSection currentLang={currentLang} />
+              <FinalCTASection currentLang={currentLang} />
+            </ScrollReveal>
+
+            <ScrollReveal>
+              <ContactSection currentLang={currentLang} />
             </ScrollReveal>
           </>
         ) : activeView === "services" ? (
