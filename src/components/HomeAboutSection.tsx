@@ -18,10 +18,10 @@ export default function HomeAboutSection({ currentLang, setView }: HomeAboutSect
           <div className="lg:col-span-5 relative">
             <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-neutral-200 bg-neutral-900 group">
               <ResponsiveImage
-                srcFallback="/images/gallery-3.jpg"
-                srcSm="/images/gallery-3-sm.webp"
-                srcMd="/images/gallery-3-md.webp"
-                srcLg="/images/gallery-3-lg.webp"
+                srcFallback="/img-7.jpeg"
+                srcSm="/img-7.jpeg"
+                srcMd="/img-7.jpeg"
+                srcLg="/img-7.jpeg"
                 alt="Gold Buyers Colombo Private Appraisal Lounge"
                 className="w-full h-full"
                 imgClassName="w-full h-64 sm:h-96 lg:h-[450px] object-cover transition-transform duration-700 group-hover:scale-105"

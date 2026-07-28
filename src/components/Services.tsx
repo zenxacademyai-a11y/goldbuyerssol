@@ -22,10 +22,10 @@ export default function Services({ currentLang }: ServicesProps) {
   const services = [
     {
       icon: <Coins className="h-6 w-6 text-amber-500" />,
-      image: "/images/gallery-1.jpg",
-      imageSm: "/images/gallery-1-sm.webp",
-      imageMd: "/images/gallery-1-md.webp",
-      imageLg: "/images/gallery-1-lg.webp",
+      image: "/img-1.jpeg",
+      imageSm: "/img-1.jpeg",
+      imageMd: "/img-1.jpeg",
+      imageLg: "/img-1.jpeg",
       title: "Gold Buying Service",
       subtitle: "Highest Cash Prices in Sri Lanka",
       desc: "Looking for a trusted gold buying service in Sri Lanka? We offer competitive prices for all types of gold, including gold jewelry, gold coins, gold bars, and scrap gold. Our experienced team provides free evaluations, transparent pricing based on the latest gold market rates, and instant cash payments.",
@@ -38,10 +38,10 @@ export default function Services({ currentLang }: ServicesProps) {
     },
     {
       icon: <Gem className="h-6 w-6 text-amber-500" />,
-      image: "/images/gallery-2.jpg",
-      imageSm: "/images/gallery-2-sm.webp",
-      imageMd: "/images/gallery-2-md.webp",
-      imageLg: "/images/gallery-2-lg.webp",
+      image: "/img-4.jpeg",
+      imageSm: "/img-4.jpeg",
+      imageMd: "/img-4.jpeg",
+      imageLg: "/img-4.jpeg",
       title: "Diamond & Gem Buying",
       subtitle: "Certified & Precious Gemstones",
       desc: "Looking for a trusted diamond and gem buyer in Sri Lanka? We buy natural diamonds, certified diamonds, precious gemstones, loose stones, and diamond jewelry at competitive market prices. We ensure a secure, confidential, and hassle-free experience for rubies, sapphires, emeralds, and more.",
@@ -54,10 +54,10 @@ export default function Services({ currentLang }: ServicesProps) {
     },
     {
       icon: <Watch className="h-6 w-6 text-amber-500" />,
-      image: "/images/gallery-3.jpg",
-      imageSm: "/images/gallery-3-sm.webp",
-      imageMd: "/images/gallery-3-md.webp",
-      imageLg: "/images/gallery-3-lg.webp",
+      image: "/img-6.jpeg",
+      imageSm: "/img-6.jpeg",
+      imageMd: "/img-6.jpeg",
+      imageLg: "/img-6.jpeg",
       title: "Luxury Watch Buyers",
       subtitle: "Rolex, Patek Philippe, Omega & More",
       desc: "Looking to sell your luxury watch? We are trusted luxury watch buyers in Sri Lanka, offering competitive prices for authentic luxury timepieces. We buy pre-owned and new luxury watches providing professional evaluations, fair market prices, and instant payments.",
@@ -72,44 +72,84 @@ export default function Services({ currentLang }: ServicesProps) {
 
   const galleryItems: GalleryItemType[] = [
     {
-      src: "/images/gallery-1.jpg",
-      srcSm: "/images/gallery-1-sm.webp",
-      srcMd: "/images/gallery-1-md.webp",
-      srcLg: "/images/gallery-1-lg.webp",
-      title: "Precision Gold Inspection",
-      desc: "Evaluating gold weight and testing purity with high-precision instrumentation."
+      src: "/img-1.jpeg",
+      srcSm: "/img-1.jpeg",
+      srcMd: "/img-1.jpeg",
+      srcLg: "/img-1.jpeg",
+      title: "Precision Gold Valuation & Payouts",
+      desc: "Evaluating gold weight and testing purity with high-precision instrumentation for instant cash payouts."
     },
     {
-      src: "/images/gallery-2.jpg",
-      srcSm: "/images/gallery-2-sm.webp",
-      srcMd: "/images/gallery-2-md.webp",
-      srcLg: "/images/gallery-2-lg.webp",
-      title: "XRF Computerized Testing",
-      desc: "Using advanced XRF spectrometer technology for 100% non-destructive purity analysis."
+      src: "/img-2.jpeg",
+      srcSm: "/img-2.jpeg",
+      srcMd: "/img-2.jpeg",
+      srcLg: "/img-2.jpeg",
+      title: "Gold Jewelry Inspection",
+      desc: "Comprehensive testing and evaluation for gold chains, bangles, rings, and family heirlooms."
     },
     {
-      src: "/images/gallery-3.jpg",
-      srcSm: "/images/gallery-3-sm.webp",
-      srcMd: "/images/gallery-3-md.webp",
-      srcLg: "/images/gallery-3-lg.webp",
-      title: "Professional Appraisal Desk",
-      desc: "Providing a secure, private, and confidential environment for asset valuations."
+      src: "/img-3.jpeg",
+      srcSm: "/img-3.jpeg",
+      srcMd: "/img-3.jpeg",
+      srcLg: "/img-3.jpeg",
+      title: "XRF Computerized Purity Testing",
+      desc: "Advanced non-destructive X-Ray Fluorescence spectrometer analysis determining exact karat value."
     },
     {
-      src: "/images/gallery-4.jpg",
-      srcSm: "/images/gallery-4-sm.webp",
-      srcMd: "/images/gallery-4-md.webp",
-      srcLg: "/images/gallery-4-lg.webp",
-      title: "Certified Digital Scales",
-      desc: "Government-approved and calibrated state-of-the-art scale readouts."
+      src: "/img-4.jpeg",
+      srcSm: "/img-4.jpeg",
+      srcMd: "/img-4.jpeg",
+      srcLg: "/img-4.jpeg",
+      title: "Diamond & Gemstone Appraisal",
+      desc: "Certified gemologist evaluation for loose diamonds, rubies, sapphires, and emeralds."
     },
     {
-      src: "/images/gallery-5.jpg",
-      srcSm: "/images/gallery-5-sm.webp",
-      srcMd: "/images/gallery-5-md.webp",
-      srcLg: "/images/gallery-5-lg.webp",
-      title: "Instant Secure Cash Out",
-      desc: "Instant cash payouts or bank transfers with fully transparent receipts."
+      src: "/img-5.jpeg",
+      srcSm: "/img-5.jpeg",
+      srcMd: "/img-5.jpeg",
+      srcLg: "/img-5.jpeg",
+      title: "Certified Digital Scale Weight",
+      desc: "Government-approved, calibrated digital scales guaranteeing 100% accurate weight measurements."
+    },
+    {
+      src: "/img-6.jpeg",
+      srcSm: "/img-6.jpeg",
+      srcMd: "/img-6.jpeg",
+      srcLg: "/img-6.jpeg",
+      title: "Luxury Watch Verification Desk",
+      desc: "Professional authentication and instant valuation for Rolex, Omega, Patek Philippe, and luxury watches."
+    },
+    {
+      src: "/img-7.jpeg",
+      srcSm: "/img-7.jpeg",
+      srcMd: "/img-7.jpeg",
+      srcLg: "/img-7.jpeg",
+      title: "Private Colombo Client Lounge",
+      desc: "Providing a secure, air-conditioned, confidential private environment for high-value asset exchanges."
+    },
+    {
+      src: "/img-8.jpeg",
+      srcSm: "/img-8.jpeg",
+      srcMd: "/img-8.jpeg",
+      srcLg: "/img-8.jpeg",
+      title: "Sovereign Coins & Gold Bars",
+      desc: "Purchasing 24K gold coins, bullion bars, and sovereign coins at top market rates."
+    },
+    {
+      src: "/img-9.jpeg",
+      srcSm: "/img-9.jpeg",
+      srcMd: "/img-9.jpeg",
+      srcLg: "/img-9.jpeg",
+      title: "Instant Cash & Bank Transfer Receipting",
+      desc: "Transparent receipting with immediate cash in hand or instant online wire transfer."
+    },
+    {
+      src: "/img-10.jpeg",
+      srcSm: "/img-10.jpeg",
+      srcMd: "/img-10.jpeg",
+      srcLg: "/img-10.jpeg",
+      title: "GBC Customer Advisory Desk",
+      desc: "Our friendly experts guiding you through every step of the gold selling process in Colombo."
     }
   ];
 
