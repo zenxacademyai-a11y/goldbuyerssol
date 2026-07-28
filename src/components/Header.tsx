@@ -85,13 +85,13 @@ export default function Header({
         <div className="max-w-7xl mx-auto flex justify-between items-center gap-4">
           
           {/* Live Market Rates Badge */}
-          <div className="flex items-center gap-3 overflow-hidden text-ellipsis whitespace-nowrap">
-            <span className="inline-flex items-center gap-1.5 font-bold text-amber-400">
+          <div className="flex flex-col min-[420px]:flex-row min-[420px]:items-center gap-1 min-[420px]:gap-3 shrink min-w-0">
+            <span className="inline-flex items-center gap-1.5 font-bold text-amber-400 shrink-0">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
               </span>
-              <span>LIVE COLOMBO MARKET:</span>
+              <span className="text-[10px] sm:text-xs">LIVE MARKET:</span>
             </span>
 
             <div className="hidden sm:flex items-center gap-4 text-neutral-200 font-semibold">
@@ -103,9 +103,10 @@ export default function Header({
               </span>
             </div>
 
-            <span className="sm:hidden text-amber-300 font-bold">
-              24K LKR {todayRate24k.toLocaleString()} | 22K LKR {todayRate22k.toLocaleString()}
-            </span>
+            <div className="sm:hidden flex items-center gap-2 text-[10px] min-[380px]:text-[11px] text-amber-300 font-bold whitespace-nowrap">
+              <span className="bg-amber-500/10 border border-amber-500/20 px-1.5 py-0.5 rounded">24K: LKR {todayRate24k.toLocaleString()}</span>
+              <span className="bg-amber-500/10 border border-amber-500/20 px-1.5 py-0.5 rounded">22K: LKR {todayRate22k.toLocaleString()}</span>
+            </div>
           </div>
 
           {/* Direct Desk Call Hotline */}

@@ -42,7 +42,7 @@ export default function LiveRateWidget({
   const chartData = chartRange === "Weekly" ? historicalRates.slice(-7) : historicalRates;
 
   return (
-    <section id="rates" className="py-20 px-4 bg-white border-t border-neutral-100 text-neutral-900 scroll-mt-20">
+    <section id="rates" className="py-20 px-4 bg-amber-50/70 dark:bg-neutral-900/90 border-t border-amber-200/60 dark:border-neutral-800 text-neutral-900 dark:text-neutral-100 scroll-mt-20">
       <div className="max-w-7xl mx-auto">
         
         {/* Header Block */}
@@ -121,7 +121,7 @@ export default function LiveRateWidget({
                   </table>
                 </div>
 
-                {/* Mobile Cards View (Horizontal Swipe/Scroll or Stacked Cards) */}
+                {/* Mobile Cards View (Stacked Cards with clear label and price structure) */}
                 <div className="block sm:hidden space-y-4">
                   {rates.map((r) => {
                     const ratePerGram = r.ratePerGram;
@@ -129,30 +129,30 @@ export default function LiveRateWidget({
                     return (
                       <div
                         key={r.karat}
-                        className="p-4 rounded-lg bg-white border border-neutral-200 hover:border-amber-500/30 transition-all hover:shadow-sm"
+                        className="p-4 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 hover:border-amber-500/30 transition-all hover:shadow-sm"
                       >
-                        <div className="flex justify-between items-center mb-2">
-                          <span className="text-base font-serif font-extrabold text-amber-700">
+                        <div className="flex justify-between items-center mb-3 pb-2 border-b border-neutral-100 dark:border-neutral-800">
+                          <span className="text-base font-serif font-extrabold text-amber-700 dark:text-amber-400">
                             {r.karat} Gold
                           </span>
-                          <span className="text-[10px] font-mono text-neutral-600 bg-neutral-100 px-2 py-0.5 rounded">
+                          <span className="text-[10px] font-mono font-semibold text-neutral-600 dark:text-neutral-400 bg-neutral-100 dark:bg-neutral-800 px-2.5 py-1 rounded-full">
                             {(r.purity * 100).toFixed(1)}% Pure
                           </span>
                         </div>
-                        <div className="grid grid-cols-2 gap-2 pt-2 border-t border-neutral-150 text-sm">
-                          <div>
-                            <span className="text-[10px] uppercase font-mono text-neutral-500 block">
+                        <div className="grid grid-cols-1 min-[360px]:grid-cols-2 gap-3 text-sm">
+                          <div className="p-2.5 rounded-lg bg-neutral-50 dark:bg-neutral-950/50 border border-neutral-200/60 dark:border-neutral-800/80 flex flex-col justify-center">
+                            <span className="text-[10px] uppercase font-mono text-neutral-500 dark:text-neutral-400 font-semibold block mb-0.5">
                               Per Gram
                             </span>
-                            <strong className="text-neutral-900 font-mono">
+                            <strong className="text-neutral-900 dark:text-white font-mono text-sm sm:text-base">
                               LKR {Math.round(ratePerGram).toLocaleString()}
                             </strong>
                           </div>
-                          <div className="text-right">
-                            <span className="text-[10px] uppercase font-mono text-neutral-500 block">
-                              Per Pavan (8g)
+                          <div className="p-2.5 rounded-lg bg-amber-50/50 dark:bg-amber-950/20 border border-amber-200/60 dark:border-amber-900/40 flex flex-col justify-center">
+                            <span className="text-[10px] uppercase font-mono text-amber-700 dark:text-amber-400 font-semibold block mb-0.5">
+                              Per Pavan ({settings.pavanWeightGrams}g)
                             </span>
-                            <strong className="text-amber-700 font-mono">
+                            <strong className="text-amber-700 dark:text-amber-400 font-mono text-sm sm:text-base">
                               LKR {Math.round(ratePerPavan).toLocaleString()}
                             </strong>
                           </div>

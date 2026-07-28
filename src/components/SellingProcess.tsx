@@ -42,18 +42,18 @@ export default function SellingProcess({ currentLang }: SellingProcessProps) {
   ];
 
   return (
-    <section className="py-20 px-4 bg-white border-t border-neutral-100 text-neutral-900">
-      <div className="max-w-6xl mx-auto">
+    <section className="py-20 px-4 bg-neutral-950 text-white border-t border-neutral-800 relative overflow-hidden">
+      <div className="max-w-6xl mx-auto relative z-10">
         
         {/* Header Block */}
         <div className="text-center mb-16">
-          <span className="text-xs uppercase font-mono tracking-widest text-amber-700 block mb-3 font-semibold">
+          <span className="text-xs uppercase font-mono tracking-widest text-amber-400 block mb-3 font-semibold">
             In-Store Experience
           </span>
-          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-neutral-950 mb-4">
+          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-white mb-4">
             {t.processTitle}
           </h2>
-          <p className="text-neutral-600 max-w-2xl mx-auto text-sm sm:text-base">
+          <p className="text-neutral-400 max-w-2xl mx-auto text-sm sm:text-base">
             {t.processSubtitle}
           </p>
         </div>
@@ -62,28 +62,28 @@ export default function SellingProcess({ currentLang }: SellingProcessProps) {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
           
           {/* Connecting line for desktop timeline */}
-          <div className="hidden md:block absolute top-[44px] left-[10%] right-[10%] h-[1px] bg-neutral-200 z-0"></div>
+          <div className="hidden md:block absolute top-[44px] left-[10%] right-[10%] h-[1px] bg-neutral-800 z-0"></div>
  
-          {steps.map((step, index) => (
+          {steps.map((step) => (
             <div
               key={step.num}
-              className="relative bg-neutral-50 rounded-xl border border-neutral-200 p-6 flex flex-col items-center text-center group hover:border-amber-500/30 transition-all duration-300 hover:shadow-md hover:shadow-amber-500/5 shadow-sm z-10"
+              className="relative bg-neutral-900 rounded-2xl border border-neutral-800 p-6 flex flex-col items-center text-center group hover:border-amber-500/50 transition-all duration-300 hover:shadow-xl hover:shadow-amber-500/10 shadow-md z-10"
             >
               {/* Step indicator circle */}
-              <div className="h-14 w-14 rounded-full bg-white border border-neutral-200 flex items-center justify-center mb-6 shadow-sm group-hover:border-amber-500/55 transition-colors z-20">
+              <div className="h-14 w-14 rounded-full bg-neutral-950 border border-neutral-700 flex items-center justify-center mb-6 shadow-inner group-hover:border-amber-500 transition-colors z-20">
                 {step.icon}
               </div>
  
               {/* Step index badge */}
-              <span className="absolute top-4 right-4 text-xs font-mono font-bold text-neutral-300 group-hover:text-amber-700/60 transition-colors">
+              <span className="absolute top-4 right-4 text-xs font-mono font-bold text-neutral-600 group-hover:text-amber-400 transition-colors">
                 {step.num}
               </span>
  
               {/* Details */}
-              <h3 className="text-lg font-serif font-bold text-neutral-900 group-hover:text-amber-700 transition-colors mb-3">
+              <h3 className="text-lg font-serif font-bold text-white group-hover:text-amber-400 transition-colors mb-3">
                 {step.title}
               </h3>
-              <p className="text-xs text-neutral-600 leading-relaxed">
+              <p className="text-xs text-neutral-400 leading-relaxed">
                 {step.desc}
               </p>
             </div>

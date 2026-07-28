@@ -47,31 +47,31 @@ export default function FairValuationSection({ currentLang }: FairValuationProps
   ];
 
   return (
-    <section className="py-20 px-4 bg-gradient-to-b from-neutral-900 via-neutral-950 to-neutral-900 text-white border-t border-neutral-800 relative overflow-hidden">
+    <section className="py-20 px-4 bg-amber-50/80 dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 border-t border-amber-200/60 dark:border-neutral-800 relative overflow-hidden">
       {/* Subtle gold glow background effects */}
-      <div className="absolute top-1/2 left-0 -translate-y-1/2 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-amber-400/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/2 left-0 -translate-y-1/2 w-96 h-96 bg-amber-400/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-6xl mx-auto relative z-10">
         
         {/* Header Block */}
         <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-400 text-xs font-bold uppercase tracking-widest mb-3">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-400 text-xs font-bold uppercase tracking-widest mb-3">
             <ShieldCheck className="h-4 w-4" />
             <span>{currentLang === "si" ? "විශ්වාසය සහ විනිවිදභාවය" : currentLang === "ta" ? "நம்பகத்தன்மை & வெளிப்படைத்தன்மை" : "Fair Valuation Guarantee"}</span>
           </div>
 
-          <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight mb-4">
+          <h2 className="text-3xl sm:text-5xl font-black text-neutral-950 dark:text-white tracking-tight mb-4">
             {currentLang === "si" ? (
-              <>අපගේ රන් තක්සේරුව <span className="text-amber-400">100% සාධාරණ</span> වන්නේ ඇයි?</>
+              <>අපගේ රන් තක්සේරුව <span className="text-amber-600 dark:text-amber-400">100% සාධාරණ</span> වන්නේ ඇයි?</>
             ) : currentLang === "ta" ? (
-              <>எங்களது தங்க மதிப்பீடு <span className="text-amber-400">100% நியாயமானது</span> ஏன்?</>
+              <>எங்களது தங்க மதிப்பீடு <span className="text-amber-600 dark:text-amber-400">100% நியாயமானது</span> ஏன்?</>
             ) : (
-              <>Why Our Valuation Is <span className="bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 bg-clip-text text-transparent">100% Fair & Accurate</span></>
+              <>Why Our Valuation Is <span className="text-amber-600 dark:text-amber-400">100% Fair & Accurate</span></>
             )}
           </h2>
 
-          <p className="text-neutral-400 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
+          <p className="text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
             {currentLang === "si"
               ? "අසාධාරණ තක්සේරු කිරීම් හා සැඟවුණු කප්පාදු වලින් මිදී, ලංකාවේ ඉහළම වෙළඳපල වටිනාකම ක්ෂණිකව ලබා ගන්න."
               : currentLang === "ta"
@@ -85,21 +85,21 @@ export default function FairValuationSection({ currentLang }: FairValuationProps
           {points.map((pt, idx) => (
             <div 
               key={idx}
-              className="p-6 rounded-2xl bg-neutral-900/90 border border-neutral-800 hover:border-amber-500/40 transition-all duration-300 shadow-xl backdrop-blur-md flex flex-col justify-between group"
+              className="p-6 rounded-2xl bg-white dark:bg-neutral-950 border border-amber-200/80 dark:border-neutral-800 hover:border-amber-500/50 transition-all duration-300 shadow-md backdrop-blur-md flex flex-col justify-between group"
             >
               <div>
                 <div className="h-12 w-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
                   {pt.icon}
                 </div>
-                <h3 className="text-lg font-bold text-white mb-2 group-hover:text-amber-300 transition-colors">
+                <h3 className="text-lg font-bold text-neutral-950 dark:text-white mb-2 group-hover:text-amber-600 dark:group-hover:text-amber-300 transition-colors">
                   {pt.title}
                 </h3>
-                <p className="text-xs text-neutral-400 leading-relaxed mb-4">
+                <p className="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed mb-4">
                   {pt.desc}
                 </p>
               </div>
 
-              <div className="pt-3 border-t border-neutral-800/80 flex items-center gap-1.5 text-[11px] font-semibold text-emerald-400">
+              <div className="pt-3 border-t border-neutral-100 dark:border-neutral-800/80 flex items-center gap-1.5 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
                 <Zap className="h-3.5 w-3.5" />
                 <span>100% Transparent</span>
               </div>

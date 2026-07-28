@@ -52,7 +52,7 @@ export default function RecentPosts({ currentLang, blogs, onSelectBlog, onViewAl
   }
 
   return (
-    <section className="py-20 px-4 bg-neutral-50 text-neutral-900 border-t border-b border-neutral-100" id="recent-insights">
+    <section className="py-20 px-4 bg-slate-100/80 dark:bg-neutral-900/90 text-neutral-900 dark:text-neutral-100 border-t border-slate-200/80 dark:border-neutral-800" id="recent-insights">
       <div className="max-w-6xl mx-auto">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">

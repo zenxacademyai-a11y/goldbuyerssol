@@ -3,7 +3,6 @@ import {
   Phone, 
   ShieldCheck, 
   Award, 
-  Sparkles, 
   Calendar, 
   X, 
   ArrowRight, 
@@ -263,68 +262,27 @@ export default function Hero({ currentLang }: HeroProps) {
                 </video>
               </div>
 
-              {/* Info Box Below Video (Clean in-flow) */}
-              <div className="mt-2 p-2 rounded-xl bg-neutral-900 border border-neutral-800 text-white flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="p-1 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400">
-                    <Sparkles className="h-3.5 w-3.5" />
-                  </div>
-                  <div>
-                    <h4 className="text-[11px] font-bold text-neutral-100">XRF Computerized Test</h4>
-                    <p className="text-[9px] text-neutral-400">100% Non-Destructive & Instant Cash</p>
-                  </div>
-                </div>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500 text-black">
-                  FREE
-                </span>
-              </div>
-
-              {/* Integrated Live Gold Price Card (22K & 24K) */}
-              <div className="mt-2 p-2.5 rounded-xl bg-neutral-900 border border-amber-500/30 shadow-md text-white">
-                <div className="flex items-center justify-between pb-1.5 mb-1.5 border-b border-neutral-800">
-                  <div className="flex items-center gap-1.5">
-                    <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                    </span>
-                    <span className="text-[10px] font-bold text-amber-400 uppercase tracking-wider">Live Rates Today</span>
-                  </div>
-                  <span className="text-[9px] text-neutral-400 font-mono">Updated</span>
-                </div>
-
-                <div className="grid grid-cols-2 gap-2 text-left">
-                  <div className="p-2 rounded-lg bg-neutral-800/80 border border-amber-500/20">
-                    <span className="text-[9px] font-bold text-neutral-400 uppercase tracking-wider block">24K Solid Gold</span>
-                    <span className="text-xs sm:text-sm font-black text-amber-300">Rs. 31,250 <span className="text-[9px] text-neutral-400 font-normal">/g</span></span>
-                  </div>
-                  <div className="p-2 rounded-lg bg-neutral-800/80 border border-amber-500/20">
-                    <span className="text-[9px] font-bold text-neutral-400 uppercase tracking-wider block">22K Jewelry Gold</span>
-                    <span className="text-xs sm:text-sm font-black text-amber-300">Rs. 28,650 <span className="text-[9px] text-neutral-400 font-normal">/g</span></span>
-                  </div>
-                </div>
-              </div>
-
             </div>
 
             {/* Compact Review Card */}
-            <div className="mt-2 w-full p-2 rounded-xl bg-white/90 border border-neutral-200/80 shadow-2xs backdrop-blur-md flex items-center justify-between text-xs">
+            <div className="mt-4 sm:mt-5 mb-2 sm:mb-4 w-full p-2.5 sm:p-3 rounded-xl bg-white/95 dark:bg-neutral-900/95 border border-neutral-200/90 dark:border-neutral-800 shadow-sm backdrop-blur-md flex items-center justify-between text-xs">
               <div className="flex items-center gap-2">
                 <div className="flex -space-x-1.5 overflow-hidden">
-                  <span className="inline-block h-6 w-6 rounded-full ring-2 ring-white bg-amber-500 text-black text-[10px] font-bold flex items-center justify-center">G</span>
-                  <span className="inline-block h-6 w-6 rounded-full ring-2 ring-white bg-neutral-900 text-white text-[10px] font-bold flex items-center justify-center">B</span>
-                  <span className="inline-block h-6 w-6 rounded-full ring-2 ring-white bg-amber-400 text-black text-[10px] font-bold flex items-center justify-center">C</span>
+                  <span className="inline-block h-6.5 w-6.5 rounded-full ring-2 ring-white dark:ring-neutral-900 bg-amber-500 text-black text-[10px] font-bold flex items-center justify-center">G</span>
+                  <span className="inline-block h-6.5 w-6.5 rounded-full ring-2 ring-white dark:ring-neutral-900 bg-neutral-900 text-white dark:bg-neutral-800 text-[10px] font-bold flex items-center justify-center">B</span>
+                  <span className="inline-block h-6.5 w-6.5 rounded-full ring-2 ring-white dark:ring-neutral-900 bg-amber-400 text-black text-[10px] font-bold flex items-center justify-center">C</span>
                 </div>
                 <div className="text-left">
                   <div className="flex items-center gap-0.5">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="h-3 w-3 fill-amber-400 text-amber-400" />
+                      <Star key={i} className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
                     ))}
                   </div>
-                  <p className="text-[10px] font-bold text-neutral-800">4.9/5 from 3,500+ Sellers</p>
+                  <p className="text-[10px] sm:text-xs font-bold text-neutral-800 dark:text-neutral-200">4.9/5 from 3,500+ Sellers</p>
                 </div>
               </div>
               
-              <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-2 py-0.5 rounded-full">
+              <span className="text-[10px] sm:text-xs font-semibold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200/60 dark:border-emerald-800/60 px-2.5 py-0.5 rounded-full">
                 Verified
               </span>
             </div>
@@ -335,9 +293,9 @@ export default function Hero({ currentLang }: HeroProps) {
 
       </div>
 
-      {/* Docked Horizontal Marquee Ticker at Section Bottom */}
-      <div className="w-full py-1.5 bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 text-neutral-950 font-black text-[11px] tracking-wider uppercase overflow-hidden rounded-xl shadow-2xs mt-auto">
-        <div className="flex w-max animate-marquee-left gap-6 items-center">
+      {/* Docked Horizontal Marquee Ticker with Generous Top Spacing */}
+      <div className="w-full py-2.5 sm:py-3 bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 text-neutral-950 font-black text-[11px] sm:text-xs tracking-wider uppercase overflow-hidden rounded-xl shadow-sm mt-8 sm:mt-12 relative z-10">
+        <div className="flex w-max animate-marquee-left gap-8 items-center">
           {[
             "⚡ NO.1 TRUSTED GOLD BUYER IN COLOMBO",
             "★ HIGHEST DAILY MARKET PAYOUTS",

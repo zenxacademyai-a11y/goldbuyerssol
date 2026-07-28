@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from "react";
-import { MapPin, Phone, Clock, Car, Compass, CheckCircle } from "lucide-react";
+import { MapPin, Phone, Clock, Car, Compass, CheckCircle, ExternalLink } from "lucide-react";
 import { Language, translations } from "../lib/translations.js";
 
 interface ContactSectionProps {
@@ -76,7 +76,7 @@ export default function ContactSection({ currentLang }: ContactSectionProps) {
   };
 
   return (
-    <section id="contact" className="py-20 px-4 bg-white border-t border-neutral-100 text-neutral-900 scroll-mt-20">
+    <section id="contact" className="py-20 px-4 bg-amber-50/50 dark:bg-neutral-950 border-t border-amber-200/50 dark:border-neutral-800 text-neutral-900 dark:text-neutral-100 scroll-mt-20">
       <div className="max-w-7xl mx-auto">
         
         {/* Header Block */}
@@ -263,55 +263,55 @@ export default function ContactSection({ currentLang }: ContactSectionProps) {
               )}
             </div>
  
-            {/* Map Placeholder Graphic */}
-            <div className="bg-neutral-50 rounded-xl border border-neutral-200 p-6 flex flex-col justify-between overflow-hidden relative shadow-sm">
+            {/* Interactive Google Map */}
+            <div className="bg-neutral-50 dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-800 p-6 flex flex-col justify-between overflow-hidden relative shadow-sm">
               <div>
-                <h3 className="text-sm font-mono uppercase tracking-widest text-neutral-600 mb-4 font-semibold">
-                  Visual Location Map
-                </h3>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-sm font-mono uppercase tracking-widest text-neutral-800 dark:text-neutral-200 font-bold flex items-center gap-2">
+                    <MapPin className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                    <span>Interactive Location Map</span>
+                  </h3>
+                  <a
+                    href="https://maps.google.com/?q=Gold+Buyers+Colombo,+106+Dutugemunu+St,+Kohuwala"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[11px] font-bold text-amber-700 dark:text-amber-400 hover:underline flex items-center gap-1"
+                  >
+                    <span>Open in App</span>
+                    <ExternalLink className="h-3 w-3" />
+                  </a>
+                </div>
                 
-                {/* Visual stylised vector Map Graphic */}
-                <div className="h-56 w-full rounded-lg bg-white border border-neutral-200 relative flex items-center justify-center overflow-hidden">
-                  
-                  {/* Grid Lines resembling roads */}
-                  <div className="absolute inset-0 bg-[radial-gradient(#ccc_1px,transparent_1px)] [background-size:16px_16px] opacity-20"></div>
-                  
-                  {/* Visual Roads */}
-                  <div className="absolute top-[30%] left-0 right-0 h-4 bg-neutral-100 border-y border-neutral-200 flex items-center px-4">
-                    <span className="text-[7px] text-neutral-500 font-mono">GALLE ROAD</span>
-                  </div>
-                  <div className="absolute top-0 bottom-0 left-[60%] w-4 bg-neutral-100 border-x border-neutral-200 flex items-center justify-center">
-                    <span className="text-[7px] text-neutral-500 font-mono rotate-90 whitespace-nowrap">ALFRED PLACE</span>
-                  </div>
- 
-                  {/* Ocean Marker */}
-                  <div className="absolute bottom-0 left-0 right-0 h-[25%] bg-sky-50 border-t border-sky-100 flex items-center justify-center font-mono text-[9px] text-sky-600/40 tracking-widest">
-                    INDIAN OCEAN
-                  </div>
- 
-                  {/* GBC Colombo Red/Gold Pulsing Node */}
-                  <div className="absolute top-[28%] left-[58%] z-10 flex flex-col items-center">
-                    <div className="h-4 w-4 rounded-full bg-amber-500 border-2 border-neutral-100 animate-pulse shadow-lg flex items-center justify-center">
-                      <div className="h-1 w-1 rounded-full bg-red-600"></div>
-                    </div>
-                    <span className="bg-white border border-amber-500/55 text-[8px] text-amber-700 px-1.5 py-0.5 rounded font-serif mt-1 shadow-xl whitespace-nowrap font-bold">
-                      GBC Office
-                    </span>
-                  </div>
- 
-                  {/* Landmarks markers */}
-                  <div className="absolute top-[10%] left-[10%] text-[8px] text-neutral-500 font-mono">
-                    Majestic City Mall
-                  </div>
-                  <div className="absolute top-[48%] left-[65%] text-[8px] text-neutral-500 font-mono">
-                    Marine Drive
-                  </div>
+                {/* Embedded Interactive Google Map */}
+                <div className="h-64 sm:h-72 w-full rounded-xl bg-neutral-200 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 relative overflow-hidden shadow-inner">
+                  <iframe
+                    title="Gold Buyers Colombo Location Map"
+                    src="https://maps.google.com/maps?q=Gold+Buyers+Colombo,+106+Dutugemunu+St,+Kohuwala,+Sri+Lanka&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen={true}
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    className="w-full h-full rounded-xl"
+                  ></iframe>
                 </div>
               </div>
  
-              {/* Driving details */}
-              <div className="text-xs text-neutral-600 leading-normal font-mono border-t border-neutral-200 pt-4 mt-4">
-                <span className="text-amber-700 font-bold">★ Direct Directions:</span> 15 mins driving from Fort Station. Valet customer parking is located directly under our Galle Road signage.
+              {/* Driving details & Directions CTA */}
+              <div className="text-xs text-neutral-600 dark:text-neutral-400 leading-normal font-mono border-t border-neutral-200 dark:border-neutral-800 pt-4 mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                  <span className="text-amber-700 dark:text-amber-400 font-bold">★ Direct Directions:</span> No 106, Bernard's Business Park, Dutugemunu St, Kohuwala. Customer parking available.
+                </div>
+                <a
+                  href="https://maps.google.com/?q=Gold+Buyers+Colombo,+106+Dutugemunu+St,+Kohuwala"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3.5 py-2 bg-gradient-to-r from-amber-600 to-yellow-500 hover:from-amber-500 hover:to-yellow-400 text-neutral-950 font-bold text-[11px] uppercase tracking-wider rounded-lg shadow-sm whitespace-nowrap transition-transform active:scale-95 flex items-center justify-center gap-1.5 no-underline shrink-0"
+                >
+                  <MapPin className="h-3.5 w-3.5" />
+                  <span>Get Directions</span>
+                </a>
               </div>
             </div>
  

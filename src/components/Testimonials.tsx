@@ -39,7 +39,7 @@ export default function Testimonials({ currentLang }: TestimonialsProps) {
   ];
 
   return (
-    <section className="py-20 px-4 bg-white border-t border-neutral-100 text-neutral-900">
+    <section className="py-20 px-4 bg-slate-50/90 dark:bg-neutral-950 border-t border-slate-200/60 dark:border-neutral-800 text-neutral-900 dark:text-neutral-100">
       <div className="max-w-6xl mx-auto">
         
         {/* Header Block */}

@@ -797,22 +797,31 @@ export default function BranchesPage({ currentLang }: BranchesPageProps) {
                         0718 321 321
                       </a>
                     </div>
-                    <div className="grid grid-cols-2 gap-2 pt-1">
+                    <div className="grid grid-cols-3 gap-1.5 pt-1">
                       <a
                         href={`tel:${branch.phone}`}
                         className="py-2 bg-neutral-100 hover:bg-neutral-200 text-neutral-900 rounded-md text-[10px] font-mono font-bold flex items-center justify-center gap-1 transition-colors text-center"
                       >
                         <Phone className="h-3 w-3" />
-                        <span>Call Now</span>
+                        <span>Call</span>
                       </a>
                       <a
                         href={`https://wa.me/94718321321?text=Hello%20GBC%20Gold%20Buyers%20Colombo,%20I%20want%20to%20arrange%20a%20valuation%20near%20your%20${encodeURIComponent(branch.name.en)}.`}
                         target="_blank"
                         rel="noreferrer"
-                        className="py-2 bg-amber-600 hover:bg-amber-500 text-white rounded-md text-[10px] font-mono font-bold flex items-center justify-center gap-1 transition-colors text-center"
+                        className="py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-md text-[10px] font-mono font-bold flex items-center justify-center gap-1 transition-colors text-center"
                       >
                         <MessageCircle className="h-3 w-3" />
                         <span>WhatsApp</span>
+                      </a>
+                      <a
+                        href={`https://maps.google.com/?q=${encodeURIComponent(branch.address.en)}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="py-2 bg-amber-600 hover:bg-amber-500 text-white rounded-md text-[10px] font-mono font-bold flex items-center justify-center gap-1 transition-colors text-center"
+                      >
+                        <Navigation className="h-3 w-3" />
+                        <span>Map</span>
                       </a>
                     </div>
                   </div>
