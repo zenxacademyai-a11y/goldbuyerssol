@@ -80,6 +80,7 @@ export default function App() {
       if (path === "/about") return "about";
       if (path === "/contact") return "contact";
       if (path === "/branches") return "branches";
+      if (path === "/services") return "services";
       if (path === "/rates") return "rates";
       if (path === "/calculator") return "calculator";
       if (path === "/faq") return "faq";
@@ -211,13 +212,15 @@ export default function App() {
       } else if (path === "/contact") {
         setActiveView("contact");
       } else if (path === "/branches") {
+        setActiveView("branches");
+      } else if (path === "/services") {
+        setActiveView("services");
       } else if (path === "/rates") {
         setActiveView("rates");
       } else if (path === "/calculator") {
         setActiveView("calculator");
       } else if (path === "/faq") {
         setActiveView("faq");
-        setActiveView("branches");
       } else if (path === "/blog" || path.startsWith("/blog/")) {
         setActiveView("blog");
         if (path.startsWith("/blog/") && path.length > 6) {

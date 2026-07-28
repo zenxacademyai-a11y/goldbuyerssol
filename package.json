@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node scripts/generate-sitemap.js",
+    "build": "node scripts/restore_images.cjs && vite build && node scripts/generate-sitemap.js",
     "clean": "rm -rf dist",
     "lint": "tsc --noEmit"
   },
