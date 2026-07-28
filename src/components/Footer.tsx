@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { Award, ShieldCheck, Mail, Phone, MapPin, Star, Building2 } from "lucide-react";
+import { Award, ShieldCheck, Mail, Phone, MapPin, Star, Building2, ChevronRight } from "lucide-react";
 import { Language, translations } from "../lib/translations.js";
 
 interface FooterProps {
@@ -18,43 +18,50 @@ export default function Footer({ currentLang, setView, showAdmin = false, onLogo
   const t = translations[currentLang];
 
   return (
-    <footer className="bg-white text-neutral-900 border-t border-neutral-200 pt-16 pb-28 md:pb-12 px-4 relative">
+    <footer className="bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 border-t border-neutral-200/90 dark:border-neutral-800/90 pt-16 pb-32 sm:pb-24 md:pb-12 px-4 sm:px-6 lg:px-8 relative transition-colors duration-200">
  
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-10 items-start">
         
         {/* Brand Column (md:col-span-5) */}
         <div className="md:col-span-5 space-y-6">
           <div className="flex items-center gap-3">
-            <div className="relative h-10 w-10 rounded-full overflow-hidden border border-amber-500/30 bg-neutral-900 flex items-center justify-center shadow-md">
-              <img loading="lazy" decoding="async" 
+            <div 
+              onClick={() => {
+                if (onLogoClick) onLogoClick();
+              }}
+              className="relative h-11 w-11 rounded-full overflow-hidden border-2 border-amber-500/40 bg-neutral-950 flex items-center justify-center shadow-md cursor-pointer hover:scale-105 transition-transform"
+            >
+              <img 
+                loading="lazy" 
+                decoding="async" 
                 src="/gbc-logo-original.png" 
-                alt="GBC Colombo Logo" 
+                alt="Gold Buyers Colombo Logo" 
                 className="h-full w-full object-cover"
                 referrerPolicy="no-referrer"
               />
             </div>
             <div>
-              <h3 className="font-serif font-bold text-lg text-neutral-950 tracking-wider">
+              <h3 className="font-serif font-black text-lg sm:text-xl text-neutral-950 dark:text-white tracking-tight">
                 {t.fullName}
               </h3>
-              <p className="text-[10px] text-amber-700 uppercase tracking-widest font-mono font-bold">
+              <p className="text-[10px] text-amber-700 dark:text-amber-400 uppercase tracking-widest font-mono font-bold">
                 {t.tagline}
               </p>
             </div>
           </div>
  
-          <p className="text-xs text-neutral-600 leading-relaxed max-w-sm">
+          <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed max-w-sm">
             {t.footerDesc}
           </p>
  
-          {/* Licenses badges */}
-          <div className="flex gap-4 pt-2">
-            <div className="flex items-center gap-1.5 text-[10px] font-mono text-neutral-500 border border-neutral-200 px-2.5 py-1 rounded bg-neutral-50 shadow-sm">
-              <Award className="h-3 w-3 text-amber-700" />
+          {/* Licenses & Compliance Badges */}
+          <div className="flex flex-wrap gap-3 pt-1">
+            <div className="flex items-center gap-1.5 text-[10px] font-mono font-bold text-neutral-700 dark:text-neutral-300 border border-neutral-200 dark:border-neutral-800 px-3 py-1.5 rounded-xl bg-neutral-50 dark:bg-neutral-900 shadow-2xs">
+              <Award className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
               <span>GJA COMPLIANT</span>
             </div>
-            <div className="flex items-center gap-1.5 text-[10px] font-mono text-neutral-500 border border-neutral-200 px-2.5 py-1 rounded bg-neutral-50 shadow-sm">
-              <ShieldCheck className="h-3 w-3 text-amber-700" />
+            <div className="flex items-center gap-1.5 text-[10px] font-mono font-bold text-neutral-700 dark:text-neutral-300 border border-neutral-200 dark:border-neutral-800 px-3 py-1.5 rounded-xl bg-neutral-50 dark:bg-neutral-900 shadow-2xs">
+              <ShieldCheck className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
               <span>SECURED VAULT</span>
             </div>
           </div>
@@ -62,135 +69,193 @@ export default function Footer({ currentLang, setView, showAdmin = false, onLogo
  
         {/* Quick Links Column (md:col-span-3) */}
         <div className="md:col-span-3 space-y-4">
-          <h4 className="text-xs font-mono uppercase tracking-wider text-amber-700 font-semibold">
+          <h4 className="text-xs font-mono uppercase tracking-wider text-amber-700 dark:text-amber-400 font-bold">
             Quick Navigation
           </h4>
-          <ul className="space-y-2 text-xs text-neutral-600">
+          <ul className="space-y-2.5 text-xs sm:text-sm font-semibold text-neutral-700 dark:text-neutral-300">
             <li>
-              <a href="/" onClick={(e) => { e.preventDefault(); setView("home"); window.scrollTo(0,0); }} className="hover:text-amber-700 transition-colors cursor-pointer block text-left">
-                {t.home}
+              <a 
+                href="/" 
+                onClick={(e) => { e.preventDefault(); setView("home"); window.scrollTo(0,0); }} 
+                className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors cursor-pointer flex items-center gap-1.5"
+              >
+                <ChevronRight className="h-3 w-3 text-amber-500" />
+                <span>{t.home}</span>
               </a>
             </li>
             <li>
-                            <a href="/services" onClick={(e) => { e.preventDefault(); setView("services"); window.scrollTo(0,0); }} className="hover:text-amber-700 transition-colors cursor-pointer block text-left">
-                {t.services}
-              </a>
-              <a href="/about" onClick={(e) => { e.preventDefault(); setView("about"); window.scrollTo(0,0); }} className="hover:text-amber-700 transition-colors cursor-pointer block text-left">
-                {t.about}
-              </a>
-            </li>
-            <li>
-              <a href="/branches" onClick={(e) => { e.preventDefault(); setView("branches"); window.scrollTo(0,0); }} className="hover:text-amber-700 transition-colors cursor-pointer block text-left font-bold text-amber-800">
-                {t.branches}
+              <a 
+                href="/services" 
+                onClick={(e) => { e.preventDefault(); setView("services"); window.scrollTo(0,0); }} 
+                className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors cursor-pointer flex items-center gap-1.5"
+              >
+                <ChevronRight className="h-3 w-3 text-amber-500" />
+                <span>{t.services}</span>
               </a>
             </li>
             <li>
-              <a href="/rates" onClick={(e) => { e.preventDefault(); setView("rates"); window.scrollTo(0,0); }} className="hover:text-amber-700 transition-colors block text-left">
-                {t.liveRatesTitle}
+              <a 
+                href="/about" 
+                onClick={(e) => { e.preventDefault(); setView("about"); window.scrollTo(0,0); }} 
+                className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors cursor-pointer flex items-center gap-1.5"
+              >
+                <ChevronRight className="h-3 w-3 text-amber-500" />
+                <span>{t.about}</span>
               </a>
             </li>
             <li>
-              <a href="/calculator" onClick={(e) => { e.preventDefault(); setView("calculator"); window.scrollTo(0,0); }} className="hover:text-amber-700 transition-colors block text-left">
-                {t.calcTitle}
+              <a 
+                href="/branches" 
+                onClick={(e) => { e.preventDefault(); setView("branches"); window.scrollTo(0,0); }} 
+                className="text-amber-700 dark:text-amber-400 font-bold hover:underline transition-colors cursor-pointer flex items-center gap-1.5"
+              >
+                <ChevronRight className="h-3 w-3 text-amber-500" />
+                <span>{t.branches}</span>
               </a>
             </li>
             <li>
-              <a href="/blog" onClick={(e) => { e.preventDefault(); setView("blog"); window.scrollTo(0,0); }} className="hover:text-amber-700 transition-colors cursor-pointer block text-left">
-                {t.blog}
+              <a 
+                href="/rates" 
+                onClick={(e) => { e.preventDefault(); setView("rates"); window.scrollTo(0,0); }} 
+                className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors cursor-pointer flex items-center gap-1.5"
+              >
+                <ChevronRight className="h-3 w-3 text-amber-500" />
+                <span>{t.liveRatesTitle}</span>
               </a>
             </li>
             <li>
-              <a href="/contact" onClick={(e) => { e.preventDefault(); setView("contact"); window.scrollTo(0,0); }} className="hover:text-amber-700 transition-colors cursor-pointer block text-left">
-                {t.contact}
+              <a 
+                href="/calculator" 
+                onClick={(e) => { e.preventDefault(); setView("calculator"); window.scrollTo(0,0); }} 
+                className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors cursor-pointer flex items-center gap-1.5"
+              >
+                <ChevronRight className="h-3 w-3 text-amber-500" />
+                <span>{t.calcTitle}</span>
+              </a>
+            </li>
+            <li>
+              <a 
+                href="/blog" 
+                onClick={(e) => { e.preventDefault(); setView("blog"); window.scrollTo(0,0); }} 
+                className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors cursor-pointer flex items-center gap-1.5"
+              >
+                <ChevronRight className="h-3 w-3 text-amber-500" />
+                <span>{t.blog}</span>
+              </a>
+            </li>
+            <li>
+              <a 
+                href="/contact" 
+                onClick={(e) => { e.preventDefault(); setView("contact"); window.scrollTo(0,0); }} 
+                className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors cursor-pointer flex items-center gap-1.5"
+              >
+                <ChevronRight className="h-3 w-3 text-amber-500" />
+                <span>{t.contact}</span>
               </a>
             </li>
             {showAdmin && (
               <li>
-                <a href="/admin" onClick={(e) => { e.preventDefault(); setView("admin"); window.scrollTo(0,0); }} className="hover:text-amber-700 transition-colors cursor-pointer block text-left">
-                  {t.admin}
+                <a 
+                  href="/admin" 
+                  onClick={(e) => { e.preventDefault(); setView("admin"); window.scrollTo(0,0); }} 
+                  className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors cursor-pointer flex items-center gap-1.5"
+                >
+                  <ChevronRight className="h-3 w-3 text-amber-500" />
+                  <span>{t.admin}</span>
                 </a>
               </li>
             )}
           </ul>
         </div>
  
-        {/* SEO Keywords & Location (md:col-span-4) */}
-        <div className="md:col-span-4 space-y-4 text-xs">
-          <h4 className="text-xs font-mono uppercase tracking-wider text-amber-700 font-semibold">
-            Regional Hub & SEO
+        {/* Regional Hub & SEO (md:col-span-4) */}
+        <div className="md:col-span-4 space-y-4 text-xs sm:text-sm">
+          <h4 className="text-xs font-mono uppercase tracking-wider text-amber-700 dark:text-amber-400 font-bold">
+            Regional Hub & Contact
           </h4>
-          <p className="text-neutral-600 leading-relaxed">
-            Registered office centered in Colombo, serving clients across Kollupitiya, Bambalapitiya, Wellawatte, Havelock, Dehiwala, Nugegoda, and Mount Lavinia. Highly optimized for <strong>"Gold Buyer in Colombo"</strong>, <strong>"Diamond buyers Sri Lanka"</strong>, <strong>"Sell gemstones Sri Lanka"</strong>, and <strong>"Luxury watch buyers Colombo"</strong>. We buy natural diamonds, certified diamonds, precious gemstones, loose stones, diamond jewelry, and luxury watches.
+          <p className="text-neutral-600 dark:text-neutral-300 leading-relaxed">
+            Registered head office in Colombo, providing certified appraisal services across Kollupitiya, Bambalapitiya, Wellawatte, Havelock, Dehiwala, Nugegoda, and Mount Lavinia. Fully compliant for <strong>"Gold Buyer in Colombo"</strong>, natural diamonds, gemstones, and luxury watch exchange.
           </p>
           
-          <div className="flex items-center gap-2 text-neutral-500 mt-2">
-            <MapPin className="h-4 w-4 text-amber-700 flex-shrink-0" />
-            <span>Galle Road, Colombo 03, Sri Lanka</span>
+          <div className="space-y-2 pt-2 text-neutral-800 dark:text-neutral-200 font-medium">
+            <div className="flex items-center gap-2.5">
+              <MapPin className="h-4 w-4 text-amber-600 dark:text-amber-400 shrink-0" />
+              <span>Galle Road, Colombo 03, Sri Lanka</span>
+            </div>
+            <div className="flex items-center gap-2.5">
+              <Phone className="h-4 w-4 text-amber-600 dark:text-amber-400 shrink-0" />
+              <a href="tel:0718321321" className="hover:text-amber-600 font-bold">0718 321 321 / 071 8 321 321</a>
+            </div>
+            <div className="flex items-center gap-2.5">
+              <Mail className="h-4 w-4 text-amber-600 dark:text-amber-400 shrink-0" />
+              <a href="mailto:info@goldbuyerscolombo.lk" className="hover:text-amber-600">info@goldbuyerscolombo.lk</a>
+            </div>
           </div>
         </div>
  
       </div>
 
       {/* Colombo 16 Branches Detailed Directory */}
-      <div className="max-w-7xl mx-auto mt-16 pt-10 border-t border-neutral-200/80">
+      <div className="max-w-7xl mx-auto mt-16 pt-10 border-t border-neutral-200 dark:border-neutral-800">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
-          <h4 className="text-xs font-mono uppercase tracking-wider text-amber-700 font-bold flex items-center gap-2">
-            <Building2 className="h-4 w-4" />
+          <h4 className="text-xs sm:text-sm font-mono uppercase tracking-wider text-amber-700 dark:text-amber-400 font-bold flex items-center gap-2">
+            <Building2 className="h-4.5 w-4.5 text-amber-600" />
             <span>16 Branches in Colombo Directory</span>
           </h4>
           <button 
-            onClick={() => setView("branches")}
-            className="text-xs text-amber-700 font-semibold hover:underline bg-amber-500/5 px-3 py-1.5 rounded-full border border-amber-500/15"
+            onClick={() => { setView("branches"); window.scrollTo(0,0); }}
+            className="text-xs text-amber-800 dark:text-amber-300 font-bold hover:bg-amber-500/15 bg-amber-500/10 px-4 py-2 rounded-xl border border-amber-500/20 transition-all flex items-center gap-1"
           >
-            View Interactive Branches Map & Details &rarr;
+            <span>View Interactive Branches Map & Details</span>
+            <ChevronRight className="h-3.5 w-3.5" />
           </button>
         </div>
 
         {/* 5 Flagship Addresses */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-6 text-xs text-neutral-600 mb-8 pb-8 border-b border-neutral-100">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-6 text-xs text-neutral-600 dark:text-neutral-300 mb-8 pb-8 border-b border-neutral-200 dark:border-neutral-800">
           <div className="space-y-1">
-            <h5 className="font-serif font-black text-neutral-900">Head Office Branch</h5>
-            <p className="text-neutral-500 text-[11px] leading-relaxed">
+            <h5 className="font-serif font-black text-neutral-900 dark:text-white text-sm">Head Office Branch</h5>
+            <p className="text-neutral-500 dark:text-neutral-400 text-[11px] leading-relaxed">
               No 106, Bernard's Business Park,<br />
               106 Dutugemunu St, Kohuwala
             </p>
           </div>
           <div className="space-y-1">
-            <h5 className="font-serif font-black text-neutral-900">Bambalapitiya Branch</h5>
-            <p className="text-neutral-500 text-[11px] leading-relaxed">
+            <h5 className="font-serif font-black text-neutral-900 dark:text-white text-sm">Bambalapitiya Branch</h5>
+            <p className="text-neutral-500 dark:text-neutral-400 text-[11px] leading-relaxed">
               W Space, 252A,<br />
               Galle Road, Bambalapitiya, Colombo
             </p>
           </div>
           <div className="space-y-1">
-            <h5 className="font-serif font-black text-neutral-900">Dehiwala Branch</h5>
-            <p className="text-neutral-500 text-[11px] leading-relaxed">
+            <h5 className="font-serif font-black text-neutral-900 dark:text-white text-sm">Dehiwala Branch</h5>
+            <p className="text-neutral-500 dark:text-neutral-400 text-[11px] leading-relaxed">
               Icc Business Center, 68,<br />
-              Jayasinghe Mawatha, Nugegoda 10250
+              Jayasinghe Mawatha, Nugegoda
             </p>
           </div>
           <div className="space-y-1">
-            <h5 className="font-serif font-black text-neutral-900">Kohuwala Branch</h5>
-            <p className="text-neutral-500 text-[11px] leading-relaxed">
+            <h5 className="font-serif font-black text-neutral-900 dark:text-white text-sm">Kohuwala Branch</h5>
+            <p className="text-neutral-500 dark:text-neutral-400 text-[11px] leading-relaxed">
               68, Kalubowila Hospital Road,<br />
               Kohuwala
             </p>
           </div>
           <div className="space-y-1">
-            <h5 className="font-serif font-black text-neutral-900">Dehiwala/Mount Lavinia</h5>
-            <p className="text-neutral-500 text-[11px] leading-relaxed">
+            <h5 className="font-serif font-black text-neutral-900 dark:text-white text-sm">Dehiwala/Mount Lavinia</h5>
+            <p className="text-neutral-500 dark:text-neutral-400 text-[11px] leading-relaxed">
               13, Katukurunduwatta Road,<br />
-              Dehiwala, Mount Lavinia 10390
+              Dehiwala, Mount Lavinia
             </p>
           </div>
         </div>
 
-        {/* Other 11 Branches Available */}
-        <div className="bg-neutral-50 rounded-xl p-5 border border-neutral-200">
-          <h5 className="text-[11px] font-mono uppercase tracking-wider text-neutral-850 font-bold mb-3">
+        {/* Other 11 Branches Grid */}
+        <div className="bg-neutral-50 dark:bg-neutral-900/90 rounded-2xl p-5 sm:p-6 border border-neutral-200 dark:border-neutral-800 shadow-2xs">
+          <h5 className="text-[11px] font-mono uppercase tracking-wider text-neutral-900 dark:text-neutral-100 font-bold mb-3">
             Other Secure Appraisal Branches Available:
           </h5>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-x-4 gap-y-2.5 text-[11px] text-neutral-600">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-x-4 gap-y-2.5 text-[11px] text-neutral-700 dark:text-neutral-300 font-medium">
             <div className="flex items-center gap-1.5">
               <span className="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
               <span>Battaramulla <span className="text-[9px] text-neutral-400 font-mono">(Contact)</span></span>
@@ -237,34 +302,34 @@ export default function Footer({ currentLang, setView, showAdmin = false, onLogo
             </div>
           </div>
 
-          <div className="mt-4 pt-4 border-t border-neutral-200/60 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 text-xs">
-            <span className="text-neutral-500 font-medium">
-              Call our secure hotline to speak with any branch manager or book a home/office gold valuation:
+          <div className="mt-4 pt-4 border-t border-neutral-200 dark:border-neutral-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 text-xs">
+            <span className="text-neutral-600 dark:text-neutral-400 font-medium">
+              Call our direct desk to speak with any branch manager or schedule a home/office valuation:
             </span>
             <a 
               href="tel:0718321321" 
-              className="text-amber-800 font-mono font-bold text-sm bg-amber-500/10 hover:bg-amber-500/25 px-4 py-1.5 rounded-lg border border-amber-500/20 transition-all shrink-0"
+              className="text-amber-700 dark:text-amber-400 font-mono font-black text-sm bg-amber-500/10 hover:bg-amber-500/20 px-4 py-2 rounded-xl border border-amber-500/20 transition-all shrink-0 no-underline"
             >
-              📞 071 8 321 321 / 0718 321 321
+              📞 0718 321 321 / 071 8 321 321
             </a>
           </div>
         </div>
       </div>
  
-      {/* Footer Bottom Line */}
-      <div className="max-w-7xl mx-auto mt-12 pt-6 border-t border-neutral-200 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] text-neutral-500 font-mono text-center sm:text-left">
+      {/* Footer Bottom Bar with High Contrast & Safe Zone */}
+      <div className="max-w-7xl mx-auto mt-12 pt-6 border-t border-neutral-200 dark:border-neutral-800 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-neutral-500 dark:text-neutral-400 font-mono text-center sm:text-left">
         <div 
           onClick={() => {
             if (onLogoClick) onLogoClick();
           }}
-          className="cursor-pointer select-none"
+          className="cursor-pointer select-none font-medium hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
         >
           {t.footerRights}
         </div>
-        <div className="flex gap-4">
-          <a href="#privacy" className="hover:underline">Privacy Policy</a>
+        <div className="flex items-center gap-4 text-xs font-medium">
+          <a href="#privacy" className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors">Privacy Policy</a>
           <span>•</span>
-          <a href="#terms" className="hover:underline">Terms of Service</a>
+          <a href="#terms" className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors">Terms of Service</a>
         </div>
       </div>
     </footer>
