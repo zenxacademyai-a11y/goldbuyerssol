@@ -245,26 +245,27 @@ export default function Hero({ currentLang }: HeroProps) {
               
               {/* Video Showcase Frame */}
               <div className="relative rounded-xl overflow-hidden aspect-[16/10] bg-neutral-900 group">
+                <ResponsiveImage
+                  srcFallback="/img-1.jpeg"
+                  alt="Precision Computerized Gold Purity Valuation at Gold Buyers Colombo"
+                  priority={true}
+                  className="w-full h-full absolute inset-0"
+                  imgClassName="w-full h-full object-cover"
+                />
                 <video
                   autoPlay
                   loop
                   muted
                   playsInline
                   poster="/img-1.jpeg"
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="relative z-10 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  onError={(e) => {
+                    // Hide video element on error so underlying fallback image shows cleanly
+                    e.currentTarget.style.display = "none";
+                  }}
                 >
                   <source src="/gbc-hero-bg-video.mp4" type="video/mp4" />
                   <source src="/images/gbc-hero-bg-video.mp4" type="video/mp4" />
-                  <ResponsiveImage
-                    srcFallback="/img-1.jpeg"
-                    srcSm="/img-1.jpeg"
-                    srcMd="/img-1.jpeg"
-                    srcLg="/img-1.jpeg"
-                    alt="Precision Computerized Gold Purity Valuation at Gold Buyers Colombo"
-                    priority={true}
-                    className="w-full h-full"
-                    imgClassName="w-full h-full object-cover"
-                  />
                 </video>
               </div>
 

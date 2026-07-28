@@ -144,10 +144,12 @@ export default function Header({
               <img 
                 fetchPriority="high" 
                 decoding="async" 
-                src="/gbc-logo-original.png" 
+                src="/gbc-logo.png" 
                 alt="Gold Buyers Colombo Logo" 
                 className="h-full w-full object-cover"
-                referrerPolicy="no-referrer"
+                onError={(e) => {
+                  e.currentTarget.src = "/gbc-logo-original.png";
+                }}
               />
             </div>
 
