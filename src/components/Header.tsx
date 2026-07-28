@@ -125,13 +125,13 @@ export default function Header({
       </div>
 
       {/* Main Luxury Navbar */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16 sm:h-20 items-center gap-4">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-16 sm:h-20 items-center gap-2 sm:gap-4">
           
           {/* Brand Logo & Name */}
           <a 
             href="/" 
-            className="flex items-center gap-2.5 sm:gap-3.5 cursor-pointer min-w-0 no-underline group py-1" 
+            className="flex items-center gap-2 sm:gap-3 cursor-pointer shrink min-w-0 no-underline group py-1" 
             onClick={(e) => { e.preventDefault(); handleNav("home"); }}
           >
             {/* High-Resolution Luxury Gold Logo */}
@@ -140,7 +140,7 @@ export default function Header({
                 e.stopPropagation();
                 if (onLogoClick) onLogoClick();
               }}
-              className="relative h-10 w-10 sm:h-12 sm:w-12 rounded-full overflow-hidden border-2 border-amber-500/40 shadow-md group-hover:border-amber-400 group-hover:scale-105 active:scale-95 transition-all duration-200 shrink-0 bg-neutral-950 flex items-center justify-center"
+              className="relative h-9 w-9 min-[380px]:h-10 min-[380px]:w-10 sm:h-12 sm:w-12 rounded-full overflow-hidden border-2 border-amber-500/40 shadow-md group-hover:border-amber-400 group-hover:scale-105 active:scale-95 transition-all duration-200 shrink-0 bg-neutral-950 flex items-center justify-center"
             >
               <img 
                 fetchPriority="high" 
@@ -153,7 +153,7 @@ export default function Header({
             </div>
 
             <div className="min-w-0 flex flex-col justify-center">
-              <h1 className="text-neutral-950 dark:text-white font-serif font-black text-sm sm:text-base md:text-lg tracking-tight group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors whitespace-nowrap overflow-hidden text-ellipsis m-0 leading-tight">
+              <h1 className="text-neutral-950 dark:text-white font-serif font-black text-xs min-[350px]:text-sm sm:text-base md:text-lg tracking-tight group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors whitespace-nowrap m-0 leading-tight">
                 {t.fullName}
               </h1>
               <p className="text-[10px] sm:text-[11px] text-amber-700 dark:text-amber-400 font-mono font-bold uppercase tracking-wider hidden sm:block whitespace-nowrap overflow-hidden text-ellipsis m-0 mt-0.5">
@@ -390,7 +390,7 @@ export default function Header({
           </div>
 
           {/* Mobile Safe Controls (Language Direct Cycle + Drawer Toggle) */}
-          <div className="flex md:hidden items-center gap-2.5">
+          <div className="flex md:hidden items-center gap-1.5 sm:gap-2.5 shrink-0">
             <ThemeToggle />
 
             {/* Mobile Direct Language Toggle */}
@@ -400,20 +400,20 @@ export default function Header({
                   currentLang === "en" ? "si" : currentLang === "si" ? "ta" : "en";
                 setLang(nextLang);
               }}
-              className="flex items-center gap-1 text-xs font-extrabold text-neutral-800 dark:text-neutral-100 border border-neutral-300 dark:border-neutral-700 px-2.5 py-1.5 rounded-xl bg-neutral-50 dark:bg-neutral-900 shadow-2xs active:scale-95 transition-transform"
+              className="flex items-center gap-1 text-[11px] sm:text-xs font-extrabold text-neutral-800 dark:text-neutral-100 border border-neutral-300 dark:border-neutral-700 px-2 py-1 sm:px-2.5 sm:py-1.5 rounded-xl bg-neutral-50 dark:bg-neutral-900 shadow-2xs active:scale-95 transition-transform"
               aria-label="Change Language"
             >
-              <Globe className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
+              <Globe className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-amber-600 dark:text-amber-400" />
               <span>{currentLang.toUpperCase()}</span>
             </button>
 
             {/* Mobile Hamburger Toggle Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-xl text-neutral-800 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+              className="p-1.5 sm:p-2 rounded-xl text-neutral-800 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
               aria-label="Toggle Mobile Menu"
             >
-              {mobileMenuOpen ? <X className="h-6 w-6 text-amber-600" /> : <Menu className="h-6 w-6" />}
+              {mobileMenuOpen ? <X className="h-5 w-5 sm:h-6 sm:w-6 text-amber-600" /> : <Menu className="h-5 w-5 sm:h-6 sm:w-6" />}
             </button>
           </div>
 
