@@ -34,12 +34,10 @@ export default function Footer({ currentLang, setView, showAdmin = false, onLogo
               <img 
                 loading="lazy" 
                 decoding="async" 
-                src="/gbc-logo.png" 
+                src="/gbc-logo-original.png" 
                 alt="Gold Buyers Colombo Logo" 
                 className="h-full w-full object-cover"
-                onError={(e) => {
-                  e.currentTarget.src = "/gbc-logo-original.png";
-                }}
+                referrerPolicy="no-referrer"
               />
             </div>
             <div>

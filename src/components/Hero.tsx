@@ -243,30 +243,48 @@ export default function Hero({ currentLang }: HeroProps) {
           >
             <div className="relative w-full rounded-2xl p-2.5 bg-gradient-to-b from-amber-300/40 via-white/90 to-amber-200/30 border border-amber-400/40 shadow-lg backdrop-blur-xl">
               
-              {/* Video Showcase Frame */}
+              {/* Image & Video Frame */}
               <div className="relative rounded-xl overflow-hidden aspect-[16/10] bg-neutral-900 group">
-                <ResponsiveImage
-                  srcFallback="/img-1.jpeg"
-                  alt="Precision Computerized Gold Purity Valuation at Gold Buyers Colombo"
-                  priority={true}
-                  className="w-full h-full absolute inset-0"
-                  imgClassName="w-full h-full object-cover"
-                />
                 <video
                   autoPlay
                   loop
                   muted
                   playsInline
                   poster="/img-1.jpeg"
-                  className="relative z-10 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  onError={(e) => {
-                    // Hide video element on error so underlying fallback image shows cleanly
-                    e.currentTarget.style.display = "none";
-                  }}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 >
                   <source src="/gbc-hero-bg-video.mp4" type="video/mp4" />
-                  <source src="/images/gbc-hero-bg-video.mp4" type="video/mp4" />
+                  <source src="/assets/gbc-hero-bg-video.mp4" type="video/mp4" />
+                  <img
+                    src="/img-1.jpeg"
+                    alt="Precision Computerized Gold Purity Valuation at Gold Buyers Colombo"
+                    className="w-full h-full object-cover"
+                  />
                 </video>
+
+                <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-transparent to-neutral-950/20 pointer-events-none" />
+
+                {/* Floating Top Badge */}
+                <div className="absolute top-2.5 right-2.5 bg-neutral-950/90 border border-amber-500/40 text-white px-2.5 py-1.5 rounded-xl backdrop-blur-md shadow-md flex items-center gap-2">
+                  <div className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="text-[10px] font-bold text-amber-400">Instant Cash / Transfer</span>
+                </div>
+
+                {/* Bottom Overlay Info */}
+                <div className="absolute bottom-2.5 left-2.5 right-2.5 p-2 rounded-xl bg-neutral-950/85 backdrop-blur-md border border-neutral-800 text-white flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="p-1 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400">
+                      <Sparkles className="h-3.5 w-3.5" />
+                    </div>
+                    <div>
+                      <h4 className="text-[11px] font-bold text-neutral-100">XRF Computerized Test</h4>
+                      <p className="text-[9px] text-neutral-400">100% Non-Destructive</p>
+                    </div>
+                  </div>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500 text-black">
+                    FREE
+                  </span>
+                </div>
               </div>
 
               {/* Integrated Live Gold Price Card (22K & 24K) */}

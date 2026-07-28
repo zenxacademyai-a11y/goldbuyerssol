@@ -19,15 +19,17 @@ export default function SEOSchemas({ rates }: SEOSchemasProps) {
 
     // Get today's ISO date
     const todayStr = new Date().toISOString().split("T")[0];
+    const origin = typeof window !== "undefined" ? window.location.origin : "";
+    const logoUrl = origin ? `${origin}/gbc-logo-original.png` : "/gbc-logo-original.png";
 
     // 2. Build Unified LocalBusiness, Review, and Gold Rate Schema
     const localBusinessSchema = {
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
       "name": "Gold Buyers Colombo (GBC)",
-      "image": "https://ais-pre-dyuherzilrm6vpvwg3vmbk-934405636140.asia-east1.run.app/gbc-logo-original.png",
-      "@id": "https://ais-pre-dyuherzilrm6vpvwg3vmbk-934405636140.asia-east1.run.app",
-      "url": "https://ais-pre-dyuherzilrm6vpvwg3vmbk-934405636140.asia-east1.run.app",
+      "image": logoUrl,
+      "@id": origin || "/",
+      "url": origin || "/",
       "telephone": "+94718321321",
       "priceRange": "$$$$",
       "address": {
