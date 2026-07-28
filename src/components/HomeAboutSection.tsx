@@ -14,9 +14,9 @@ export default function HomeAboutSection({ currentLang, setView }: HomeAboutSect
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
-          {/* Left Column: Image Showcase with Legacy Badge */}
+          {/* Left Column: Image Showcase */}
           <div className="lg:col-span-5 relative">
-            <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-neutral-200 bg-neutral-900 group">
+            <div className="relative rounded-3xl overflow-hidden shadow-xl border border-neutral-200 bg-neutral-900 group">
               <ResponsiveImage
                 srcFallback="/img-7.jpeg"
                 srcSm="/img-7.jpeg"
@@ -24,21 +24,19 @@ export default function HomeAboutSection({ currentLang, setView }: HomeAboutSect
                 srcLg="/img-7.jpeg"
                 alt="Gold Buyers Colombo Private Appraisal Lounge"
                 className="w-full h-full"
-                imgClassName="w-full h-64 sm:h-96 lg:h-[450px] object-cover transition-transform duration-700 group-hover:scale-105"
+                imgClassName="w-full h-64 sm:h-80 lg:h-[380px] object-cover transition-transform duration-700 group-hover:scale-105"
               />
+            </div>
 
-              <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-transparent to-neutral-950/20" />
-
-              {/* Floating Badge - 50+ Years Legacy */}
-              <div className="absolute bottom-6 left-6 right-6 p-4 rounded-2xl bg-neutral-950/90 border border-amber-500/40 text-white backdrop-blur-md">
-                <div className="flex items-center gap-3">
-                  <div className="p-3 rounded-xl bg-amber-500/20 border border-amber-500/30 text-amber-400">
-                    <Award className="h-6 w-6" />
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-black text-white">50+ Years Legacy Since 1976</h4>
-                    <p className="text-xs text-neutral-300">Sri Lanka's Premier Gold Exchange Merchant</p>
-                  </div>
+            {/* Legacy Info Box Below Image */}
+            <div className="mt-3 p-4 rounded-2xl bg-neutral-900 border border-neutral-800 text-white shadow-md">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 rounded-xl bg-amber-500/20 border border-amber-500/30 text-amber-400 shrink-0">
+                  <Award className="h-5 w-5" />
+                </div>
+                <div>
+                  <h4 className="text-sm font-black text-white">50+ Years Legacy Since 1976</h4>
+                  <p className="text-xs text-neutral-300">Sri Lanka's Premier Gold Exchange Merchant</p>
                 </div>
               </div>
             </div>

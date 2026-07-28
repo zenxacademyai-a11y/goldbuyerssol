@@ -175,8 +175,8 @@ export default function Services({ currentLang }: ServicesProps) {
               key={index}
               className="bg-neutral-950/50 rounded-2xl border border-neutral-800/80 overflow-hidden hover:border-amber-500/40 transition-all duration-350 flex flex-col group shadow-lg"
             >
-              {/* Image Header with Zoom Hover */}
-              <div className="relative h-56 sm:h-64 w-full overflow-hidden bg-neutral-950">
+              {/* Image Header (Unobstructed view) */}
+              <div className="relative h-52 sm:h-60 w-full overflow-hidden bg-neutral-950">
                 <ResponsiveImage
                   srcSm={service.imageSm}
                   srcMd={service.imageMd}
@@ -184,20 +184,23 @@ export default function Services({ currentLang }: ServicesProps) {
                   srcFallback={service.image}
                   alt={service.title}
                   className="h-full w-full"
-                  imgClassName="transition-transform duration-700 ease-out group-hover:scale-110"
+                  imgClassName="transition-transform duration-700 ease-out group-hover:scale-105 object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/20 to-transparent pointer-events-none" />
-                <div className="absolute top-4 left-4 h-12 w-12 rounded-full bg-neutral-900/90 border border-amber-500/40 flex items-center justify-center backdrop-blur-sm shadow-md z-10">
-                  {service.icon}
-                </div>
               </div>
 
               {/* Card Body */}
               <div className="p-6 sm:p-8 flex-1 flex flex-col">
-                <h3 className="text-xl font-serif font-bold text-white mb-1.5 group-hover:text-amber-400 transition-colors">
-                  {service.title}
-                </h3>
-                <p className="text-xs font-semibold text-amber-500 uppercase tracking-wider mb-4">{service.subtitle}</p>
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="h-10 w-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center shrink-0 text-amber-500">
+                    {service.icon}
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-serif font-bold text-white group-hover:text-amber-400 transition-colors">
+                      {service.title}
+                    </h3>
+                    <p className="text-xs font-semibold text-amber-500 uppercase tracking-wider">{service.subtitle}</p>
+                  </div>
+                </div>
                 <p className="text-sm text-neutral-400 leading-relaxed mb-6">
                   {service.desc}
                 </p>
@@ -234,32 +237,27 @@ export default function Services({ currentLang }: ServicesProps) {
               <div 
                 key={index}
                 onClick={() => setActivePhoto(item)}
-                className="group relative h-48 md:h-56 rounded-xl overflow-hidden border border-neutral-800 bg-neutral-950 cursor-pointer hover:border-amber-500/40 transition-all duration-300 shadow-md"
+                className="group flex flex-col cursor-pointer"
               >
-                <ResponsiveImage
-                  srcSm={item.srcSm}
-                  srcMd={item.srcMd}
-                  srcLg={item.srcLg}
-                  srcFallback={item.src}
-                  alt={item.title}
-                  className="h-full w-full"
-                  imgClassName="transition-transform duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/90 via-neutral-950/20 to-transparent opacity-60 group-hover:opacity-100 transition-opacity pointer-events-none" />
-                
-                {/* Overlay Text & Icon */}
-                <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4 text-left flex flex-col justify-end translate-y-2 group-hover:translate-y-0 transition-transform duration-300 z-10 pointer-events-none">
+                <div className="relative h-40 md:h-48 rounded-xl overflow-hidden border border-neutral-800 bg-neutral-950 hover:border-amber-500/40 transition-all duration-300 shadow-md">
+                  <ResponsiveImage
+                    srcSm={item.srcSm}
+                    srcMd={item.srcMd}
+                    srcLg={item.srcLg}
+                    srcFallback={item.src}
+                    alt={item.title}
+                    className="h-full w-full"
+                    imgClassName="transition-transform duration-500 group-hover:scale-105 object-cover"
+                  />
+                  <div className="absolute top-2.5 right-2.5 h-7 w-7 rounded-full bg-neutral-900/90 border border-neutral-700/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                    <ZoomIn className="h-3.5 w-3.5 text-amber-500" />
+                  </div>
+                </div>
+                <div className="mt-2 text-left px-1">
                   <span className="text-[10px] text-amber-500 font-mono font-bold uppercase tracking-wider block mb-0.5">Appraisal Lounge</span>
                   <h4 className="text-xs font-serif font-bold text-white line-clamp-1 group-hover:text-amber-300 transition-colors">
                     {item.title}
                   </h4>
-                  <p className="text-[9px] text-neutral-400 line-clamp-2 mt-1 hidden group-hover:block transition-all duration-300">
-                    {item.desc}
-                  </p>
-                </div>
-
-                <div className="absolute top-3 right-3 h-7 w-7 rounded-full bg-neutral-900/80 border border-neutral-700/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10">
-                  <ZoomIn className="h-3.5 w-3.5 text-amber-500" />
                 </div>
               </div>
             ))}
