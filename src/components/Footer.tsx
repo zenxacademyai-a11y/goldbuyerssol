@@ -55,7 +55,11 @@ export default function Footer({ currentLang, setView, showAdmin = false, onLogo
           </p>
  
           {/* Licenses & Compliance Badges */}
-          <div className="flex flex-wrap gap-3 pt-1">
+          <div className="flex flex-wrap gap-2.5 pt-1">
+            <div className="flex items-center gap-1.5 text-[10px] font-mono font-bold text-neutral-800 dark:text-neutral-200 border border-amber-500/30 px-3 py-1.5 rounded-xl bg-amber-500/10 shadow-2xs">
+              <Building2 className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
+              <span>CO. REG: PV 00289799</span>
+            </div>
             <div className="flex items-center gap-1.5 text-[10px] font-mono font-bold text-neutral-700 dark:text-neutral-300 border border-neutral-200 dark:border-neutral-800 px-3 py-1.5 rounded-xl bg-neutral-50 dark:bg-neutral-900 shadow-2xs">
               <Award className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
               <span>GJA COMPLIANT</span>
@@ -317,16 +321,21 @@ export default function Footer({ currentLang, setView, showAdmin = false, onLogo
       </div>
  
       {/* Footer Bottom Bar with High Contrast & Safe Zone */}
-      <div className="max-w-7xl mx-auto mt-12 pt-6 border-t border-neutral-200 dark:border-neutral-800 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-neutral-500 dark:text-neutral-400 font-mono text-center sm:text-left">
-        <div 
-          onClick={() => {
-            if (onLogoClick) onLogoClick();
-          }}
-          className="cursor-pointer select-none font-medium hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
-        >
-          {t.footerRights}
+      <div className="max-w-7xl mx-auto mt-12 pt-6 border-t border-neutral-200 dark:border-neutral-800 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-neutral-500 dark:text-neutral-400 font-mono text-center md:text-left">
+        <div className="space-y-1">
+          <div 
+            onClick={() => {
+              if (onLogoClick) onLogoClick();
+            }}
+            className="cursor-pointer select-none font-medium hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
+          >
+            {t.footerRights}
+          </div>
+          <div className="text-[11px] text-neutral-400 dark:text-neutral-500">
+            Registered in Sri Lanka under The Companies Act No. 7 of 2007 (Pursuant to Sec. 5) • <span className="text-amber-600 dark:text-amber-400 font-bold">Co. No: PV 00289799</span>
+          </div>
         </div>
-        <div className="flex items-center gap-4 text-xs font-medium">
+        <div className="flex items-center gap-4 text-xs font-medium shrink-0">
           <a href="#privacy" className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors">Privacy Policy</a>
           <span>•</span>
           <a href="#terms" className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors">Terms of Service</a>
