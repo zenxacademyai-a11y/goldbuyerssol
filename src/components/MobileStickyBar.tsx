@@ -31,12 +31,12 @@ export default function MobileStickyBar({ currentLang, todayRate24k, todayRate22
           <div className="flex flex-col min-[380px]:flex-row min-[380px]:items-center gap-0.5 min-[380px]:gap-1.5 mt-0.5 text-[10px] min-[380px]:text-xs font-black text-neutral-900 dark:text-white">
             <div className="inline-flex items-center gap-1">
               <span className="text-[9px] min-[380px]:text-[10px] text-neutral-500 dark:text-neutral-400 font-bold">24K:</span>
-              <span className="text-amber-600 dark:text-amber-400 font-extrabold">Rs.{Math.round(todayRate24k).toLocaleString()}</span>
+              <span className="text-amber-600 dark:text-amber-400 font-extrabold">LKR {Math.round(todayRate24k).toLocaleString()}</span>
             </div>
             <span className="hidden min-[380px]:inline text-neutral-300 dark:text-neutral-700 font-light">|</span>
             <div className="inline-flex items-center gap-1">
               <span className="text-[9px] min-[380px]:text-[10px] text-neutral-500 dark:text-neutral-400 font-bold">22K:</span>
-              <span className="text-amber-600 dark:text-amber-400 font-extrabold">Rs.{Math.round(todayRate22k).toLocaleString()}</span>
+              <span className="text-amber-600 dark:text-amber-400 font-extrabold">LKR {Math.round(todayRate22k).toLocaleString()}</span>
             </div>
           </div>
         </div>
