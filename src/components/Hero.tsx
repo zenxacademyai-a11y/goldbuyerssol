@@ -91,15 +91,15 @@ export default function Hero({ currentLang }: HeroProps) {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-7 flex flex-col items-start text-left"
+            className="lg:col-span-7 flex flex-col items-start text-left min-w-0"
           >
             {/* Top Badge */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-amber-500/30 bg-amber-500/10 backdrop-blur-md shadow-2xs mb-2">
-              <span className="relative flex h-2 w-2">
+            <div className="inline-flex max-w-full items-center gap-2 px-3 py-1 rounded-full border border-amber-500/30 bg-amber-500/10 backdrop-blur-md shadow-2xs mb-2">
+              <span className="relative flex h-2 w-2 shrink-0">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
               </span>
-              <span className="text-[11px] sm:text-xs font-bold tracking-wider text-amber-950 uppercase">
+              <span className="text-[10px] sm:text-xs font-bold tracking-wider text-amber-950 dark:text-amber-300 uppercase leading-tight truncate">
                 {currentLang === "si" 
                   ? "කොළඹ නො.1 බලපත්‍රලාභී රන් ගැනුම්කරුවෝ" 
                   : currentLang === "ta" 
@@ -108,14 +108,14 @@ export default function Hero({ currentLang }: HeroProps) {
               </span>
             </div>
 
-            {/* Main Headline (Strictly 2 Lines) */}
-            <h1 className="text-2xl sm:text-4xl lg:text-[42px] xl:text-[48px] font-black tracking-tight leading-[1.1] text-neutral-900 mb-2">
+            {/* Main Headline */}
+            <h1 className="text-2xl sm:text-4xl lg:text-[42px] xl:text-[48px] font-black tracking-tight leading-[1.15] text-neutral-900 dark:text-white mb-2 break-words w-full">
               {currentLang === "si" ? (
                 <>
                   <span className="bg-gradient-to-r from-amber-600 via-amber-500 to-yellow-500 bg-clip-text text-transparent block">
                     නො.1 විශ්වාසදායක රන් ගැනුම්කරුවෝ
                   </span>
-                  <span className="text-neutral-900 block mt-0.5">
+                  <span className="text-neutral-900 dark:text-white block mt-0.5">
                     කොළඹ, ශ්‍රී ලංකාව
                   </span>
                 </>
@@ -124,7 +124,7 @@ export default function Hero({ currentLang }: HeroProps) {
                   <span className="bg-gradient-to-r from-amber-600 via-amber-500 to-yellow-500 bg-clip-text text-transparent block">
                     No.1 நம்பகமான தங்கம் வாங்குபவர்
                   </span>
-                  <span className="text-neutral-900 block mt-0.5">
+                  <span className="text-neutral-900 dark:text-white block mt-0.5">
                     கொழும்பு, இலங்கை
                   </span>
                 </>
@@ -133,7 +133,7 @@ export default function Hero({ currentLang }: HeroProps) {
                   <span className="bg-gradient-to-r from-amber-600 via-amber-500 to-yellow-500 bg-clip-text text-transparent block">
                     No.1 Trusted Gold Buyer
                   </span>
-                  <span className="text-neutral-900 block mt-0.5">
+                  <span className="text-neutral-900 dark:text-white block mt-0.5">
                     in Colombo, Sri Lanka
                   </span>
                 </>
@@ -141,91 +141,89 @@ export default function Hero({ currentLang }: HeroProps) {
             </h1>
 
             {/* Subtitle / Concise Value Proposition */}
-            <p className="text-xs sm:text-sm lg:text-base text-neutral-600 font-normal leading-relaxed mb-4 max-w-xl">
+            <p className="text-xs sm:text-sm lg:text-base text-neutral-600 dark:text-neutral-300 font-normal leading-relaxed mb-4 max-w-xl">
               {currentLang === "si" ? (
                 "100% නිවැරදි පරිගණක XRF පරීක්ෂාවෙන් පසු ශ්‍රී ලංකාවේ ඉහළම වෙළඳපල මිලට ක්ෂණික මුදල් හෝ බැංකු තැන්පතු ලබා ගන්න. කිසිදු අසාධාරණ කැපීමක් නැත."
               ) : currentLang === "ta" ? (
-                "100% கணினி எක්ස්ఆర్එஃப் பரிசோதனை மூலம் இலங்கையின் மிக உயர்ந்த சந்தை விலைக்கு உடனடி பணமளிப்பு பெறுக."
+                "100% கணினி எக்ஸ்ஆர்එஃப் பரிசோதனை மூலம் இலங்கையின் மிக உயர்ந்த சந்தை விலைக்கு உடனடி பணமளிப்பு பெறுக."
               ) : (
                 "Get the absolute highest cash payout for your gold with 100% transparent XRF computerized purity testing and instant payment on the spot."
               )}
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-row items-center gap-2.5 w-full sm:w-auto mb-4">
+            <div className="flex flex-col min-[380px]:flex-row items-stretch min-[380px]:items-center gap-2.5 w-full sm:w-auto mb-4">
               {/* Primary CTA */}
               <a 
                 href="#live-rates" 
-                className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 hover:from-amber-600 hover:to-amber-500 text-neutral-950 font-black text-xs sm:text-sm transition-all duration-200 shadow-md shadow-amber-500/20 hover:shadow-amber-500/35 hover:-translate-y-0.5 no-underline group cursor-pointer"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 sm:py-3 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 hover:from-amber-600 hover:to-amber-500 text-neutral-950 font-black text-xs sm:text-sm transition-all duration-200 shadow-md shadow-amber-500/20 hover:shadow-amber-500/35 hover:-translate-y-0.5 no-underline group cursor-pointer text-center"
               >
-                <TrendingUp className="h-4 w-4 text-neutral-950 group-hover:scale-110 transition-transform duration-200" />
-                <span>{currentLang === "si" ? "අද රන් මිල බලන්න" : currentLang === "ta" ? "இன்றைய தங்க விலை" : "Get Today's Gold Price"}</span>
-                <ArrowRight className="h-3.5 w-3.5 text-neutral-950 group-hover:translate-x-1 transition-transform duration-200" />
+                <TrendingUp className="h-4 w-4 text-neutral-950 group-hover:scale-110 transition-transform duration-200 shrink-0" />
+                <span className="whitespace-nowrap">{currentLang === "si" ? "අද රන් මිල බලන්න" : currentLang === "ta" ? "இன்றைய தங்க விலை" : "Get Today's Gold Price"}</span>
+                <ArrowRight className="h-3.5 w-3.5 text-neutral-950 group-hover:translate-x-1 transition-transform duration-200 shrink-0" />
               </a>
 
               {/* Secondary Outline Button */}
               <a 
-                href="https://wa.me/94718321321?text=Hi%20Gold%20Buyers%20Colombo%2C%20I%20would%20like%20to%20get%20today%27s%20gold%20buying%20rate." 
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white/80 hover:bg-amber-50/80 border border-neutral-300 hover:border-amber-500/80 text-neutral-900 font-bold text-xs sm:text-sm transition-all duration-200 shadow-2xs hover:shadow-md backdrop-blur-md cursor-pointer no-underline group"
+                href="tel:0718321321" 
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 sm:py-3 rounded-xl bg-white/80 dark:bg-neutral-900/80 hover:bg-amber-50/80 border border-neutral-300 dark:border-neutral-700 hover:border-amber-500/80 text-neutral-900 dark:text-neutral-100 font-bold text-xs sm:text-sm transition-all duration-200 shadow-2xs hover:shadow-md backdrop-blur-md cursor-pointer no-underline group text-center"
               >
-                <Phone className="h-4 w-4 text-emerald-600 group-hover:scale-110 transition-transform" />
-                <span>{currentLang === "si" ? "WhatsApp" : currentLang === "ta" ? "WhatsApp" : "WhatsApp Now"}</span>
+                <Phone className="h-4 w-4 text-emerald-600 group-hover:scale-110 transition-transform shrink-0" />
+                <span className="whitespace-nowrap">0718 321 321</span>
               </a>
             </div>
 
             {/* Trust Signal Badges in Glassmorphism Cards */}
-            <div className="flex flex-wrap gap-2 w-full max-w-xl mb-4">
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/70 hover:bg-white/90 border border-amber-500/30 shadow-2xs backdrop-blur-md text-[11px] font-bold text-neutral-800">
-                <ShieldCheck className="h-3.5 w-3.5 text-amber-600" />
+            <div className="flex flex-wrap gap-1.5 sm:gap-2 w-full max-w-xl mb-4">
+              <div className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl bg-white/80 dark:bg-neutral-900/80 hover:bg-white border border-amber-500/30 shadow-2xs backdrop-blur-md text-[10px] sm:text-[11px] font-bold text-neutral-800 dark:text-neutral-200">
+                <ShieldCheck className="h-3.5 w-3.5 text-amber-600 shrink-0" />
                 <span>Licensed Gold Buyer</span>
               </div>
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/70 hover:bg-white/90 border border-amber-500/30 shadow-2xs backdrop-blur-md text-[11px] font-bold text-neutral-800">
-                <Zap className="h-3.5 w-3.5 text-emerald-600" />
+              <div className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl bg-white/80 dark:bg-neutral-900/80 hover:bg-white border border-amber-500/30 shadow-2xs backdrop-blur-md text-[10px] sm:text-[11px] font-bold text-neutral-800 dark:text-neutral-200">
+                <Zap className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
                 <span>Instant Payment</span>
               </div>
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/70 hover:bg-white/90 border border-amber-500/30 shadow-2xs backdrop-blur-md text-[11px] font-bold text-neutral-800">
-                <TrendingUp className="h-3.5 w-3.5 text-amber-600" />
+              <div className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl bg-white/80 dark:bg-neutral-900/80 hover:bg-white border border-amber-500/30 shadow-2xs backdrop-blur-md text-[10px] sm:text-[11px] font-bold text-neutral-800 dark:text-neutral-200">
+                <TrendingUp className="h-3.5 w-3.5 text-amber-600 shrink-0" />
                 <span>Best Market Rates</span>
               </div>
             </div>
 
-            {/* Animated Counters Grid */}
-            <div className="grid grid-cols-4 gap-2 w-full max-w-xl">
-              <div className="p-2 sm:p-2.5 rounded-xl bg-white/85 border border-amber-500/20 shadow-2xs backdrop-blur-md flex flex-col items-start">
-                <div className="text-sm sm:text-lg font-black text-neutral-900 leading-tight">
+            {/* Animated Counters Grid - 2x2 on Mobile, 4x1 on Tablet/Desktop */}
+            <div className="grid grid-cols-2 min-[440px]:grid-cols-4 gap-2 sm:gap-2.5 w-full max-w-xl">
+              <div className="p-2 sm:p-2.5 rounded-xl bg-white/85 dark:bg-neutral-900/85 border border-amber-500/20 shadow-2xs backdrop-blur-md flex flex-col items-start min-w-0">
+                <div className="text-sm sm:text-lg font-black text-neutral-900 dark:text-white leading-tight truncate w-full">
                   <Counter end={3500} suffix="+" />
                 </div>
-                <span className="text-[10px] font-bold text-neutral-600 uppercase tracking-tight">
+                <span className="text-[10px] font-bold text-neutral-600 dark:text-neutral-400 uppercase tracking-tight truncate w-full">
                   Customers
                 </span>
               </div>
 
-              <div className="p-2 sm:p-2.5 rounded-xl bg-white/85 border border-amber-500/20 shadow-2xs backdrop-blur-md flex flex-col items-start">
-                <div className="text-sm sm:text-lg font-black text-neutral-900 leading-tight">
+              <div className="p-2 sm:p-2.5 rounded-xl bg-white/85 dark:bg-neutral-900/85 border border-amber-500/20 shadow-2xs backdrop-blur-md flex flex-col items-start min-w-0">
+                <div className="text-sm sm:text-lg font-black text-neutral-900 dark:text-white leading-tight truncate w-full">
                   <Counter end={50} suffix="+" />
                 </div>
-                <span className="text-[10px] font-bold text-neutral-600 uppercase tracking-tight">
+                <span className="text-[10px] font-bold text-neutral-600 dark:text-neutral-400 uppercase tracking-tight truncate w-full">
                   Years Exp
                 </span>
               </div>
 
-              <div className="p-2 sm:p-2.5 rounded-xl bg-white/85 border border-amber-500/20 shadow-2xs backdrop-blur-md flex flex-col items-start">
-                <div className="text-sm sm:text-lg font-black text-neutral-900 leading-tight flex items-center gap-0.5">
-                  <Counter end={4.9} decimals={1} />
-                  <Star className="h-3 w-3 fill-amber-400 text-amber-400 inline" />
+              <div className="p-2 sm:p-2.5 rounded-xl bg-white/85 dark:bg-neutral-900/85 border border-amber-500/20 shadow-2xs backdrop-blur-md flex flex-col items-start min-w-0">
+                <div className="text-sm sm:text-lg font-black text-neutral-900 dark:text-white leading-tight flex items-center gap-0.5 truncate w-full">
+                  <Counter end={5.0} decimals={1} />
+                  <Star className="h-3 w-3 fill-amber-400 text-amber-400 inline shrink-0" />
                 </div>
-                <span className="text-[10px] font-bold text-neutral-600 uppercase tracking-tight">
+                <span className="text-[10px] font-bold text-neutral-600 dark:text-neutral-400 uppercase tracking-tight truncate w-full">
                   Rating
                 </span>
               </div>
 
-              <div className="p-2 sm:p-2.5 rounded-xl bg-white/85 border border-amber-500/20 shadow-2xs backdrop-blur-md flex flex-col items-start">
-                <div className="text-sm sm:text-lg font-black text-amber-600 leading-tight">
+              <div className="p-2 sm:p-2.5 rounded-xl bg-white/85 dark:bg-neutral-900/85 border border-amber-500/20 shadow-2xs backdrop-blur-md flex flex-col items-start min-w-0">
+                <div className="text-sm sm:text-lg font-black text-amber-600 dark:text-amber-400 leading-tight truncate w-full">
                   <Counter end={100} suffix="%" />
                 </div>
-                <span className="text-[10px] font-bold text-neutral-600 uppercase tracking-tight">
+                <span className="text-[10px] font-bold text-neutral-600 dark:text-neutral-400 uppercase tracking-tight truncate w-full">
                   Payout
                 </span>
               </div>
@@ -278,7 +276,7 @@ export default function Hero({ currentLang }: HeroProps) {
                       <Star key={i} className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
                     ))}
                   </div>
-                  <p className="text-[10px] sm:text-xs font-bold text-neutral-800 dark:text-neutral-200">4.9/5 from 3,500+ Sellers</p>
+                  <p className="text-[10px] sm:text-xs font-bold text-neutral-800 dark:text-neutral-200">5.0/5 from 3,500+ Sellers</p>
                 </div>
               </div>
               

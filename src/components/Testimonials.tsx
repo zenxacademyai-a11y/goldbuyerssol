@@ -63,7 +63,7 @@ export default function Testimonials({ currentLang }: TestimonialsProps) {
             </div>
             <div>
               <div className="flex items-center gap-1">
-                <span className="text-base font-extrabold text-neutral-900">4.9</span>
+                <span className="text-base font-extrabold text-neutral-900">5.0</span>
                 <div className="flex text-amber-600">
                   <Star className="h-3 w-3 fill-current" />
                   <Star className="h-3 w-3 fill-current" />

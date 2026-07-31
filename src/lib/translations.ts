@@ -43,7 +43,7 @@ export const translations = {
     heroSubtitle: "Experience complete transparency, certified XRF testing, and instant cash payouts for gold jewelry, coins & bullion. Sri Lanka's No.1 trusted gold exchange since 1976.",
     yearsExperience: "50+ Years Legacy",
     happyCustomers: "3,500+ Happy Sellers",
-    ratingTitle: "4.9 Google Maps Rating",
+    ratingTitle: "5.0 Google Maps Rating",
     transparentLabel: "100% Honest Testing",
     
     // Live Gold Rate Section
@@ -154,7 +154,7 @@ export const translations = {
     heroSubtitle: "පූර්ණ විනිවිදභාවය, සහතික කළ පරිගණක පරීක්ෂණ සහ ක්ෂණික මුදල් ගෙවීම්. ශ්‍රී ලංකාවේ නො.1 විශ්වාසනීය රන් හුවමාරුව.",
     yearsExperience: "වසර 50ක විශ්වාසය",
     happyCustomers: "3,500+ සතුටුදායක ගනුදෙනුකරුවන්",
-    ratingTitle: "4.9 ගූගල් ඇගයීම්",
+    ratingTitle: "5.0 ගූගල් ඇගයීම්",
     transparentLabel: "100% අවංක පරීක්ෂාව",
     
     // Live Gold Rate Section
@@ -265,7 +265,7 @@ export const translations = {
     heroSubtitle: "முழுமையான வெளிப்படைத்தன்மை, சான்றளிக்கப்பட்ட கணினி சோதனை மற்றும் உடனடி பண பட்டுவாடா. இலங்கையின் No.1 நம்பகமான தங்கம் மாற்று நிறுவனம்.",
     yearsExperience: "50+ வருட பாரம்பரியம்",
     happyCustomers: "3,500+ மகிழ்ச்சியான வாடிக்கையாளர்கள்",
-    ratingTitle: "4.9 கூகுள் மதிப்பீடு",
+    ratingTitle: "5.0 கூகுள் மதிப்பீடு",
     transparentLabel: "100% நேர்மையான சோதனை",
     
     // Live Gold Rate Section

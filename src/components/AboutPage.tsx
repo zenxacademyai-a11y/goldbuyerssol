@@ -36,7 +36,7 @@ const aboutTranslations = {
     stat2Lbl: "Valuations Completed",
     stat3Val: "100%",
     stat3Lbl: "Accurate XRF Testing",
-    stat4Val: "4.9 ★",
+    stat4Val: "5.0 ★",
     stat4Lbl: "Google Maps Rating",
     teamTitle: "Our Leadership Team",
     teamSubtitle: "Managed by certified mineralogists, gemologists, and financial compliance officers with international gold market expertise.",
@@ -67,7 +67,7 @@ const aboutTranslations = {
     stat2Lbl: "තක්සේරු කිරීම්",
     stat3Val: "100%",
     stat3Lbl: "නිවැරදි XRF පරීක්ෂාව",
-    stat4Val: "4.9 ★",
+    stat4Val: "5.0 ★",
     stat4Lbl: "ගූගල් පරිශීලක ඇගයීම්",
     teamTitle: "අපගේ නායකත්ව කණ්ඩායම",
     teamSubtitle: "දේශීය හා විදේශීය රන් වෙළඳපල පිළිබඳ මනා පළපුරුද්දක් ඇති සහතික ලත් ඛනිජ විද්‍යාඥයින් සහ මූල්‍ය නිලධාරීන්ගෙන් සමන්විත වේ.",
@@ -98,7 +98,7 @@ const aboutTranslations = {
     stat2Lbl: "மதிப்பீடுகள்",
     stat3Val: "100%",
     stat3Lbl: "துல்லியமான XRF சோதனை",
-    stat4Val: "4.9 ★",
+    stat4Val: "5.0 ★",
     stat4Lbl: "கூகுள் மதிப்பீடு",
     teamTitle: "எங்கள் தலைமைக்குழு",
     teamSubtitle: "உள்நாட்டு மற்றும் சர்வதேச தங்க சந்தையில் அனுபவம் வாய்ந்த சான்றளிக்கப்பட்ட தாதுப் பொறியாளர்கள் மற்றும் நிதி அதிகாரிகள் கொண்ட குழு.",
@@ -266,7 +266,7 @@ export default function AboutPage({ currentLang, setView }: AboutPageProps) {
               <div className="text-[10px] sm:text-xs font-mono text-neutral-500 uppercase tracking-wider">{t.stat3Lbl}</div>
             </div>
             <div className="space-y-1 border-l border-neutral-200">
-              <div className="text-3xl sm:text-4xl font-serif font-black text-neutral-950">{t.stat1Val === "1976" ? "4.9 ★" : t.stat4Val}</div>
+              <div className="text-3xl sm:text-4xl font-serif font-black text-neutral-950">{t.stat4Val}</div>
               <div className="text-[10px] sm:text-xs font-mono text-neutral-500 uppercase tracking-wider">{t.stat4Lbl}</div>
             </div>
           </div>
