@@ -49,6 +49,16 @@ export interface BranchImage {
   category: "interior" | "exterior" | "security" | "equipment";
 }
 
+export interface BranchBadge {
+  label: {
+    en: string;
+    si: string;
+    ta: string;
+  };
+  iconName?: "map-pin" | "shield-check" | "clock" | "car" | "building" | "sparkles" | "zap" | "check";
+  variant?: "amber" | "emerald" | "blue" | "purple" | "neutral";
+}
+
 export interface Branch {
   id: string;
   name: {
@@ -74,6 +84,48 @@ export interface Branch {
   lat: number;
   lng: number;
   images?: BranchImage[];
+  badges?: BranchBadge[];
+}
+
+export function BranchBadgePills({ badges, currentLang }: { badges?: BranchBadge[]; currentLang: Language }) {
+  if (!badges || badges.length === 0) return null;
+
+  return (
+    <div className="flex flex-wrap items-center gap-1.5 mb-2.5">
+      {badges.map((badge, idx) => {
+        const text = badge.label[currentLang] || badge.label.en;
+        
+        let icon = <MapPin className="h-3 w-3 text-amber-400 shrink-0" />;
+        if (badge.iconName === "shield-check") icon = <ShieldCheck className="h-3 w-3 text-emerald-400 shrink-0" />;
+        else if (badge.iconName === "clock") icon = <Clock className="h-3 w-3 text-amber-400 shrink-0" />;
+        else if (badge.iconName === "car") icon = <Car className="h-3 w-3 text-blue-400 shrink-0" />;
+        else if (badge.iconName === "building") icon = <Building2 className="h-3 w-3 text-purple-400 shrink-0" />;
+        else if (badge.iconName === "sparkles") icon = <Sparkles className="h-3 w-3 text-amber-400 shrink-0" />;
+        else if (badge.iconName === "zap") icon = <Zap className="h-3 w-3 text-amber-400 shrink-0" />;
+
+        let colorClasses = "bg-neutral-900 border-neutral-800 text-neutral-300";
+        if (badge.variant === "amber") {
+          colorClasses = "bg-amber-500/10 border-amber-500/30 text-amber-300";
+        } else if (badge.variant === "emerald") {
+          colorClasses = "bg-emerald-500/10 border-emerald-500/30 text-emerald-300";
+        } else if (badge.variant === "blue") {
+          colorClasses = "bg-blue-500/10 border-blue-500/30 text-blue-300";
+        } else if (badge.variant === "purple") {
+          colorClasses = "bg-purple-500/10 border-purple-500/30 text-purple-300";
+        }
+
+        return (
+          <span
+            key={idx}
+            className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-mono font-bold border ${colorClasses} shadow-2xs`}
+          >
+            {icon}
+            <span>{text}</span>
+          </span>
+        );
+      })}
+    </div>
+  );
 }
 
 export const branchesData: Branch[] = [
@@ -100,7 +152,13 @@ export const branchesData: Branch[] = [
     hours: "8:30 AM - 6:30 PM (Mon-Sat) | 9:00 AM - 3:00 PM (Sun)",
     facilities: ["Computerized XRF Spectrometer", "Certified 0.001g Scale", "Private VIP Client Lounge", "Instant Cash / Bank Wire Desk", "Ample Visitor Parking"],
     lat: 6.8783,
-    lng: 79.8824
+    lng: 79.8824,
+    badges: [
+      { label: { en: "In City Center", si: "නගර මධ්‍යයේ", ta: "நகர மையத்தில்" }, iconName: "map-pin", variant: "amber" },
+      { label: { en: "Secure Private Access", si: "ආරක්ෂිත පෞද්ගලික ප්‍රවේශය", ta: "பாதுகாப்பான தனிப்பட்ட பிரவேசம்" }, iconName: "shield-check", variant: "emerald" },
+      { label: { en: "Open Today", si: "අද විවෘතයි", ta: "இன்று திறந்துள்ளது" }, iconName: "clock", variant: "blue" },
+      { label: { en: "Visitor Parking", si: "පැමිණෙන්නන්ට රථ ගාල", ta: "பார்வையாளர் நிறுத்துமிடம்" }, iconName: "car", variant: "purple" }
+    ]
   },
   {
     id: "bambalapitiya",
@@ -125,7 +183,13 @@ export const branchesData: Branch[] = [
     hours: "9:00 AM - 6:00 PM (Mon-Sat)",
     facilities: ["XRF Spectrometer", "Diamond & Watch Valuation Desk", "Air-conditioned Private Lounge", "Valet Parking Available"],
     lat: 6.8962,
-    lng: 79.8553
+    lng: 79.8553,
+    badges: [
+      { label: { en: "Galle Road Hub", si: "ගාලු පාර මධ්‍යස්ථානය", ta: "காலி வீதி மையம்" }, iconName: "map-pin", variant: "amber" },
+      { label: { en: "Secure Private Access", si: "ආරක්ෂිත පෞද්ගලික ප්‍රවේශය", ta: "பாதுகாப்பான தனிப்பட்ட பிரවේசம்" }, iconName: "shield-check", variant: "emerald" },
+      { label: { en: "Open Today", si: "අද විවෘතයි", ta: "ඉன்று திறந்துள்ளது" }, iconName: "clock", variant: "blue" },
+      { label: { en: "Valet Parking", si: "වැලේ රථ ගාල", ta: "வாலட் பார்க்கிங்" }, iconName: "car", variant: "purple" }
+    ]
   },
   {
     id: "dehiwala_icc",
@@ -150,7 +214,12 @@ export const branchesData: Branch[] = [
     hours: "8:30 AM - 6:00 PM (Mon-Sat)",
     facilities: ["Non-destructive Gold Testing", "High Security Vault Access", "Instant Local Wire Transfer", "Covered Parking"],
     lat: 6.8741,
-    lng: 79.8923
+    lng: 79.8923,
+    badges: [
+      { label: { en: "Business Center VIP", si: "ව්‍යාපාරික මධ්‍යස්ථාන VIP", ta: "வணிக மைய VIP" }, iconName: "building", variant: "purple" },
+      { label: { en: "Secure Private Access", si: "ආරක්ෂිත පෞද්ගලික ප්‍රවේශය", ta: "பாதுகாப்பான தனிப்பட்ட பிரවේசம்" }, iconName: "shield-check", variant: "emerald" },
+      { label: { en: "Open Today", si: "අද විවෘතයි", ta: "ඉன்று திறந்துள்ளது" }, iconName: "clock", variant: "blue" }
+    ]
   },
   {
     id: "kohuwala_hosp",
@@ -175,7 +244,13 @@ export const branchesData: Branch[] = [
     hours: "8:30 AM - 6:30 PM (Mon-Sat)",
     facilities: ["Express Gold Testing", "Immediate Cash Handout", "Confidential Consultation Desk"],
     lat: 6.8744,
-    lng: 79.8810
+    lng: 79.8810,
+    badges: [
+      { label: { en: "Hospital Road Hub", si: "රෝහල් පාර මධ්‍යස්ථානය", ta: "வைத்தியசாலை வீதி மையம்" }, iconName: "map-pin", variant: "amber" },
+      { label: { en: "Express Valuation", si: "ක්ෂණික තක්සේරුව", ta: "விரைவு மதிப்பீடு" }, iconName: "zap", variant: "amber" },
+      { label: { en: "Secure Private Access", si: "ආරක්ෂිත පෞද්ගලික ප්‍රවේශය", ta: "பாதுகாப்பான தனிப்பட்ட பிரවේசம்" }, iconName: "shield-check", variant: "emerald" },
+      { label: { en: "Open Today", si: "අද විවෘතයි", ta: "ඉன்று திறந்துள்ளது" }, iconName: "clock", variant: "blue" }
+    ]
   },
   {
     id: "dehiwala_mount",
@@ -200,7 +275,12 @@ export const branchesData: Branch[] = [
     hours: "9:00 AM - 6:00 PM (Mon-Sat)",
     facilities: ["XRF Purity Analyzer", "Private Meeting Room", "Direct Cash Counter"],
     lat: 6.8485,
-    lng: 79.8710
+    lng: 79.8710,
+    badges: [
+      { label: { en: "Coastal Region Hub", si: "වෙරළබඩ කලාපීය මධ්‍යස්ථානය", ta: "கடற்கரை பிராந்திய மையம்" }, iconName: "map-pin", variant: "amber" },
+      { label: { en: "Secure Private Access", si: "ආරක්ෂිත පෞද්ගලික ප්‍රවේශය", ta: "பாதுகாப்பான தனிப்பட்ட பிரවේசம்" }, iconName: "shield-check", variant: "emerald" },
+      { label: { en: "Open Today", si: "අද විවෘතයි", ta: "ඉன்று திறந்துள்ளது" }, iconName: "clock", variant: "blue" }
+    ]
   },
   {
     id: "battaramulla",
@@ -225,7 +305,12 @@ export const branchesData: Branch[] = [
     hours: "9:00 AM - 5:30 PM (Mon-Sat)",
     facilities: ["Mobile / Desk Valuation", "Secure Escort Available"],
     lat: 6.9012,
-    lng: 79.9275
+    lng: 79.9275,
+    badges: [
+      { label: { en: "Administrative Zone", si: "පරිපාලන කලාපය", ta: "நிர்வாக மண்டலம்" }, iconName: "building", variant: "purple" },
+      { label: { en: "Secure Private Access", si: "ආරක්ෂිත පෞද්ගලික ප්‍රවේශය", ta: "பாதுகாப்பான தனிப்பட்ட பிரවේசம்" }, iconName: "shield-check", variant: "emerald" },
+      { label: { en: "Open Today", si: "අද විවෘතයි", ta: "ඉன்று திறந்துள்ளது" }, iconName: "clock", variant: "blue" }
+    ]
   },
   {
     id: "nawala",
@@ -250,7 +335,12 @@ export const branchesData: Branch[] = [
     hours: "9:00 AM - 5:30 PM (Mon-Sat)",
     facilities: ["XRF Testing Desk", "Instant Bank Wire Transfer"],
     lat: 6.8858,
-    lng: 79.8986
+    lng: 79.8986,
+    badges: [
+      { label: { en: "Near Open University", si: "විවෘත විශ්වවිද්‍යාලය අසල", ta: "திறந்த பல்கலைக்கழகம் அருகில்" }, iconName: "map-pin", variant: "amber" },
+      { label: { en: "Secure Private Access", si: "ආරක්ෂිත පෞද්ගලික ප්‍රවේශය", ta: "பாதுகாப்பான தனிப்பட்ட பிரවේசம்" }, iconName: "shield-check", variant: "emerald" },
+      { label: { en: "Open Today", si: "අද විවෘතයි", ta: "ඉன்று திறந்துள்ளது" }, iconName: "clock", variant: "blue" }
+    ]
   },
   {
     id: "rajagiriya",
@@ -275,7 +365,12 @@ export const branchesData: Branch[] = [
     hours: "9:00 AM - 5:30 PM (Mon-Sat)",
     facilities: ["Confidential Gold Valuation", "Direct Cash Payout"],
     lat: 6.9090,
-    lng: 79.8992
+    lng: 79.8992,
+    badges: [
+      { label: { en: "Parliament Road Hub", si: "පාර්ලිමේන්තු පාර මධ්‍යස්ථානය", ta: "பாராளுமன்ற வீதி மையம்" }, iconName: "map-pin", variant: "amber" },
+      { label: { en: "Secure Private Access", si: "ආරක්ෂිත පෞද්ගලික ප්‍රවේශය", ta: "பாதுகாப்பான தனிப்பட்ட பிரවේசம்" }, iconName: "shield-check", variant: "emerald" },
+      { label: { en: "Open Today", si: "අද විවෘතයි", ta: "ඉன்று திறந்துள்ளது" }, iconName: "clock", variant: "blue" }
+    ]
   },
   {
     id: "maharagama",
@@ -300,7 +395,12 @@ export const branchesData: Branch[] = [
     hours: "8:30 AM - 6:00 PM (Mon-Sat)",
     facilities: ["Certified Gold Assaying", "Instant Payout"],
     lat: 6.8511,
-    lng: 79.9212
+    lng: 79.9212,
+    badges: [
+      { label: { en: "High Level Hub", si: "හයිලෙවල් මධ්‍යස්ථානය", ta: "ஹைලෙவல் மையம்" }, iconName: "map-pin", variant: "amber" },
+      { label: { en: "Secure Private Access", si: "ආරක්ෂිත පෞද්ගලික ප්‍රවේශය", ta: "பாதுகாப்பான தனிப்பட்ட பிரවේசம்" }, iconName: "shield-check", variant: "emerald" },
+      { label: { en: "Open Today", si: "අද විවෘතයි", ta: "ඉன்று திறந்துள்ளது" }, iconName: "clock", variant: "blue" }
+    ]
   },
   {
     id: "piliyandala",
@@ -325,7 +425,12 @@ export const branchesData: Branch[] = [
     hours: "8:30 AM - 6:00 PM (Mon-Sat)",
     facilities: ["Express Assaying Desk", "Digital Scale Weighing"],
     lat: 6.8018,
-    lng: 79.9224
+    lng: 79.9224,
+    badges: [
+      { label: { en: "Clock Tower Junction", si: "ඔරලෝසු කණුව හන්දිය", ta: "கடிகார கோபுரம் சந்திப்பு" }, iconName: "map-pin", variant: "amber" },
+      { label: { en: "Express Assaying", si: "ක්ෂණික පරීක්ෂාව", ta: "விரைவு சோதனை" }, iconName: "zap", variant: "amber" },
+      { label: { en: "Open Today", si: "අද විවෘතයි", ta: "ඉன்று திறந்துள்ளது" }, iconName: "clock", variant: "blue" }
+    ]
   },
   {
     id: "boralesgamuwa",
@@ -350,7 +455,12 @@ export const branchesData: Branch[] = [
     hours: "8:30 AM - 6:00 PM (Mon-Sat)",
     facilities: ["Gold & Diamond Valuation Desk"],
     lat: 6.8400,
-    lng: 79.9030
+    lng: 79.9030,
+    badges: [
+      { label: { en: "Lake Roundabout Zone", si: "වැව වටරවුම කලාපය", ta: "ஏரி சுற்றுவட்ட மண்டலம்" }, iconName: "map-pin", variant: "amber" },
+      { label: { en: "Secure Private Access", si: "ආරක්ෂිත පෞද්ගලික ප්‍රවේශය", ta: "பாதுகாப்பான தனிப்பட்ட பிரවේசம்" }, iconName: "shield-check", variant: "emerald" },
+      { label: { en: "Open Today", si: "අද විවෘතයි", ta: "ඉன்று திறந்துள்ளது" }, iconName: "clock", variant: "blue" }
+    ]
   },
   {
     id: "nugegoda",
@@ -375,7 +485,12 @@ export const branchesData: Branch[] = [
     hours: "8:30 AM - 6:30 PM (Mon-Sat)",
     facilities: ["XRF Purity Testing", "Instant Cash Counter"],
     lat: 6.8756,
-    lng: 79.8903
+    lng: 79.8903,
+    badges: [
+      { label: { en: "In City Center", si: "නගර මධ්‍යයේ", ta: "நகர மையத்தில்" }, iconName: "map-pin", variant: "amber" },
+      { label: { en: "Secure Private Access", si: "ආරක්ෂිත පෞද්ගලික ප්‍රවේශය", ta: "பாதுகாப்பான தனிப்பட்ட பிரවේசம்" }, iconName: "shield-check", variant: "emerald" },
+      { label: { en: "Open Today", si: "අද විවෘතයි", ta: "ඉன்று திறந்துள்ளது" }, iconName: "clock", variant: "blue" }
+    ]
   },
   {
     id: "wellawatta",
@@ -400,7 +515,12 @@ export const branchesData: Branch[] = [
     hours: "9:00 AM - 6:00 PM (Mon-Sat)",
     facilities: ["Pawned Ticket Redemption", "XRF Assaying"],
     lat: 6.8712,
-    lng: 79.8610
+    lng: 79.8610,
+    badges: [
+      { label: { en: "Galle Road Hub", si: "ගාලු පාර මධ්‍යස්ථානය", ta: "காலி வீதி மையம்" }, iconName: "map-pin", variant: "amber" },
+      { label: { en: "Secure Private Access", si: "ආරක්ෂිත පෞද්ගලික ප්‍රවේශය", ta: "பாதுகாப்பான தனிப்பட்ட பிரවේசம்" }, iconName: "shield-check", variant: "emerald" },
+      { label: { en: "Open Today", si: "අද විවෘතයි", ta: "ඉன்று திறந்துள்ளது" }, iconName: "clock", variant: "blue" }
+    ]
   },
   {
     id: "bauddhaloka_mawatha",
@@ -425,7 +545,12 @@ export const branchesData: Branch[] = [
     hours: "9:00 AM - 5:30 PM (Mon-Sat)",
     facilities: ["Private Client Valuation Lounge"],
     lat: 6.9015,
-    lng: 79.8645
+    lng: 79.8645,
+    badges: [
+      { label: { en: "Cinnamon Gardens VIP", si: "කුරුඳු වත්ත VIP", ta: "கறுவாத்தோட்டம் VIP" }, iconName: "building", variant: "purple" },
+      { label: { en: "Secure Private Access", si: "ආරක්ෂිත පෞද්ගලික ප්‍රවේශය", ta: "பாதுகாப்பான தனிப்பட்ட பிரවේசம்" }, iconName: "shield-check", variant: "emerald" },
+      { label: { en: "Open Today", si: "අද විවෘතයි", ta: "ඉன்று திறந்துள்ளது" }, iconName: "clock", variant: "blue" }
+    ]
   },
   {
     id: "sea_street",
@@ -450,7 +575,12 @@ export const branchesData: Branch[] = [
     hours: "9:00 AM - 6:00 PM (Mon-Sat)",
     facilities: ["Bulllion & Sovereign Exchange Desk"],
     lat: 6.9405,
-    lng: 79.8510
+    lng: 79.8510,
+    badges: [
+      { label: { en: "Pettah Gold Market", si: "පිටකොටුව රන් වෙළඳපොළ", ta: "புறக்கோட்டை தங்க சந்தை" }, iconName: "map-pin", variant: "amber" },
+      { label: { en: "Secure Private Access", si: "ආරක්ෂිත පෞද්ගලික ප්‍රවේශය", ta: "பாதுகாப்பான தனிப்பட்ட பிரවේசம்" }, iconName: "shield-check", variant: "emerald" },
+      { label: { en: "Open Today", si: "අද විවෘතයි", ta: "ඉன்று திறந்துள்ளது" }, iconName: "clock", variant: "blue" }
+    ]
   },
   {
     id: "wattala",
@@ -475,7 +605,12 @@ export const branchesData: Branch[] = [
     hours: "8:30 AM - 6:00 PM (Mon-Sat)",
     facilities: ["Gold Assaying Desk", "Instant Payout"],
     lat: 6.9811,
-    lng: 79.8930
+    lng: 79.8930,
+    badges: [
+      { label: { en: "Negombo Road Hub", si: "මීගමුව පාර මධ්‍යස්ථානය", ta: "நீர்கொழும்பு வீதி மையம்" }, iconName: "map-pin", variant: "amber" },
+      { label: { en: "Secure Private Access", si: "ආරක්ෂිත පෞද්ගලික ප්‍රවේශය", ta: "பாதுகாப்பான தனிப்பட்ட பிரවේசம்" }, iconName: "shield-check", variant: "emerald" },
+      { label: { en: "Open Today", si: "අද විවෘතයි", ta: "ඉன்று திறந்துள்ளது" }, iconName: "clock", variant: "blue" }
+    ]
   }
 ];
 
@@ -857,6 +992,11 @@ export default function BranchesPage({
                     {activeBranch.name[currentLang]}
                   </h1>
 
+                  {/* Location Badges / Tags */}
+                  <div className="pt-1">
+                    <BranchBadgePills badges={activeBranch.badges} currentLang={currentLang} />
+                  </div>
+
                   <div className="flex items-start gap-2.5 text-neutral-300 text-sm">
                     <MapPin className="h-5 w-5 text-amber-500 shrink-0 mt-0.5" />
                     <span>{activeBranch.address[currentLang]}</span>
@@ -1126,6 +1266,9 @@ export default function BranchesPage({
                           <span className="text-[10px] text-neutral-400 font-mono">0718 321 321</span>
                         </div>
 
+                        {/* Location Badges / Tags */}
+                        <BranchBadgePills badges={branch.badges} currentLang={currentLang} />
+
                         <h3 className="text-base font-serif font-bold text-white group-hover:text-amber-300 transition-colors">
                           {branch.name[currentLang]}
                         </h3>
@@ -1196,6 +1339,9 @@ export default function BranchesPage({
                           <div className="h-2 w-2 rounded-full bg-amber-500"></div>
                           <span className="text-[10px] font-mono font-bold text-amber-400 uppercase">Available Desk</span>
                         </div>
+
+                        {/* Location Badges / Tags */}
+                        <BranchBadgePills badges={branch.badges} currentLang={currentLang} />
 
                         <h3 className="text-sm font-bold text-white group-hover:text-amber-300 transition-colors">
                           {branch.name[currentLang]}
