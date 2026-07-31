@@ -265,10 +265,31 @@ export default function Hero({ currentLang }: HeroProps) {
             {/* Compact Review Card */}
             <div className="mt-4 sm:mt-5 mb-2 sm:mb-4 w-full p-2.5 sm:p-3 rounded-xl bg-white/95 dark:bg-neutral-900/95 border border-neutral-200/90 dark:border-neutral-800 shadow-sm backdrop-blur-md flex items-center justify-between text-xs">
               <div className="flex items-center gap-2">
-                <div className="flex -space-x-1.5 overflow-hidden">
-                  <span className="inline-block h-6.5 w-6.5 rounded-full ring-2 ring-white dark:ring-neutral-900 bg-amber-500 text-black text-[10px] font-bold flex items-center justify-center">G</span>
-                  <span className="inline-block h-6.5 w-6.5 rounded-full ring-2 ring-white dark:ring-neutral-900 bg-neutral-900 text-white dark:bg-neutral-800 text-[10px] font-bold flex items-center justify-center">B</span>
-                  <span className="inline-block h-6.5 w-6.5 rounded-full ring-2 ring-white dark:ring-neutral-900 bg-amber-400 text-black text-[10px] font-bold flex items-center justify-center">C</span>
+                <div className="flex -space-x-2 overflow-hidden items-center">
+                  <img
+                    src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=120&h=120"
+                    alt="Verified GBC Customer"
+                    referrerPolicy="no-referrer"
+                    className="inline-block h-7 w-7 sm:h-8 sm:w-8 rounded-full ring-2 ring-white dark:ring-neutral-900 object-cover shadow-xs"
+                  />
+                  <img
+                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=120&h=120"
+                    alt="Verified GBC Customer"
+                    referrerPolicy="no-referrer"
+                    className="inline-block h-7 w-7 sm:h-8 sm:w-8 rounded-full ring-2 ring-white dark:ring-neutral-900 object-cover shadow-xs"
+                  />
+                  <img
+                    src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=120&h=120"
+                    alt="Verified GBC Customer"
+                    referrerPolicy="no-referrer"
+                    className="inline-block h-7 w-7 sm:h-8 sm:w-8 rounded-full ring-2 ring-white dark:ring-neutral-900 object-cover shadow-xs"
+                  />
+                  <img
+                    src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=120&h=120"
+                    alt="Verified GBC Customer"
+                    referrerPolicy="no-referrer"
+                    className="inline-block h-7 w-7 sm:h-8 sm:w-8 rounded-full ring-2 ring-white dark:ring-neutral-900 object-cover shadow-xs"
+                  />
                 </div>
                 <div className="text-left">
                   <div className="flex items-center gap-0.5">

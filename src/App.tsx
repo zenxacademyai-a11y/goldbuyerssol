@@ -34,8 +34,19 @@ import ChatWithConsultant from "./components/ChatWithConsultant.js";
 import FairValuationSection from "./components/FairValuationSection.js";
 import HomeAboutSection from "./components/HomeAboutSection.js";
 import FinalCTASection from "./components/FinalCTASection.js";
+import InstallAppBanner from "./components/InstallAppBanner.js";
 
 export default function App() {
+  // Increment visit count for PWA install prompt & analytics on mount
+  useEffect(() => {
+    try {
+      const currentVisits = parseInt(localStorage.getItem("gbc_visit_count") || "0", 10);
+      localStorage.setItem("gbc_visit_count", (currentVisits + 1).toString());
+    } catch {
+      // ignore restricted mode / localStorage errors
+    }
+  }, []);
+
   // Navigation & Language
   const [currentLang, setCurrentLang] = useState<Language>(() => {
     // 1. Check if user has a persisted language choice
@@ -652,6 +663,9 @@ export default function App() {
         )}
               </Suspense>
       </main>
+
+      {/* Install PWA App Banner for Mobile Users */}
+      <InstallAppBanner currentLang={currentLang} />
 
       {/* Sticky Bottom Bar for Mobile Users */}
       <MobileStickyBar

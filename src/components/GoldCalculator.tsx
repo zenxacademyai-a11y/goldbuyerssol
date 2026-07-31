@@ -59,6 +59,14 @@ export default function GoldCalculator({ currentLang, rates, settings, isLoading
       testingDeductions,
       finalPayout,
     });
+
+    // Signal calculator interaction to trigger PWA banner if appropriate
+    try {
+      localStorage.setItem("gbc_calculator_interacted", "true");
+      window.dispatchEvent(new Event("gbc_calculator_interaction"));
+    } catch {
+      // ignore quota / restricted mode errors
+    }
   }, [karat, weight, unit, makingCharges, rates, settings]);
 
   // Prefilled WhatsApp link
