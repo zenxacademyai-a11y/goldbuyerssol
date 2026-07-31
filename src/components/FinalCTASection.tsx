@@ -17,7 +17,7 @@ export default function FinalCTASection({ currentLang }: FinalCTAProps) {
         {/* Top Floating Badge */}
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-neutral-950 text-amber-400 text-xs font-black uppercase tracking-widest mb-6 shadow-xl">
           <Sparkles className="h-4 w-4" />
-          <span>{currentLang === "si" ? "අදම උපරිම මිල ලබා ගන්න" : currentLang === "ta" ? "இன்றைய உச்ச விலை பெறுங்கள்" : "Lock In Peak Rates Today"}</span>
+          <span>{currentLang === "si" ? "අදම උපරිම මිල ලබා ගන්න" : currentLang === "ta" ? "இன்றைய உச்ச விலை பெறுங்கள்" : "Get Best Market Rates Today"}</span>
         </div>
 
         {/* Headline */}

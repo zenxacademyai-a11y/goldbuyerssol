@@ -26,7 +26,7 @@ export default function FAQSection({ currentLang }: FAQSectionProps) {
     },
     {
       q: "Why is selling gold to GBC better than pawning (Ugas) in Sri Lanka?",
-      a: "Pawning gold locks you into high-interest debt cycles. If you fail to pay bank interest rates, your jewelry is auctioned and lost. Selling outright to GBC unlocks maximum liquidity at today's peak market rates with zero debt, zero interest, and zero hidden deductions.",
+      a: "Pawning gold traps you in high-interest debt cycles. If you fail to pay bank interest rates, your jewelry is auctioned and lost. Selling outright to GBC unlocks maximum liquidity at today's peak market rates with zero debt, zero interest, and zero hidden deductions.",
     },
     {
       q: "How does your computerized XRF gold purity testing work?",
@@ -38,7 +38,7 @@ export default function FAQSection({ currentLang }: FAQSectionProps) {
     },
     {
       q: "When is the best time to sell gold in Colombo?",
-      a: "Gold prices are currently trading near historical highs in LKR. If you have unused jewelry, broken rings, or need immediate capital for high-yield investments, now is an excellent time to capitalize on peak rates. You can lock in today's rates by contacting us.",
+      a: "Gold prices are currently trading near historical highs in LKR. If you have unused jewelry, broken rings, or need immediate capital for high-yield investments, now is an excellent time to capitalize on peak rates. You can get today's top rates by contacting us.",
     },
     {
       q: "Do you have any hidden deductions or commissions?",

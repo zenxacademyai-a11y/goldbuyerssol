@@ -342,7 +342,7 @@ export default function Hero({ currentLang }: HeroProps) {
 
               <div className="mb-6 text-left">
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-[11px] font-bold uppercase tracking-wider mb-2">
-                  <Lock className="h-3 w-3" /> Confidential VIP Desk
+                  <ShieldCheck className="h-3 w-3" /> Confidential VIP Desk
                 </div>
                 <h3 className="text-2xl font-black text-neutral-900">Book VIP Appointment</h3>
                 <p className="text-xs text-neutral-600 mt-1">

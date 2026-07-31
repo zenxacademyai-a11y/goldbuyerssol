@@ -75,20 +75,20 @@ export default function ExitIntentPopup({ currentLang }: ExitIntentPopupProps) {
             Get an Extra +2.5% Premium Valuation
           </p>
           <p className="text-neutral-600 text-xs sm:text-sm leading-relaxed mb-6">
-            Before you leave, lock in today's gold rate. We pay immediate cash and guarantee to beat any pawn or jewelry broker valuation in Colombo!
+            Before you leave, get today's top gold rate quote. We pay immediate cash and guarantee to beat any pawn or jewelry broker valuation in Colombo!
           </p>
 
           {/* Action Links */}
           <div className="space-y-3">
             <a
-              href="https://wa.me/94718321321?text=Hi%20GBC!%20I'm%20leaving%20the%20website%20and%20want%20to%20lock%20my%20gold%20rate%20for%20an%20extra%20%2B2.5%25%20bonus."
+              href="https://wa.me/94718321321?text=Hi%20GBC!%20I'm%20leaving%20the%20website%20and%20want%20a%20gold%20rate%20quote%20for%20an%20extra%20%2B2.5%25%20bonus."
               target="_blank"
               rel="noreferrer"
               onClick={handleClose}
-              id="exit_popup_wa_lock"
+              id="exit_popup_wa_quote"
               className="flex items-center justify-center gap-2 w-full py-3 bg-gradient-to-r from-amber-600 to-yellow-500 hover:from-amber-500 hover:to-yellow-400 text-black font-extrabold text-xs uppercase tracking-wider rounded-md transition-all shadow-lg"
             >
-              <span>Lock My Extra Rate on WhatsApp</span>
+              <span>Get Rate Quote on WhatsApp</span>
               <ArrowRight className="h-4.5 w-4.5" />
             </a>
             

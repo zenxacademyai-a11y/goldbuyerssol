@@ -272,7 +272,7 @@ I'd like to book an appointment to test and sell my gold today.`
                 className="w-full py-3.5 px-4 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider rounded-xl shadow-lg transition-all active:scale-98 flex items-center justify-center gap-2 no-underline"
               >
                 <MessageCircle className="h-4 w-4 shrink-0" />
-                <span>Lock This Payout on WhatsApp</span>
+                <span>Get Cash Rate Quote on WhatsApp</span>
               </a>
 
               <a

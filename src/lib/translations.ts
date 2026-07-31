@@ -69,7 +69,7 @@ export const translations = {
     gbcPremiumBonus: "GBC Premium Bonus (+2.5%)",
     testingDeductions: "Computerized Testing / Cleaning Fee",
     finalPayout: "Estimated Cash Payout",
-    calculatorCTA: "Lock This Payout & Chat on WhatsApp",
+    calculatorCTA: "Get Rate Quote & Chat on WhatsApp",
     
     // How It Works
     processTitle: "Our 4-Step Transparent Gold Selling Process",

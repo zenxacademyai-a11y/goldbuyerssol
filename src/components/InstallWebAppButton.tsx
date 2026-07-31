@@ -27,7 +27,7 @@ const pwaTranslations = {
     pwaBenefitsTitle: "App Advantages",
     benefit1: "Real-time push alert updates on Colombo gold rates",
     benefit2: "Instant offline gold payout valuations",
-    benefit3: "Secured private data storage and localized price locking",
+    benefit3: "Secured private data storage and instant payout calculator",
     close: "Close"
   },
   si: {

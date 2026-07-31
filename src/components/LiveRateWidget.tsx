@@ -168,13 +168,13 @@ export default function LiveRateWidget({
 
                 <div className="mt-6 pt-4 border-t border-neutral-200">
                   <a
-                    href="https://wa.me/94718321321?text=Hi%20GBC,%20I%20want%20to%20lock%20today's%20gold%20payout%20rate."
+                    href="https://wa.me/94718321321?text=Hi%20GBC,%20I%20want%20to%20get%20today's%20gold%20rate%20quote."
                     target="_blank"
                     rel="noreferrer"
                     className="w-full py-3 px-4 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 no-underline"
                   >
                     <MessageCircle className="h-4 w-4 shrink-0" />
-                    <span>Lock This Payout on WhatsApp</span>
+                    <span>Get Rate Quote on WhatsApp</span>
                   </a>
                 </div>
               </>

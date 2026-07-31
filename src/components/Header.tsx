@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { 
   Phone, 
   Globe, 
@@ -19,7 +19,10 @@ import {
   TrendingUp,
   HelpCircle,
   Building2,
-  Info
+  Info,
+  MessageCircle,
+  Clock,
+  ShieldCheck
 } from "lucide-react";
 import { Language, translations } from "../lib/translations.js";
 import { ThemeToggle } from "./ThemeToggle.js";
@@ -48,11 +51,43 @@ export default function Header({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [langMenuOpen, setLangMenuOpen] = useState(false);
   const [moreMenuOpen, setMoreMenuOpen] = useState(false);
+  
+  const moreMenuRef = useRef<HTMLDivElement>(null);
+  const langMenuRef = useRef<HTMLDivElement>(null);
+
   const t = translations[currentLang];
+
+  // Close dropdowns on outside click
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (moreMenuRef.current && !moreMenuRef.current.contains(event.target as Node)) {
+        setMoreMenuOpen(false);
+      }
+      if (langMenuRef.current && !langMenuRef.current.contains(event.target as Node)) {
+        setLangMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Prevent background body scroll when mobile drawer is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [mobileMenuOpen]);
 
   const handleNav = (view: "home" | "blog" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "faq" | "services") => {
     setView(view);
     setMobileMenuOpen(false);
+    setMoreMenuOpen(false);
+    setLangMenuOpen(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -80,51 +115,70 @@ export default function Header({
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 dark:bg-neutral-950/95 border-b border-neutral-200/90 dark:border-neutral-800/90 backdrop-blur-xl shadow-xs transition-colors duration-200">
-      {/* Upper Ticker Bar: High Contrast & Readability */}
-      <div className="bg-neutral-950 text-amber-400 border-b border-amber-500/20 px-4 sm:px-6 lg:px-8 py-1.5 text-[11px] sm:text-xs font-mono">
-        <div className="max-w-7xl mx-auto flex justify-between items-center gap-4">
+      
+      {/* Upper Ticker Bar: High Contrast & Live Market Rates */}
+      <div className="bg-neutral-950 text-amber-400 border-b border-amber-500/20 px-3 sm:px-6 lg:px-8 py-1.5 text-[11px] sm:text-xs font-mono">
+        <div className="max-w-7xl mx-auto flex justify-between items-center gap-2 sm:gap-4">
           
-          {/* Live Market Rates Badge */}
-          <div className="flex flex-col min-[420px]:flex-row min-[420px]:items-center gap-1 min-[420px]:gap-3 shrink min-w-0">
+          {/* Live Market Rates Indicator */}
+          <div className="flex items-center gap-2 min-w-0 shrink">
             <span className="inline-flex items-center gap-1.5 font-bold text-amber-400 shrink-0">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
               </span>
-              <span className="text-[10px] sm:text-xs">LIVE MARKET:</span>
+              <span className="text-[10px] sm:text-xs uppercase tracking-wider hidden min-[360px]:inline">LIVE:</span>
             </span>
 
-            <div className="hidden sm:flex items-center gap-4 text-neutral-200 font-semibold">
-              <span className="bg-neutral-900 border border-amber-500/30 px-2 py-0.5 rounded text-amber-300">
+            {/* Desktop / Laptop Rates */}
+            <div className="hidden sm:flex items-center gap-3 text-neutral-200 font-semibold text-xs">
+              <span className="bg-neutral-900 border border-amber-500/30 px-2 py-0.5 rounded-md text-amber-300">
                 24K: <strong className="text-white">LKR {todayRate24k.toLocaleString()}/g</strong>
               </span>
-              <span className="bg-neutral-900 border border-amber-500/30 px-2 py-0.5 rounded text-amber-300">
+              <span className="bg-neutral-900 border border-amber-500/30 px-2 py-0.5 rounded-md text-amber-300">
                 22K: <strong className="text-white">LKR {todayRate22k.toLocaleString()}/g</strong>
               </span>
             </div>
 
-            <div className="sm:hidden flex items-center gap-2 text-[10px] min-[380px]:text-[11px] text-amber-300 font-bold whitespace-nowrap">
-              <span className="bg-amber-500/10 border border-amber-500/20 px-1.5 py-0.5 rounded">24K: LKR {todayRate24k.toLocaleString()}</span>
-              <span className="bg-amber-500/10 border border-amber-500/20 px-1.5 py-0.5 rounded">22K: LKR {todayRate22k.toLocaleString()}</span>
+            {/* Mobile Compact Rates */}
+            <div className="sm:hidden flex items-center gap-1.5 text-[10px] font-bold text-amber-300 whitespace-nowrap">
+              <span className="bg-amber-500/10 border border-amber-500/20 px-1.5 py-0.5 rounded">24K: {todayRate24k.toLocaleString()}</span>
+              <span className="bg-amber-500/10 border border-amber-500/20 px-1.5 py-0.5 rounded">22K: {todayRate22k.toLocaleString()}</span>
             </div>
           </div>
 
-          {/* Direct Desk Call Hotline */}
-          <div className="hidden md:flex items-center gap-4 shrink-0 text-xs font-semibold">
-            <span className="text-neutral-400 font-sans">Desk (9 AM - 6 PM):</span>
+          {/* Direct Hotline & Hours */}
+          <div className="flex items-center gap-2 sm:gap-4 shrink-0 text-xs font-semibold">
+            <div className="hidden lg:flex items-center gap-1 text-neutral-400 font-sans text-[11px]">
+              <Clock className="h-3 w-3 text-amber-400" />
+              <span>Mon-Sat: 9 AM - 6 PM</span>
+            </div>
+
             <a 
               href="tel:0718321321" 
-              className="text-amber-400 hover:text-amber-300 transition-colors font-bold flex items-center gap-1.5 bg-amber-500/10 border border-amber-500/20 px-2.5 py-0.5 rounded-md"
+              className="text-amber-400 hover:text-amber-300 transition-colors font-bold flex items-center gap-1 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded-md text-[10px] sm:text-xs no-underline"
+              title="Call Direct Hotline"
             >
-              <Phone className="h-3 w-3 text-amber-400" />
-              <span>0718 321 321</span>
+              <Phone className="h-3 w-3 text-amber-400 shrink-0" />
+              <span className="font-mono">0718 321 321</span>
+            </a>
+
+            <a 
+              href="https://wa.me/94718321321"
+              target="_blank"
+              rel="noreferrer"
+              className="hidden sm:flex items-center gap-1 text-emerald-400 hover:text-emerald-300 transition-colors font-bold bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-md text-xs no-underline"
+              title="Chat on WhatsApp"
+            >
+              <MessageCircle className="h-3 w-3 text-emerald-400 shrink-0" />
+              <span>WhatsApp</span>
             </a>
           </div>
 
         </div>
       </div>
 
-      {/* Main Luxury Navbar */}
+      {/* Main Responsive Navbar */}
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 sm:h-20 items-center gap-2 sm:gap-4">
           
@@ -162,12 +216,12 @@ export default function Header({
             </div>
           </a>
 
-          {/* Desktop Navigation Items */}
-          <nav className="hidden md:flex items-center gap-1.5 lg:gap-2">
+          {/* Desktop & Laptop Navigation Items (lg:flex & md:flex) */}
+          <nav className="hidden md:flex items-center gap-1 xl:gap-1.5">
             <a 
               href="/"
               onClick={(e) => { e.preventDefault(); handleNav("home"); }}
-              className={`px-3 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-150 ${
+              className={`px-2.5 py-2 rounded-xl text-xs xl:text-sm font-bold transition-all duration-150 whitespace-nowrap ${
                 activeView === "home" 
                   ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20 shadow-2xs" 
                   : "text-neutral-700 dark:text-neutral-200 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-neutral-100 dark:hover:bg-neutral-900"
@@ -179,7 +233,7 @@ export default function Header({
             <a
               href="/services"
               onClick={(e) => { e.preventDefault(); handleNav("services"); }}
-              className={`px-3 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-150 ${
+              className={`px-2.5 py-2 rounded-xl text-xs xl:text-sm font-bold transition-all duration-150 whitespace-nowrap ${
                 activeView === "services" 
                   ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20 shadow-2xs" 
                   : "text-neutral-700 dark:text-neutral-200 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-neutral-100 dark:hover:bg-neutral-900"
@@ -191,7 +245,7 @@ export default function Header({
             <a
               href="/rates"
               onClick={(e) => { e.preventDefault(); handleNav("rates"); }}
-              className={`px-3 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-150 ${
+              className={`px-2.5 py-2 rounded-xl text-xs xl:text-sm font-bold transition-all duration-150 whitespace-nowrap ${
                 activeView === "rates" 
                   ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20 shadow-2xs" 
                   : "text-neutral-700 dark:text-neutral-200 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-neutral-100 dark:hover:bg-neutral-900"
@@ -203,7 +257,7 @@ export default function Header({
             <a
               href="/calculator"
               onClick={(e) => { e.preventDefault(); handleNav("calculator"); }}
-              className={`px-3 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-150 ${
+              className={`px-2.5 py-2 rounded-xl text-xs xl:text-sm font-bold transition-all duration-150 whitespace-nowrap ${
                 activeView === "calculator" 
                   ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20 shadow-2xs" 
                   : "text-neutral-700 dark:text-neutral-200 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-neutral-100 dark:hover:bg-neutral-900"
@@ -212,33 +266,43 @@ export default function Header({
               {t.calculator}
             </a>
 
+            <a
+              href="/branches"
+              onClick={(e) => { e.preventDefault(); handleNav("branches"); }}
+              className={`px-2.5 py-2 rounded-xl text-xs xl:text-sm font-bold transition-all duration-150 whitespace-nowrap ${
+                activeView === "branches" 
+                  ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20 shadow-2xs" 
+                  : "text-neutral-700 dark:text-neutral-200 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-neutral-100 dark:hover:bg-neutral-900"
+              }`}
+            >
+              {t.branches}
+            </a>
+
             {/* "More" Dropdown Menu */}
             <div 
+              ref={moreMenuRef}
               className="relative"
-              onMouseEnter={() => setMoreMenuOpen(true)}
-              onMouseLeave={() => setMoreMenuOpen(false)}
             >
               <button
                 type="button"
                 onClick={() => setMoreMenuOpen(!moreMenuOpen)}
-                className={`px-3 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-150 flex items-center gap-1 focus:outline-none ${
-                  ["about", "blog", "contact", "admin", "branches", "faq"].includes(activeView)
+                className={`px-2.5 py-2 rounded-xl text-xs xl:text-sm font-bold transition-all duration-150 flex items-center gap-1 focus:outline-none cursor-pointer whitespace-nowrap ${
+                  ["about", "blog", "contact", "admin", "faq"].includes(activeView)
                     ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20 shadow-2xs"
                     : "text-neutral-700 dark:text-neutral-200 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-neutral-100 dark:hover:bg-neutral-900"
                 }`}
               >
                 <span>{getMoreText(currentLang)}</span>
-                <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${moreMenuOpen ? "rotate-180" : ""}`} />
+                <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${moreMenuOpen ? "rotate-180 text-amber-500" : ""}`} />
               </button>
 
               {moreMenuOpen && (
-                <div className="absolute right-0 mt-1.5 w-52 rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200/90 dark:border-neutral-800 shadow-xl overflow-hidden z-50 py-2 animate-in fade-in slide-in-from-top-2 duration-150">
+                <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200/90 dark:border-neutral-800 shadow-xl overflow-hidden z-50 py-2 animate-in fade-in slide-in-from-top-2 duration-150">
                   <a
                     href="/about"
                     onClick={(e) => {
                       e.preventDefault();
                       handleNav("about");
-                      setMoreMenuOpen(false);
                     }}
                     className={`w-full text-left px-4 py-2.5 text-xs font-bold transition-colors flex items-center gap-2.5 ${
                       activeView === "about"
@@ -251,28 +315,10 @@ export default function Header({
                   </a>
 
                   <a
-                    href="/branches"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleNav("branches");
-                      setMoreMenuOpen(false);
-                    }}
-                    className={`w-full text-left px-4 py-2.5 text-xs font-bold transition-colors flex items-center gap-2.5 ${
-                      activeView === "branches"
-                        ? "bg-amber-500/10 text-amber-700 dark:text-amber-400"
-                        : "text-neutral-800 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-amber-600 dark:hover:text-amber-400"
-                    }`}
-                  >
-                    <Building2 className="h-4 w-4 text-amber-600 shrink-0" />
-                    <span>{t.branches}</span>
-                  </a>
-
-                  <a
                     href="/blog"
                     onClick={(e) => {
                       e.preventDefault();
                       handleNav("blog");
-                      setMoreMenuOpen(false);
                     }}
                     className={`w-full text-left px-4 py-2.5 text-xs font-bold transition-colors flex items-center gap-2.5 ${
                       activeView === "blog"
@@ -289,7 +335,6 @@ export default function Header({
                     onClick={(e) => {
                       e.preventDefault();
                       handleNav("contact");
-                      setMoreMenuOpen(false);
                     }}
                     className={`w-full text-left px-4 py-2.5 text-xs font-bold transition-colors flex items-center gap-2.5 ${
                       activeView === "contact"
@@ -306,7 +351,6 @@ export default function Header({
                     onClick={(e) => {
                       e.preventDefault();
                       handleNav("faq");
-                      setMoreMenuOpen(false);
                     }}
                     className={`w-full text-left px-4 py-2.5 text-xs font-bold transition-colors flex items-center gap-2.5 ${
                       activeView === "faq"
@@ -324,7 +368,6 @@ export default function Header({
                       onClick={(e) => {
                         e.preventDefault();
                         handleNav("admin");
-                        setMoreMenuOpen(false);
                       }}
                       className={`w-full text-left px-4 py-2.5 text-xs font-bold transition-colors flex items-center gap-2.5 border-t border-neutral-100 dark:border-neutral-800 ${
                         activeView === "admin"
@@ -342,22 +385,22 @@ export default function Header({
           </nav>
 
           {/* Desktop Right Controls (Theme, Language, Call CTA) */}
-          <div className="hidden md:flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-2.5">
             <ThemeToggle />
 
-            {/* Language Selection */}
-            <div className="relative">
+            {/* Language Selection Dropdown */}
+            <div ref={langMenuRef} className="relative">
               <button
                 onClick={() => setLangMenuOpen(!langMenuOpen)}
-                className="flex items-center gap-1.5 text-xs font-bold text-neutral-800 dark:text-neutral-200 hover:text-amber-600 dark:hover:text-amber-400 border border-neutral-200 dark:border-neutral-800 px-3 py-2 rounded-xl transition-colors bg-white dark:bg-neutral-900 shadow-2xs hover:shadow-sm"
+                className="flex items-center gap-1.5 text-xs font-bold text-neutral-800 dark:text-neutral-200 hover:text-amber-600 dark:hover:text-amber-400 border border-neutral-200 dark:border-neutral-800 px-2.5 py-2 rounded-xl transition-colors bg-white dark:bg-neutral-900 shadow-2xs hover:shadow-sm cursor-pointer"
               >
                 <Globe className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
                 <span>{getLangName(currentLang)}</span>
-                <ChevronDown className="h-3.5 w-3.5 text-neutral-400" />
+                <ChevronDown className={`h-3.5 w-3.5 text-neutral-400 transition-transform ${langMenuOpen ? "rotate-180" : ""}`} />
               </button>
 
               {langMenuOpen && (
-                <div className="absolute right-0 mt-2 w-36 rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-xl overflow-hidden z-50 p-1">
+                <div className="absolute right-0 mt-2 w-36 rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-xl overflow-hidden z-50 p-1 animate-in fade-in slide-in-from-top-2 duration-150">
                   {(["en", "si", "ta"] as Language[]).map((lang) => (
                     <button
                       key={lang}
@@ -365,7 +408,7 @@ export default function Header({
                         setLang(lang);
                         setLangMenuOpen(false);
                       }}
-                      className={`w-full text-left px-3.5 py-2.5 text-xs rounded-xl font-bold transition-colors ${
+                      className={`w-full text-left px-3.5 py-2.5 text-xs rounded-xl font-bold transition-colors cursor-pointer ${
                         currentLang === lang
                           ? "bg-amber-500/10 text-amber-700 dark:text-amber-400"
                           : "text-neutral-800 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800"
@@ -382,202 +425,228 @@ export default function Header({
             <a
               href="tel:0718321321"
               id="header_cta_call"
-              className="flex items-center gap-2 bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 hover:from-amber-600 hover:to-amber-500 text-neutral-950 px-4 py-2.5 rounded-xl text-xs font-black transition-all transform hover:-translate-y-0.5 active:translate-y-0 shadow-md shadow-amber-500/20 no-underline cursor-pointer"
+              className="flex items-center gap-2 bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 hover:from-amber-600 hover:to-amber-500 text-neutral-950 px-3.5 py-2.5 rounded-xl text-xs font-black transition-all transform hover:-translate-y-0.5 active:translate-y-0 shadow-md shadow-amber-500/20 no-underline cursor-pointer shrink-0"
             >
               <Phone className="h-3.5 w-3.5 fill-neutral-950" />
-              <span>0718 321 321</span>
+              <span className="font-mono">0718 321 321</span>
             </a>
           </div>
 
-          {/* Mobile Safe Controls (Language Direct Cycle + Drawer Toggle) */}
-          <div className="flex md:hidden items-center gap-1.5 sm:gap-2.5 shrink-0">
+          {/* Mobile Safe Controls (Language Direct Toggle + Theme + Menu Trigger) */}
+          <div className="flex md:hidden items-center gap-1.5 shrink-0">
             <ThemeToggle />
 
-            {/* Mobile Direct Language Toggle */}
+            {/* Mobile Direct Language Toggle Button */}
             <button
               onClick={() => {
                 const nextLang: Language =
                   currentLang === "en" ? "si" : currentLang === "si" ? "ta" : "en";
                 setLang(nextLang);
               }}
-              className="flex items-center gap-1 text-[11px] sm:text-xs font-extrabold text-neutral-800 dark:text-neutral-100 border border-neutral-300 dark:border-neutral-700 px-2 py-1 sm:px-2.5 sm:py-1.5 rounded-xl bg-neutral-50 dark:bg-neutral-900 shadow-2xs active:scale-95 transition-transform"
+              className="flex items-center gap-1 text-[11px] font-extrabold text-neutral-800 dark:text-neutral-100 border border-neutral-300 dark:border-neutral-700 px-2 py-1.5 rounded-xl bg-neutral-50 dark:bg-neutral-900 shadow-2xs active:scale-95 transition-transform cursor-pointer"
               aria-label="Change Language"
             >
-              <Globe className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-amber-600 dark:text-amber-400" />
+              <Globe className="h-3 w-3 text-amber-600 dark:text-amber-400" />
               <span>{currentLang.toUpperCase()}</span>
             </button>
 
             {/* Mobile Hamburger Toggle Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-1.5 sm:p-2 rounded-xl text-neutral-800 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+              className="p-2 rounded-xl text-neutral-800 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors cursor-pointer"
               aria-label="Toggle Mobile Menu"
             >
-              {mobileMenuOpen ? <X className="h-5 w-5 sm:h-6 sm:w-6 text-amber-600" /> : <Menu className="h-5 w-5 sm:h-6 sm:w-6" />}
+              {mobileMenuOpen ? <X className="h-6 w-6 text-amber-600" /> : <Menu className="h-6 w-6" />}
             </button>
           </div>
 
         </div>
       </div>
 
-      {/* Mobile Drawer Overlay with High Legibility & Safe Zones */}
+      {/* Mobile Menu Full Drawer with Backdrop */}
       {mobileMenuOpen && (
-        <div className="md:hidden fixed inset-x-0 top-[calc(4rem+25px)] sm:top-[calc(5rem+25px)] bg-white/98 dark:bg-neutral-950/98 border-b border-amber-500/20 backdrop-blur-2xl px-5 py-6 flex flex-col gap-3 shadow-2xl z-40 max-h-[80vh] overflow-y-auto pb-24 animate-in fade-in slide-in-from-top-4 duration-200">
-          
-          <div className="text-[10px] font-mono uppercase tracking-widest text-amber-700 dark:text-amber-400 font-bold mb-1">
-            Navigation Menu
+        <div className="md:hidden fixed inset-0 z-40 bg-neutral-950/60 backdrop-blur-sm pt-[calc(4rem+28px)]">
+          <div className="bg-white dark:bg-neutral-950 border-b border-neutral-200 dark:border-neutral-800 shadow-2xl px-5 py-6 flex flex-col gap-3 max-h-[calc(100vh-5rem)] overflow-y-auto animate-in slide-in-from-top-4 duration-200">
+            
+            {/* Header Language Picker inside Drawer */}
+            <div className="flex items-center justify-between pb-3 border-b border-neutral-200 dark:border-neutral-800">
+              <span className="text-xs font-mono uppercase tracking-wider text-amber-700 dark:text-amber-400 font-bold">
+                Select Language
+              </span>
+              <div className="flex items-center gap-1 bg-neutral-100 dark:bg-neutral-900 p-1 rounded-xl border border-neutral-200 dark:border-neutral-800">
+                {(["en", "si", "ta"] as Language[]).map((lang) => (
+                  <button
+                    key={lang}
+                    onClick={() => setLang(lang)}
+                    className={`px-2.5 py-1 text-xs font-bold rounded-lg transition-colors cursor-pointer ${
+                      currentLang === lang
+                        ? "bg-amber-500 text-neutral-950 shadow-xs"
+                        : "text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white"
+                    }`}
+                  >
+                    {lang.toUpperCase()}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Mobile Nav Links */}
+            <div className="space-y-1.5 pt-1">
+              <a
+                href="/"
+                onClick={(e) => { e.preventDefault(); handleNav("home"); }}
+                className={`flex items-center justify-between py-3 px-3.5 rounded-xl text-sm font-bold transition-colors ${
+                  activeView === "home" 
+                    ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20" 
+                    : "text-neutral-900 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-900"
+                }`}
+              >
+                <span>{t.home}</span>
+                <Sparkles className="h-4 w-4 text-amber-500" />
+              </a>
+
+              <a
+                href="/services"
+                onClick={(e) => { e.preventDefault(); handleNav("services"); }}
+                className={`flex items-center justify-between py-3 px-3.5 rounded-xl text-sm font-bold transition-colors ${
+                  activeView === "services" 
+                    ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20" 
+                    : "text-neutral-900 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-900"
+                }`}
+              >
+                <span>{t.services}</span>
+              </a>
+
+              <a
+                href="/rates"
+                onClick={(e) => { e.preventDefault(); handleNav("rates"); }}
+                className={`flex items-center justify-between py-3 px-3.5 rounded-xl text-sm font-bold transition-colors ${
+                  activeView === "rates" 
+                    ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20" 
+                    : "text-neutral-900 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-900"
+                }`}
+              >
+                <span>{t.rates}</span>
+                <TrendingUp className="h-4 w-4 text-amber-500" />
+              </a>
+
+              <a
+                href="/calculator"
+                onClick={(e) => { e.preventDefault(); handleNav("calculator"); }}
+                className={`flex items-center justify-between py-3 px-3.5 rounded-xl text-sm font-bold transition-colors ${
+                  activeView === "calculator" 
+                    ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20" 
+                    : "text-neutral-900 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-900"
+                }`}
+              >
+                <span>{t.calculator}</span>
+                <Calculator className="h-4 w-4 text-amber-500" />
+              </a>
+
+              <a
+                href="/branches"
+                onClick={(e) => { e.preventDefault(); handleNav("branches"); }}
+                className={`flex items-center justify-between py-3 px-3.5 rounded-xl text-sm font-bold transition-colors ${
+                  activeView === "branches" 
+                    ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20" 
+                    : "text-neutral-900 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-900"
+                }`}
+              >
+                <span>{t.branches}</span>
+                <Building2 className="h-4 w-4 text-amber-500" />
+              </a>
+
+              <a
+                href="/about"
+                onClick={(e) => { e.preventDefault(); handleNav("about"); }}
+                className={`flex items-center justify-between py-3 px-3.5 rounded-xl text-sm font-bold transition-colors ${
+                  activeView === "about" 
+                    ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20" 
+                    : "text-neutral-900 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-900"
+                }`}
+              >
+                <span>{t.about}</span>
+                <Info className="h-4 w-4 text-amber-500" />
+              </a>
+
+              <a
+                href="/blog"
+                onClick={(e) => { e.preventDefault(); handleNav("blog"); }}
+                className={`flex items-center justify-between py-3 px-3.5 rounded-xl text-sm font-bold transition-colors ${
+                  activeView === "blog" 
+                    ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20" 
+                    : "text-neutral-900 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-900"
+                }`}
+              >
+                <span>{t.blog}</span>
+                <FileText className="h-4 w-4 text-amber-500" />
+              </a>
+
+              <a
+                href="/contact"
+                onClick={(e) => { e.preventDefault(); handleNav("contact"); }}
+                className={`flex items-center justify-between py-3 px-3.5 rounded-xl text-sm font-bold transition-colors ${
+                  activeView === "contact" 
+                    ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20" 
+                    : "text-neutral-900 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-900"
+                }`}
+              >
+                <span>{t.contact}</span>
+                <MapPin className="h-4 w-4 text-amber-500" />
+              </a>
+
+              <a
+                href="/faq"
+                onClick={(e) => { e.preventDefault(); handleNav("faq"); }}
+                className={`flex items-center justify-between py-3 px-3.5 rounded-xl text-sm font-bold transition-colors ${
+                  activeView === "faq" 
+                    ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20" 
+                    : "text-neutral-900 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-900"
+                }`}
+              >
+                <span>{t.faq}</span>
+                <HelpCircle className="h-4 w-4 text-amber-500" />
+              </a>
+
+              {showAdmin && (
+                <a
+                  href="/admin"
+                  onClick={(e) => { e.preventDefault(); handleNav("admin"); }}
+                  className={`flex items-center justify-between py-3 px-3.5 rounded-xl text-sm font-bold transition-colors border-t border-neutral-200 dark:border-neutral-800 mt-2 ${
+                    activeView === "admin" 
+                      ? "bg-amber-500/10 text-amber-700 dark:text-amber-400" 
+                      : "text-neutral-900 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-900"
+                  }`}
+                >
+                  <span>{t.admin}</span>
+                  <LayoutDashboard className="h-4 w-4 text-amber-500" />
+                </a>
+              )}
+            </div>
+
+            {/* Quick Drawer Action CTAs */}
+            <div className="grid grid-cols-2 gap-3 pt-3 border-t border-neutral-200 dark:border-neutral-800 mt-2">
+              <a
+                href="tel:0718321321"
+                id="drawer_cta_call"
+                className="flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 text-neutral-950 p-3 rounded-xl text-xs font-black text-center no-underline active:scale-95 transition-transform shadow-md"
+              >
+                <Phone className="h-4 w-4 fill-neutral-950" />
+                <span className="font-mono">0718 321 321</span>
+              </a>
+              <a
+                href="https://wa.me/94718321321"
+                target="_blank"
+                rel="noreferrer"
+                id="drawer_cta_wa"
+                className="flex items-center justify-center gap-2 bg-emerald-600 text-white p-3 rounded-xl text-xs font-bold text-center no-underline active:scale-95 transition-transform shadow-md"
+              >
+                <MessageCircle className="h-4 w-4" />
+                <span>WhatsApp</span>
+              </a>
+            </div>
+
           </div>
-
-          <a
-            href="/"
-            onClick={(e) => { e.preventDefault(); handleNav("home"); }}
-            className={`flex items-center justify-between py-3 px-3.5 rounded-xl text-sm font-bold transition-colors ${
-              activeView === "home" 
-                ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20" 
-                : "text-neutral-900 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-900"
-            }`}
-          >
-            <span>{t.home}</span>
-            <Sparkles className="h-4 w-4 text-amber-500" />
-          </a>
-
-          <a
-            href="/services"
-            onClick={(e) => { e.preventDefault(); handleNav("services"); }}
-            className={`flex items-center justify-between py-3 px-3.5 rounded-xl text-sm font-bold transition-colors ${
-              activeView === "services" 
-                ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20" 
-                : "text-neutral-900 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-900"
-            }`}
-          >
-            <span>{t.services}</span>
-          </a>
-
-          <a
-            href="/rates"
-            onClick={(e) => { e.preventDefault(); handleNav("rates"); }}
-            className={`flex items-center justify-between py-3 px-3.5 rounded-xl text-sm font-bold transition-colors ${
-              activeView === "rates" 
-                ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20" 
-                : "text-neutral-900 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-900"
-            }`}
-          >
-            <span>{t.rates}</span>
-            <TrendingUp className="h-4 w-4 text-amber-500" />
-          </a>
-
-          <a
-            href="/calculator"
-            onClick={(e) => { e.preventDefault(); handleNav("calculator"); }}
-            className={`flex items-center justify-between py-3 px-3.5 rounded-xl text-sm font-bold transition-colors ${
-              activeView === "calculator" 
-                ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20" 
-                : "text-neutral-900 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-900"
-            }`}
-          >
-            <span>{t.calculator}</span>
-            <Calculator className="h-4 w-4 text-amber-500" />
-          </a>
-
-          <a
-            href="/about"
-            onClick={(e) => { e.preventDefault(); handleNav("about"); }}
-            className={`flex items-center justify-between py-3 px-3.5 rounded-xl text-sm font-bold transition-colors ${
-              activeView === "about" 
-                ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20" 
-                : "text-neutral-900 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-900"
-            }`}
-          >
-            <span>{t.about}</span>
-          </a>
-
-          <a
-            href="/branches"
-            onClick={(e) => { e.preventDefault(); handleNav("branches"); }}
-            className={`flex items-center justify-between py-3 px-3.5 rounded-xl text-sm font-bold transition-colors ${
-              activeView === "branches" 
-                ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20" 
-                : "text-neutral-900 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-900"
-            }`}
-          >
-            <span>{t.branches}</span>
-            <Building2 className="h-4 w-4 text-amber-500" />
-          </a>
-
-          <a
-            href="/blog"
-            onClick={(e) => { e.preventDefault(); handleNav("blog"); }}
-            className={`flex items-center justify-between py-3 px-3.5 rounded-xl text-sm font-bold transition-colors ${
-              activeView === "blog" 
-                ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20" 
-                : "text-neutral-900 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-900"
-            }`}
-          >
-            <span>{t.blog}</span>
-            <FileText className="h-4 w-4 text-amber-500" />
-          </a>
-
-          <a
-            href="/contact"
-            onClick={(e) => { e.preventDefault(); handleNav("contact"); }}
-            className={`flex items-center justify-between py-3 px-3.5 rounded-xl text-sm font-bold transition-colors ${
-              activeView === "contact" 
-                ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20" 
-                : "text-neutral-900 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-900"
-            }`}
-          >
-            <span>{t.contact}</span>
-            <MapPin className="h-4 w-4 text-amber-500" />
-          </a>
-
-          <a
-            href="/faq"
-            onClick={(e) => { e.preventDefault(); handleNav("faq"); }}
-            className={`flex items-center justify-between py-3 px-3.5 rounded-xl text-sm font-bold transition-colors ${
-              activeView === "faq" 
-                ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20" 
-                : "text-neutral-900 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-900"
-            }`}
-          >
-            <span>{t.faq}</span>
-          </a>
-
-          {showAdmin && (
-            <a
-              href="/admin"
-              onClick={(e) => { e.preventDefault(); handleNav("admin"); }}
-              className={`flex items-center justify-between py-3 px-3.5 rounded-xl text-sm font-bold transition-colors border-t border-neutral-200 dark:border-neutral-800 mt-1 ${
-                activeView === "admin" 
-                  ? "bg-amber-500/10 text-amber-700 dark:text-amber-400" 
-                  : "text-neutral-900 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-900"
-              }`}
-            >
-              <span>{t.admin}</span>
-              <LayoutDashboard className="h-4 w-4 text-amber-500" />
-            </a>
-          )}
-
-          {/* Quick Drawer Action CTAs */}
-          <div className="grid grid-cols-2 gap-3 pt-3 border-t border-neutral-200 dark:border-neutral-800 mt-2">
-            <a
-              href="tel:0718321321"
-              id="drawer_cta_call"
-              className="flex items-center justify-center gap-2 bg-neutral-900 dark:bg-neutral-800 text-white p-3 rounded-xl text-xs font-bold text-center no-underline active:scale-95 transition-transform"
-            >
-              <Phone className="h-4 w-4 text-amber-400" />
-              <span>0718 321 321</span>
-            </a>
-            <a
-              href="https://wa.me/94718321321"
-              target="_blank"
-              rel="noreferrer"
-              id="drawer_cta_wa"
-              className="flex items-center justify-center gap-2 bg-emerald-600 text-white p-3 rounded-xl text-xs font-bold text-center no-underline active:scale-95 transition-transform"
-            >
-              <span>WhatsApp Chat</span>
-            </a>
-          </div>
-
         </div>
       )}
     </header>

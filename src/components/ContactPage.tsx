@@ -386,7 +386,7 @@ export default function ContactPage({ currentLang }: ContactPageProps) {
                     disabled={isSubmitting}
                     className="w-full py-3.5 bg-gradient-to-r from-amber-600 to-yellow-500 hover:from-amber-500 hover:to-yellow-400 text-black font-extrabold uppercase tracking-widest text-xs rounded-lg transition-all transform active:scale-[0.98] shadow-md shadow-amber-500/10 cursor-pointer"
                   >
-                    {isSubmitting ? t.calculating : "Register Secure Price Lock"}
+                    {isSubmitting ? t.calculating : "Submit Valuation Request"}
                   </button>
                 </form>
               )}
