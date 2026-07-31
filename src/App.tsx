@@ -79,8 +79,8 @@ export default function App() {
       const path = window.location.pathname.toLowerCase().replace(/\/$/, "");
       if (path === "/about") return "about";
       if (path === "/contact") return "contact";
-      if (path === "/branches") return "branches";
-      if (path === "/services") return "services";
+      if (path === "/branches" || path.startsWith("/branches/")) return "branches";
+      if (path === "/services" || path.startsWith("/services/")) return "services";
       if (path === "/rates") return "rates";
       if (path === "/calculator") return "calculator";
       if (path === "/faq") return "faq";
@@ -89,6 +89,27 @@ export default function App() {
     }
     return "home";
   });
+
+  const [selectedServiceId, setSelectedServiceId] = useState<string | null>(() => {
+    if (typeof window !== "undefined") {
+      const path = window.location.pathname.toLowerCase().replace(/\/$/, "");
+      if (path.startsWith("/services/") && path.length > 10) {
+        return path.substring(10);
+      }
+    }
+    return null;
+  });
+
+  const [selectedBranchId, setSelectedBranchId] = useState<string | null>(() => {
+    if (typeof window !== "undefined") {
+      const path = window.location.pathname.toLowerCase().replace(/\/$/, "");
+      if (path.startsWith("/branches/") && path.length > 10) {
+        return path.substring(10);
+      }
+    }
+    return null;
+  });
+
   const [selectedBlogSlug, setSelectedBlogSlug] = useState<string | null>(() => {
     if (typeof window !== "undefined") {
       const path = window.location.pathname.toLowerCase().replace(/\/$/, "");
@@ -188,20 +209,20 @@ export default function App() {
     const currentPath = window.location.pathname.toLowerCase().replace(/\/$/, "");
     let targetPath = activeView === "home" ? "" : `/${activeView}`;
     
-    // Preserve sub-routes for admin if needed
-    if (activeView === "admin" && (currentPath === "/admin/leads" || currentPath === "/admin/rates" || currentPath === "/admin/blog")) {
-      targetPath = currentPath;
-    }
-    
-    // Preserve sub-routes for blog if needed
-    if (activeView === "blog" && currentPath.startsWith("/blog/")) {
+    if (activeView === "services" && selectedServiceId) {
+      targetPath = `/services/${selectedServiceId}`;
+    } else if (activeView === "branches" && selectedBranchId) {
+      targetPath = `/branches/${selectedBranchId}`;
+    } else if (activeView === "blog" && selectedBlogSlug) {
+      targetPath = `/blog/${selectedBlogSlug}`;
+    } else if (activeView === "admin" && (currentPath === "/admin/leads" || currentPath === "/admin/rates" || currentPath === "/admin/blog")) {
       targetPath = currentPath;
     }
     
     if (currentPath !== targetPath) {
-      window.history.pushState({ view: activeView }, "", targetPath || "/");
+      window.history.pushState({ view: activeView, service: selectedServiceId, branch: selectedBranchId }, "", targetPath || "/");
     }
-  }, [activeView]);
+  }, [activeView, selectedServiceId, selectedBranchId, selectedBlogSlug]);
 
   // Pathname routing on load & popstate + Admin check
   useEffect(() => {
@@ -211,10 +232,20 @@ export default function App() {
         setActiveView("about");
       } else if (path === "/contact") {
         setActiveView("contact");
-      } else if (path === "/branches") {
+      } else if (path === "/branches" || path.startsWith("/branches/")) {
         setActiveView("branches");
-      } else if (path === "/services") {
+        if (path.startsWith("/branches/") && path.length > 10) {
+          setSelectedBranchId(path.substring(10));
+        } else {
+          setSelectedBranchId(null);
+        }
+      } else if (path === "/services" || path.startsWith("/services/")) {
         setActiveView("services");
+        if (path.startsWith("/services/") && path.length > 10) {
+          setSelectedServiceId(path.substring(10));
+        } else {
+          setSelectedServiceId(null);
+        }
       } else if (path === "/rates") {
         setActiveView("rates");
       } else if (path === "/calculator") {
@@ -529,13 +560,33 @@ export default function App() {
             </ScrollReveal>
           </>
         ) : activeView === "services" ? (
-          <ServicesPage currentLang={currentLang} />
+          <ServicesPage 
+            currentLang={currentLang}
+            selectedServiceId={selectedServiceId}
+            onSelectService={(id) => {
+              setSelectedServiceId(id);
+              setActiveView("services");
+            }}
+            setView={setActiveView}
+            onSelectBranch={(id) => {
+              setSelectedBranchId(id);
+              setActiveView("branches");
+            }}
+          />
         ) : activeView === "about" ? (
           <AboutPage currentLang={currentLang} setView={setActiveView} />
         ) : activeView === "contact" ? (
           <ContactPage currentLang={currentLang} />
         ) : activeView === "branches" ? (
-          <BranchesPage currentLang={currentLang} />
+          <BranchesPage 
+            currentLang={currentLang}
+            selectedBranchId={selectedBranchId}
+            onSelectBranch={(id) => {
+              setSelectedBranchId(id);
+              setActiveView("branches");
+            }}
+            setView={setActiveView}
+          />
         ) : activeView === "rates" ? (
           <div className="pt-8 pb-12 min-h-[60vh] bg-white">
             <LiveRateWidget
