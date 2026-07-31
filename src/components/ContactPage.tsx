@@ -5,7 +5,7 @@
 
 import React, { useState } from "react";
 import { motion } from "motion/react";
-import { MapPin, Phone, Clock, Car, Compass, CheckCircle2, MessageCircle, HelpCircle, Mail, ShieldAlert } from "lucide-react";
+import { MapPin, Phone, Clock, Car, Compass, CheckCircle2, MessageCircle, HelpCircle, Mail, ShieldAlert, Navigation } from "lucide-react";
 import { Language, translations } from "../lib/translations.js";
 
 interface ContactPageProps {
@@ -375,6 +375,44 @@ export default function ContactPage({ currentLang }: ContactPageProps) {
                   </button>
                 </form>
               )}
+            </div>
+
+            {/* Embedded Google Map */}
+            <div className="bg-neutral-50 rounded-2xl border border-neutral-200 p-4 sm:p-6 shadow-sm space-y-4">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-neutral-200 pb-3">
+                <div>
+                  <h4 className="font-serif font-black text-neutral-950 text-base flex items-center gap-2">
+                    <MapPin className="h-5 w-5 text-amber-600" />
+                    <span>Headquarters & Exchange Lounge Location</span>
+                  </h4>
+                  <p className="text-xs text-neutral-500 mt-0.5">
+                    Gold Buyers Colombo • Bernard's Business Park, Kohuwala / Galle Rd
+                  </p>
+                </div>
+                <a
+                  href="https://share.google/t37u08yDhse03dO6C"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded-xl text-xs font-mono font-bold shadow-sm flex items-center gap-2 transition-all shrink-0 no-underline"
+                >
+                  <Navigation className="h-4 w-4" />
+                  <span>Open in Google Maps</span>
+                </a>
+              </div>
+
+              <div className="relative w-full h-72 rounded-xl overflow-hidden border border-neutral-200 shadow-inner bg-neutral-100">
+                <iframe
+                  title="Gold Buyers Colombo Location Map"
+                  src="https://maps.google.com/maps?q=Gold+Buyers+Colombo,+Bernard's+Business+Park,+106+Dutugemunu+St,+Kohuwala&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen={false}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="w-full h-full"
+                ></iframe>
+              </div>
             </div>
 
             {/* Quick help bar */}

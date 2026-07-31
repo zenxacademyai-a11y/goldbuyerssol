@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { Award, ShieldCheck, Mail, Phone, MapPin, Star, Building2, ChevronRight } from "lucide-react";
+import { Award, ShieldCheck, Mail, Phone, MapPin, Star, Building2, ChevronRight, Navigation } from "lucide-react";
 import { Language, translations } from "../lib/translations.js";
 
 interface FooterProps {
@@ -194,6 +194,32 @@ export default function Footer({ currentLang, setView, showAdmin = false, onLogo
               <Mail className="h-4 w-4 text-amber-600 dark:text-amber-400 shrink-0" />
               <a href="mailto:info@goldbuyerscolombo.lk" className="hover:text-amber-600">info@goldbuyerscolombo.lk</a>
             </div>
+          </div>
+
+          {/* Embedded Google Map */}
+          <div className="pt-2">
+            <div className="relative w-full h-36 rounded-xl overflow-hidden border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 shadow-xs mb-2">
+              <iframe
+                title="GBC Google Maps Location"
+                src="https://maps.google.com/maps?q=Gold+Buyers+Colombo,+Bernard's+Business+Park,+106+Dutugemunu+St,+Kohuwala&t=&z=14&ie=UTF8&iwloc=&output=embed"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen={false}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="w-full h-full"
+              ></iframe>
+            </div>
+            <a
+              href="https://share.google/t37u08yDhse03dO6C"
+              target="_blank"
+              rel="noreferrer"
+              className="w-full py-2 px-3 bg-amber-500/10 hover:bg-amber-500/20 text-amber-800 dark:text-amber-300 rounded-lg text-[11px] font-mono font-bold border border-amber-500/30 transition-all flex items-center justify-center gap-2 no-underline"
+            >
+              <Navigation className="h-3.5 w-3.5 text-amber-600" />
+              <span>Open HQ Map Location (Google Maps)</span>
+            </a>
           </div>
         </div>
  
