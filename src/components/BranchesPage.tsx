@@ -8,6 +8,7 @@ import { motion } from "motion/react";
 import { 
   MapPin, 
   Phone, 
+  PhoneCall,
   MessageCircle, 
   Search, 
   Building2, 
@@ -15,13 +16,20 @@ import {
   CheckCircle2, 
   Navigation, 
   ChevronRight, 
+  ChevronLeft,
   ArrowLeft,
   Clock,
   Car,
   Award,
   Sparkles,
   Zap,
-  Lock
+  Lock,
+  Image,
+  Play,
+  Pause,
+  Maximize2,
+  X,
+  Filter
 } from "lucide-react";
 import { Language } from "../lib/translations.js";
 import L from "leaflet";
@@ -32,6 +40,13 @@ interface BranchesPageProps {
   selectedBranchId?: string | null;
   onSelectBranch?: (branchId: string | null) => void;
   setView?: (view: any) => void;
+}
+
+export interface BranchImage {
+  url: string;
+  title: string;
+  caption: string;
+  category: "interior" | "exterior" | "security" | "equipment";
 }
 
 export interface Branch {
@@ -58,6 +73,7 @@ export interface Branch {
   facilities?: string[];
   lat: number;
   lng: number;
+  images?: BranchImage[];
 }
 
 export const branchesData: Branch[] = [
@@ -463,6 +479,194 @@ export const branchesData: Branch[] = [
   }
 ];
 
+export function getBranchImages(branch: Branch): BranchImage[] {
+  if (branch.images && branch.images.length > 0) {
+    return branch.images;
+  }
+
+  return [
+    {
+      url: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80",
+      title: `${branch.name.en} - Private VIP Lounge`,
+      caption: "Soundproof private evaluation suite ensuring total discretion, air-conditioned comfort, and personal attention.",
+      category: "interior"
+    },
+    {
+      url: "https://images.unsplash.com/photo-1610375461246-83df859d849d?auto=format&fit=crop&w=1200&q=80",
+      title: "German XRF Spectrometer & Precision Scale",
+      caption: "Computerized non-destructive gold purity analysis testing exact karat purity down to 0.001g accuracy in 60 seconds.",
+      category: "equipment"
+    },
+    {
+      url: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=1200&q=80",
+      title: "Secure Cash Disbursement Counter",
+      caption: "CCTV monitored vault and high-security payout desk providing instant cash payouts or direct bank wire transfers.",
+      category: "security"
+    },
+    {
+      url: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80",
+      title: `${branch.name.en} - Secure Entrance`,
+      caption: `Located near ${branch.landmark || "major Colombo route"} with dedicated visitor parking and armed guard security.`,
+      category: "exterior"
+    }
+  ];
+}
+
+export function BranchCarousel({ branchName, images }: { branchName: string; images: BranchImage[] }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  useEffect(() => {
+    if (!isPlaying) return;
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % images.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [isPlaying, images.length]);
+
+  const handleNext = () => {
+    setCurrentIndex((prev) => (prev + 1) % images.length);
+  };
+
+  const handlePrev = () => {
+    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
+
+  const currentImg = images[currentIndex] || images[0];
+
+  return (
+    <div className="bg-neutral-950 border border-neutral-800 rounded-3xl p-5 sm:p-7 space-y-4 shadow-xl">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-neutral-800 pb-3">
+        <div className="flex items-center gap-2">
+          <Image className="h-5 w-5 text-amber-500" />
+          <div>
+            <h3 className="text-base font-serif font-bold text-white">Branch Gallery & Security Showcase</h3>
+            <p className="text-xs text-neutral-400">Explore interior lounge, XRF testing equipment, and security features</p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-mono font-bold text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/20">
+            {currentIndex + 1} / {images.length}
+          </span>
+          <button
+            onClick={() => setIsPlaying(!isPlaying)}
+            className="p-2 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-neutral-300 transition-colors cursor-pointer border border-neutral-800"
+            title={isPlaying ? "Pause Slideshow" : "Play Slideshow"}
+          >
+            {isPlaying ? <Pause className="h-4 w-4 text-amber-400" /> : <Play className="h-4 w-4 text-emerald-400" />}
+          </button>
+        </div>
+      </div>
+
+      {/* Main Carousel Display */}
+      <div className="relative w-full h-72 sm:h-96 rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-900 group">
+        <img
+          src={currentImg.url}
+          alt={currentImg.title}
+          className="w-full h-full object-cover transition-all duration-500"
+        />
+
+        {/* Top Badges */}
+        <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-10">
+          <span className="px-3 py-1.5 rounded-xl bg-neutral-950/80 backdrop-blur-md border border-neutral-700 text-amber-400 text-xs font-mono font-bold uppercase tracking-wider shadow-lg">
+            {currentImg.category === "interior" && "🏛️ Private VIP Lounge"}
+            {currentImg.category === "equipment" && "🔬 German XRF Assaying"}
+            {currentImg.category === "security" && "🔒 Monitored Cash Vault"}
+            {currentImg.category === "exterior" && "🏢 Branch & Parking"}
+          </span>
+
+          <button
+            onClick={() => setIsFullscreen(true)}
+            className="p-2.5 rounded-xl bg-neutral-950/80 hover:bg-neutral-900 text-white backdrop-blur-md border border-neutral-700 transition-all cursor-pointer shadow-lg"
+            title="Expand Image Lightbox"
+          >
+            <Maximize2 className="h-4 w-4" />
+          </button>
+        </div>
+
+        {/* Navigation Arrows */}
+        <button
+          onClick={handlePrev}
+          className="absolute left-3 top-1/2 -translate-y-1/2 p-3 rounded-full bg-neutral-950/80 hover:bg-neutral-900 text-white backdrop-blur-md border border-neutral-700 transition-all cursor-pointer shadow-xl opacity-90 sm:opacity-0 group-hover:opacity-100"
+          aria-label="Previous image"
+        >
+          <ChevronLeft className="h-5 w-5" />
+        </button>
+
+        <button
+          onClick={handleNext}
+          className="absolute right-3 top-1/2 -translate-y-1/2 p-3 rounded-full bg-neutral-950/80 hover:bg-neutral-900 text-white backdrop-blur-md border border-neutral-700 transition-all cursor-pointer shadow-xl opacity-90 sm:opacity-0 group-hover:opacity-100"
+          aria-label="Next image"
+        >
+          <ChevronRight className="h-5 w-5" />
+        </button>
+
+        {/* Caption Overlay */}
+        <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-neutral-950 via-neutral-950/85 to-transparent p-5 space-y-1">
+          <h4 className="text-base font-serif font-bold text-white flex items-center gap-2">
+            <span>{currentImg.title}</span>
+          </h4>
+          <p className="text-xs text-neutral-300 leading-relaxed">
+            {currentImg.caption}
+          </p>
+        </div>
+      </div>
+
+      {/* Thumbnails */}
+      <div className="grid grid-cols-4 gap-3">
+        {images.map((img, idx) => (
+          <button
+            key={idx}
+            onClick={() => {
+              setCurrentIndex(idx);
+              setIsPlaying(false);
+            }}
+            className={`relative rounded-xl overflow-hidden border-2 h-20 sm:h-24 transition-all cursor-pointer ${
+              idx === currentIndex
+                ? "border-amber-500 ring-2 ring-amber-500/30 scale-102"
+                : "border-neutral-800 opacity-60 hover:opacity-100"
+            }`}
+          >
+            <img src={img.url} alt={img.title} className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-neutral-950/20"></div>
+            {idx === currentIndex && (
+              <div className="absolute top-1.5 right-1.5 w-2.5 h-2.5 rounded-full bg-amber-400 shadow-sm ring-2 ring-amber-950"></div>
+            )}
+          </button>
+        ))}
+      </div>
+
+      {/* Fullscreen Lightbox Modal */}
+      {isFullscreen && (
+        <div className="fixed inset-0 z-50 bg-neutral-950/95 backdrop-blur-xl flex items-center justify-center p-4">
+          <button
+            onClick={() => setIsFullscreen(false)}
+            className="absolute top-6 right-6 p-3 rounded-full bg-neutral-800 hover:bg-neutral-700 text-white transition-colors cursor-pointer"
+          >
+            <X className="h-6 w-6" />
+          </button>
+
+          <div className="max-w-5xl w-full space-y-4">
+            <div className="relative rounded-2xl overflow-hidden border border-neutral-800 max-h-[75vh] flex items-center justify-center bg-black">
+              <img
+                src={currentImg.url}
+                alt={currentImg.title}
+                className="max-h-[75vh] w-auto object-contain mx-auto"
+              />
+            </div>
+            <div className="text-center space-y-1">
+              <h3 className="text-xl font-serif font-bold text-white">{currentImg.title}</h3>
+              <p className="text-sm text-neutral-300 max-w-2xl mx-auto">{currentImg.caption}</p>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function BranchesPage({
   currentLang,
   selectedBranchId,
@@ -470,6 +674,7 @@ export default function BranchesPage({
   setView
 }: BranchesPageProps) {
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedArea, setSelectedArea] = useState<string>("all");
   const mapRef = useRef<any>(null);
 
   const activeBranch = selectedBranchId
@@ -484,14 +689,30 @@ export default function BranchesPage({
   };
 
   const filteredBranches = branchesData.filter((branch) => {
-    const term = searchTerm.toLowerCase();
+    const term = searchTerm.trim().toLowerCase();
+    
+    // Check area filter
+    let matchesArea = true;
+    if (selectedArea !== "all") {
+      const areaKeyword = selectedArea.toLowerCase();
+      matchesArea = 
+        branch.name.en.toLowerCase().includes(areaKeyword) ||
+        branch.address.en.toLowerCase().includes(areaKeyword) ||
+        (branch.landmark && branch.landmark.toLowerCase().includes(areaKeyword));
+    }
+
+    if (!matchesArea) return false;
+
+    if (!term) return true;
+
     return (
       branch.name.en.toLowerCase().includes(term) ||
       branch.name.si.includes(term) ||
       branch.name.ta.includes(term) ||
       branch.address.en.toLowerCase().includes(term) ||
       branch.address.si.includes(term) ||
-      branch.address.ta.includes(term)
+      branch.address.ta.includes(term) ||
+      (branch.landmark && branch.landmark.toLowerCase().includes(term))
     );
   });
 
@@ -657,17 +878,17 @@ export default function BranchesPage({
                   <div className="flex flex-wrap items-center gap-3 pt-4">
                     <a
                       href={`tel:${activeBranch.phone}`}
-                      className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-neutral-950 font-black text-xs sm:text-sm transition-all shadow-lg shadow-amber-500/20 no-underline"
+                      className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-neutral-950 font-black text-xs sm:text-sm transition-all shadow-lg shadow-amber-500/20 no-underline shrink-0"
                     >
-                      <Phone className="h-4 w-4" />
-                      <span>Call {activeBranch.phone}</span>
+                      <PhoneCall className="h-4 w-4" />
+                      <span>Click to Call {activeBranch.phone}</span>
                     </a>
 
                     <a
                       href={`https://wa.me/94718321321?text=Hi%20GBC,%20I%20want%20to%20visit%20your%20${encodeURIComponent(activeBranch.name.en)}.`}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm transition-all no-underline"
+                      className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm transition-all no-underline shrink-0"
                     >
                       <MessageCircle className="h-4 w-4" />
                       <span>WhatsApp Branch</span>
@@ -677,7 +898,7 @@ export default function BranchesPage({
                       href={`https://www.google.com/maps/search/?api=1&query=${activeBranch.lat},${activeBranch.lng}`}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-neutral-100 font-bold text-xs sm:text-sm transition-all no-underline"
+                      className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-neutral-100 font-bold text-xs sm:text-sm transition-all no-underline shrink-0"
                     >
                       <Navigation className="h-4 w-4 text-amber-400" />
                       <span>Google Maps Directions</span>
@@ -713,6 +934,12 @@ export default function BranchesPage({
                 </div>
               </div>
             </div>
+
+            {/* Branch Image Showcase & Facilities Carousel */}
+            <BranchCarousel
+              branchName={activeBranch.name[currentLang]}
+              images={getBranchImages(activeBranch)}
+            />
 
             {/* Dedicated Interactive Map */}
             <div className="bg-neutral-950 border border-neutral-800 rounded-2xl p-4 sm:p-6 space-y-4">
@@ -786,16 +1013,55 @@ export default function BranchesPage({
                 With 16 strategic locations across Colombo, we offer convenient private lounges with computerized XRF testing and instant top-tier cash payouts.
               </p>
 
-              {/* Search Bar */}
-              <div className="pt-4 max-w-xl mx-auto relative">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400" />
-                <input
-                  type="text"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Search branches by area (e.g. Dehiwala, Kohuwala, Bambalapitiya)..."
-                  className="w-full pl-11 pr-4 py-3 rounded-2xl bg-neutral-950 border border-neutral-800 text-xs sm:text-sm text-white focus:outline-none focus:border-amber-500 transition-colors"
-                />
+              {/* Search Bar & Neighborhood Filter Pills */}
+              <div className="pt-4 max-w-2xl mx-auto space-y-4">
+                <div className="relative">
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-amber-500" />
+                  <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="Type city or neighborhood (e.g. Dehiwala, Kohuwala, Bambalapitiya)..."
+                    className="w-full pl-12 pr-10 py-3.5 rounded-2xl bg-neutral-950 border border-neutral-800 text-sm text-white focus:outline-none focus:border-amber-500 transition-colors shadow-inner"
+                  />
+                  {searchTerm && (
+                    <button
+                      onClick={() => setSearchTerm("")}
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 p-1 rounded-full bg-neutral-800 text-neutral-400 hover:text-white transition-colors"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  )}
+                </div>
+
+                {/* Quick Area Filter Pills */}
+                <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
+                  <span className="text-xs text-neutral-400 font-mono flex items-center gap-1 mr-1">
+                    <Filter className="h-3 w-3 text-amber-500" /> Area:
+                  </span>
+                  {[
+                    { id: "all", label: "All Areas (16)" },
+                    { id: "kohuwala", label: "Kohuwala / Nugegoda" },
+                    { id: "bambalapitiya", label: "Bambalapitiya" },
+                    { id: "dehiwala", label: "Dehiwala" },
+                    { id: "kirulapone", label: "Kirulapone" },
+                    { id: "wellawatte", label: "Wellawatte" },
+                    { id: "pettah", label: "Pettah" },
+                    { id: "wattala", label: "Wattala" }
+                  ].map((area) => (
+                    <button
+                      key={area.id}
+                      onClick={() => setSelectedArea(area.id)}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer border ${
+                        selectedArea === area.id
+                          ? "bg-amber-500 text-neutral-950 border-amber-400 shadow-md shadow-amber-500/20"
+                          : "bg-neutral-950 text-neutral-300 border-neutral-800 hover:border-neutral-700"
+                      }`}
+                    >
+                      {area.label}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
 
@@ -804,13 +1070,37 @@ export default function BranchesPage({
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <MapPin className="h-5 w-5 text-amber-500" />
-                  <h3 className="text-sm sm:text-base font-serif font-bold text-white">Colombo Interactive Map (16 Locations)</h3>
+                  <h3 className="text-sm sm:text-base font-serif font-bold text-white">Colombo Interactive Map</h3>
                 </div>
-                <span className="text-xs text-amber-400 font-bold">{filteredBranches.length} Branches Found</span>
+                <span className="text-xs font-mono font-bold text-amber-400 bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20">
+                  {filteredBranches.length} {filteredBranches.length === 1 ? "Branch" : "Branches"} Found
+                </span>
               </div>
 
               <div id="colombo-branches-map" className="w-full h-80 sm:h-96 rounded-xl overflow-hidden border border-neutral-800 z-10"></div>
             </div>
+
+            {/* Empty State when no branches match filters */}
+            {filteredBranches.length === 0 && (
+              <div className="text-center py-16 px-6 bg-neutral-950 border border-neutral-800 rounded-3xl space-y-4 max-w-xl mx-auto">
+                <div className="h-12 w-12 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-500 mx-auto">
+                  <Search className="h-6 w-6" />
+                </div>
+                <h3 className="text-lg font-serif font-bold text-white">No Branches Match Your Filter</h3>
+                <p className="text-xs text-neutral-400 leading-relaxed">
+                  We couldn't find a branch matching "{searchTerm}" in the selected area. Try clearing your search term or select "All Areas".
+                </p>
+                <button
+                  onClick={() => {
+                    setSearchTerm("");
+                    setSelectedArea("all");
+                  }}
+                  className="px-5 py-2.5 bg-amber-500 text-neutral-950 font-black text-xs rounded-xl hover:bg-amber-400 transition-colors cursor-pointer"
+                >
+                  Reset All Filters
+                </button>
+              </div>
+            )}
 
             {/* Flagship Centers */}
             {flagshipBranches.length > 0 && (
@@ -925,6 +1215,14 @@ export default function BranchesPage({
                           <span>Location Details</span>
                           <ChevronRight className="h-3.5 w-3.5" />
                         </button>
+
+                        <a
+                          href={`tel:${branch.phone}`}
+                          className="w-full py-1.5 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 text-[11px] font-bold text-center flex items-center justify-center gap-1.5 transition-colors no-underline border border-amber-500/20"
+                        >
+                          <PhoneCall className="h-3 w-3 text-amber-400" />
+                          <span>Click to Call {branch.phone}</span>
+                        </a>
                       </div>
                     </div>
                   ))}

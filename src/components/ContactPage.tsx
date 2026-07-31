@@ -5,7 +5,7 @@
 
 import React, { useState } from "react";
 import { motion } from "motion/react";
-import { MapPin, Phone, Clock, Car, Compass, CheckCircle2, MessageCircle, HelpCircle, Mail, ShieldAlert, Navigation } from "lucide-react";
+import { MapPin, Phone, Clock, Car, Compass, CheckCircle2, MessageCircle, HelpCircle, Mail, ShieldAlert, Navigation, PhoneCall } from "lucide-react";
 import { Language, translations } from "../lib/translations.js";
 
 interface ContactPageProps {
@@ -204,6 +204,21 @@ export default function ContactPage({ currentLang }: ContactPageProps) {
                     WhatsApp: +94 718 321 321
                   </a>
                 </div>
+              </div>
+
+              {/* Click to Call Mobile Action */}
+              <div className="p-3.5 bg-gradient-to-r from-amber-600 to-amber-700 text-white rounded-xl shadow-xs flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2">
+                  <PhoneCall className="h-4 w-4 text-amber-200 animate-pulse shrink-0" />
+                  <span className="text-xs font-bold">Tap to Call Senior Officer</span>
+                </div>
+                <a
+                  href="tel:0718321321"
+                  className="px-3 py-1.5 bg-white hover:bg-amber-50 text-amber-950 font-black text-xs rounded-lg transition-all shadow-xs flex items-center gap-1.5 no-underline shrink-0"
+                >
+                  <Phone className="h-3 w-3 text-amber-700" />
+                  <span>Call 0718 321 321</span>
+                </a>
               </div>
 
               {/* Support Email */}
