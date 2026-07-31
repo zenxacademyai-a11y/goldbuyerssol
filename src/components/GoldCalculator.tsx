@@ -28,7 +28,6 @@ export default function GoldCalculator({ currentLang, rates, settings, isLoading
   const [calcResult, setCalcResult] = useState({
     weightInGrams: 0,
     marketValue: 0,
-    premiumBonus: 0,
     testingDeductions: 0,
     finalPayout: 0,
   });
@@ -43,19 +42,15 @@ export default function GoldCalculator({ currentLang, rates, settings, isLoading
     // Standard market value
     const marketValue = weightInGrams * activeRate;
     
-    // Premium bonus (+2.5%)
-    const premiumBonus = marketValue * (settings.bonusPremiumRate / 100);
-    
     // computerized testing/cleaning deductions
     const testingDeductions = weightInGrams * settings.testingFeePerGram;
     
     // Final payout
-    const finalPayout = Math.max(0, marketValue + premiumBonus - testingDeductions - makingCharges);
+    const finalPayout = Math.max(0, marketValue - testingDeductions - makingCharges);
 
     setCalcResult({
       weightInGrams,
       marketValue,
-      premiumBonus,
       testingDeductions,
       finalPayout,
     });
@@ -253,10 +248,6 @@ I'd like to book an appointment to test and sell my gold today.`
                 <div className="flex justify-between items-center">
                   <span className="text-neutral-400">Standard Market Value:</span>
                   <span className="font-bold">LKR {Math.round(calcResult.marketValue).toLocaleString()}</span>
-                </div>
-                <div className="flex justify-between items-center text-emerald-400">
-                  <span>+ GBC Premium Bonus (+2.5%):</span>
-                  <span className="font-bold">+LKR {Math.round(calcResult.premiumBonus).toLocaleString()}</span>
                 </div>
                 {makingCharges > 0 && (
                   <div className="flex justify-between items-center text-rose-400">

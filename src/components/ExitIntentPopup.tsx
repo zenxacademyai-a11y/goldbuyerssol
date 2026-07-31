@@ -72,7 +72,7 @@ export default function ExitIntentPopup({ currentLang }: ExitIntentPopupProps) {
             Leaving Colombo?
           </h3>
           <p className="text-amber-700 text-xs font-mono uppercase tracking-widest mb-4 font-bold">
-            Get an Extra +2.5% Premium Valuation
+            Get an Instant Highest Rate Quote
           </p>
           <p className="text-neutral-600 text-xs sm:text-sm leading-relaxed mb-6">
             Before you leave, get today's top gold rate quote. We pay immediate cash and guarantee to beat any pawn or jewelry broker valuation in Colombo!
@@ -81,7 +81,7 @@ export default function ExitIntentPopup({ currentLang }: ExitIntentPopupProps) {
           {/* Action Links */}
           <div className="space-y-3">
             <a
-              href="https://wa.me/94718321321?text=Hi%20GBC!%20I'm%20leaving%20the%20website%20and%20want%20a%20gold%20rate%20quote%20for%20an%20extra%20%2B2.5%25%20bonus."
+              href="https://wa.me/94718321321?text=Hi%20GBC!%20I'm%20leaving%20the%20website%20and%20want%20today's%20highest%20gold%20rate%20quote."
               target="_blank"
               rel="noreferrer"
               onClick={handleClose}
