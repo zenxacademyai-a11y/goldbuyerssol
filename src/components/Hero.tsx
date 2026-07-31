@@ -151,7 +151,8 @@ export default function Hero({ currentLang }: HeroProps) {
               )}
             </p>
 
-            {/* CTA Buttons */}
+
+
             <div className="flex flex-col min-[380px]:flex-row items-stretch min-[380px]:items-center gap-2.5 w-full sm:w-auto mb-4">
               {/* Primary CTA */}
               <a 
@@ -166,10 +167,10 @@ export default function Hero({ currentLang }: HeroProps) {
               {/* Secondary Outline Button */}
               <a 
                 href="tel:0718321321" 
-                className="inline-flex items-center justify-center gap-2 px-5 py-3 sm:py-3 rounded-xl bg-white/80 dark:bg-neutral-900/80 hover:bg-amber-50/80 border border-neutral-300 dark:border-neutral-700 hover:border-amber-500/80 text-neutral-900 dark:text-neutral-100 font-bold text-xs sm:text-sm transition-all duration-200 shadow-2xs hover:shadow-md backdrop-blur-md cursor-pointer no-underline group text-center"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 sm:py-3 rounded-xl bg-white/90 dark:bg-neutral-900/90 hover:bg-amber-50/80 border-2 border-emerald-500/60 hover:border-emerald-500 text-neutral-900 dark:text-neutral-100 font-bold text-xs sm:text-sm transition-all duration-200 shadow-2xs hover:shadow-md backdrop-blur-md cursor-pointer no-underline group text-center"
               >
                 <Phone className="h-4 w-4 text-emerald-600 group-hover:scale-110 transition-transform shrink-0" />
-                <span className="whitespace-nowrap">0718 321 321</span>
+                <span className="whitespace-nowrap font-mono text-base sm:text-lg font-extrabold text-emerald-700 dark:text-emerald-400 animate-pulse">0718 321 321</span>
               </a>
             </div>
 
@@ -191,39 +192,39 @@ export default function Hero({ currentLang }: HeroProps) {
 
             {/* Animated Counters Grid - 2x2 on Mobile, 4x1 on Tablet/Desktop */}
             <div className="grid grid-cols-2 min-[440px]:grid-cols-4 gap-2 sm:gap-2.5 w-full max-w-xl">
-              <div className="p-2 sm:p-2.5 rounded-xl bg-white/85 dark:bg-neutral-900/85 border border-amber-500/20 shadow-2xs backdrop-blur-md flex flex-col items-start min-w-0">
-                <div className="text-sm sm:text-lg font-black text-neutral-900 dark:text-white leading-tight truncate w-full">
+              <div className="p-2.5 sm:p-3 rounded-xl bg-white/90 dark:bg-neutral-900/90 border border-amber-500/30 shadow-2xs backdrop-blur-md flex flex-col items-start min-w-0">
+                <div className="text-base sm:text-xl font-black text-amber-600 dark:text-amber-400 leading-tight truncate w-full">
                   <Counter end={3500} suffix="+" />
                 </div>
-                <span className="text-[10px] font-bold text-neutral-600 dark:text-neutral-400 uppercase tracking-tight truncate w-full">
+                <span className="text-[10px] font-extrabold text-neutral-700 dark:text-neutral-300 uppercase tracking-tight truncate w-full">
                   Customers
                 </span>
               </div>
 
-              <div className="p-2 sm:p-2.5 rounded-xl bg-white/85 dark:bg-neutral-900/85 border border-amber-500/20 shadow-2xs backdrop-blur-md flex flex-col items-start min-w-0">
-                <div className="text-sm sm:text-lg font-black text-neutral-900 dark:text-white leading-tight truncate w-full">
+              <div className="p-2.5 sm:p-3 rounded-xl bg-white/90 dark:bg-neutral-900/90 border border-amber-500/30 shadow-2xs backdrop-blur-md flex flex-col items-start min-w-0">
+                <div className="text-base sm:text-xl font-black text-amber-600 dark:text-amber-400 leading-tight truncate w-full">
                   <Counter end={50} suffix="+" />
                 </div>
-                <span className="text-[10px] font-bold text-neutral-600 dark:text-neutral-400 uppercase tracking-tight truncate w-full">
+                <span className="text-[10px] font-extrabold text-neutral-700 dark:text-neutral-300 uppercase tracking-tight truncate w-full">
                   Years Exp
                 </span>
               </div>
 
-              <div className="p-2 sm:p-2.5 rounded-xl bg-white/85 dark:bg-neutral-900/85 border border-amber-500/20 shadow-2xs backdrop-blur-md flex flex-col items-start min-w-0">
-                <div className="text-sm sm:text-lg font-black text-neutral-900 dark:text-white leading-tight flex items-center gap-0.5 truncate w-full">
+              <div className="p-2.5 sm:p-3 rounded-xl bg-white/90 dark:bg-neutral-900/90 border border-amber-500/30 shadow-2xs backdrop-blur-md flex flex-col items-start min-w-0">
+                <div className="text-base sm:text-xl font-black text-amber-600 dark:text-amber-400 leading-tight flex items-center gap-0.5 truncate w-full">
                   <Counter end={5.0} decimals={1} />
-                  <Star className="h-3 w-3 fill-amber-400 text-amber-400 inline shrink-0" />
+                  <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400 inline shrink-0" />
                 </div>
-                <span className="text-[10px] font-bold text-neutral-600 dark:text-neutral-400 uppercase tracking-tight truncate w-full">
+                <span className="text-[10px] font-extrabold text-neutral-700 dark:text-neutral-300 uppercase tracking-tight truncate w-full">
                   Rating
                 </span>
               </div>
 
-              <div className="p-2 sm:p-2.5 rounded-xl bg-white/85 dark:bg-neutral-900/85 border border-amber-500/20 shadow-2xs backdrop-blur-md flex flex-col items-start min-w-0">
-                <div className="text-sm sm:text-lg font-black text-amber-600 dark:text-amber-400 leading-tight truncate w-full">
+              <div className="p-2.5 sm:p-3 rounded-xl bg-white/90 dark:bg-neutral-900/90 border border-amber-500/30 shadow-2xs backdrop-blur-md flex flex-col items-start min-w-0">
+                <div className="text-base sm:text-xl font-black text-emerald-600 dark:text-emerald-400 leading-tight truncate w-full">
                   <Counter end={100} suffix="%" />
                 </div>
-                <span className="text-[10px] font-bold text-neutral-600 dark:text-neutral-400 uppercase tracking-tight truncate w-full">
+                <span className="text-[10px] font-extrabold text-neutral-700 dark:text-neutral-300 uppercase tracking-tight truncate w-full">
                   Payout
                 </span>
               </div>

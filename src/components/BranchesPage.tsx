@@ -87,43 +87,184 @@ export interface Branch {
   badges?: BranchBadge[];
 }
 
-export function BranchBadgePills({ badges, currentLang }: { badges?: BranchBadge[]; currentLang: Language }) {
+function BadgePillItem({ badge, currentLang, branch }: { badge: BranchBadge; currentLang: Language; branch?: Branch }) {
+  const [isHovered, setIsHovered] = useState(false);
+  const [isTapped, setIsTapped] = useState(false);
+  const text = badge.label[currentLang] || badge.label.en;
+  const labelEnLower = badge.label.en.toLowerCase();
+
+  const isSecurityBadge = labelEnLower.includes("secure") || labelEnLower.includes("private") || badge.iconName === "shield-check";
+  const isXrfBadge = labelEnLower.includes("xrf") || labelEnLower.includes("assaying") || labelEnLower.includes("certified");
+  const hasTooltip = isSecurityBadge || isXrfBadge;
+
+  let icon = <MapPin className="h-3 w-3 text-amber-400 shrink-0" />;
+  if (badge.iconName === "shield-check" || isSecurityBadge) icon = <ShieldCheck className="h-3 w-3 text-emerald-400 shrink-0" />;
+  else if (badge.iconName === "clock") icon = <Clock className="h-3 w-3 text-amber-400 shrink-0" />;
+  else if (badge.iconName === "car") icon = <Car className="h-3 w-3 text-blue-400 shrink-0" />;
+  else if (badge.iconName === "building") icon = <Building2 className="h-3 w-3 text-purple-400 shrink-0" />;
+  else if (badge.iconName === "sparkles" || isXrfBadge) icon = <Sparkles className="h-3 w-3 text-amber-400 shrink-0" />;
+  else if (badge.iconName === "zap") icon = <Zap className="h-3 w-3 text-amber-400 shrink-0" />;
+
+  let colorClasses = "bg-neutral-900 border-neutral-800 text-neutral-300";
+  if (badge.variant === "amber" || isXrfBadge) {
+    colorClasses = "bg-amber-500/10 border-amber-500/30 text-amber-300 hover:border-amber-400/60";
+  } else if (badge.variant === "emerald" || isSecurityBadge) {
+    colorClasses = "bg-emerald-500/10 border-emerald-500/30 text-emerald-300 hover:border-emerald-400/60";
+  } else if (badge.variant === "blue") {
+    colorClasses = "bg-blue-500/10 border-blue-500/30 text-blue-300";
+  } else if (badge.variant === "purple") {
+    colorClasses = "bg-purple-500/10 border-purple-500/30 text-purple-300";
+  }
+
+  // Branch-specific security and XRF protocols
+  let tooltipTitle = "";
+  let tooltipDesc = "";
+  let protocolCode = "";
+
+  if (isSecurityBadge) {
+    tooltipTitle = {
+      en: "🔒 Security Protocol",
+      si: "🔒 ආරක්ෂක ක්‍රමවේදය",
+      ta: "🔒 பாதுகாப்பு நெறிமுறை"
+    }[currentLang] || "🔒 Security Protocol";
+
+    protocolCode = "SLGJA SEC-STD #2026";
+
+    const branchId = branch?.id || "";
+    if (branchId === "head_office") {
+      tooltipDesc = {
+        en: "Biometric access appraisal booth, 24/7 CCTV recording, soundproof private VIP suite & dedicated security officer.",
+        si: "ජෛවමිතිය ආරක්ෂිත පෞද්ගලික කුටිය, 24/7 CCTV, VIP පෞද්ගලික කාමරය සහ ආරක්ෂක නිලධාරී සේවාව.",
+        ta: "பயோமெட்ரிக் தனிப்பட்ட அறை, 24/7 CCTV, VIP வாடிக்கையாளர் அறை மற்றும் பாதுகாப்பு அதிகாரி."
+      }[currentLang] || "Biometric access appraisal booth, 24/7 CCTV recording, soundproof private VIP suite & dedicated security officer.";
+    } else if (branchId === "bambalapitiya") {
+      tooltipDesc = {
+        en: "Executive W Space private suite, controlled card access doors, valet security escort & direct bank wire desk.",
+        si: "W Space පෞද්ගලික විධායක කුටිය, පාලිත ප්‍රවේශ දොරටු, රථගාල සහ සෘජු ඉලෙක්ට්‍රොනික ගෙවීම් අංශය.",
+        ta: "W ஸ்பேஸ் தனிப்பட்ட அறை, கட்டுப்பாட்டு கதவுகள், வாலட் பார்க்கிங் மற்றும் நேரடி வங்கி பரிமாற்ற பிரிவு."
+      }[currentLang] || "Executive W Space private suite, controlled card access doors, valet security escort & direct bank wire desk.";
+    } else if (branchId === "dehiwala_icc") {
+      tooltipDesc = {
+        en: "ICC Business Complex multi-layer security, private elevator, high-security vault & confidential desk.",
+        si: "ICC සංකීර්ණ බහුස්තර ආරක්ෂාව, පෞද්ගලික සූක්ෂම විදුලි සෝපානය, ආරක්ෂිත සේප්පුව සහ පෞද්ගලික පරීක්ෂණ අංශය.",
+        ta: "ICC வளாகத்தின் பல்லடுக்கு பாதுகாப்பு, தனிப்பட்ட மின்தூக்கி, உயர் பாதுகாப்பு பெட்டகம் மற்றும் இரகசிய பிரிவு."
+      }[currentLang] || "ICC Business Complex multi-layer security, private elevator, high-security vault & confidential desk.";
+    } else if (branchId === "kohuwala_hosp") {
+      tooltipDesc = {
+        en: "Closed-circuit camera coverage, soundproof consultation booth & secure private instant payout desk.",
+        si: "CCTV කැමරා පද්ධතිය, ශබ්ද-ආරක්ෂිත පෞද්ගලික සාකච්ඡා කාමරය සහ ආරක්ෂිත පෞද්ගලික මුදල් අංශය.",
+        ta: "CCTV கேமரா கண்காணிப்பு, ஒலி புகாத ரகசிய அறை மற்றும் பாதுகாப்பான ரொக்கப் பணப் பிரிவு."
+      }[currentLang] || "Closed-circuit camera coverage, soundproof consultation booth & secure private instant payout desk.";
+    } else if (branchId === "dehiwala_mount") {
+      tooltipDesc = {
+        en: "Coastal perimeter security, private customer room, encrypted transaction handling & secure driveway.",
+        si: "වෙරළබඩ ආරක්ෂිත කලාපය, පෞද්ගලික පාරිභෝගික කාමරය, සංකේතනය කළ මුදල් හැසිරවීම සහ ආරක්ෂිත රථගාල.",
+        ta: "பாதுகாப்பான வாடிக்கையாளர் அறை, பாதுகாக்கப்பட்ட பண மேலாண்மை மற்றும் தனியார் வாகனம் நிறுத்துமிடம்."
+      }[currentLang] || "Coastal perimeter security, private customer room, encrypted transaction handling & secure driveway.";
+    } else if (branchId === "bauddhaloka_mawatha") {
+      tooltipDesc = {
+        en: "Cinnamon Gardens embassy zone high security, private VIP suite & confidential transaction escort.",
+        si: "කුරුඳු වත්ත තානාපති කලාපීය ආරක්ෂාව, පෞද්ගලික VIP කුටිය සහ රහස්‍ය ගනුදෙනු පහසුකම්.",
+        ta: "தூதரக மண்டல உயர் பாதுகாப்பு, தனிப்பட்ட VIP அறை மற்றும் இரகசிய பணப் பரிவர்த்தனை."
+      }[currentLang] || "Cinnamon Gardens embassy zone high security, private VIP suite & confidential transaction escort.";
+    } else if (branchId === "sea_street") {
+      tooltipDesc = {
+        en: "Pettah gold district security patrol, high-resolution surveillance, private counter & armored payout protocol.",
+        si: "පිටකොටුව රන් වීදි ආරක්ෂිත කලාපය, අධි-තක්සේරු කැමරා, පෞද්ගලික කවුන්ටරය සහ ආරක්ෂිත ගෙවීම් ක්‍රමවේදය.",
+        ta: "புறக்கோட்டை தங்க வீதி பாதுகாப்பு ரோந்து, உயர் தெளிவுத்திறன் கேமராக்கள் மற்றும் பாதுகாப்பான பணப் பிரிவு."
+      }[currentLang] || "Pettah gold district security patrol, high-resolution surveillance, private counter & armored payout protocol.";
+    } else {
+      tooltipDesc = {
+        en: "24/7 CCTV surveillance, soundproof private testing room, confidential valuation & secure escort option.",
+        si: "24/7 CCTV ආරක්ෂාව, ශබ්ද-ආරක්ෂිත පෞද්ගලික පරීක්ෂණ කාමරය, රහස්‍ය තක්සේරුව සහ ආරක්ෂිත ගමනාගමනය.",
+        ta: "24/7 CCTV கண்காணிப்பு, ஒலி புகாத தனிப்பட்ட அறை, இரகசிய மதிப்பீடு மற்றும் பாதுகாப்பு வழிநடத்தல்."
+      }[currentLang] || "24/7 CCTV surveillance, soundproof private testing room, confidential valuation & secure escort option.";
+    }
+  } else if (isXrfBadge) {
+    tooltipTitle = {
+      en: "⚡ Certified XRF Protocol",
+      si: "⚡ XRF සහතිකලත් පරීක්ෂාව",
+      ta: "⚡ XRF சான்றளிக்கப்பட்ட முறை"
+    }[currentLang] || "⚡ Certified XRF Protocol";
+
+    protocolCode = "METALLURGY LAB XRF-2026";
+
+    tooltipDesc = {
+      en: "Non-destructive Bruker XRF Spectrometer analysis — measures exact gold karat & purity down to 0.01% accuracy in 60 seconds with 0% weight loss.",
+      si: "හානි නොවන Bruker XRF පරිගණක පරික්ෂාව — උණු කිරීමකින් හෝ සීරීමකින් තොරව තත්පර 60කින් 0.01%ක් දක්වා නිවැරදිව රන් පිරිසිදුතාව මනිනු ලැබේ.",
+      ta: "சேதமில்லாத Bruker XRF கணினி பகுப்பாய்வு — உருக்கவோ சேதப்படுத்தவோ இல்லாமல் 60 வினாடிகளில் 0.01% துல்லியத்துடன் தங்கத் தூய்மையை அளவிடுகிறது."
+    }[currentLang] || "Non-destructive Bruker XRF Spectrometer analysis — measures exact gold karat & purity down to 0.01% accuracy in 60 seconds with 0% weight loss.";
+  }
+
+  const showTooltip = hasTooltip && (isHovered || isTapped);
+
+  return (
+    <div className="relative inline-block group">
+      <button
+        type="button"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        onClick={(e) => {
+          if (hasTooltip) {
+            e.stopPropagation();
+            setIsTapped((prev) => !prev);
+          }
+        }}
+        className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-mono font-bold border ${colorClasses} shadow-2xs transition-all cursor-pointer relative z-10 ${
+          hasTooltip ? "hover:scale-[1.05] active:scale-95" : ""
+        }`}
+        title={hasTooltip ? `${text} - Hover or click for protocol details` : text}
+      >
+        {icon}
+        <span>{text}</span>
+        {hasTooltip && (
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0 ml-0.5" />
+        )}
+      </button>
+
+      {showTooltip && (
+        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 sm:w-72 p-3 bg-neutral-950/95 border border-amber-500/40 text-white rounded-xl shadow-2xl backdrop-blur-xl z-50 animate-in fade-in zoom-in-95 duration-200 pointer-events-none">
+          <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1 border-4 border-transparent border-t-neutral-950/95" />
+          
+          <div className="flex items-center justify-between pb-1.5 mb-1.5 border-b border-neutral-800">
+            <div className="flex items-center gap-1.5 text-xs font-bold font-serif text-amber-300">
+              {isSecurityBadge ? (
+                <ShieldCheck className="h-3.5 w-3.5 text-emerald-400 shrink-0" />
+              ) : (
+                <Sparkles className="h-3.5 w-3.5 text-amber-400 shrink-0" />
+              )}
+              <span>{tooltipTitle}</span>
+            </div>
+            <span className="text-[9px] font-mono font-bold text-neutral-400 bg-neutral-900 px-1.5 py-0.5 rounded border border-neutral-800 shrink-0">
+              {branch?.name?.en ? branch.name.en.split(' ')[0] : "SECURED"}
+            </span>
+          </div>
+
+          <p className="text-[11px] text-neutral-200 leading-relaxed font-sans">
+            {tooltipDesc}
+          </p>
+
+          <div className="mt-2 pt-1.5 border-t border-neutral-800/80 flex items-center justify-between text-[9px] text-amber-400/80 font-mono">
+            <span className="flex items-center gap-1">
+              <Lock className="h-2.5 w-2.5 text-emerald-400 shrink-0" />
+              <span>{protocolCode}</span>
+            </span>
+            <span className="text-emerald-400 font-bold">● ACTIVE</span>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export function BranchBadgePills({ badges, currentLang, branch }: { badges?: BranchBadge[]; currentLang: Language; branch?: Branch }) {
   if (!badges || badges.length === 0) return null;
 
   return (
     <div className="flex flex-wrap items-center gap-1.5 mb-2.5">
-      {badges.map((badge, idx) => {
-        const text = badge.label[currentLang] || badge.label.en;
-        
-        let icon = <MapPin className="h-3 w-3 text-amber-400 shrink-0" />;
-        if (badge.iconName === "shield-check") icon = <ShieldCheck className="h-3 w-3 text-emerald-400 shrink-0" />;
-        else if (badge.iconName === "clock") icon = <Clock className="h-3 w-3 text-amber-400 shrink-0" />;
-        else if (badge.iconName === "car") icon = <Car className="h-3 w-3 text-blue-400 shrink-0" />;
-        else if (badge.iconName === "building") icon = <Building2 className="h-3 w-3 text-purple-400 shrink-0" />;
-        else if (badge.iconName === "sparkles") icon = <Sparkles className="h-3 w-3 text-amber-400 shrink-0" />;
-        else if (badge.iconName === "zap") icon = <Zap className="h-3 w-3 text-amber-400 shrink-0" />;
-
-        let colorClasses = "bg-neutral-900 border-neutral-800 text-neutral-300";
-        if (badge.variant === "amber") {
-          colorClasses = "bg-amber-500/10 border-amber-500/30 text-amber-300";
-        } else if (badge.variant === "emerald") {
-          colorClasses = "bg-emerald-500/10 border-emerald-500/30 text-emerald-300";
-        } else if (badge.variant === "blue") {
-          colorClasses = "bg-blue-500/10 border-blue-500/30 text-blue-300";
-        } else if (badge.variant === "purple") {
-          colorClasses = "bg-purple-500/10 border-purple-500/30 text-purple-300";
-        }
-
-        return (
-          <span
-            key={idx}
-            className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-mono font-bold border ${colorClasses} shadow-2xs`}
-          >
-            {icon}
-            <span>{text}</span>
-          </span>
-        );
-      })}
+      {badges.map((badge, idx) => (
+        <BadgePillItem key={idx} badge={badge} currentLang={currentLang} branch={branch} />
+      ))}
     </div>
   );
 }
@@ -218,6 +359,7 @@ export const branchesData: Branch[] = [
     badges: [
       { label: { en: "Business Center VIP", si: "ව්‍යාපාරික මධ්‍යස්ථාන VIP", ta: "வணிக மைய VIP" }, iconName: "building", variant: "purple" },
       { label: { en: "Secure Private Access", si: "ආරක්ෂිත පෞද්ගලික ප්‍රවේශය", ta: "பாதுகாப்பான தனிப்பட்ட பிரවේசம்" }, iconName: "shield-check", variant: "emerald" },
+      { label: { en: "XRF Certified", si: "XRF සහතිකලත්", ta: "XRF சான்றளிக்கப்பட்டது" }, iconName: "sparkles", variant: "amber" },
       { label: { en: "Open Today", si: "අද විවෘතයි", ta: "ඉன்று திறந்துள்ளது" }, iconName: "clock", variant: "blue" }
     ]
   },
@@ -279,6 +421,7 @@ export const branchesData: Branch[] = [
     badges: [
       { label: { en: "Coastal Region Hub", si: "වෙරළබඩ කලාපීය මධ්‍යස්ථානය", ta: "கடற்கரை பிராந்திய மையம்" }, iconName: "map-pin", variant: "amber" },
       { label: { en: "Secure Private Access", si: "ආරක්ෂිත පෞද්ගලික ප්‍රවේශය", ta: "பாதுகாப்பான தனிப்பட்ட பிரවේசம்" }, iconName: "shield-check", variant: "emerald" },
+      { label: { en: "XRF Certified", si: "XRF සහතිකලත්", ta: "XRF சான்றளிக்கப்பட்டது" }, iconName: "sparkles", variant: "amber" },
       { label: { en: "Open Today", si: "අද විවෘතයි", ta: "ඉன்று திறந்துள்ளது" }, iconName: "clock", variant: "blue" }
     ]
   },
@@ -429,6 +572,8 @@ export const branchesData: Branch[] = [
     badges: [
       { label: { en: "Clock Tower Junction", si: "ඔරලෝසු කණුව හන්දිය", ta: "கடிகார கோபுரம் சந்திப்பு" }, iconName: "map-pin", variant: "amber" },
       { label: { en: "Express Assaying", si: "ක්ෂණික පරීක්ෂාව", ta: "விரைவு சோதனை" }, iconName: "zap", variant: "amber" },
+      { label: { en: "Secure Private Access", si: "ආරක්ෂිත පෞද්ගලික ප්‍රවේශය", ta: "பாதுகாப்பான தனிப்பட்ட பிரවේசம்" }, iconName: "shield-check", variant: "emerald" },
+      { label: { en: "XRF Certified", si: "XRF සහතිකලත්", ta: "XRF சான்றளிக்கப்பட்டது" }, iconName: "sparkles", variant: "amber" },
       { label: { en: "Open Today", si: "අද විවෘතයි", ta: "ඉன்று திறந்துள்ளது" }, iconName: "clock", variant: "blue" }
     ]
   },
@@ -994,7 +1139,7 @@ export default function BranchesPage({
 
                   {/* Location Badges / Tags */}
                   <div className="pt-1">
-                    <BranchBadgePills badges={activeBranch.badges} currentLang={currentLang} />
+                    <BranchBadgePills badges={activeBranch.badges} currentLang={currentLang} branch={activeBranch} />
                   </div>
 
                   <div className="flex items-start gap-2.5 text-neutral-300 text-sm">
@@ -1267,7 +1412,7 @@ export default function BranchesPage({
                         </div>
 
                         {/* Location Badges / Tags */}
-                        <BranchBadgePills badges={branch.badges} currentLang={currentLang} />
+                        <BranchBadgePills badges={branch.badges} currentLang={currentLang} branch={branch} />
 
                         <h3 className="text-base font-serif font-bold text-white group-hover:text-amber-300 transition-colors">
                           {branch.name[currentLang]}
@@ -1341,7 +1486,7 @@ export default function BranchesPage({
                         </div>
 
                         {/* Location Badges / Tags */}
-                        <BranchBadgePills badges={branch.badges} currentLang={currentLang} />
+                        <BranchBadgePills badges={branch.badges} currentLang={currentLang} branch={branch} />
 
                         <h3 className="text-sm font-bold text-white group-hover:text-amber-300 transition-colors">
                           {branch.name[currentLang]}
