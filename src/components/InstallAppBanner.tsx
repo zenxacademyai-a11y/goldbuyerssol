@@ -163,7 +163,7 @@ export default function InstallAppBanner({ currentLang }: InstallAppBannerProps)
   return (
     <div
       id="pwa_install_banner"
-      className="fixed bottom-[60px] md:bottom-5 left-3 right-3 sm:left-auto sm:right-5 sm:max-w-md z-50 transition-all duration-300 animate-in fade-in slide-in-from-bottom-5"
+      className="fixed bottom-[136px] md:bottom-[88px] left-3 right-3 sm:left-auto sm:right-6 sm:max-w-md z-40 transition-all duration-300 animate-in fade-in slide-in-from-bottom-5"
     >
       <div className="bg-neutral-950/95 dark:bg-neutral-900/95 text-white p-4 rounded-2xl border border-amber-500/40 shadow-2xl backdrop-blur-xl relative overflow-hidden">
         {/* Subtle Ambient Glow Effect */}
