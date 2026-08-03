@@ -192,13 +192,13 @@ export default function Footer({ currentLang, setView, showAdmin = false, onLogo
             Regional Hub & Contact
           </h4>
           <p className="text-neutral-600 dark:text-neutral-300 leading-relaxed text-xs">
-            Head Office in Colombo 03 with certified appraisal centers across Kollupitiya, Bambalapitiya, Wellawatte, Havelock, Dehiwala, Nugegoda, and Mount Lavinia.
+            Head Office in Nugegoda with certified appraisal centers across Kollupitiya, Bambalapitiya, Wellawatte, Havelock, Dehiwala, Nugegoda, and Mount Lavinia.
           </p>
           
           <div className="space-y-2 pt-1 text-neutral-800 dark:text-neutral-200 font-medium text-xs">
             <div className="flex items-center gap-2.5">
               <MapPin className="h-4 w-4 text-amber-600 dark:text-amber-400 shrink-0" />
-              <span>Galle Road, Colombo 03, Sri Lanka</span>
+              <span>68 S. De S. Jayasinghe Mawatha, Nugegoda 10250</span>
             </div>
             <div className="flex items-center gap-2.5">
               <Phone className="h-4 w-4 text-amber-600 dark:text-amber-400 shrink-0" />
@@ -210,7 +210,7 @@ export default function Footer({ currentLang, setView, showAdmin = false, onLogo
             </div>
             <div className="flex items-center gap-2.5">
               <Mail className="h-4 w-4 text-amber-600 dark:text-amber-400 shrink-0" />
-              <a href="mailto:info@goldbuyerscolombo.lk" className="hover:text-amber-600">info@goldbuyerscolombo.lk</a>
+              <a href="mailto:Goldbuyerscolombolk@gmail.com" className="hover:text-amber-600">Goldbuyerscolombolk@gmail.com</a>
             </div>
           </div>
 
@@ -219,7 +219,7 @@ export default function Footer({ currentLang, setView, showAdmin = false, onLogo
             <div className="relative w-full h-32 rounded-xl overflow-hidden border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 shadow-xs mb-2">
               <iframe
                 title="GBC Google Maps Location"
-                src="https://maps.google.com/maps?q=Gold+Buyers+Colombo,+Bernard's+Business+Park,+106+Dutugemunu+St,+Kohuwala&t=&z=14&ie=UTF8&iwloc=&output=embed"
+                src="https://maps.google.com/maps?q=Gold+Buyers+Colombo,+68+S.+De+S.+Jayasinghe+Mawatha,+Nugegoda+10250,+Sri+Lanka&t=&z=14&ie=UTF8&iwloc=&output=embed"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
@@ -278,8 +278,8 @@ export default function Footer({ currentLang, setView, showAdmin = false, onLogo
           <div className="bg-neutral-50 dark:bg-neutral-900/60 p-3 rounded-xl border border-neutral-200/80 dark:border-neutral-800/80 space-y-1">
             <h5 className="font-serif font-black text-neutral-900 dark:text-white text-xs">Nugegoda</h5>
             <p className="text-neutral-500 dark:text-neutral-400 text-[11px] leading-relaxed">
-              Icc Business Center, 68,<br />
-              Jayasinghe Mawatha, Nugegoda
+              68 S. De S. Jayasinghe Mawatha,<br />
+              Nugegoda 10250, Sri Lanka
             </p>
           </div>
           <div className="bg-neutral-50 dark:bg-neutral-900/60 p-3 rounded-xl border border-neutral-200/80 dark:border-neutral-800/80 space-y-1">

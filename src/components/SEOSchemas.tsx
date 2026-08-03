@@ -31,12 +31,13 @@ export default function SEOSchemas({ rates }: SEOSchemasProps) {
       "@id": origin || "/",
       "url": origin || "/",
       "telephone": "+94718321321",
+      "email": "Goldbuyerscolombolk@gmail.com",
       "priceRange": "$$$$",
       "address": {
         "@type": "PostalAddress",
-        "streetAddress": "GBC Building, Galle Road",
-        "addressLocality": "Colombo 03",
-        "postalCode": "00300",
+        "streetAddress": "68 S. De S. Jayasinghe Mawatha",
+        "addressLocality": "Nugegoda",
+        "postalCode": "10250",
         "addressCountry": "LK"
       },
       "geo": {

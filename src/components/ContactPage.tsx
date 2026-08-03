@@ -230,8 +230,8 @@ export default function ContactPage({ currentLang }: ContactPageProps) {
                   <h4 className="text-xs font-mono uppercase tracking-wider text-neutral-500 font-semibold">
                     {g.emailSupport}
                   </h4>
-                  <a href="mailto:support@gbc.lk" className="text-sm font-semibold text-neutral-900 mt-1 hover:underline block">
-                    valuations@goldbuyerscolombo.lk
+                  <a href="mailto:Goldbuyerscolombolk@gmail.com" className="text-sm font-semibold text-neutral-900 mt-1 hover:underline block">
+                    Goldbuyerscolombolk@gmail.com
                   </a>
                   <p className="text-[10px] text-neutral-500 mt-0.5">Response within 1 business hour.</p>
                 </div>
@@ -247,7 +247,7 @@ export default function ContactPage({ currentLang }: ContactPageProps) {
                     {g.addressTitle}
                   </h4>
                   <p className="text-sm font-semibold text-neutral-900 mt-1 leading-normal">
-                    GBC Building, Galle Road, Colombo 03, Sri Lanka
+                    68 S. De S. Jayasinghe Mawatha, Nugegoda 10250, Sri Lanka
                   </p>
                 </div>
               </div>
@@ -401,11 +401,11 @@ export default function ContactPage({ currentLang }: ContactPageProps) {
                     <span>Headquarters & Exchange Lounge Location</span>
                   </h4>
                   <p className="text-xs text-neutral-500 mt-0.5">
-                    Gold Buyers Colombo • Bernard's Business Park, Kohuwala / Galle Rd
+                    Gold Buyers Colombo • 68 S. De S. Jayasinghe Mawatha, Nugegoda 10250, Sri Lanka
                   </p>
                 </div>
                 <a
-                  href="https://share.google/t37u08yDhse03dO6C"
+                  href="https://maps.google.com/?q=Gold+Buyers+Colombo,+68+S.+De+S.+Jayasinghe+Mawatha,+Nugegoda+10250"
                   target="_blank"
                   rel="noreferrer"
                   className="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded-xl text-xs font-mono font-bold shadow-sm flex items-center gap-2 transition-all shrink-0 no-underline"
@@ -418,7 +418,7 @@ export default function ContactPage({ currentLang }: ContactPageProps) {
               <div className="relative w-full h-72 rounded-xl overflow-hidden border border-neutral-200 shadow-inner bg-neutral-100">
                 <iframe
                   title="Gold Buyers Colombo Location Map"
-                  src="https://maps.google.com/maps?q=Gold+Buyers+Colombo,+Bernard's+Business+Park,+106+Dutugemunu+St,+Kohuwala&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                  src="https://maps.google.com/maps?q=Gold+Buyers+Colombo,+68+S.+De+S.+Jayasinghe+Mawatha,+Nugegoda+10250,+Sri+Lanka&t=&z=15&ie=UTF8&iwloc=&output=embed"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}

@@ -340,9 +340,9 @@ export const branchesData: Branch[] = [
       ta: "தெஹிவளை கிளை (ICC வணிக மையம்)"
     },
     address: {
-      en: "ICC Business Center, 68, Jayasinghe Mawatha, Nugegoda / Dehiwala 10250",
-      si: "ICC ව්‍යාපාරික මධ්‍යස්ථානය, 68, ජයසිංහ මාවත, නුගේගොඩ / දෙහිවල 10250",
-      ta: "ICC வணிக மையம், 68, ஜெயசிங்க மாவத்தை, நுகேகொட / தெஹிவளை 10250"
+      en: "ICC Business Center, 68 S. De S. Jayasinghe Mawatha, Nugegoda 10250, Sri Lanka",
+      si: "ICC ව්‍යාපාරික මධ්‍යස්ථානය, 68 එස්. ඩී. එස්. ජයසිංහ මාවත, නුගේගොඩ 10250, ශ්‍රී ලංකාව",
+      ta: "ICC வணிக மையம், 68 எஸ். டி. எஸ். ஜெயசிங்க மாவத்தை, நுகேகொட 10250, இலங்கை"
     },
     phone: "0718321321",
     isFlagship: true,
@@ -351,7 +351,7 @@ export const branchesData: Branch[] = [
       si: "VIP ආරක්ෂිත රන් තක්සේරු අංශය",
       ta: "VIP பாதுகாப்பான தங்க மதிப்பீட்டு பிரிவு"
     },
-    landmark: "ICC Business Complex, Near Jayasinghe Mawatha",
+    landmark: "ICC Business Complex, 68 S. De S. Jayasinghe Mawatha",
     hours: "8:30 AM - 6:00 PM (Mon-Sat)",
     facilities: ["Non-destructive Gold Testing", "High Security Vault Access", "Instant Local Wire Transfer", "Covered Parking"],
     lat: 6.8741,
@@ -615,9 +615,9 @@ export const branchesData: Branch[] = [
       ta: "நுகேகொட கிளை"
     },
     address: {
-      en: "High Level Road, Nugegoda, Colombo",
-      si: "හයිලෙවල් පාර, නුගේගොඩ, කොළඹ",
-      ta: "ஹைலெவல் வீதி, நுகேகொட, கொழும்பு"
+      en: "68 S. De S. Jayasinghe Mawatha, Nugegoda 10250, Sri Lanka",
+      si: "68 එස්. ඩී. එස්. ජයසිංහ මාවත, නුගේගොඩ 10250, ශ්‍රී ලංකාව",
+      ta: "68 எஸ். டி. எஸ். ஜெயசிங்க மாவத்தை, நுகேகொட 10250, இலங்கை"
     },
     phone: "0718321321",
     isFlagship: false,

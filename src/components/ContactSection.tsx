@@ -272,7 +272,7 @@ export default function ContactSection({ currentLang }: ContactSectionProps) {
                     <span>Interactive Location Map</span>
                   </h3>
                   <a
-                    href="https://maps.google.com/?q=Gold+Buyers+Colombo,+106+Dutugemunu+St,+Kohuwala"
+                    href="https://maps.google.com/?q=Gold+Buyers+Colombo,+68+S.+De+S.+Jayasinghe+Mawatha,+Nugegoda+10250"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-[11px] font-bold text-amber-700 dark:text-amber-400 hover:underline flex items-center gap-1"
@@ -286,7 +286,7 @@ export default function ContactSection({ currentLang }: ContactSectionProps) {
                 <div className="h-64 sm:h-72 w-full rounded-xl bg-neutral-200 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 relative overflow-hidden shadow-inner">
                   <iframe
                     title="Gold Buyers Colombo Location Map"
-                    src="https://maps.google.com/maps?q=Gold+Buyers+Colombo,+106+Dutugemunu+St,+Kohuwala,+Sri+Lanka&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                    src="https://maps.google.com/maps?q=Gold+Buyers+Colombo,+68+S.+De+S.+Jayasinghe+Mawatha,+Nugegoda+10250,+Sri+Lanka&t=&z=15&ie=UTF8&iwloc=&output=embed"
                     width="100%"
                     height="100%"
                     style={{ border: 0 }}
@@ -301,10 +301,10 @@ export default function ContactSection({ currentLang }: ContactSectionProps) {
               {/* Driving details & Directions CTA */}
               <div className="text-xs text-neutral-600 dark:text-neutral-400 leading-normal font-mono border-t border-neutral-200 dark:border-neutral-800 pt-4 mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
-                  <span className="text-amber-700 dark:text-amber-400 font-bold">★ Direct Directions:</span> No 106, Bernard's Business Park, Dutugemunu St, Kohuwala. Customer parking available.
+                  <span className="text-amber-700 dark:text-amber-400 font-bold">★ Direct Directions:</span> 68 S. De S. Jayasinghe Mawatha, Nugegoda 10250, Sri Lanka. Customer parking available.
                 </div>
                 <a
-                  href="https://maps.google.com/?q=Gold+Buyers+Colombo,+106+Dutugemunu+St,+Kohuwala"
+                  href="https://maps.google.com/?q=Gold+Buyers+Colombo,+68+S.+De+S.+Jayasinghe+Mawatha,+Nugegoda+10250"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-3.5 py-2 bg-gradient-to-r from-amber-600 to-yellow-500 hover:from-amber-500 hover:to-yellow-400 text-neutral-950 font-bold text-[11px] uppercase tracking-wider rounded-lg shadow-sm whitespace-nowrap transition-transform active:scale-95 flex items-center justify-center gap-1.5 no-underline shrink-0"
