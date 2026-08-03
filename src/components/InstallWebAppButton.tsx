@@ -163,7 +163,7 @@ export default function InstallWebAppButton({ currentLang, variant = "header" }:
       <>
         <button
           onClick={handleInstallClick}
-          className="relative inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 hover:bg-amber-500/20 text-amber-800 text-xs tracking-wider uppercase font-mono font-bold transition-all shadow-sm cursor-pointer"
+          className="relative inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 dark:bg-amber-500/20 hover:bg-amber-500/20 text-amber-800 dark:text-amber-300 text-xs tracking-wider uppercase font-mono font-bold transition-all shadow-sm cursor-pointer"
         >
           <Download className="h-3 w-3 animate-bounce" />
           <span>{t.installApp}</span>
@@ -181,21 +181,21 @@ export default function InstallWebAppButton({ currentLang, variant = "header" }:
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="bg-white rounded-3xl border border-neutral-200 p-6 sm:p-8 max-w-md w-full shadow-2xl relative text-neutral-900 overflow-hidden"
+                className="bg-white dark:bg-neutral-900 rounded-3xl border border-neutral-200 dark:border-neutral-800 p-6 sm:p-8 max-w-md w-full shadow-2xl relative text-neutral-900 dark:text-neutral-100 overflow-hidden"
               >
                 {/* Background gold flare */}
                 <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full blur-[60px] pointer-events-none"></div>
 
-                <div className="flex justify-between items-start pb-4 border-b border-neutral-100 mb-6">
+                <div className="flex justify-between items-start pb-4 border-b border-neutral-100 dark:border-neutral-800 mb-6">
                   <div className="flex items-center gap-2">
-                    <Smartphone className="h-5 w-5 text-amber-600" />
-                    <h3 className="font-serif font-bold text-neutral-950 text-base sm:text-lg">
+                    <Smartphone className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+                    <h3 className="font-serif font-bold text-neutral-950 dark:text-white text-base sm:text-lg">
                       {t.iosTitle}
                     </h3>
                   </div>
                   <button
                     onClick={() => setShowIosGuide(false)}
-                    className="p-1.5 rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-500 hover:text-neutral-800 transition-colors"
+                    className="p-1.5 rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-500 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-white transition-colors cursor-pointer"
                   >
                     <X className="h-4 w-4" />
                   </button>
@@ -203,26 +203,26 @@ export default function InstallWebAppButton({ currentLang, variant = "header" }:
 
                 <div className="space-y-4 text-xs sm:text-sm">
                   <div className="flex items-start gap-3">
-                    <span className="flex-shrink-0 h-6 w-6 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-800 flex items-center justify-center font-mono font-bold">1</span>
-                    <p className="text-neutral-700 leading-normal pt-0.5">
+                    <span className="flex-shrink-0 h-6 w-6 rounded-full bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/30 text-amber-800 dark:text-amber-300 flex items-center justify-center font-mono font-bold">1</span>
+                    <p className="text-neutral-700 dark:text-neutral-300 leading-normal pt-0.5">
                       {t.iosStep1} <Share className="inline h-4 w-4 text-blue-500 mx-1 align-middle" />
                     </p>
                   </div>
                   <div className="flex items-start gap-3">
-                    <span className="flex-shrink-0 h-6 w-6 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-800 flex items-center justify-center font-mono font-bold">2</span>
-                    <p className="text-neutral-700 leading-normal pt-0.5">
-                      {t.iosStep2} <PlusSquare className="inline h-4 w-4 text-neutral-800 mx-1 align-middle" />
+                    <span className="flex-shrink-0 h-6 w-6 rounded-full bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/30 text-amber-800 dark:text-amber-300 flex items-center justify-center font-mono font-bold">2</span>
+                    <p className="text-neutral-700 dark:text-neutral-300 leading-normal pt-0.5">
+                      {t.iosStep2} <PlusSquare className="inline h-4 w-4 text-neutral-800 dark:text-neutral-200 mx-1 align-middle" />
                     </p>
                   </div>
                   <div className="flex items-start gap-3">
-                    <span className="flex-shrink-0 h-6 w-6 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-800 flex items-center justify-center font-mono font-bold">3</span>
-                    <p className="text-neutral-700 leading-normal pt-0.5">
+                    <span className="flex-shrink-0 h-6 w-6 rounded-full bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/30 text-amber-800 dark:text-amber-300 flex items-center justify-center font-mono font-bold">3</span>
+                    <p className="text-neutral-700 dark:text-neutral-300 leading-normal pt-0.5">
                       {t.iosStep3}
                     </p>
                   </div>
                 </div>
 
-                <div className="mt-8 pt-4 border-t border-neutral-100 flex justify-end">
+                <div className="mt-8 pt-4 border-t border-neutral-100 dark:border-neutral-800 flex justify-end">
                   <button
                     onClick={() => setShowIosGuide(false)}
                     className="px-5 py-2.5 bg-neutral-950 hover:bg-neutral-800 text-white font-extrabold uppercase tracking-widest text-[10px] rounded transition-all cursor-pointer"
@@ -241,37 +241,37 @@ export default function InstallWebAppButton({ currentLang, variant = "header" }:
   // Footer / Banner Mode
   return (
     <>
-      <div className="bg-gradient-to-b from-neutral-50 to-neutral-100 border border-neutral-200 rounded-3xl p-6 sm:p-8 relative overflow-hidden shadow-sm">
+      <div className="bg-gradient-to-b from-neutral-50 to-neutral-100 dark:from-neutral-900 dark:to-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-3xl p-6 sm:p-8 relative overflow-hidden shadow-sm">
         <div className="absolute top-0 right-0 w-48 h-48 bg-amber-500/5 rounded-full blur-[80px] pointer-events-none"></div>
 
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
           {/* Text Details (md:col-span-8) */}
           <div className="md:col-span-8 space-y-3 text-left">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-amber-500/25 bg-amber-500/10 text-amber-800 text-[10px] tracking-wider uppercase font-mono font-bold">
-              <Sparkles className="h-3.5 w-3.5 text-amber-600" />
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-amber-500/25 bg-amber-500/10 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 text-[10px] tracking-wider uppercase font-mono font-bold">
+              <Sparkles className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
               <span>GBC Web App Available</span>
             </div>
             
-            <h3 className="font-serif font-bold text-neutral-950 text-xl sm:text-2xl leading-snug">
+            <h3 className="font-serif font-bold text-neutral-950 dark:text-white text-xl sm:text-2xl leading-snug">
               {t.installTitle}
             </h3>
             
-            <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed max-w-xl">
+            <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed max-w-xl">
               {t.installSubtitle}
             </p>
 
             {/* Benefits list */}
             <div className="space-y-2 pt-2">
-              <div className="flex items-center gap-2 text-xs text-neutral-700">
-                <CheckCircle className="h-4 w-4 text-amber-600 flex-shrink-0" />
+              <div className="flex items-center gap-2 text-xs text-neutral-700 dark:text-neutral-300">
+                <CheckCircle className="h-4 w-4 text-amber-600 dark:text-amber-400 flex-shrink-0" />
                 <span>{t.benefit1}</span>
               </div>
-              <div className="flex items-center gap-2 text-xs text-neutral-700">
-                <CheckCircle className="h-4 w-4 text-amber-600 flex-shrink-0" />
+              <div className="flex items-center gap-2 text-xs text-neutral-700 dark:text-neutral-300">
+                <CheckCircle className="h-4 w-4 text-amber-600 dark:text-amber-400 flex-shrink-0" />
                 <span>{t.benefit2}</span>
               </div>
-              <div className="flex items-center gap-2 text-xs text-neutral-700">
-                <ShieldCheck className="h-4 w-4 text-amber-600 flex-shrink-0" />
+              <div className="flex items-center gap-2 text-xs text-neutral-700 dark:text-neutral-300">
+                <ShieldCheck className="h-4 w-4 text-amber-600 dark:text-amber-400 flex-shrink-0" />
                 <span>{t.benefit3}</span>
               </div>
             </div>

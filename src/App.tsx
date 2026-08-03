@@ -599,7 +599,7 @@ export default function App() {
             setView={setActiveView}
           />
         ) : activeView === "rates" ? (
-          <div className="pt-8 pb-12 min-h-[60vh] bg-white">
+          <div className="pt-8 pb-12 min-h-[60vh] bg-white dark:bg-neutral-950 transition-colors">
             <LiveRateWidget
               currentLang={currentLang}
               rates={rates.length > 0 ? rates : [
@@ -614,7 +614,7 @@ export default function App() {
             />
           </div>
         ) : activeView === "calculator" ? (
-          <div className="pt-8 pb-12 min-h-[60vh] bg-neutral-50">
+          <div className="pt-8 pb-12 min-h-[60vh] bg-neutral-50 dark:bg-neutral-950 transition-colors">
             <GoldCalculator
               currentLang={currentLang}
               rates={rates.length > 0 ? rates : [
@@ -627,7 +627,7 @@ export default function App() {
             />
           </div>
         ) : activeView === "faq" ? (
-          <div className="pt-8 pb-12 min-h-[60vh] bg-white">
+          <div className="pt-8 pb-12 min-h-[60vh] bg-white dark:bg-neutral-950 transition-colors">
             <FAQSection currentLang={currentLang} />
           </div>
         ) : activeView === "blog" ? (

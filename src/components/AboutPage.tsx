@@ -113,7 +113,7 @@ export default function AboutPage({ currentLang, setView }: AboutPageProps) {
   const t = aboutTranslations[currentLang] || aboutTranslations.en;
 
   return (
-    <div className="relative min-h-screen bg-white text-neutral-900 overflow-hidden pb-16">
+    <div className="relative min-h-screen bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 overflow-hidden pb-16 transition-colors">
       
       {/* Dynamic continuous background animated gradient using Framer Motion */}
       <motion.div
@@ -134,7 +134,7 @@ export default function AboutPage({ currentLang, setView }: AboutPageProps) {
       />
 
       {/* Grid Overlay */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#f3f4f6_1px,transparent_1px),linear-gradient(to_bottom,#f3f4f6_1px,transparent_1px)] bg-[size:5rem_5rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-40 z-0 pointer-events-none"></div>
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#f3f4f6_1px,transparent_1px),linear-gradient(to_bottom,#f3f4f6_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1f2937_1px,transparent_1px),linear-gradient(to_bottom,#1f2937_1px,transparent_1px)] bg-[size:5rem_5rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-40 dark:opacity-20 z-0 pointer-events-none"></div>
 
       {/* Hero Banner Section */}
       <div className="relative z-10 max-w-7xl mx-auto pt-28 pb-16 px-4 sm:px-6 lg:px-8 text-center">
@@ -142,9 +142,9 @@ export default function AboutPage({ currentLang, setView }: AboutPageProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-amber-500/20 bg-amber-500/5 text-amber-800 text-xs tracking-widest uppercase mb-6 font-mono font-bold shadow-sm"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-amber-500/20 bg-amber-500/5 text-amber-800 dark:text-amber-400 text-xs tracking-widest uppercase mb-6 font-mono font-bold shadow-sm"
         >
-          <Award className="h-4 w-4 text-amber-600" />
+          <Award className="h-4 w-4 text-amber-600 dark:text-amber-400" />
           <span>Colombo's Certified Exchange Since 1976</span>
         </motion.div>
 
@@ -152,7 +152,7 @@ export default function AboutPage({ currentLang, setView }: AboutPageProps) {
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.1 }}
-          className="text-4xl sm:text-5xl md:text-6xl font-serif font-black tracking-tight text-neutral-950 mb-6 max-w-4xl mx-auto leading-[1.15]"
+          className="text-4xl sm:text-5xl md:text-6xl font-serif font-black tracking-tight text-neutral-950 dark:text-white mb-6 max-w-4xl mx-auto leading-[1.15]"
         >
           {t.title}
         </motion.h1>
@@ -161,7 +161,7 @@ export default function AboutPage({ currentLang, setView }: AboutPageProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="text-neutral-600 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed"
+          className="text-neutral-600 dark:text-neutral-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed"
         >
           {t.subtitle}
         </motion.p>
@@ -174,68 +174,68 @@ export default function AboutPage({ currentLang, setView }: AboutPageProps) {
           {/* Legacy Narrative (lg:col-span-7) */}
           <div className="lg:col-span-7 space-y-6">
             <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-700">
+              <div className="h-10 w-10 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-700 dark:text-amber-400">
                 <History className="h-5 w-5" />
               </div>
-              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-neutral-950">
+              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-neutral-950 dark:text-white">
                 {t.legacyTitle}
               </h2>
             </div>
             
-            <p className="text-neutral-600 text-sm sm:text-base leading-relaxed">
+            <p className="text-neutral-600 dark:text-neutral-300 text-sm sm:text-base leading-relaxed">
               {t.legacyText1}
             </p>
 
-            <p className="text-neutral-600 text-sm sm:text-base leading-relaxed">
+            <p className="text-neutral-600 dark:text-neutral-300 text-sm sm:text-base leading-relaxed">
               {t.legacyText2}
             </p>
 
             {/* Mission highlight card */}
-            <div className="bg-amber-500/5 rounded-2xl border border-amber-500/20 p-6 flex gap-4 items-start shadow-sm mt-8">
-              <div className="h-8 w-8 rounded-full bg-amber-500/20 flex items-center justify-center text-amber-800 flex-shrink-0">
+            <div className="bg-amber-500/5 dark:bg-amber-500/10 rounded-2xl border border-amber-500/20 p-6 flex gap-4 items-start shadow-sm mt-8">
+              <div className="h-8 w-8 rounded-full bg-amber-500/20 flex items-center justify-center text-amber-800 dark:text-amber-400 flex-shrink-0">
                 <Target className="h-4.5 w-4.5" />
               </div>
               <div>
-                <h4 className="font-serif font-bold text-neutral-950 text-sm mb-1.5">{t.missionTitle}</h4>
-                <p className="text-neutral-600 text-xs sm:text-sm leading-relaxed">{t.missionText}</p>
+                <h4 className="font-serif font-bold text-neutral-950 dark:text-white text-sm mb-1.5">{t.missionTitle}</h4>
+                <p className="text-neutral-600 dark:text-neutral-300 text-xs sm:text-sm leading-relaxed">{t.missionText}</p>
               </div>
             </div>
           </div>
 
           {/* Visual Showcase (lg:col-span-5) */}
           <div className="lg:col-span-5">
-            <div className="relative p-2 bg-gradient-to-b from-neutral-100 to-neutral-200 border border-neutral-300 rounded-3xl shadow-xl overflow-hidden group">
+            <div className="relative p-2 bg-gradient-to-b from-neutral-100 to-neutral-200 dark:from-neutral-800 dark:to-neutral-900 border border-neutral-300 dark:border-neutral-700 rounded-3xl shadow-xl overflow-hidden group">
               {/* Glass container inside */}
-              <div className="bg-white rounded-2xl p-6 md:p-8 space-y-6">
-                <div className="flex justify-between items-center pb-4 border-b border-neutral-100">
-                  <span className="text-[10px] font-mono tracking-wider uppercase text-amber-700 font-bold">Scientific Validation</span>
+              <div className="bg-white dark:bg-neutral-900 rounded-2xl p-6 md:p-8 space-y-6">
+                <div className="flex justify-between items-center pb-4 border-b border-neutral-100 dark:border-neutral-800">
+                  <span className="text-[10px] font-mono tracking-wider uppercase text-amber-700 dark:text-amber-400 font-bold">Scientific Validation</span>
                   <span className="h-2 w-2 rounded-full bg-amber-500 animate-pulse"></span>
                 </div>
                 
-                <h3 className="text-lg font-serif font-bold text-neutral-950">
+                <h3 className="text-lg font-serif font-bold text-neutral-950 dark:text-white">
                   Computerized Gold Analysis
                 </h3>
                 
-                <p className="text-xs text-neutral-600 leading-relaxed">
+                <p className="text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed">
                   Testing is executed via high-precision computerized X-Ray Fluorescence (XRF) Spectrometer technology. This eliminates any structural damage or scraping.
                 </p>
 
-                <div className="p-4 bg-neutral-50 rounded-xl border border-neutral-200 text-xs font-mono text-neutral-700 space-y-2.5">
+                <div className="p-4 bg-neutral-50 dark:bg-neutral-800 rounded-xl border border-neutral-200 dark:border-neutral-700 text-xs font-mono text-neutral-700 dark:text-neutral-300 space-y-2.5">
                   <div className="flex justify-between">
                     <span>Appraisal Accuracy:</span>
-                    <span className="font-bold text-amber-700">99.99% Certified</span>
+                    <span className="font-bold text-amber-700 dark:text-amber-400">99.99% Certified</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Scales Calibration:</span>
-                    <span className="font-bold text-amber-700">SL Gem Authority</span>
+                    <span className="font-bold text-amber-700 dark:text-amber-400">SL Gem Authority</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Processing Time:</span>
-                    <span className="font-bold text-amber-700">Under 5 Mins</span>
+                    <span className="font-bold text-amber-700 dark:text-amber-400">Under 5 Mins</span>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 text-xs text-amber-800 font-semibold bg-amber-500/10 px-4 py-2.5 rounded-lg border border-amber-500/20 justify-center">
+                <div className="flex items-center gap-3 text-xs text-amber-800 dark:text-amber-300 font-semibold bg-amber-500/10 px-4 py-2.5 rounded-lg border border-amber-500/20 justify-center">
                   <ShieldCheck className="h-4 w-4" />
                   <span>Licensed gem & jewelry authority guidelines</span>
                 </div>
@@ -248,26 +248,26 @@ export default function AboutPage({ currentLang, setView }: AboutPageProps) {
 
       {/* Stats Section with Glassmorphism grid */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="bg-neutral-50 rounded-3xl border border-neutral-200 p-8 sm:p-12 shadow-sm text-center">
-          <h3 className="text-xs font-mono uppercase tracking-widest text-amber-700 mb-8 font-semibold">
+        <div className="bg-neutral-50 dark:bg-neutral-900 rounded-3xl border border-neutral-200 dark:border-neutral-800 p-8 sm:p-12 shadow-sm text-center">
+          <h3 className="text-xs font-mono uppercase tracking-widest text-amber-700 dark:text-amber-400 mb-8 font-semibold">
             {t.statsTitle}
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="space-y-1">
-              <div className="text-3xl sm:text-4xl font-serif font-black text-neutral-950">{t.stat1Val}</div>
-              <div className="text-[10px] sm:text-xs font-mono text-neutral-500 uppercase tracking-wider">{t.stat1Lbl}</div>
+              <div className="text-3xl sm:text-4xl font-serif font-black text-neutral-950 dark:text-white">{t.stat1Val}</div>
+              <div className="text-[10px] sm:text-xs font-mono text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">{t.stat1Lbl}</div>
             </div>
-            <div className="space-y-1 border-l border-neutral-200">
-              <div className="text-3xl sm:text-4xl font-serif font-black text-neutral-950">{t.stat2Val}</div>
-              <div className="text-[10px] sm:text-xs font-mono text-neutral-500 uppercase tracking-wider">{t.stat2Lbl}</div>
+            <div className="space-y-1 border-l border-neutral-200 dark:border-neutral-800">
+              <div className="text-3xl sm:text-4xl font-serif font-black text-neutral-950 dark:text-white">{t.stat2Val}</div>
+              <div className="text-[10px] sm:text-xs font-mono text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">{t.stat2Lbl}</div>
             </div>
-            <div className="space-y-1 border-l border-neutral-200">
-              <div className="text-3xl sm:text-4xl font-serif font-black text-neutral-950">{t.stat3Val}</div>
-              <div className="text-[10px] sm:text-xs font-mono text-neutral-500 uppercase tracking-wider">{t.stat3Lbl}</div>
+            <div className="space-y-1 border-l border-neutral-200 dark:border-neutral-800">
+              <div className="text-3xl sm:text-4xl font-serif font-black text-neutral-950 dark:text-white">{t.stat3Val}</div>
+              <div className="text-[10px] sm:text-xs font-mono text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">{t.stat3Lbl}</div>
             </div>
-            <div className="space-y-1 border-l border-neutral-200">
-              <div className="text-3xl sm:text-4xl font-serif font-black text-neutral-950">{t.stat4Val}</div>
-              <div className="text-[10px] sm:text-xs font-mono text-neutral-500 uppercase tracking-wider">{t.stat4Lbl}</div>
+            <div className="space-y-1 border-l border-neutral-200 dark:border-neutral-800">
+              <div className="text-3xl sm:text-4xl font-serif font-black text-neutral-950 dark:text-white">{t.stat4Val}</div>
+              <div className="text-[10px] sm:text-xs font-mono text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">{t.stat4Lbl}</div>
             </div>
           </div>
         </div>
@@ -276,7 +276,7 @@ export default function AboutPage({ currentLang, setView }: AboutPageProps) {
       {/* Pillars Section */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="text-center mb-12">
-          <h2 className="text-2xl sm:text-3xl font-serif font-bold text-neutral-950">
+          <h2 className="text-2xl sm:text-3xl font-serif font-bold text-neutral-950 dark:text-white">
             {t.valuesTitle}
           </h2>
         </div>
@@ -284,40 +284,40 @@ export default function AboutPage({ currentLang, setView }: AboutPageProps) {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           
           {/* Pillar 1 */}
-          <div className="bg-white border border-neutral-200 rounded-2xl p-6 space-y-4 hover:border-amber-500/30 hover:shadow-lg transition-all shadow-sm">
-            <div className="h-10 w-10 bg-amber-500/10 border border-amber-500/20 text-amber-700 flex items-center justify-center rounded-lg">
+          <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 space-y-4 hover:border-amber-500/30 hover:shadow-lg transition-all shadow-sm">
+            <div className="h-10 w-10 bg-amber-500/10 border border-amber-500/20 text-amber-700 dark:text-amber-400 flex items-center justify-center rounded-lg">
               <Sparkles className="h-5 w-5" />
             </div>
-            <h3 className="font-serif font-bold text-neutral-900 text-lg">
+            <h3 className="font-serif font-bold text-neutral-900 dark:text-neutral-100 text-lg">
               {t.value1Title}
             </h3>
-            <p className="text-neutral-600 text-xs sm:text-sm leading-relaxed">
+            <p className="text-neutral-600 dark:text-neutral-300 text-xs sm:text-sm leading-relaxed">
               {t.value1Desc}
             </p>
           </div>
 
           {/* Pillar 2 */}
-          <div className="bg-white border border-neutral-200 rounded-2xl p-6 space-y-4 hover:border-amber-500/30 hover:shadow-lg transition-all shadow-sm">
-            <div className="h-10 w-10 bg-amber-500/10 border border-amber-500/20 text-amber-700 flex items-center justify-center rounded-lg">
+          <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 space-y-4 hover:border-amber-500/30 hover:shadow-lg transition-all shadow-sm">
+            <div className="h-10 w-10 bg-amber-500/10 border border-amber-500/20 text-amber-700 dark:text-amber-400 flex items-center justify-center rounded-lg">
               <Gem className="h-5 w-5" />
             </div>
-            <h3 className="font-serif font-bold text-neutral-900 text-lg">
+            <h3 className="font-serif font-bold text-neutral-900 dark:text-neutral-100 text-lg">
               {t.value2Title}
             </h3>
-            <p className="text-neutral-600 text-xs sm:text-sm leading-relaxed">
+            <p className="text-neutral-600 dark:text-neutral-300 text-xs sm:text-sm leading-relaxed">
               {t.value2Desc}
             </p>
           </div>
 
           {/* Pillar 3 */}
-          <div className="bg-white border border-neutral-200 rounded-2xl p-6 space-y-4 hover:border-amber-500/30 hover:shadow-lg transition-all shadow-sm">
-            <div className="h-10 w-10 bg-amber-500/10 border border-amber-500/20 text-amber-700 flex items-center justify-center rounded-lg">
+          <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 space-y-4 hover:border-amber-500/30 hover:shadow-lg transition-all shadow-sm">
+            <div className="h-10 w-10 bg-amber-500/10 border border-amber-500/20 text-amber-700 dark:text-amber-400 flex items-center justify-center rounded-lg">
               <ShieldCheck className="h-5 w-5" />
             </div>
-            <h3 className="font-serif font-bold text-neutral-900 text-lg">
+            <h3 className="font-serif font-bold text-neutral-900 dark:text-neutral-100 text-lg">
               {t.value3Title}
             </h3>
-            <p className="text-neutral-600 text-xs sm:text-sm leading-relaxed">
+            <p className="text-neutral-600 dark:text-neutral-300 text-xs sm:text-sm leading-relaxed">
               {t.value3Desc}
             </p>
           </div>

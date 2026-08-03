@@ -57,20 +57,20 @@ export default function RecentPosts({ currentLang, blogs, onSelectBlog, onViewAl
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
           <div className="max-w-2xl">
-            <span className="text-xs uppercase font-mono tracking-widest text-amber-700 block mb-3 font-bold flex items-center gap-1.5">
+            <span className="text-xs uppercase font-mono tracking-widest text-amber-700 dark:text-amber-400 block mb-3 font-bold flex items-center gap-1.5">
               <BookOpen className="h-4 w-4" />
               <span>GBC Technical Desk</span>
             </span>
-            <h2 className="text-3xl sm:text-4xl font-serif font-bold text-neutral-950 mb-4 tracking-tight">
+            <h2 className="text-3xl sm:text-4xl font-serif font-bold text-neutral-950 dark:text-white mb-4 tracking-tight">
               {t.title}
             </h2>
-            <p className="text-neutral-600 text-sm sm:text-base leading-relaxed">
+            <p className="text-neutral-600 dark:text-neutral-300 text-sm sm:text-base leading-relaxed">
               {t.subtitle}
             </p>
           </div>
           <button
             onClick={onViewAll}
-            className="shrink-0 inline-flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-amber-700 hover:text-amber-900 transition-colors border-b-2 border-amber-500/20 hover:border-amber-700 pb-1 align-bottom self-start md:self-end"
+            className="shrink-0 inline-flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 hover:text-amber-900 dark:hover:text-amber-300 transition-colors border-b-2 border-amber-500/20 hover:border-amber-700 dark:hover:border-amber-400 pb-1 align-bottom self-start md:self-end cursor-pointer"
           >
             <span>{t.viewAll}</span>
             <ArrowRight className="h-4 w-4" />
@@ -94,39 +94,39 @@ export default function RecentPosts({ currentLang, blogs, onSelectBlog, onViewAl
               <article
                 key={post.id}
                 onClick={() => onSelectBlog(post.slug)}
-                className="bg-white rounded-xl border border-neutral-200 hover:border-amber-500/30 transition-all overflow-hidden flex flex-col justify-between cursor-pointer group hover:shadow-lg hover:shadow-amber-500/5 shadow-sm"
+                className="bg-white dark:bg-neutral-900 rounded-xl border border-neutral-200 dark:border-neutral-800 hover:border-amber-500/30 dark:hover:border-amber-500/40 transition-all overflow-hidden flex flex-col justify-between cursor-pointer group hover:shadow-lg hover:shadow-amber-500/5 shadow-sm"
               >
                 <div className="p-6">
                   {/* Category & Date */}
                   <div className="flex justify-between items-center mb-4 text-[10px] font-mono">
-                    <span className="font-bold text-amber-700 uppercase tracking-widest bg-amber-500/10 px-2.5 py-0.5 rounded">
+                    <span className="font-bold text-amber-700 dark:text-amber-400 uppercase tracking-widest bg-amber-500/10 px-2.5 py-0.5 rounded">
                       {post.category}
                     </span>
-                    <span className="text-neutral-500 flex items-center gap-1">
+                    <span className="text-neutral-500 dark:text-neutral-400 flex items-center gap-1">
                       <Calendar className="h-3 w-3" />
                       {post.date}
                     </span>
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-lg font-serif font-bold text-neutral-900 group-hover:text-amber-800 transition-colors mb-3 leading-snug">
+                  <h3 className="text-lg font-serif font-bold text-neutral-900 dark:text-neutral-100 group-hover:text-amber-800 dark:group-hover:text-amber-400 transition-colors mb-3 leading-snug">
                     {post.title}
                   </h3>
 
                   {/* Author metadata */}
-                  <div className="flex items-center gap-1 text-[10px] text-neutral-500 font-mono mb-4">
-                    <User className="h-3.5 w-3.5 text-amber-600" />
-                    <span>{t.by} <strong className="text-neutral-800">{post.author}</strong></span>
+                  <div className="flex items-center gap-1 text-[10px] text-neutral-500 dark:text-neutral-400 font-mono mb-4">
+                    <User className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
+                    <span>{t.by} <strong className="text-neutral-800 dark:text-neutral-200">{post.author}</strong></span>
                   </div>
 
                   {/* Body Preview */}
-                  <p className="text-xs text-neutral-600 line-clamp-3 leading-relaxed">
+                  <p className="text-xs text-neutral-600 dark:text-neutral-300 line-clamp-3 leading-relaxed">
                     {excerpt}
                   </p>
                 </div>
 
                 {/* Card footer CTA */}
-                <div className="px-6 py-4 border-t border-neutral-200 flex justify-between items-center bg-neutral-50 group-hover:bg-amber-50/10 transition-colors text-[10px] font-mono uppercase tracking-wider text-amber-700 font-bold">
+                <div className="px-6 py-4 border-t border-neutral-200 dark:border-neutral-800 flex justify-between items-center bg-neutral-50 dark:bg-neutral-800/80 group-hover:bg-amber-50/10 dark:group-hover:bg-amber-500/10 transition-colors text-[10px] font-mono uppercase tracking-wider text-amber-700 dark:text-amber-400 font-bold">
                   <span>{t.readMore}</span>
                   <ChevronRight className="h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
                 </div>

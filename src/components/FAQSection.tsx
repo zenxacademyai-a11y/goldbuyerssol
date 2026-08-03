@@ -65,7 +65,7 @@ export default function FAQSection({ currentLang }: FAQSectionProps) {
   };
 
   return (
-    <section id="faq" className="py-20 px-4 bg-white text-neutral-900 scroll-mt-20 border-t border-neutral-100">
+    <section id="faq" className="py-20 px-4 bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 scroll-mt-20 border-t border-neutral-100 dark:border-neutral-900 transition-colors">
       <div className="max-w-4xl mx-auto">
         
         {/* Schema Injection */}
@@ -76,13 +76,13 @@ export default function FAQSection({ currentLang }: FAQSectionProps) {
  
         {/* Header Block */}
         <div className="text-center mb-16">
-          <span className="text-xs uppercase font-mono tracking-widest text-amber-700 block mb-3 font-semibold">
+          <span className="text-xs uppercase font-mono tracking-widest text-amber-700 dark:text-amber-400 block mb-3 font-semibold">
             Search & Answers (AEO)
           </span>
-          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-neutral-950 mb-4">
+          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-neutral-950 dark:text-white mb-4">
             {t.faqTitle}
           </h2>
-          <p className="text-neutral-600 text-sm sm:text-base max-w-2xl mx-auto">
+          <p className="text-neutral-600 dark:text-neutral-300 text-sm sm:text-base max-w-2xl mx-auto">
             {t.faqSubtitle}
           </p>
         </div>
@@ -94,22 +94,22 @@ export default function FAQSection({ currentLang }: FAQSectionProps) {
             return (
               <div
                 key={index}
-                className="bg-neutral-50 rounded-lg border border-neutral-200 overflow-hidden transition-all duration-200"
+                className="bg-neutral-50 dark:bg-neutral-900 rounded-lg border border-neutral-200 dark:border-neutral-800 overflow-hidden transition-all duration-200 shadow-2xs"
               >
                 <button
                   onClick={() => setOpenIndex(isOpen ? null : index)}
-                  className="w-full px-6 py-5 flex justify-between items-center text-left hover:bg-neutral-100/50 transition-colors focus:outline-none"
+                  className="w-full px-6 py-5 flex justify-between items-center text-left hover:bg-neutral-100/60 dark:hover:bg-neutral-850 transition-colors focus:outline-none cursor-pointer"
                 >
-                  <span className="text-sm sm:text-base font-serif font-bold text-neutral-900 pr-4 hover:text-amber-700 transition-colors">
+                  <span className="text-sm sm:text-base font-serif font-bold text-neutral-900 dark:text-neutral-100 pr-4 hover:text-amber-700 dark:hover:text-amber-400 transition-colors">
                     {faq.q}
                   </span>
-                  <div className="text-amber-700 flex-shrink-0">
+                  <div className="text-amber-700 dark:text-amber-400 flex-shrink-0">
                     {isOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
                   </div>
                 </button>
  
                 {isOpen && (
-                  <div className="px-6 pb-6 pt-1 text-xs sm:text-sm text-neutral-600 leading-relaxed border-t border-neutral-200 animate-in slide-in-from-top-2 duration-200">
+                  <div className="px-6 pb-6 pt-2 text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed border-t border-neutral-200 dark:border-neutral-800 animate-in slide-in-from-top-2 duration-200">
                     {faq.a}
                   </div>
                 )}

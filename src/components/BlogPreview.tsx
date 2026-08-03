@@ -403,7 +403,7 @@ export default function BlogPreview({
   if (activeArticle) {
     // Single Article Reader View
     return (
-      <article className="py-20 px-4 bg-white text-neutral-900 scroll-mt-20">
+      <article className="py-20 px-4 bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 scroll-mt-20 transition-colors">
         <div className="max-w-6xl mx-auto">
           {/* Back Button */}
           <button
@@ -413,41 +413,41 @@ export default function BlogPreview({
               onBackToCatalog?.();
               window.scrollTo({ top: 0 });
             }}
-            className="inline-flex items-center gap-2 text-xs uppercase tracking-widest font-mono text-amber-750 hover:text-amber-600 transition-colors mb-8 focus:outline-none font-bold"
+            className="inline-flex items-center gap-2 text-xs uppercase tracking-widest font-mono text-amber-700 dark:text-amber-400 hover:text-amber-600 dark:hover:text-amber-300 transition-colors mb-8 focus:outline-none font-bold cursor-pointer"
           >
             <ArrowLeft className="h-4 w-4" />
             <span>Back to Articles</span>
           </button>
 
           {/* Article Header */}
-          <header className="mb-10 border-b border-neutral-200 pb-8">
+          <header className="mb-10 border-b border-neutral-200 dark:border-neutral-800 pb-8">
             <div className="flex items-center gap-2 mb-4">
-              <span className="text-[10px] font-mono font-bold text-amber-700 uppercase tracking-widest bg-amber-500/10 px-3 py-1 rounded-full">
+              <span className="text-[10px] font-mono font-bold text-amber-700 dark:text-amber-400 uppercase tracking-widest bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20">
                 {activeArticle.category}
               </span>
               {activeArticle.theme && (
-                <span className="text-[10px] font-mono font-bold text-neutral-600 uppercase tracking-widest bg-neutral-100 px-3 py-1 rounded-full">
+                <span className="text-[10px] font-mono font-bold text-neutral-600 dark:text-neutral-400 uppercase tracking-widest bg-neutral-100 dark:bg-neutral-800 px-3 py-1 rounded-full border border-neutral-200 dark:border-neutral-700">
                   Theme: {activeArticle.theme}
                 </span>
               )}
             </div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif font-black text-neutral-950 tracking-tight mb-6 leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif font-black text-neutral-950 dark:text-white tracking-tight mb-6 leading-tight">
               {activeArticle.title}
             </h1>
             
             {/* Meta details */}
-            <div className="flex flex-wrap items-center gap-6 text-xs text-neutral-500 font-mono">
+            <div className="flex flex-wrap items-center gap-6 text-xs text-neutral-500 dark:text-neutral-400 font-mono">
               <div className="flex items-center gap-1.5">
-                <User className="h-4 w-4 text-amber-700" />
-                <span>Author: <strong className="text-neutral-900">{activeArticle.author}</strong></span>
+                <User className="h-4 w-4 text-amber-700 dark:text-amber-400" />
+                <span>Author: <strong className="text-neutral-900 dark:text-white">{activeArticle.author}</strong></span>
               </div>
               <div className="flex items-center gap-1.5">
-                <Calendar className="h-4 w-4 text-amber-700" />
+                <Calendar className="h-4 w-4 text-amber-700 dark:text-amber-400" />
                 <span>Last Updated: {activeArticle.date}</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <ShieldCheck className="h-4 w-4 text-amber-600" />
-                <span className="text-amber-700">Verified EEAT Authority</span>
+                <ShieldCheck className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                <span className="text-amber-700 dark:text-amber-400">Verified EEAT Authority</span>
               </div>
             </div>
           </header>
@@ -459,23 +459,23 @@ export default function BlogPreview({
             <aside className="lg:col-span-4 space-y-6 sticky top-28 hidden lg:block text-xs">
               
               {/* Dynamic TOC */}
-              <div className="bg-neutral-50 border border-neutral-200 p-5 rounded-xl shadow-sm">
-                <h4 className="font-mono font-bold text-amber-700 uppercase tracking-wider border-b border-neutral-200 pb-2.5 mb-3.5 flex items-center gap-2">
+              <div className="bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-5 rounded-xl shadow-sm">
+                <h4 className="font-mono font-bold text-amber-700 dark:text-amber-400 uppercase tracking-wider border-b border-neutral-200 dark:border-neutral-800 pb-2.5 mb-3.5 flex items-center gap-2">
                   <FileText className="h-4 w-4" />
                   <span>Table of Contents</span>
                 </h4>
-                <ul className="space-y-3 text-neutral-600 font-sans">
-                  <li className="flex items-center gap-1 text-neutral-950 font-bold border-l-2 border-amber-700 pl-2">
-                    <a href="#overview" className="hover:text-amber-700 transition-colors">Article Overview</a>
+                <ul className="space-y-3 text-neutral-600 dark:text-neutral-300 font-sans">
+                  <li className="flex items-center gap-1 text-neutral-950 dark:text-white font-bold border-l-2 border-amber-700 dark:border-amber-400 pl-2">
+                    <a href="#overview" className="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">Article Overview</a>
                   </li>
                   {getArticleHeadings(activeArticle.content).map((h, i) => (
-                    <li key={i} className="hover:text-amber-700 transition-colors flex items-center gap-1.5 pl-2">
-                      <ChevronRight className="h-3 w-3 text-neutral-400" />
+                    <li key={i} className="hover:text-amber-700 dark:hover:text-amber-400 transition-colors flex items-center gap-1.5 pl-2">
+                      <ChevronRight className="h-3 w-3 text-neutral-400 dark:text-neutral-500" />
                       <a href={`#${h.id}`} className="hover:underline">{h.title}</a>
                     </li>
                   ))}
                   {activeArticle.questions && activeArticle.questions.length > 0 && (
-                    <li key="faq-toc" className="hover:text-amber-700 transition-colors flex items-center gap-1.5 pl-2 font-semibold text-neutral-800">
+                    <li key="faq-toc" className="hover:text-amber-700 dark:hover:text-amber-400 transition-colors flex items-center gap-1.5 pl-2 font-semibold text-neutral-800 dark:text-neutral-200">
                       <ChevronRight className="h-3 w-3 text-neutral-500" />
                       <a href="#faq-section">Frequently Asked Questions</a>
                     </li>
@@ -484,16 +484,16 @@ export default function BlogPreview({
               </div>
 
               {/* SEO & Search Grounding Sidebar Widget */}
-              <div className="bg-amber-500/5 border border-amber-500/10 p-5 rounded-xl shadow-sm space-y-4">
-                <h4 className="font-mono font-bold text-amber-800 uppercase tracking-wider border-b border-amber-500/10 pb-2 flex items-center gap-2">
+              <div className="bg-amber-500/5 dark:bg-amber-500/10 border border-amber-500/10 dark:border-amber-500/20 p-5 rounded-xl shadow-sm space-y-4">
+                <h4 className="font-mono font-bold text-amber-800 dark:text-amber-400 uppercase tracking-wider border-b border-amber-500/10 dark:border-amber-500/20 pb-2 flex items-center gap-2">
                   <Award className="h-4 w-4" />
                   <span>SEO Grounding Data</span>
                 </h4>
 
                 {activeArticle.focusKeyword && (
                   <div>
-                    <span className="block text-[10px] uppercase font-mono tracking-wider text-neutral-500 mb-1">Focus Search Intent</span>
-                    <p className="font-mono font-bold text-neutral-900 bg-white border border-amber-500/10 px-2 py-1 rounded text-[11px]">
+                    <span className="block text-[10px] uppercase font-mono tracking-wider text-neutral-500 dark:text-neutral-400 mb-1">Focus Search Intent</span>
+                    <p className="font-mono font-bold text-neutral-900 dark:text-neutral-100 bg-white dark:bg-neutral-800 border border-amber-500/20 px-2 py-1 rounded text-[11px]">
                       "{activeArticle.focusKeyword}"
                     </p>
                   </div>
@@ -501,8 +501,8 @@ export default function BlogPreview({
 
                 {activeArticle.technicalContext && (
                   <div>
-                    <span className="block text-[10px] uppercase font-mono tracking-wider text-neutral-500 mb-1">Scientific Verification</span>
-                    <p className="text-neutral-700 leading-relaxed font-sans text-[11px] bg-white border border-neutral-200 p-2 rounded">
+                    <span className="block text-[10px] uppercase font-mono tracking-wider text-neutral-500 dark:text-neutral-400 mb-1">Scientific Verification</span>
+                    <p className="text-neutral-700 dark:text-neutral-300 leading-relaxed font-sans text-[11px] bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 p-2 rounded">
                       {activeArticle.technicalContext}
                     </p>
                   </div>
@@ -510,11 +510,11 @@ export default function BlogPreview({
 
                 {activeArticle.localizedPointers && activeArticle.localizedPointers.length > 0 && (
                   <div>
-                    <span className="block text-[10px] uppercase font-mono tracking-wider text-neutral-500 mb-1.5">GEO Location Context</span>
+                    <span className="block text-[10px] uppercase font-mono tracking-wider text-neutral-500 dark:text-neutral-400 mb-1.5">GEO Location Context</span>
                     <div className="flex flex-wrap gap-1.5">
                       {activeArticle.localizedPointers.map((p, i) => (
-                        <span key={i} className="bg-white border border-neutral-200 px-2 py-0.5 rounded text-[10px] text-neutral-600 font-mono inline-flex items-center gap-1">
-                          <MapPin className="h-2.5 w-2.5 text-amber-700" />
+                        <span key={i} className="bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 px-2 py-0.5 rounded text-[10px] text-neutral-600 dark:text-neutral-300 font-mono inline-flex items-center gap-1">
+                          <MapPin className="h-2.5 w-2.5 text-amber-700 dark:text-amber-400" />
                           {p}
                         </span>
                       ))}
@@ -527,7 +527,7 @@ export default function BlogPreview({
               <div className="pt-2">
                 <button
                   onClick={() => handleShare(activeArticle.slug, activeArticle.title)}
-                  className="w-full flex items-center justify-center gap-2 py-2.5 bg-neutral-50 border border-neutral-200 hover:border-amber-500 text-xs text-amber-800 font-mono uppercase tracking-wider rounded-lg font-bold shadow-sm hover:bg-white transition-colors"
+                  className="w-full flex items-center justify-center gap-2 py-2.5 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 hover:border-amber-500 text-xs text-amber-800 dark:text-amber-400 font-mono uppercase tracking-wider rounded-lg font-bold shadow-sm hover:bg-white dark:hover:bg-neutral-800 transition-colors cursor-pointer"
                 >
                   <Share2 className="h-4 w-4" />
                   <span>Share Article Context</span>
@@ -537,20 +537,20 @@ export default function BlogPreview({
 
             {/* Content Body (lg:col-span-8) */}
             <div className="lg:col-span-8 space-y-6">
-              <div id="overview" className="border-l-4 border-amber-600 pl-4 py-2 italic text-neutral-700 text-sm sm:text-base leading-relaxed mb-6 bg-amber-500/5 rounded-r">
-                <strong>Colombo Market Notice:</strong> This comprehensive guide contains verified analytical parameters and strict regulatory compliance guidelines compiled directly by Gold Buyers Colombo’s principal metallurgical desk to assist Sri Lankan gold owners.
+              <div id="overview" className="border-l-4 border-amber-600 pl-4 py-2 italic text-neutral-700 dark:text-neutral-300 text-sm sm:text-base leading-relaxed mb-6 bg-amber-500/5 dark:bg-amber-500/10 rounded-r">
+                <strong className="text-neutral-900 dark:text-amber-400">Colombo Market Notice:</strong> This comprehensive guide contains verified analytical parameters and strict regulatory compliance guidelines compiled directly by Gold Buyers Colombo’s principal metallurgical desk to assist Sri Lankan gold owners.
               </div>
 
               {/* Enhanced markdown renderer with headings mapped to anchor IDs */}
-              <div className="prose prose-amber max-w-none">
+              <div className="prose dark:prose-invert prose-amber max-w-none text-neutral-800 dark:text-neutral-200">
                 {renderMarkdownContent(activeArticle.content)}
               </div>
 
               {/* Tags Display */}
               {activeArticle.tags.length > 0 && (
-                <div className="pt-6 border-t border-neutral-200 flex flex-wrap gap-2 text-xs font-mono">
+                <div className="pt-6 border-t border-neutral-200 dark:border-neutral-800 flex flex-wrap gap-2 text-xs font-mono">
                   {activeArticle.tags.map((t) => (
-                    <span key={t} className="bg-neutral-50 border border-neutral-200 px-3 py-1 rounded-full text-neutral-600 hover:text-neutral-950 hover:bg-amber-500/5 transition-colors">
+                    <span key={t} className="bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 px-3 py-1 rounded-full text-neutral-600 dark:text-neutral-300 hover:text-neutral-950 dark:hover:text-white hover:bg-amber-500/5 transition-colors">
                       #{t}
                     </span>
                   ))}
@@ -559,16 +559,16 @@ export default function BlogPreview({
 
               {/* Dynamic Interactive FAQ Accordion */}
               {activeArticle.questions && activeArticle.questions.length > 0 && (
-                <div id="faq-section" className="mt-16 pt-10 border-t border-neutral-200 scroll-mt-24">
+                <div id="faq-section" className="mt-16 pt-10 border-t border-neutral-200 dark:border-neutral-800 scroll-mt-24">
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="h-10 w-10 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-800">
+                    <div className="h-10 w-10 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-800 dark:text-amber-400">
                       <BookOpen className="h-5 w-5" />
                     </div>
                     <div>
-                      <h3 className="text-2xl font-serif font-black text-neutral-950">
+                      <h3 className="text-2xl font-serif font-black text-neutral-950 dark:text-white">
                         Frequently Asked Questions
                       </h3>
-                      <p className="text-xs text-neutral-500 font-mono">Fully Indexed in JSON-LD FAQ Schema for Search Engines</p>
+                      <p className="text-xs text-neutral-500 dark:text-neutral-400 font-mono">Fully Indexed in JSON-LD FAQ Schema for Search Engines</p>
                     </div>
                   </div>
 
@@ -581,26 +581,26 @@ export default function BlogPreview({
                           className={`border rounded-xl transition-all duration-300 ${
                             isExpanded 
                               ? "border-amber-500/30 bg-amber-500/[0.01] shadow-sm" 
-                              : "border-neutral-200 bg-white hover:border-neutral-350"
+                              : "border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:border-neutral-350 dark:hover:border-neutral-700"
                           }`}
                         >
                           <button
                             onClick={() => setExpandedFaqIndex(isExpanded ? null : i)}
-                            className="w-full flex justify-between items-center p-4 sm:p-5 text-left font-serif font-black text-sm sm:text-base text-neutral-900 hover:text-amber-700 transition-colors focus:outline-none"
+                            className="w-full flex justify-between items-center p-4 sm:p-5 text-left font-serif font-black text-sm sm:text-base text-neutral-900 dark:text-neutral-100 hover:text-amber-700 dark:hover:text-amber-400 transition-colors focus:outline-none cursor-pointer"
                           >
                             <span className="pr-4">{faq.q}</span>
                             <ChevronDown 
-                              className={`h-4 w-4 text-amber-700 shrink-0 transition-transform duration-300 ${
+                              className={`h-4 w-4 text-amber-700 dark:text-amber-400 shrink-0 transition-transform duration-300 ${
                                 isExpanded ? "rotate-180" : ""
                               }`} 
                             />
                           </button>
                           <div 
                             className={`transition-all duration-300 ease-in-out overflow-hidden ${
-                              isExpanded ? "max-h-[500px] border-t border-neutral-100" : "max-h-0"
+                              isExpanded ? "max-h-[500px] border-t border-neutral-100 dark:border-neutral-800" : "max-h-0"
                             }`}
                           >
-                            <div className="p-4 sm:p-5 text-xs sm:text-sm text-neutral-700 leading-relaxed bg-neutral-50/50">
+                            <div className="p-4 sm:p-5 text-xs sm:text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed bg-neutral-50/50 dark:bg-neutral-950/50">
                               {faq.a}
                             </div>
                           </div>
@@ -612,30 +612,30 @@ export default function BlogPreview({
               )}
 
               {/* EEAT Author Credential Card */}
-              <div className="mt-16 bg-neutral-50 border border-neutral-200 rounded-xl p-6 sm:p-8 flex flex-col sm:flex-row gap-6 items-start sm:items-center">
-                <div className="h-20 w-20 rounded-full bg-gradient-to-br from-amber-600 to-yellow-500 flex items-center justify-center text-black font-serif font-black text-2xl shrink-0 shadow-inner border-2 border-white">
+              <div className="mt-16 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl p-6 sm:p-8 flex flex-col sm:flex-row gap-6 items-start sm:items-center">
+                <div className="h-20 w-20 rounded-full bg-gradient-to-br from-amber-600 to-yellow-500 flex items-center justify-center text-black font-serif font-black text-2xl shrink-0 shadow-inner border-2 border-white dark:border-neutral-800">
                   SA
                 </div>
                 <div className="space-y-3">
                   <div className="flex flex-wrap items-center gap-2.5">
-                    <h4 className="text-lg font-serif font-black text-neutral-950">{activeArticle.author}</h4>
-                    <span className="text-[10px] font-mono bg-amber-50 text-amber-700 border border-amber-200 px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider flex items-center gap-1">
+                    <h4 className="text-lg font-serif font-black text-neutral-950 dark:text-white">{activeArticle.author}</h4>
+                    <span className="text-[10px] font-mono bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800/60 px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider flex items-center gap-1">
                       <ShieldCheck className="h-3 w-3" /> Senior Assayer & CFO
                     </span>
                   </div>
-                  <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed">
+                  <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed">
                     Samantha Alwis brings more than 18 years of technical metallurgy and gold valuation expertise in Colombo, Sri Lanka. Having specialized in XRF spectroscopy calibration and local banking pawning liquidations, Samantha's articles provide honest, scientifically precise, and regulatory-sound guidance for all Sri Lankan gold sellers.
                   </p>
-                  <div className="flex flex-wrap gap-y-1 gap-x-4 text-[10px] font-mono text-neutral-500">
-                    <span className="flex items-center gap-1"><Cpu className="h-3.5 w-3.5 text-amber-700" /> Bruker XRF Certified Appraiser</span>
+                  <div className="flex flex-wrap gap-y-1 gap-x-4 text-[10px] font-mono text-neutral-500 dark:text-neutral-400">
+                    <span className="flex items-center gap-1"><Cpu className="h-3.5 w-3.5 text-amber-700 dark:text-amber-400" /> Bruker XRF Certified Appraiser</span>
                     <span>•</span>
-                    <span className="flex items-center gap-1"><Award className="h-3.5 w-3.5 text-amber-700" /> Sri Lanka Gold Council Advisor</span>
+                    <span className="flex items-center gap-1"><Award className="h-3.5 w-3.5 text-amber-700 dark:text-amber-400" /> Sri Lanka Gold Council Advisor</span>
                   </div>
                 </div>
               </div>
 
               {/* Premium Direct CTA Box */}
-              <div className="bg-neutral-900 text-white rounded-2xl p-8 mt-12 relative overflow-hidden shadow-xl">
+              <div className="bg-neutral-900 dark:bg-neutral-900 text-white rounded-2xl p-8 mt-12 relative overflow-hidden shadow-xl border border-neutral-800">
                 <div className="absolute right-0 bottom-0 translate-x-12 translate-y-12 h-44 w-44 rounded-full bg-amber-500/10 blur-3xl pointer-events-none"></div>
                 
                 <h4 className="text-xl sm:text-2xl font-serif font-black text-amber-500 mb-3">
@@ -647,7 +647,7 @@ export default function BlogPreview({
                 <div className="flex flex-wrap gap-4 items-center">
                   <a 
                     href="tel:0718321321" 
-                    className="bg-gradient-to-r from-amber-500 to-yellow-500 text-black px-6 py-3 text-xs font-black uppercase rounded-lg shadow-lg hover:brightness-110 transition-all font-mono tracking-wider"
+                    className="bg-gradient-to-r from-amber-500 to-yellow-500 text-black px-6 py-3 text-xs font-black uppercase rounded-lg shadow-lg hover:brightness-110 transition-all font-mono tracking-wider no-underline"
                   >
                     Call Appraisal Desk: 0718 321 321
                   </a>
@@ -657,7 +657,7 @@ export default function BlogPreview({
                       setActiveArticle(null);
                       setExpandedFaqIndex(null);
                     }} 
-                    className="border border-neutral-700 hover:border-amber-500 text-white hover:text-amber-400 px-6 py-3 text-xs font-bold uppercase rounded-lg transition-colors font-mono tracking-wider bg-neutral-950/40"
+                    className="border border-neutral-700 hover:border-amber-500 text-white hover:text-amber-400 px-6 py-3 text-xs font-bold uppercase rounded-lg transition-colors font-mono tracking-wider bg-neutral-950/40 no-underline"
                   >
                     Open Live Rate Calculator
                   </a>
@@ -672,24 +672,24 @@ export default function BlogPreview({
   }
 
   return (
-    <section className="py-20 px-4 bg-white text-neutral-900 scroll-mt-20 border-t border-neutral-100">
+    <section className="py-20 px-4 bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 scroll-mt-20 border-t border-neutral-100 dark:border-neutral-900 transition-colors">
       <div className="max-w-6xl mx-auto">
         
         {/* Header */}
         <div className="text-center mb-12">
-          <span className="text-xs uppercase font-mono tracking-widest text-amber-700 block mb-3 font-semibold">
+          <span className="text-xs uppercase font-mono tracking-widest text-amber-700 dark:text-amber-400 block mb-3 font-semibold">
             Knowledge Base
           </span>
-          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-neutral-950 mb-4">
+          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-neutral-950 dark:text-white mb-4">
             Gold Price Insights & Guides Colombo
           </h2>
-          <p className="text-neutral-600 max-w-2xl mx-auto text-sm sm:text-base">
+          <p className="text-neutral-600 dark:text-neutral-300 max-w-2xl mx-auto text-sm sm:text-base">
             Expert articles optimized for "Gold Buyer in Colombo" search trends, giving you maximum value and knowledge before trading.
           </p>
         </div>
 
         {/* Search & Category Filter bar */}
-        <div className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 sm:p-6 mb-12 shadow-sm space-y-4">
+        <div className="bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl p-4 sm:p-6 mb-12 shadow-sm space-y-4">
           
           {/* Search box */}
           <div className="relative">
@@ -699,20 +699,20 @@ export default function BlogPreview({
               placeholder="Search guides, price trends, pawning analysis..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-white border border-neutral-250 rounded-lg pl-10 pr-4 py-2.5 text-xs sm:text-sm text-neutral-800 focus:outline-none focus:border-amber-500 font-sans shadow-sm"
+              className="w-full bg-white dark:bg-neutral-800 border border-neutral-250 dark:border-neutral-700 rounded-lg pl-10 pr-4 py-2.5 text-xs sm:text-sm text-neutral-800 dark:text-neutral-100 focus:outline-none focus:border-amber-500 font-sans shadow-sm"
             />
           </div>
 
           {/* Category Tabs list */}
-          <div className="flex flex-wrap gap-1.5 pt-1 border-t border-neutral-200">
+          <div className="flex flex-wrap gap-1.5 pt-1 border-t border-neutral-200 dark:border-neutral-800">
             {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-mono tracking-wide transition-all ${
+                className={`px-3.5 py-1.5 rounded-full text-xs font-mono tracking-wide transition-all cursor-pointer ${
                   selectedCategory === cat
-                    ? "bg-amber-600 text-black font-extrabold"
-                    : "text-neutral-600 hover:text-amber-700 hover:bg-neutral-100"
+                    ? "bg-amber-500 text-neutral-950 font-extrabold"
+                    : "text-neutral-600 dark:text-neutral-300 hover:text-amber-700 dark:hover:text-amber-400 hover:bg-neutral-100 dark:hover:bg-neutral-800"
                 }`}
               >
                 {cat}
@@ -723,9 +723,9 @@ export default function BlogPreview({
 
         {/* Blog Posts list grid */}
         {filteredBlogs.length === 0 ? (
-          <div className="text-center py-16 bg-neutral-50 rounded-xl border border-neutral-200 shadow-sm">
+          <div className="text-center py-16 bg-neutral-50 dark:bg-neutral-900 rounded-xl border border-neutral-200 dark:border-neutral-800 shadow-sm">
             <Search className="h-8 w-8 text-neutral-400 mx-auto mb-3" />
-            <p className="text-neutral-600 text-xs font-mono uppercase tracking-widest">
+            <p className="text-neutral-600 dark:text-neutral-400 text-xs font-mono uppercase tracking-widest">
               No matching articles found. Try another search.
             </p>
           </div>
@@ -738,24 +738,24 @@ export default function BlogPreview({
                   setActiveArticle(post);
                   window.scrollTo({ top: 0 });
                 }}
-                className="bg-neutral-50 rounded-xl border border-neutral-200 hover:border-amber-500/30 transition-all overflow-hidden flex flex-col justify-between cursor-pointer group hover:shadow-md hover:shadow-amber-500/5 shadow-sm"
+                className="bg-neutral-50 dark:bg-neutral-900 rounded-xl border border-neutral-200 dark:border-neutral-800 hover:border-amber-500/40 transition-all overflow-hidden flex flex-col justify-between cursor-pointer group hover:shadow-md hover:shadow-amber-500/5 shadow-sm"
               >
                 <div className="p-6">
                   {/* Category */}
                   <div className="flex justify-between items-center mb-4">
-                    <span className="text-[10px] font-mono font-bold text-amber-700 uppercase tracking-widest bg-amber-500/10 px-2 py-0.5 rounded">
+                    <span className="text-[10px] font-mono font-bold text-amber-700 dark:text-amber-400 uppercase tracking-widest bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
                       {post.category}
                     </span>
-                    <span className="text-[10px] text-neutral-500 font-mono">{post.date}</span>
+                    <span className="text-[10px] text-neutral-500 dark:text-neutral-400 font-mono">{post.date}</span>
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-lg font-serif font-bold text-neutral-900 group-hover:text-amber-700 transition-colors mb-3 leading-snug">
+                  <h3 className="text-lg font-serif font-bold text-neutral-900 dark:text-neutral-100 group-hover:text-amber-700 dark:group-hover:text-amber-400 transition-colors mb-3 leading-snug">
                     {post.title}
                   </h3>
 
                   {/* Body preview */}
-                  <p className="text-xs text-neutral-600 line-clamp-3 leading-relaxed">
+                  <p className="text-xs text-neutral-600 dark:text-neutral-300 line-clamp-3 leading-relaxed">
                     {(() => {
                       const isHtml = post.content.trim().startsWith("<") || /<[a-z][\s\S]*>/i.test(post.content);
                       const cleanText = isHtml
@@ -767,7 +767,7 @@ export default function BlogPreview({
                 </div>
 
                 {/* Footer read action */}
-                <div className="px-6 py-4 border-t border-neutral-200 flex justify-between items-center bg-neutral-100/30 group-hover:bg-amber-50/10 transition-colors text-[10px] font-mono uppercase tracking-wider text-amber-700 font-bold">
+                <div className="px-6 py-4 border-t border-neutral-200 dark:border-neutral-800 flex justify-between items-center bg-neutral-100/40 dark:bg-neutral-950/40 group-hover:bg-amber-50/20 dark:group-hover:bg-amber-500/10 transition-colors text-[10px] font-mono uppercase tracking-wider text-amber-700 dark:text-amber-400 font-bold">
                   <span>Read Article</span>
                   <ChevronRight className="h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
                 </div>

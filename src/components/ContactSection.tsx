@@ -76,18 +76,18 @@ export default function ContactSection({ currentLang }: ContactSectionProps) {
   };
 
   return (
-    <section id="contact" className="py-20 px-4 bg-amber-50/50 dark:bg-neutral-950 border-t border-amber-200/50 dark:border-neutral-800 text-neutral-900 dark:text-neutral-100 scroll-mt-20">
+    <section id="contact" className="py-20 px-4 bg-amber-50/50 dark:bg-neutral-950 border-t border-amber-200/50 dark:border-neutral-900 text-neutral-900 dark:text-neutral-100 scroll-mt-20 transition-colors">
       <div className="max-w-7xl mx-auto">
         
         {/* Header Block */}
         <div className="text-center mb-16">
-          <span className="text-xs uppercase font-mono tracking-widest text-amber-700 block mb-3 font-semibold">
+          <span className="text-xs uppercase font-mono tracking-widest text-amber-700 dark:text-amber-400 block mb-3 font-semibold">
             Get In Touch
           </span>
-          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-neutral-950 mb-4">
+          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-neutral-950 dark:text-white mb-4">
             {t.contactTitle}
           </h2>
-          <p className="text-neutral-600 text-sm sm:text-base max-w-2xl mx-auto">
+          <p className="text-neutral-600 dark:text-neutral-300 text-sm sm:text-base max-w-2xl mx-auto">
             {t.contactSubtitle}
           </p>
         </div>
@@ -99,51 +99,51 @@ export default function ContactSection({ currentLang }: ContactSectionProps) {
           <div className="lg:col-span-5 space-y-6">
             
             {/* Quick Details Cards */}
-            <div className="bg-neutral-50 rounded-xl border border-neutral-200 p-6 space-y-5 shadow-sm">
+            <div className="bg-neutral-50 dark:bg-neutral-900 rounded-xl border border-neutral-200 dark:border-neutral-800 p-6 space-y-5 shadow-sm">
               
               <div className="flex gap-4">
-                <div className="h-10 w-10 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-700 flex-shrink-0">
+                <div className="h-10 w-10 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-700 dark:text-amber-400 flex-shrink-0">
                   <MapPin className="h-5 w-5" />
                 </div>
                 <div>
-                  <h4 className="text-xs font-mono uppercase tracking-wider text-neutral-600 font-semibold">
+                  <h4 className="text-xs font-mono uppercase tracking-wider text-neutral-600 dark:text-neutral-400 font-semibold">
                     {t.addressLabel}
                   </h4>
-                  <p className="text-sm font-semibold text-neutral-900 mt-1">
+                  <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mt-1">
                     68 S. De S. Jayasinghe Mawatha, Nugegoda 10250, Sri Lanka
                   </p>
                 </div>
               </div>
  
               <div className="flex gap-4">
-                <div className="h-10 w-10 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-700 flex-shrink-0">
+                <div className="h-10 w-10 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-700 dark:text-amber-400 flex-shrink-0">
                   <Phone className="h-5 w-5" />
                 </div>
                 <div>
-                  <h4 className="text-xs font-mono uppercase tracking-wider text-neutral-600 font-semibold">
+                  <h4 className="text-xs font-mono uppercase tracking-wider text-neutral-600 dark:text-neutral-400 font-semibold">
                     {t.phoneLabel}
                   </h4>
-                  <a href="tel:0718321321" className="text-sm font-bold text-amber-700 mt-1 hover:underline block">
+                  <a href="tel:0718321321" className="text-sm font-bold text-amber-700 dark:text-amber-400 mt-1 hover:underline block">
                     0718 321 321
                   </a>
-                  <a href="https://wa.me/94718321321" target="_blank" rel="noreferrer" className="text-xs text-neutral-600 mt-0.5 block hover:underline">
+                  <a href="https://wa.me/94718321321" target="_blank" rel="noreferrer" className="text-xs text-neutral-600 dark:text-neutral-400 mt-0.5 block hover:underline">
                     WhatsApp: +94 718 321 321
                   </a>
                 </div>
               </div>
  
               <div className="flex gap-4">
-                <div className="h-10 w-10 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-700 flex-shrink-0">
+                <div className="h-10 w-10 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-700 dark:text-amber-400 flex-shrink-0">
                   <Clock className="h-5 w-5" />
                 </div>
                 <div>
-                  <h4 className="text-xs font-mono uppercase tracking-wider text-neutral-600 font-semibold">
+                  <h4 className="text-xs font-mono uppercase tracking-wider text-neutral-600 dark:text-neutral-400 font-semibold">
                     {t.hoursLabel}
                   </h4>
-                  <p className="text-sm text-neutral-900 mt-1 font-semibold">
+                  <p className="text-sm text-neutral-900 dark:text-neutral-100 mt-1 font-semibold">
                     Monday - Saturday: 9:00 AM - 6:00 PM
                   </p>
-                  <p className="text-[10px] text-neutral-500 italic mt-0.5">
+                  <p className="text-[10px] text-neutral-500 dark:text-neutral-400 italic mt-0.5">
                     Closed on Sundays & Full Moon Poya Days.
                   </p>
                 </div>
@@ -152,23 +152,23 @@ export default function ContactSection({ currentLang }: ContactSectionProps) {
             </div>
  
             {/* Parking & Landmark Info Box */}
-            <div className="bg-neutral-50 border border-neutral-200 rounded-xl p-6 space-y-4 shadow-sm">
+            <div className="bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl p-6 space-y-4 shadow-sm">
               
-              <div className="flex gap-3 text-xs text-neutral-600">
-                <Car className="h-5 w-5 text-amber-700 flex-shrink-0" />
+              <div className="flex gap-3 text-xs text-neutral-600 dark:text-neutral-300">
+                <Car className="h-5 w-5 text-amber-700 dark:text-amber-400 flex-shrink-0" />
                 <div>
-                  <h4 className="font-serif font-black text-neutral-900">{t.parkingLabel}</h4>
-                  <p className="text-neutral-600 text-[11px] mt-1 leading-relaxed">
+                  <h4 className="font-serif font-black text-neutral-900 dark:text-white">{t.parkingLabel}</h4>
+                  <p className="text-neutral-600 dark:text-neutral-300 text-[11px] mt-1 leading-relaxed">
                     Dedicated, secure private parking space inside our building gate. Completely safe for clients transporting valuable gold items.
                   </p>
                 </div>
               </div>
  
-              <div className="flex gap-3 text-xs text-neutral-600">
-                <Compass className="h-5 w-5 text-amber-700 flex-shrink-0" />
+              <div className="flex gap-3 text-xs text-neutral-600 dark:text-neutral-300">
+                <Compass className="h-5 w-5 text-amber-700 dark:text-amber-400 flex-shrink-0" />
                 <div>
-                  <h4 className="font-serif font-black text-neutral-900">{t.landmarkLabel}</h4>
-                  <p className="text-neutral-600 text-[11px] mt-1 leading-relaxed">
+                  <h4 className="font-serif font-black text-neutral-900 dark:text-white">{t.landmarkLabel}</h4>
+                  <p className="text-neutral-600 dark:text-neutral-300 text-[11px] mt-1 leading-relaxed">
                     Located at 68 S. De S. Jayasinghe Mawatha, Nugegoda 10250, Sri Lanka (ICC Business Complex / Nugegoda Flyover Junction).
                   </p>
                 </div>
@@ -182,20 +182,20 @@ export default function ContactSection({ currentLang }: ContactSectionProps) {
           <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
             
             {/* Contact Form Container */}
-            <div className="bg-neutral-50 rounded-xl border border-neutral-200 p-6 shadow-sm">
-              <h3 className="text-lg font-serif font-bold text-neutral-950 mb-6 border-b border-neutral-200 pb-3">
+            <div className="bg-neutral-50 dark:bg-neutral-900 rounded-xl border border-neutral-200 dark:border-neutral-800 p-6 shadow-sm">
+              <h3 className="text-lg font-serif font-bold text-neutral-950 dark:text-white mb-6 border-b border-neutral-200 dark:border-neutral-800 pb-3">
                 Send Digital Enquiry
               </h3>
  
               {isSuccess ? (
                 <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-6 text-center animate-fade-in h-full flex flex-col justify-center items-center">
-                  <CheckCircle className="h-10 w-10 text-amber-600 mb-3 animate-bounce" />
-                  <p className="text-xs text-amber-800 font-sans leading-relaxed">
+                  <CheckCircle className="h-10 w-10 text-amber-600 dark:text-amber-400 mb-3 animate-bounce" />
+                  <p className="text-xs text-amber-800 dark:text-amber-300 font-sans leading-relaxed">
                     {t.formSuccess}
                   </p>
                   <button
                     onClick={() => setIsSuccess(false)}
-                    className="text-xs text-amber-700 underline uppercase tracking-wider mt-4 hover:text-amber-600 block"
+                    className="text-xs text-amber-700 dark:text-amber-400 underline uppercase tracking-wider mt-4 hover:text-amber-600 dark:hover:text-amber-300 block cursor-pointer"
                   >
                     Send Another Message
                   </button>
@@ -203,7 +203,7 @@ export default function ContactSection({ currentLang }: ContactSectionProps) {
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4 text-xs">
                   <div>
-                    <label className="block text-neutral-600 mb-1 font-mono uppercase tracking-wider text-[10px] font-semibold">
+                    <label className="block text-neutral-600 dark:text-neutral-400 mb-1 font-mono uppercase tracking-wider text-[10px] font-semibold">
                       {t.formName} *
                     </label>
                     <input
@@ -211,12 +211,12 @@ export default function ContactSection({ currentLang }: ContactSectionProps) {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       required
-                      className="w-full bg-white border border-neutral-250 rounded px-3 py-2 text-sm text-neutral-800 focus:outline-none focus:border-amber-500 shadow-sm"
+                      className="w-full bg-white dark:bg-neutral-800 border border-neutral-250 dark:border-neutral-700 rounded px-3 py-2 text-sm text-neutral-800 dark:text-neutral-100 focus:outline-none focus:border-amber-500 shadow-sm"
                     />
                   </div>
                   
                   <div>
-                    <label className="block text-neutral-600 mb-1 font-mono uppercase tracking-wider text-[10px] font-semibold">
+                    <label className="block text-neutral-600 dark:text-neutral-400 mb-1 font-mono uppercase tracking-wider text-[10px] font-semibold">
                       {t.formPhone} *
                     </label>
                     <input
@@ -224,38 +224,38 @@ export default function ContactSection({ currentLang }: ContactSectionProps) {
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       required
-                      className="w-full bg-white border border-neutral-250 rounded px-3 py-2 text-sm text-neutral-800 font-mono focus:outline-none focus:border-amber-500 shadow-sm"
+                      className="w-full bg-white dark:bg-neutral-800 border border-neutral-250 dark:border-neutral-700 rounded px-3 py-2 text-sm text-neutral-800 dark:text-neutral-100 font-mono focus:outline-none focus:border-amber-500 shadow-sm"
                     />
                   </div>
  
                   <div>
-                    <label className="block text-neutral-600 mb-1 font-mono uppercase tracking-wider text-[10px] font-semibold">
+                    <label className="block text-neutral-600 dark:text-neutral-400 mb-1 font-mono uppercase tracking-wider text-[10px] font-semibold">
                       {t.formEmail}
                     </label>
                     <input
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full bg-white border border-neutral-250 rounded px-3 py-2 text-sm text-neutral-800 focus:outline-none focus:border-amber-500 shadow-sm"
+                      className="w-full bg-white dark:bg-neutral-800 border border-neutral-250 dark:border-neutral-700 rounded px-3 py-2 text-sm text-neutral-800 dark:text-neutral-100 focus:outline-none focus:border-amber-500 shadow-sm"
                     />
                   </div>
  
                   <div>
-                    <label className="block text-neutral-600 mb-1 font-mono uppercase tracking-wider text-[10px] font-semibold">
+                    <label className="block text-neutral-600 dark:text-neutral-400 mb-1 font-mono uppercase tracking-wider text-[10px] font-semibold">
                       {t.formMessage}
                     </label>
                     <textarea
                       rows={3}
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
-                      className="w-full bg-white border border-neutral-250 rounded px-3 py-2 text-sm text-neutral-800 focus:outline-none focus:border-amber-500 shadow-sm"
+                      className="w-full bg-white dark:bg-neutral-800 border border-neutral-250 dark:border-neutral-700 rounded px-3 py-2 text-sm text-neutral-800 dark:text-neutral-100 focus:outline-none focus:border-amber-500 shadow-sm"
                     ></textarea>
                   </div>
  
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full py-3 bg-gradient-to-r from-amber-600 to-yellow-500 hover:from-amber-500 hover:to-yellow-400 text-black font-extrabold uppercase tracking-widest text-xs rounded transition-all transform active:scale-95 shadow-md shadow-amber-500/10"
+                    className="w-full py-3 bg-gradient-to-r from-amber-600 to-yellow-500 hover:from-amber-500 hover:to-yellow-400 text-black font-extrabold uppercase tracking-widest text-xs rounded transition-all transform active:scale-95 shadow-md shadow-amber-500/10 cursor-pointer"
                   >
                     {isSubmitting ? t.calculating : t.submitForm}
                   </button>
