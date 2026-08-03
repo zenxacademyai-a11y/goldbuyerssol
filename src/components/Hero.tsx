@@ -151,35 +151,33 @@ export default function Hero({ currentLang }: HeroProps) {
               )}
             </p>
 
-            <div className="flex flex-col items-start gap-3 w-full max-w-md mb-5">
-              {/* Call Button pill - Medium size & fully responsive */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full max-w-md mb-5">
+              {/* Call Button pill - Full width on mobile */}
               <a 
                 href="tel:0718321321" 
-                className="inline-flex items-center justify-center gap-2 sm:gap-2.5 px-4 py-2.5 sm:px-6 sm:py-3 rounded-full bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-400 hover:from-amber-500 hover:to-yellow-500 text-neutral-950 font-black text-xs sm:text-base shadow-md shadow-amber-500/20 hover:shadow-amber-500/35 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer no-underline w-full min-[380px]:w-auto"
+                className="inline-flex items-center justify-center gap-2.5 px-5 py-3 sm:px-6 sm:py-3.5 rounded-full bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-400 hover:from-amber-500 hover:to-yellow-500 text-neutral-950 font-black text-xs sm:text-base shadow-md shadow-amber-500/20 hover:shadow-amber-500/35 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer no-underline w-full sm:w-auto"
               >
                 <Phone className="h-4 w-4 sm:h-5 sm:w-5 fill-neutral-950 shrink-0" />
                 <span className="font-mono tracking-tight whitespace-nowrap">+94 718 321 321</span>
                 <span className="text-neutral-950/40 font-normal shrink-0">|</span>
                 <span className="whitespace-nowrap tracking-wide font-black">
-                  {currentLang === "si" ? "දැන් අමතන්න" : currentLang === "ta" ? "இப்பொழுதே அழைக்கவும்" : "Call Now"}
+                  {currentLang === "si" ? "දැන් අමතන්න" : currentLang === "ta" ? "இப்பොழுதே அழைக்கவும்" : "Call Now"}
                 </span>
               </a>
 
-              {/* Secondary Badge/Link: Sri Lanka #1 Gold Buyer with Yellow background - Fully Responsive */}
-              <div className="flex items-center gap-2 w-full min-[380px]:w-auto">
-                <a
-                  href="#live-rates"
-                  className="inline-flex items-center justify-center sm:justify-start gap-2 px-3.5 py-2 sm:px-5 sm:py-2.5 rounded-full bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-400 hover:from-amber-500 hover:to-yellow-500 text-neutral-950 font-extrabold shadow-md shadow-amber-500/20 hover:shadow-amber-500/30 text-xs sm:text-sm transition-all no-underline group cursor-pointer w-full min-[380px]:w-auto"
-                >
-                  <span className="px-2.5 py-0.5 rounded-full bg-neutral-950 text-amber-400 font-black text-[10px] sm:text-[11px] uppercase tracking-wider shrink-0 whitespace-nowrap">
-                    Sri Lanka #1
-                  </span>
-                  <span className="font-extrabold text-neutral-950 whitespace-nowrap">
-                    {currentLang === "si" ? "විශ්වාසවන්ත රන් ගැනුම්කරුවෝ" : currentLang === "ta" ? "தங்க கொள்முதல்" : "Gold Buyer"}
-                  </span>
-                  <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-neutral-950 group-hover:translate-x-1 transition-transform shrink-0" />
-                </a>
-              </div>
+              {/* Secondary Badge/Link: Sri Lanka #1 Gold Buyer - Full width on mobile */}
+              <a
+                href="#live-rates"
+                className="inline-flex items-center justify-center gap-2 px-4 py-3 sm:px-5 sm:py-3.5 rounded-full bg-neutral-900 hover:bg-neutral-800 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-white font-extrabold shadow-md text-xs sm:text-sm transition-all no-underline group cursor-pointer w-full sm:w-auto border border-neutral-700/50"
+              >
+                <span className="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/40 font-black text-[10px] sm:text-[11px] uppercase tracking-wider shrink-0 whitespace-nowrap">
+                  Sri Lanka #1
+                </span>
+                <span className="font-extrabold text-white whitespace-nowrap">
+                  {currentLang === "si" ? "ලයිව් රන් මිල" : currentLang === "ta" ? "நேරலை தங்க விலை" : "Check Live Rates"}
+                </span>
+                <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-amber-400 group-hover:translate-x-1 transition-transform shrink-0" />
+              </a>
             </div>
 
             {/* Trust Signal Badges in Glassmorphism Cards */}
