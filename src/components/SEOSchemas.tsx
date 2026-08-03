@@ -111,8 +111,8 @@ export default function SEOSchemas({ rates }: SEOSchemasProps) {
           "@type": "Offer",
           "itemOffered": {
             "@type": "Product",
-            "name": "24K Gold Buying Price (Per Gram)",
-            "description": "Daily live buying price for 24K solid pure gold per gram in Colombo, Sri Lanka by Gold Buyers Colombo."
+            "name": "24K Gold Pawn Rate",
+            "description": "Daily live pawn rate for 24K solid pure gold in Colombo, Sri Lanka by Gold Buyers Colombo."
           },
           "priceSpecification": {
             "@type": "PriceSpecification",
@@ -126,8 +126,8 @@ export default function SEOSchemas({ rates }: SEOSchemasProps) {
           "@type": "Offer",
           "itemOffered": {
             "@type": "Product",
-            "name": "22K Gold Buying Price (Per Gram)",
-            "description": "Daily live buying price for 22K (916) jewelry standard gold per gram in Colombo, Sri Lanka by Gold Buyers Colombo."
+            "name": "22K Gold Pawn Rate",
+            "description": "Daily live pawn rate for 22K (916) jewelry standard gold in Colombo, Sri Lanka by Gold Buyers Colombo."
           },
           "priceSpecification": {
             "@type": "PriceSpecification",
@@ -141,8 +141,8 @@ export default function SEOSchemas({ rates }: SEOSchemasProps) {
           "@type": "Offer",
           "itemOffered": {
             "@type": "Product",
-            "name": "21K Gold Buying Price (Per Gram)",
-            "description": "Daily live buying price for 21K jewelry standard gold per gram in Colombo, Sri Lanka by Gold Buyers Colombo."
+            "name": "21K Gold Pawn Rate",
+            "description": "Daily live pawn rate for 21K jewelry standard gold in Colombo, Sri Lanka by Gold Buyers Colombo."
           },
           "priceSpecification": {
             "@type": "PriceSpecification",

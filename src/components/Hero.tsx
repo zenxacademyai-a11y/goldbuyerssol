@@ -145,33 +145,41 @@ export default function Hero({ currentLang }: HeroProps) {
               {currentLang === "si" ? (
                 "100% නිවැරදි පරිගණක XRF පරීක්ෂාවෙන් පසු ශ්‍රී ලංකාවේ ඉහළම වෙළඳපල මිලට ක්ෂණික මුදල් හෝ බැංකු තැන්පතු ලබා ගන්න. කිසිදු අසාධාරණ කැපීමක් නැත."
               ) : currentLang === "ta" ? (
-                "100% கணினி எக்ஸ்ஆர்එஃப் பரிசோதனை மூலம் இலங்கையின் மிக உயர்ந்த சந்தை விலைக்கு உடனடி பணமளிப்பு பெறுக."
+                "100% கணினி எக்ஸ்ஆர்எஃப் பரிசோதனை மூலம் இலங்கையின் மிக உயர்ந்த சந்தை விலைக்கு உடனடி பணமளிப்பு பெறுக."
               ) : (
                 "Get the absolute highest cash payout for your gold with 100% transparent XRF computerized purity testing and instant payment on the spot."
               )}
             </p>
 
-
-
-            <div className="flex flex-col min-[380px]:flex-row items-stretch min-[380px]:items-center gap-2.5 w-full sm:w-auto mb-4">
-              {/* Primary CTA */}
-              <a 
-                href="#live-rates" 
-                className="inline-flex items-center justify-center gap-2 px-5 py-3 sm:py-3 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 hover:from-amber-600 hover:to-amber-500 text-neutral-950 font-black text-xs sm:text-sm transition-all duration-200 shadow-md shadow-amber-500/20 hover:shadow-amber-500/35 hover:-translate-y-0.5 no-underline group cursor-pointer text-center"
-              >
-                <TrendingUp className="h-4 w-4 text-neutral-950 group-hover:scale-110 transition-transform duration-200 shrink-0" />
-                <span className="whitespace-nowrap">{currentLang === "si" ? "අද රන් මිල බලන්න" : currentLang === "ta" ? "இன்றைய தங்க விலை" : "Get Today's Gold Price"}</span>
-                <ArrowRight className="h-3.5 w-3.5 text-neutral-950 group-hover:translate-x-1 transition-transform duration-200 shrink-0" />
-              </a>
-
-              {/* Secondary Outline Button */}
+            <div className="flex flex-col items-start gap-3 w-full max-w-md mb-5">
+              {/* Call Button pill - Medium size & fully responsive */}
               <a 
                 href="tel:0718321321" 
-                className="inline-flex items-center justify-center gap-2 px-5 py-3 sm:py-3 rounded-xl bg-white/90 dark:bg-neutral-900/90 hover:bg-amber-50/80 border-2 border-emerald-500/60 hover:border-emerald-500 text-neutral-900 dark:text-neutral-100 font-bold text-xs sm:text-sm transition-all duration-200 shadow-2xs hover:shadow-md backdrop-blur-md cursor-pointer no-underline group text-center"
+                className="inline-flex items-center justify-center gap-2 sm:gap-2.5 px-4 py-2.5 sm:px-6 sm:py-3 rounded-full bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-400 hover:from-amber-500 hover:to-yellow-500 text-neutral-950 font-black text-xs sm:text-base shadow-md shadow-amber-500/20 hover:shadow-amber-500/35 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer no-underline w-full min-[380px]:w-auto"
               >
-                <Phone className="h-4 w-4 text-emerald-600 group-hover:scale-110 transition-transform shrink-0" />
-                <span className="whitespace-nowrap font-mono text-base sm:text-lg font-extrabold text-emerald-700 dark:text-emerald-400 animate-pulse">0718 321 321</span>
+                <Phone className="h-4 w-4 sm:h-5 sm:w-5 fill-neutral-950 shrink-0" />
+                <span className="font-mono tracking-tight whitespace-nowrap">+94 718 321 321</span>
+                <span className="text-neutral-950/40 font-normal shrink-0">|</span>
+                <span className="whitespace-nowrap tracking-wide font-black">
+                  {currentLang === "si" ? "දැන් අමතන්න" : currentLang === "ta" ? "இப்பொழுதே அழைக்கவும்" : "Call Now"}
+                </span>
               </a>
+
+              {/* Secondary Badge/Link: Sri Lanka #1 Gold Buyer with Yellow background - Fully Responsive */}
+              <div className="flex items-center gap-2 w-full min-[380px]:w-auto">
+                <a
+                  href="#live-rates"
+                  className="inline-flex items-center justify-center sm:justify-start gap-2 px-3.5 py-2 sm:px-5 sm:py-2.5 rounded-full bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-400 hover:from-amber-500 hover:to-yellow-500 text-neutral-950 font-extrabold shadow-md shadow-amber-500/20 hover:shadow-amber-500/30 text-xs sm:text-sm transition-all no-underline group cursor-pointer w-full min-[380px]:w-auto"
+                >
+                  <span className="px-2.5 py-0.5 rounded-full bg-neutral-950 text-amber-400 font-black text-[10px] sm:text-[11px] uppercase tracking-wider shrink-0 whitespace-nowrap">
+                    Sri Lanka #1
+                  </span>
+                  <span className="font-extrabold text-neutral-950 whitespace-nowrap">
+                    {currentLang === "si" ? "විශ්වාසවන්ත රන් ගැනුම්කරුවෝ" : currentLang === "ta" ? "தங்க கொள்முதல்" : "Gold Buyer"}
+                  </span>
+                  <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-neutral-950 group-hover:translate-x-1 transition-transform shrink-0" />
+                </a>
+              </div>
             </div>
 
             {/* Trust Signal Badges in Glassmorphism Cards */}

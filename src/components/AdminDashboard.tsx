@@ -587,7 +587,7 @@ Include relevant Colombo landmarks (Sea Street Pettah, Wellawatte, Bambalapitiya
                 {editRates.map((r, i) => (
                   <div key={r.karat} className="space-y-1">
                     <span className="text-xs font-mono text-neutral-400 uppercase tracking-wider">
-                      {r.karat} Rate per Gram
+                      {r.karat} Pawn Rate
                     </span>
                     <div className="relative">
                       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-mono text-neutral-600">LKR</span>

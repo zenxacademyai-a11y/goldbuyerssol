@@ -49,7 +49,7 @@ export default function LiveRateWidget({
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-1 text-amber-700 font-mono text-xs uppercase tracking-widest mb-3 font-semibold">
             <span className="h-2 w-2 rounded-full bg-amber-500 animate-pulse"></span>
-            <span>Live Price Dashboard</span>
+            <span>Live Pawn Rate Dashboard</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-serif font-bold text-neutral-950 mb-4">
             {t.liveRatesTitle}
@@ -142,7 +142,7 @@ export default function LiveRateWidget({
                         <div className="grid grid-cols-1 min-[360px]:grid-cols-2 gap-3 text-sm">
                           <div className="p-2.5 rounded-lg bg-neutral-50 dark:bg-neutral-950/50 border border-neutral-200/60 dark:border-neutral-800/80 flex flex-col justify-center">
                             <span className="text-[10px] uppercase font-mono text-neutral-500 dark:text-neutral-400 font-semibold block mb-0.5">
-                              Per Gram
+                              Pawn Rate (1g)
                             </span>
                             <strong className="text-neutral-900 dark:text-white font-mono text-sm sm:text-base">
                               LKR {Math.round(ratePerGram).toLocaleString()}
@@ -235,7 +235,7 @@ export default function LiveRateWidget({
                         contentStyle={{ backgroundColor: "#ffffff", borderColor: "#e5e7eb", borderRadius: "8px", boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)" }}
                         labelStyle={{ color: "#b45309", fontFamily: "monospace", fontSize: "11px" }}
                         itemStyle={{ color: "#111827", fontSize: "12px" }}
-                        formatter={(value: any) => [`LKR ${Number(value).toLocaleString()}`, "22K Per Gram"]}
+                        formatter={(value: any) => [`LKR ${Number(value).toLocaleString()}`, "22K Pawn Rate"]}
                       />
                       <Area isAnimationActive={false}
                         type="monotone"

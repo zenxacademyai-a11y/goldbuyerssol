@@ -27,18 +27,18 @@ export default function MobileStickyBar({ currentLang, todayRate24k, todayRate22
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
             </span>
             <span className="uppercase tracking-wider font-mono text-[9px] font-bold whitespace-nowrap">
-              {currentLang === "si" ? "අද උගස් මිල" : currentLang === "ta" ? "இன்றைய அடகு விலை" : "PAWN RATE TODAY"}
+              {currentLang === "si" ? "අද පවුම (8g) උගස් මිල" : currentLang === "ta" ? "இன்றைய பவுன் (8g) அடகு விலை" : "PAWN RATE TODAY (8g)"}
             </span>
           </div>
           <div className="flex flex-col min-[380px]:flex-row min-[380px]:items-center gap-0.5 min-[380px]:gap-1.5 mt-0.5 text-[10px] min-[380px]:text-xs font-black text-neutral-900 dark:text-white">
             <div className="inline-flex items-center gap-1">
-              <span className="text-[9px] min-[380px]:text-[10px] text-neutral-500 dark:text-neutral-400 font-bold">24K:</span>
-              <span className="text-amber-600 dark:text-amber-400 font-extrabold">LKR {Math.round(todayRate24k).toLocaleString()}</span>
+              <span className="text-[9px] min-[380px]:text-[10px] text-neutral-500 dark:text-neutral-400 font-bold">24K (8g):</span>
+              <span className="text-amber-600 dark:text-amber-400 font-extrabold">LKR {Math.round(todayRate24k * 8).toLocaleString()}</span>
             </div>
             <span className="hidden min-[380px]:inline text-neutral-300 dark:text-neutral-700 font-light">|</span>
             <div className="inline-flex items-center gap-1">
-              <span className="text-[9px] min-[380px]:text-[10px] text-neutral-500 dark:text-neutral-400 font-bold">22K:</span>
-              <span className="text-amber-600 dark:text-amber-400 font-extrabold">LKR {Math.round(todayRate22k).toLocaleString()}</span>
+              <span className="text-[9px] min-[380px]:text-[10px] text-neutral-500 dark:text-neutral-400 font-bold">22K (8g):</span>
+              <span className="text-amber-600 dark:text-amber-400 font-extrabold">LKR {Math.round(todayRate22k * 8).toLocaleString()}</span>
             </div>
           </div>
         </div>

@@ -4,9 +4,10 @@
  */
 
 import React, { useState, useEffect } from "react";
-import { Calculator, Scale, FileText, Share2, Printer, Check, Info, MessageCircle } from "lucide-react";
+import { Calculator, Scale, FileText, Share2, Printer, Check, Info, MessageCircle, Download, FileSpreadsheet } from "lucide-react";
 import { Language, translations } from "../lib/translations.js";
 import { GoldKarat, GoldRate, SystemSettings } from "../types.js";
+import GoldInvoiceModal from "./GoldInvoiceModal.js";
 
 interface GoldCalculatorProps {
   currentLang: Language;
@@ -23,6 +24,7 @@ export default function GoldCalculator({ currentLang, rates, settings, isLoading
   const [weight, setWeight] = useState<number>(8); // 8g (1 pavan) default as requested
   const [unit, setUnit] = useState<"grams" | "pavans">("grams");
   const [makingCharges, setMakingCharges] = useState<number>(0); // Custom deductions option
+  const [isInvoiceOpen, setIsInvoiceOpen] = useState(false);
   
   // Results
   const [calcResult, setCalcResult] = useState({
@@ -264,19 +266,28 @@ I'd like to book an appointment to test and sell my gold today.`
 
             {/* CTAs */}
             <div className="space-y-3 pt-2">
+              <button
+                type="button"
+                onClick={() => setIsInvoiceOpen(true)}
+                className="w-full py-3.5 px-4 bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-neutral-950 font-black text-xs sm:text-sm uppercase tracking-wider rounded-xl shadow-lg shadow-amber-500/20 transition-all active:scale-98 flex items-center justify-center gap-2 cursor-pointer border border-amber-400/50"
+              >
+                <FileText className="h-4 w-4 shrink-0 text-neutral-950" />
+                <span>Generate & Download Invoice PDF</span>
+              </button>
+
               <a
                 href={whatsappUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="w-full py-3.5 px-4 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider rounded-xl shadow-lg transition-all active:scale-98 flex items-center justify-center gap-2 no-underline"
+                className="w-full py-3 px-4 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white font-extrabold text-xs uppercase tracking-wider rounded-xl shadow-md transition-all active:scale-98 flex items-center justify-center gap-2 no-underline"
               >
                 <MessageCircle className="h-4 w-4 shrink-0" />
-                <span>Get Cash Rate Quote on WhatsApp</span>
+                <span>Get Rate Quote on WhatsApp</span>
               </a>
 
               <a
                 href="tel:0718321321"
-                className="w-full py-3 px-4 bg-neutral-800 hover:bg-neutral-700 text-neutral-200 font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 no-underline border border-neutral-700"
+                className="w-full py-2.5 px-4 bg-neutral-800 hover:bg-neutral-700 text-neutral-200 font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 no-underline border border-neutral-700"
               >
                 <span>Call Desk: 0718 321 321</span>
               </a>
@@ -285,6 +296,21 @@ I'd like to book an appointment to test and sell my gold today.`
 
         </div>
       </div>
+
+      {/* Invoice PDF Generation Modal */}
+      <GoldInvoiceModal
+        isOpen={isInvoiceOpen}
+        onClose={() => setIsInvoiceOpen(false)}
+        currentLang={currentLang}
+        karat={karat}
+        weight={weight}
+        unit={unit}
+        weightInGrams={calcResult.weightInGrams}
+        ratePerGram={rates.find((r) => r.karat === karat)?.ratePerGram || 0}
+        marketValue={calcResult.marketValue}
+        makingCharges={makingCharges}
+        finalPayout={calcResult.finalPayout}
+      />
     </section>
   );
 }

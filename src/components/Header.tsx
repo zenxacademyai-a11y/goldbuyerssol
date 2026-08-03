@@ -116,68 +116,6 @@ export default function Header({
   return (
     <header className="sticky top-0 z-50 bg-white/95 dark:bg-neutral-950/95 border-b border-neutral-200/90 dark:border-neutral-800/90 backdrop-blur-xl shadow-xs transition-colors duration-200">
       
-      {/* Upper Ticker Bar: High Contrast & Live Market Rates */}
-      <div className="bg-neutral-950 text-amber-400 border-b border-amber-500/20 px-3 sm:px-6 lg:px-8 py-1.5 text-[11px] sm:text-xs font-mono">
-        <div className="max-w-7xl mx-auto flex justify-between items-center gap-2 sm:gap-4">
-          
-          {/* Live Market Rates Indicator */}
-          <div className="flex items-center gap-2 min-w-0 shrink">
-            <span className="inline-flex items-center gap-1.5 font-bold text-amber-400 shrink-0">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
-              <span className="text-[10px] sm:text-xs uppercase tracking-wider hidden min-[360px]:inline">LIVE:</span>
-            </span>
-
-            {/* Desktop / Laptop Rates */}
-            <div className="hidden sm:flex items-center gap-3 text-neutral-200 font-semibold text-xs">
-              <span className="bg-neutral-900 border border-amber-500/30 px-2 py-0.5 rounded-md text-amber-300">
-                24K: <strong className="text-white">LKR {todayRate24k.toLocaleString()}/g</strong>
-              </span>
-              <span className="bg-neutral-900 border border-amber-500/30 px-2 py-0.5 rounded-md text-amber-300">
-                22K: <strong className="text-white">LKR {todayRate22k.toLocaleString()}/g</strong>
-              </span>
-            </div>
-
-            {/* Mobile Compact Rates */}
-            <div className="sm:hidden flex items-center gap-1.5 text-[10px] font-bold text-amber-300 whitespace-nowrap">
-              <span className="bg-amber-500/10 border border-amber-500/20 px-1.5 py-0.5 rounded">24K: {todayRate24k.toLocaleString()}</span>
-              <span className="bg-amber-500/10 border border-amber-500/20 px-1.5 py-0.5 rounded">22K: {todayRate22k.toLocaleString()}</span>
-            </div>
-          </div>
-
-          {/* Direct Hotline & Hours */}
-          <div className="flex items-center gap-2 sm:gap-4 shrink-0 text-xs font-semibold">
-            <div className="hidden lg:flex items-center gap-1 text-neutral-400 font-sans text-[11px]">
-              <Clock className="h-3 w-3 text-amber-400" />
-              <span>Mon-Sat: 9 AM - 6 PM</span>
-            </div>
-
-            <a 
-              href="tel:0718321321" 
-              className="text-amber-400 hover:text-amber-300 transition-colors font-bold flex items-center gap-1 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded-md text-[10px] sm:text-xs no-underline"
-              title="Call Direct Hotline"
-            >
-              <Phone className="h-3 w-3 text-amber-400 shrink-0" />
-              <span className="font-mono">0718 321 321</span>
-            </a>
-
-            <a 
-              href="https://wa.me/94718321321"
-              target="_blank"
-              rel="noreferrer"
-              className="hidden sm:flex items-center gap-1 text-emerald-400 hover:text-emerald-300 transition-colors font-bold bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-md text-xs no-underline"
-              title="Chat on WhatsApp"
-            >
-              <MessageCircle className="h-3 w-3 text-emerald-400 shrink-0" />
-              <span>WhatsApp</span>
-            </a>
-          </div>
-
-        </div>
-      </div>
-
       {/* Main Responsive Navbar */}
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 sm:h-20 items-center gap-2 sm:gap-4">

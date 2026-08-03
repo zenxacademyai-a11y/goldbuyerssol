@@ -16,7 +16,7 @@ export const translations = {
     home: "Home",
     services: "Services",
     about: "About Us",
-    rates: "Gold Rate",
+    rates: "Pawn Rate",
     calculator: "Calculator",
     howItWorks: "How It Works",
     whyChooseUs: "Why Choose Us",
@@ -47,7 +47,7 @@ export const translations = {
     transparentLabel: "100% Honest Testing",
     
     // Live Gold Rate Section
-    liveRatesTitle: "Today's Live Gold Rates in Colombo",
+    liveRatesTitle: "Today's Live Pawn Rates in Colombo",
     liveRatesSubtitle: "Updated in real-time. We pay up to 2.5% premium over spot market price with zero hidden charges.",
     karat: "Karat",
     purity: "Purity",
@@ -58,7 +58,7 @@ export const translations = {
     ratesDisclaimer: "*Rates are subject to market fluctuations. Book your rate now by contacting our desk.",
     
     // Calculator
-    calcTitle: "Instant Gold Valuation Calculator",
+    calcTitle: "Instant Pawn Rate Valuation Calculator",
     calcSubtitle: "Enter your gold details below for an accurate live payout estimate. Highest rates guaranteed.",
     goldType: "Gold Type / Karat",
     weightInput: "Gold Weight",
@@ -127,7 +127,7 @@ export const translations = {
     home: "මුල් පිටුව",
     services: "සේවාවන්",
     about: "අප ගැන",
-    rates: "අද රන් මිල",
+    rates: "අද උගස් මිල",
     calculator: "ගණකය (Calculator)",
     howItWorks: "ක්‍රියාවලිය",
     whyChooseUs: "අප තෝරාගත යුත්තේ ඇයි",
@@ -158,7 +158,7 @@ export const translations = {
     transparentLabel: "100% අවංක පරීක්ෂාව",
     
     // Live Gold Rate Section
-    liveRatesTitle: "අද කොළඹ සජීවී රන් මිල ගණන්",
+    liveRatesTitle: "අද කොළඹ සජීවී උගස් මිල ගණන්",
     liveRatesSubtitle: "සජීවීව යාවත්කාලීන වේ. අපි වෙළඳපල මිලට වඩා 2.5% දක්වා අමතර ප්‍රසාද දීමනාවක් ගෙවන්නෙමු.",
     karat: "කැරට්",
     purity: "පිරිසිදුතාවය",
@@ -169,7 +169,7 @@ export const translations = {
     ratesDisclaimer: "*රන් මිල වෙළඳපල වෙනස්වීම් මත රඳා පවතී. අද මිල ස්ථාවර කරගැනීමට අප අමතන්න.",
     
     // Calculator
-    calcTitle: "ක්ෂණික රන් මිල ගණනය කිරීම",
+    calcTitle: "ක්ෂණික උගස් මිල ගණනය කිරීම",
     calcSubtitle: "නිවැරදි තක්සේරුවක් ලබා ගැනීම සඳහා පහතින් ඔබේ රන් භාණ්ඩවල විස්තර ඇතුළත් කරන්න. ඉහළම මිල සහතිකයි.",
     goldType: "රන් වර්ගය / කැරට්",
     weightInput: "රන් බර",
@@ -238,7 +238,7 @@ export const translations = {
     home: "முகப்பு",
     services: "சேவைகள்",
     about: "எங்களைப் பற்றி",
-    rates: "இன்றைய தங்க விலை",
+    rates: "இன்றைய அடகு விலை",
     calculator: "மதிப்பீட்டாளர்",
     howItWorks: "எப்படி செயல்படுகிறது",
     whyChooseUs: "ஏன் எங்களை தேர்வு செய்ய வேண்டும்",
@@ -269,7 +269,7 @@ export const translations = {
     transparentLabel: "100% நேர்மையான சோதனை",
     
     // Live Gold Rate Section
-    liveRatesTitle: "கொழும்பில் இன்றைய நேரடி தங்க விலைகள்",
+    liveRatesTitle: "கொழும்பில் இன்றைய நேரடி அடகு விலைகள்",
     liveRatesSubtitle: "உடனுக்குடன் புதுப்பிக்கப்படுகிறது. மறைமுகக் கட்டணங்கள் ஏதுமின்றி சந்தை விலையை விட 2.5% வரை கூடுதல் லாபம் வழங்குகிறோம்.",
     karat: "காரட்",
     purity: "தூய்மை",
@@ -280,7 +280,7 @@ export const translations = {
     ratesDisclaimer: "*தங்க விலை சந்தை நிலவரத்திற்கு ஏற்ப மாறுபடலாம். இன்றைய விலையை உறுதிப்படுத்த எங்களை அழைக்கவும்.",
     
     // Calculator
-    calcTitle: "உடனடி தங்கம் மதிப்பீட்டுக் கருவி",
+    calcTitle: "உடனடி அடகு விலை மதிப்பீடு",
     calcSubtitle: "துல்லியமான மதிப்பீட்டைப் பெற உங்கள் தங்கத்தின் விபரங்களை கீழே உள்ளிடவும். மிக உயர்ந்த விலை நிச்சயம்.",
     goldType: "தங்க வகை / காரட்",
     weightInput: "தங்க எடை",
