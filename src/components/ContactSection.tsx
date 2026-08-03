@@ -110,7 +110,7 @@ export default function ContactSection({ currentLang }: ContactSectionProps) {
                     {t.addressLabel}
                   </h4>
                   <p className="text-sm font-semibold text-neutral-900 mt-1">
-                    GBC Building, Galle Road, Colombo 03, Sri Lanka
+                    68 S. De S. Jayasinghe Mawatha, Nugegoda 10250, Sri Lanka
                   </p>
                 </div>
               </div>
@@ -169,7 +169,7 @@ export default function ContactSection({ currentLang }: ContactSectionProps) {
                 <div>
                   <h4 className="font-serif font-black text-neutral-900">{t.landmarkLabel}</h4>
                   <p className="text-neutral-600 text-[11px] mt-1 leading-relaxed">
-                    Located on Galle Road, just 200m past the Bambalapitiya junction, opposite the Liberty Plaza entrance pathway.
+                    Located at 68 S. De S. Jayasinghe Mawatha, Nugegoda 10250, Sri Lanka (ICC Business Complex / Nugegoda Flyover Junction).
                   </p>
                 </div>
               </div>

@@ -68,7 +68,7 @@ export default function FinalCTASection({ currentLang }: FinalCTAProps) {
         <div className="pt-8 border-t border-amber-950/15 grid grid-cols-1 md:grid-cols-3 gap-6 text-neutral-950 text-xs sm:text-sm font-semibold">
           <div className="flex items-center justify-center gap-2">
             <MapPin className="h-4 w-4 shrink-0 text-neutral-950" />
-            <span>Main Flagship Lounge: Galle Road, Colombo 03, Sri Lanka</span>
+            <span>Main Flagship Lounge: 68 S. De S. Jayasinghe Mawatha, Nugegoda 10250</span>
           </div>
           <div className="flex items-center justify-center gap-2">
             <Clock className="h-4 w-4 shrink-0 text-neutral-950" />

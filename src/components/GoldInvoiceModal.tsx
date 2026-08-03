@@ -60,7 +60,7 @@ export default function GoldInvoiceModal({
   // Invoice form state
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
-  const [branch, setBranch] = useState("Colombo Head Office (Galle Road)");
+  const [branch, setBranch] = useState("Nugegoda Head Office (68 S. De S. Jayasinghe Mawatha)");
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
   const [pdfSuccess, setPdfSuccess] = useState(false);
 
@@ -211,7 +211,7 @@ I would like to book an appointment for instant cash payout.`
               onChange={(e) => setBranch(e.target.value)}
               className="w-full bg-neutral-950 border border-neutral-750 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-amber-500"
             >
-              <option value="Colombo Head Office (Galle Road)">Colombo Head Office (Galle Rd)</option>
+              <option value="Nugegoda Head Office (68 S. De S. Jayasinghe Mawatha)">Nugegoda Head Office (68 S. De S. Jayasinghe Mawatha)</option>
               <option value="Kandy Branch (Peradeniya Rd)">Kandy Branch (Peradeniya Rd)</option>
               <option value="Galle Branch (Main St)">Galle Branch (Main St)</option>
               <option value="Negombo Branch (Colombo Rd)">Negombo Branch (Colombo Rd)</option>
@@ -430,7 +430,7 @@ I would like to book an appointment for instant cash payout.`
                   GOLD BUYERS COLOMBO (PVT) LTD
                 </p>
                 <p className="m-0 text-[10px] text-neutral-600">
-                  Head Office: No. 124, Galle Road, Colombo 03, Sri Lanka
+                  Head Office: 68 S. De S. Jayasinghe Mawatha, Nugegoda 10250, Sri Lanka
                 </p>
                 <p className="m-0 text-[10px] text-neutral-600">
                   Hotline: +94 718 321 321 | WhatsApp: +94 718 321 321 | Email: info@goldlanka.lk
