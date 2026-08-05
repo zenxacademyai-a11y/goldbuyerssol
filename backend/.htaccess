@@ -1,0 +1,45 @@
+# Apache REST API htaccess rewrite rules
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /backend/
+
+    # Security: Disable Directory Browsing
+    Options -Indexes
+
+    # Allow CORS preflight requests
+    RewriteCond %{REQUEST_METHOD} OPTIONS
+    RewriteRule ^(.*)$ $1 [R=200,L]
+
+    # Map /api/v1/posts -> /api/posts/index.php
+    RewriteRule ^api/v1/posts/?$ api/posts/index.php [QSA,L]
+    RewriteRule ^api/v1/posts/read/?$ api/posts/read.php [QSA,L]
+    RewriteRule ^api/v1/posts/create/?$ api/posts/create.php [QSA,L]
+    RewriteRule ^api/v1/posts/update/?$ api/posts/update.php [QSA,L]
+    RewriteRule ^api/v1/posts/delete/?$ api/posts/delete.php [QSA,L]
+
+    # Map /api/v1/categories -> /api/categories/index.php
+    RewriteRule ^api/v1/categories/?$ api/categories/index.php [QSA,L]
+
+    # Map /api/v1/tags -> /api/tags/index.php
+    RewriteRule ^api/v1/tags/?$ api/tags/index.php [QSA,L]
+
+    # Map /api/v1/media -> /api/media/index.php
+    RewriteRule ^api/v1/media/?$ api/media/index.php [QSA,L]
+    RewriteRule ^api/v1/media/upload/?$ api/media/upload.php [QSA,L]
+    RewriteRule ^api/v1/media/delete/?$ api/media/delete.php [QSA,L]
+
+    # Map /api/v1/audit-logs -> /api/audit/logs.php
+    RewriteRule ^api/v1/audit-logs/?$ api/audit/logs.php [QSA,L]
+
+    # Map /api/v1/system/backup -> /api/system/backup.php
+    RewriteRule ^api/v1/system/backup/?$ api/system/backup.php [QSA,L]
+
+    # Map /api/v1/auth/login -> /api/auth/login.php
+    RewriteRule ^api/v1/auth/login/?$ api/auth/login.php [QSA,L]
+</IfModule>
+
+# Restrict sensitive files
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>

@@ -8,6 +8,7 @@ import { Search, Calendar, User, ArrowLeft, Share2, FileText, ChevronRight, Awar
 import { Language, translations } from "../lib/translations.js";
 import { BlogPost } from "../types.js";
 import { updateMetaTags } from "../lib/seo.js";
+import SocialShare from "./SocialShare.js";
 
 interface BlogPreviewProps {
   currentLang: Language;
@@ -436,18 +437,26 @@ export default function BlogPreview({
             </h1>
             
             {/* Meta details */}
-            <div className="flex flex-wrap items-center gap-6 text-xs text-neutral-500 dark:text-neutral-400 font-mono">
-              <div className="flex items-center gap-1.5">
-                <User className="h-4 w-4 text-amber-700 dark:text-amber-400" />
-                <span>Author: <strong className="text-neutral-900 dark:text-white">{activeArticle.author}</strong></span>
+            <div className="flex flex-wrap items-center justify-between gap-4 text-xs text-neutral-500 dark:text-neutral-400 font-mono">
+              <div className="flex flex-wrap items-center gap-6">
+                <div className="flex items-center gap-1.5">
+                  <User className="h-4 w-4 text-amber-700 dark:text-amber-400" />
+                  <span>Author: <strong className="text-neutral-900 dark:text-white">{activeArticle.author}</strong></span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <Calendar className="h-4 w-4 text-amber-700 dark:text-amber-400" />
+                  <span>Last Updated: {activeArticle.date}</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <ShieldCheck className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                  <span className="text-amber-700 dark:text-amber-400">Verified EEAT Authority</span>
+                </div>
               </div>
-              <div className="flex items-center gap-1.5">
-                <Calendar className="h-4 w-4 text-amber-700 dark:text-amber-400" />
-                <span>Last Updated: {activeArticle.date}</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <ShieldCheck className="h-4 w-4 text-amber-600 dark:text-amber-400" />
-                <span className="text-amber-700 dark:text-amber-400">Verified EEAT Authority</span>
+
+              {/* Compact Quick Share */}
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] text-neutral-400 uppercase tracking-widest hidden sm:inline">Share:</span>
+                <SocialShare post={activeArticle} variant="compact" />
               </div>
             </div>
           </header>
@@ -525,13 +534,7 @@ export default function BlogPreview({
 
               {/* Share block */}
               <div className="pt-2">
-                <button
-                  onClick={() => handleShare(activeArticle.slug, activeArticle.title)}
-                  className="w-full flex items-center justify-center gap-2 py-2.5 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 hover:border-amber-500 text-xs text-amber-800 dark:text-amber-400 font-mono uppercase tracking-wider rounded-lg font-bold shadow-sm hover:bg-white dark:hover:bg-neutral-800 transition-colors cursor-pointer"
-                >
-                  <Share2 className="h-4 w-4" />
-                  <span>Share Article Context</span>
-                </button>
+                <SocialShare post={activeArticle} variant="inline" showPreviewToggle={false} />
               </div>
             </aside>
 
@@ -556,6 +559,11 @@ export default function BlogPreview({
                   ))}
                 </div>
               )}
+
+              {/* Dedicated Article Social Share & Open Graph Component */}
+              <div className="my-8">
+                <SocialShare post={activeArticle} variant="card" showPreviewToggle={true} />
+              </div>
 
               {/* Dynamic Interactive FAQ Accordion */}
               {activeArticle.questions && activeArticle.questions.length > 0 && (

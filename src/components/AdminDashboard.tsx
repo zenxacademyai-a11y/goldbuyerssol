@@ -9,6 +9,7 @@ import { Language, translations } from "../lib/translations.js";
 import { GoldRate, SystemSettings, CustomerLead, BlogPost } from "../types.js";
 import RichTextEditor from "./RichTextEditor.js";
 import AdminGoldPriceControl from "./AdminGoldPriceControl.js";
+import AdminBlogCMS from "./AdminBlogCMS.js";
 
 interface AdminDashboardProps {
   currentLang: Language;
@@ -651,173 +652,15 @@ Include relevant Colombo landmarks (Sea Street Pettah, Wellawatte, Bambalapitiya
 
         {/* Blog CMS & AI Assistant Section */}
         {activeTab === "blog" && (
-          <>
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start pt-6 border-t border-neutral-900">
-          
-          {/* AI Writer (lg:col-span-5) */}
-          <div className="lg:col-span-5 bg-gradient-to-b from-neutral-900 to-black rounded-xl border border-amber-500/20 p-6 relative overflow-hidden">
-            {/* Subtle glow */}
-            <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full blur-xl"></div>
-
-            <h3 className="text-sm uppercase tracking-widest font-mono text-amber-400 border-b border-neutral-850 pb-2 mb-4 flex items-center gap-1.5">
-              <Sparkles className="h-4 w-4 text-amber-500 animate-pulse" />
-              Gemini AI Writing Assistant
-            </h3>
-            
-            <p className="text-xs text-neutral-400 leading-relaxed mb-4">
-              Ask Gemini to write an entire local SEO article for your site instantly. This runs securely on your server, ensuring your keys are never leaked to browsers.
-            </p>
-
-            <div className="space-y-4">
-              <textarea
-                rows={4}
-                value={aiPrompt}
-                onChange={(e) => setAiPrompt(e.target.value)}
-                className="w-full bg-black border border-neutral-800 rounded px-3 py-2 text-xs text-neutral-300 focus:outline-none focus:border-amber-500 font-sans"
-              ></textarea>
-
-              <button
-                type="button"
-                onClick={handleAiWriterGenerate}
-                disabled={isAiGenerating}
-                className="w-full py-3 bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 text-black font-extrabold text-xs uppercase tracking-wider rounded transition-all flex items-center justify-center gap-2"
-              >
-                <Sparkles className="h-4.5 w-4.5 text-black" />
-                <span>{isAiGenerating ? "Composing article..." : "Generate with AI Writer"}</span>
-              </button>
-
-              <div className="border-t border-neutral-800 pt-4 mt-4 space-y-3">
-                <div className="flex items-center gap-1.5 text-xs text-amber-400 font-mono font-semibold">
-                  <Sparkles className="h-3.5 w-3.5" />
-                  <span>Predefined GBC Campaigns</span>
-                </div>
-                
-                <p className="text-[11px] text-neutral-450 leading-normal">
-                  Select one of GBC's 20 requested high-relevance Colombo gold selling topics to auto-compose a complete, hyperlinked blog article.
-                </p>
-
-                <div className="space-y-2">
-                  <select
-                    value={selectedPredefinedTopic}
-                    onChange={(e) => setSelectedPredefinedTopic(e.target.value)}
-                    className="w-full bg-black border border-neutral-800 rounded px-2.5 py-2 text-xs text-neutral-300 focus:outline-none focus:border-amber-500 font-sans"
-                  >
-                    {PREDEFINED_TOPICS.map((topic, index) => (
-                      <option key={index} value={topic}>
-                        {index + 1}. {topic}
-                      </option>
-                    ))}
-                  </select>
-
-                  <button
-                    type="button"
-                    onClick={handleGeneratePredefinedTopic}
-                    disabled={isAiGenerating}
-                    className="w-full py-2.5 bg-neutral-900 hover:bg-neutral-850 text-amber-400 border border-amber-500/30 hover:border-amber-500/55 font-extrabold text-xs uppercase tracking-wider rounded transition-all flex items-center justify-center gap-2"
-                  >
-                    <Sparkles className="h-4 w-4 text-amber-400" />
-                    <span>{isAiGenerating ? "Generating Topic..." : "Generate Predefined Topic"}</span>
-                  </button>
-                </div>
-              </div>
-            </div>
+          <div className="pt-4 border-t border-neutral-900">
+            <AdminBlogCMS
+              currentLang={currentLang}
+              blogs={blogs}
+              onSaveBlog={onSaveBlog}
+              onDeleteBlog={onDeleteBlog}
+            />
           </div>
-
-          {/* Blog CMS form (lg:col-span-7) */}
-          <div id="blog-cms-form" className="lg:col-span-7 bg-neutral-900/40 rounded-xl border border-neutral-800 p-6 scroll-mt-24">
-            <h3 className="text-sm uppercase tracking-widest font-mono text-amber-400 border-b border-neutral-850 pb-2 mb-6 flex items-center gap-1.5">
-              {editingBlogId ? <Edit className="h-4 w-4" /> : <FileText className="h-4 w-4" />}
-              {editingBlogId ? "Edit Published SEO Article" : "Publish New SEO Article"}
-            </h3>
-
-            <form onSubmit={handlePublishBlog} className="space-y-4 text-xs">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-neutral-400 mb-1">Article Title</label>
-                  <input
-                    type="text"
-                    required
-                    value={blogTitle}
-                    onChange={(e) => setBlogTitle(e.target.value)}
-                    placeholder="e.g. 5 Crucial Gold Selling Mistakes"
-                    className="w-full bg-black border border-neutral-800 rounded px-3 py-2 text-neutral-300 focus:outline-none focus:border-amber-500"
-                  />
-                </div>
-                <div>
-                  <label className="block text-neutral-400 mb-1">Category</label>
-                  <select
-                    value={blogCategory}
-                    onChange={(e) => setBlogCategory(e.target.value)}
-                    className="w-full bg-black border border-neutral-800 rounded px-3 py-2 text-neutral-300 focus:outline-none focus:border-amber-500"
-                  >
-                    <option>Gold Price</option>
-                    <option>Gold Investment</option>
-                    <option>Selling Gold</option>
-                    <option>Jewelry</option>
-                    <option>Sri Lanka News</option>
-                  </select>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-neutral-400 mb-2">Article Content (WYSIWYG Rich Editor / Supports Google Docs Paste)</label>
-                <RichTextEditor
-                  value={blogContent}
-                  onChange={(val) => setBlogContent(val)}
-                  placeholder="Type your content, paste straight from Google Docs (formatting preserved), or generate using the AI assistant..."
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-neutral-400 mb-1">Tags (Comma-separated)</label>
-                  <input
-                    type="text"
-                    value={blogTags}
-                    onChange={(e) => setBlogTags(e.target.value)}
-                    placeholder="e.g. gold-buying, colombo-market"
-                    className="w-full bg-black border border-neutral-800 rounded px-3 py-2 text-neutral-300 focus:outline-none focus:border-amber-500"
-                  />
-                </div>
-                <div>
-                  <label className="block text-neutral-400 mb-1">Author Name</label>
-                  <input
-                    type="text"
-                    required
-                    value={blogAuthor}
-                    onChange={(e) => setBlogAuthor(e.target.value)}
-                    className="w-full bg-black border border-neutral-800 rounded px-3 py-2 text-neutral-300 focus:outline-none focus:border-amber-500"
-                  />
-                </div>
-              </div>
-
-              <div className="flex gap-4 mt-4">
-                {editingBlogId && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setEditingBlogId(null);
-                      setBlogTitle("");
-                      setBlogContent("");
-                      setBlogTags("");
-                    }}
-                    className="flex-1 py-3 bg-neutral-800 hover:bg-neutral-700 text-white font-extrabold text-xs uppercase tracking-widest rounded transition-all"
-                  >
-                    Cancel Edit
-                  </button>
-                )}
-                <button
-                  type="submit"
-                  disabled={isBlogSaving}
-                  className="flex-1 py-3 bg-amber-600 hover:bg-amber-500 disabled:bg-neutral-800 text-black font-extrabold text-xs uppercase tracking-widest rounded transition-all"
-                >
-                  {isBlogSaving ? "Saving..." : editingBlogId ? "Save Changes" : "Publish Article Outright"}
-                </button>
-              </div>
-            </form>
-          </div>
-
-        </div>
+        )}
 
         {/* Schema Health-Check & Validation Dashboard */}
         <div className="bg-neutral-900/40 rounded-xl border border-neutral-800 p-6 space-y-6 pt-6 mt-12">
@@ -1119,8 +962,6 @@ Include relevant Colombo landmarks (Sea Street Pettah, Wellawatte, Bambalapitiya
             </div>
           )}
         </div>
-          </>
-        )}
 
       </div>
     </section>

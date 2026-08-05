@@ -44,15 +44,21 @@ export interface BlogPost {
   content: string;
   author: string;
   date: string;
-  category: "Gold Price" | "Gold Investment" | "Selling Gold" | "Jewelry" | "Sri Lanka News";
+  category: string;
   tags: string[];
   metaTitle: string;
   metaDescription: string;
   isPublished: boolean;
   createdAt: string;
+  excerpt?: string;
+  image?: string;
+  status?: "draft" | "published" | "scheduled" | "archived" | string;
+  canonicalUrl?: string;
+  focusKeyword?: string;
+  isFeatured?: boolean;
+  readTime?: string;
   // Optional SEO & EEAT properties
   theme?: string;
-  focusKeyword?: string;
   localizedPointers?: string[];
   technicalContext?: string;
   questions?: { q: string; a: string }[];
