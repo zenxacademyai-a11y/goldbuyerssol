@@ -25,8 +25,6 @@ import {
   Receipt,
   Check
 } from "lucide-react";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
 import { Language } from "../lib/translations.js";
 import { GoldKarat } from "../types.js";
 
@@ -165,6 +163,12 @@ export default function GoldInvoiceModal({
     try {
       setIsGeneratingPdf(true);
       const element = invoiceRef.current;
+      if (!element) return;
+
+      const html2canvasModule = await import("html2canvas");
+      const html2canvas = html2canvasModule.default;
+      const jsPDFModule = await import("jspdf");
+      const jsPDF = jsPDFModule.default || jsPDFModule.jsPDF;
 
       const canvas = await html2canvas(element, {
         scale: 2,

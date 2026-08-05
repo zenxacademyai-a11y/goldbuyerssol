@@ -36,12 +36,28 @@ import HomeAboutSection from "./components/HomeAboutSection.js";
 import FinalCTASection from "./components/FinalCTASection.js";
 import InstallAppBanner from "./components/InstallAppBanner.js";
 
-export default function App() {
+interface AppProps {
+  initialView?: "home" | "blog" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "faq" | "services";
+  initialBlogSlug?: string | null;
+  initialServiceId?: string | null;
+  initialBranchId?: string | null;
+  initialBlogsData?: BlogPost[];
+}
+
+export default function App({
+  initialView,
+  initialBlogSlug: propBlogSlug = null,
+  initialServiceId: propServiceId = null,
+  initialBranchId: propBranchId = null,
+  initialBlogsData,
+}: AppProps = {}) {
   // Increment visit count for PWA install prompt & analytics on mount
   useEffect(() => {
     try {
-      const currentVisits = parseInt(localStorage.getItem("gbc_visit_count") || "0", 10);
-      localStorage.setItem("gbc_visit_count", (currentVisits + 1).toString());
+      if (typeof window !== "undefined" && typeof localStorage !== "undefined") {
+        const currentVisits = parseInt(localStorage.getItem("gbc_visit_count") || "0", 10);
+        localStorage.setItem("gbc_visit_count", (currentVisits + 1).toString());
+      }
     } catch {
       // ignore restricted mode / localStorage errors
     }
@@ -49,6 +65,9 @@ export default function App() {
 
   // Navigation & Language
   const [currentLang, setCurrentLang] = useState<Language>(() => {
+    if (typeof window === "undefined" || typeof localStorage === "undefined") {
+      return "en";
+    }
     // 1. Check if user has a persisted language choice
     const saved = localStorage.getItem("gbc_user_lang");
     if (saved === "en" || saved === "si" || saved === "ta") {
@@ -83,25 +102,32 @@ export default function App() {
 
   // Sync manual language selection changes to localStorage for subsequent sessions
   useEffect(() => {
-    localStorage.setItem("gbc_user_lang", currentLang);
-  }, [currentLang]);
-  const [activeView, setActiveView] = useState<"home" | "blog" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "faq" | "services">(() => {
-    if (typeof window !== "undefined") {
-      const path = window.location.pathname.toLowerCase().replace(/\/$/, "");
-      if (path === "/about") return "about";
-      if (path === "/contact") return "contact";
-      if (path === "/branches" || path.startsWith("/branches/")) return "branches";
-      if (path === "/services" || path.startsWith("/services/")) return "services";
-      if (path === "/rates") return "rates";
-      if (path === "/calculator") return "calculator";
-      if (path === "/faq") return "faq";
-      if (path === "/blog" || path.startsWith("/blog/")) return "blog";
-      if (path === "/admin" || path.startsWith("/admin/")) return "admin";
+    if (typeof window !== "undefined" && typeof localStorage !== "undefined") {
+      localStorage.setItem("gbc_user_lang", currentLang);
     }
-    return "home";
-  });
+  }, [currentLang]);
+
+  const [activeView, setActiveView] = useState<"home" | "blog" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "faq" | "services">(
+    () => {
+      if (initialView) return initialView;
+      if (typeof window !== "undefined") {
+        const path = window.location.pathname.toLowerCase().replace(/\/$/, "");
+        if (path === "/about") return "about";
+        if (path === "/contact") return "contact";
+        if (path === "/branches" || path.startsWith("/branches/")) return "branches";
+        if (path === "/services" || path.startsWith("/services/")) return "services";
+        if (path === "/rates") return "rates";
+        if (path === "/calculator") return "calculator";
+        if (path === "/faq") return "faq";
+        if (path === "/blog" || path.startsWith("/blog/")) return "blog";
+        if (path === "/admin" || path.startsWith("/admin/")) return "admin";
+      }
+      return "home";
+    }
+  );
 
   const [selectedServiceId, setSelectedServiceId] = useState<string | null>(() => {
+    if (propServiceId) return propServiceId;
     if (typeof window !== "undefined") {
       const path = window.location.pathname.toLowerCase().replace(/\/$/, "");
       if (path.startsWith("/services/") && path.length > 10) {
@@ -112,6 +138,7 @@ export default function App() {
   });
 
   const [selectedBranchId, setSelectedBranchId] = useState<string | null>(() => {
+    if (propBranchId) return propBranchId;
     if (typeof window !== "undefined") {
       const path = window.location.pathname.toLowerCase().replace(/\/$/, "");
       if (path.startsWith("/branches/") && path.length > 10) {
@@ -122,6 +149,7 @@ export default function App() {
   });
 
   const [selectedBlogSlug, setSelectedBlogSlug] = useState<string | null>(() => {
+    if (propBlogSlug) return propBlogSlug;
     if (typeof window !== "undefined") {
       const path = window.location.pathname.toLowerCase().replace(/\/$/, "");
       if (path.startsWith("/blog/") && path.length > 6) {
@@ -313,7 +341,7 @@ export default function App() {
   const [rates, setRates] = useState<GoldRate[]>(initialData.rates);
   const [settings, setSettings] = useState<SystemSettings | null>(initialData.settings);
   const [leads, setLeads] = useState<CustomerLead[]>(initialData.leads);
-  const [blogs, setBlogs] = useState<BlogPost[]>(initialData.blogs);
+  const [blogs, setBlogs] = useState<BlogPost[]>(initialBlogsData || initialData.blogs);
   const [historicalRates, setHistoricalRates] = useState<HistoricalRate[]>(initialData.historical);
   const [isLoading, setIsLoading] = useState(true);
 
