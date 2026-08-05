@@ -123,7 +123,7 @@ export default function ContactPage({ currentLang }: ContactPageProps) {
   };
 
   return (
-    <div className="relative min-h-screen bg-white text-neutral-900 overflow-hidden pb-16">
+    <div className="relative min-h-screen bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 overflow-hidden pb-16 transition-colors">
       
       {/* Background Animated Gradients */}
       <motion.div
@@ -142,7 +142,7 @@ export default function ContactPage({ currentLang }: ContactPageProps) {
         }}
       />
 
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#f3f4f6_1px,transparent_1px),linear-gradient(to_bottom,#f3f4f6_1px,transparent_1px)] bg-[size:5rem_5rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-40 z-0 pointer-events-none"></div>
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#f3f4f6_1px,transparent_1px),linear-gradient(to_bottom,#f3f4f6_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1f2937_1px,transparent_1px),linear-gradient(to_bottom,#1f2937_1px,transparent_1px)] bg-[size:5rem_5rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-40 dark:opacity-20 z-0 pointer-events-none"></div>
 
       {/* Hero Banner Section */}
       <div className="relative z-10 max-w-7xl mx-auto pt-28 pb-12 px-4 sm:px-6 lg:px-8 text-center">
@@ -150,9 +150,9 @@ export default function ContactPage({ currentLang }: ContactPageProps) {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-amber-500/20 bg-amber-500/5 text-amber-800 text-xs tracking-widest uppercase mb-6 font-mono font-bold shadow-sm"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-amber-500/20 bg-amber-500/5 dark:bg-amber-500/10 text-amber-800 dark:text-amber-400 text-xs tracking-widest uppercase mb-6 font-mono font-bold shadow-sm"
         >
-          <ShieldAlert className="h-4 w-4 text-amber-600" />
+          <ShieldAlert className="h-4 w-4 text-amber-600 dark:text-amber-400" />
           <span>Secured Private Transactions Lounge</span>
         </motion.div>
 
@@ -160,7 +160,7 @@ export default function ContactPage({ currentLang }: ContactPageProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-4xl sm:text-5xl md:text-6xl font-serif font-black tracking-tight text-neutral-950 mb-6 max-w-4xl mx-auto leading-none"
+          className="text-4xl sm:text-5xl md:text-6xl font-serif font-black tracking-tight text-neutral-950 dark:text-white mb-6 max-w-4xl mx-auto leading-none"
         >
           {g.pageTitle}
         </motion.h1>
@@ -169,7 +169,7 @@ export default function ContactPage({ currentLang }: ContactPageProps) {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-neutral-600 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed"
+          className="text-neutral-600 dark:text-neutral-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed"
         >
           {g.pageSubtitle}
         </motion.p>
@@ -183,24 +183,24 @@ export default function ContactPage({ currentLang }: ContactPageProps) {
           <div className="lg:col-span-5 space-y-6">
             
             {/* Quick Cards */}
-            <div className="bg-neutral-50 rounded-2xl border border-neutral-200 p-6 space-y-6 shadow-sm">
-              <h3 className="text-base font-serif font-black text-neutral-950 border-b border-neutral-200 pb-3">
+            <div className="bg-neutral-50 dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-800 p-6 space-y-6 shadow-sm">
+              <h3 className="text-base font-serif font-black text-neutral-950 dark:text-white border-b border-neutral-200 dark:border-neutral-800 pb-3">
                 Appraisal Desk Details
               </h3>
 
               {/* Phones */}
               <div className="flex gap-4">
-                <div className="h-10 w-10 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-700 flex-shrink-0">
+                <div className="h-10 w-10 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-700 dark:text-amber-400 flex-shrink-0">
                   <Phone className="h-5 w-5" />
                 </div>
                 <div>
-                  <h4 className="text-xs font-mono uppercase tracking-wider text-neutral-500 font-semibold">
+                  <h4 className="text-xs font-mono uppercase tracking-wider text-neutral-500 dark:text-neutral-400 font-semibold">
                     {g.directLine}
                   </h4>
-                  <a href="tel:0718321321" className="text-base font-bold text-amber-700 mt-1 hover:underline block">
+                  <a href="tel:0718321321" className="text-base font-bold text-amber-700 dark:text-amber-400 mt-1 hover:underline block">
                     0718 321 321
                   </a>
-                  <a href="https://wa.me/94718321321" target="_blank" rel="noreferrer" className="text-xs text-neutral-600 mt-0.5 block hover:underline">
+                  <a href="https://wa.me/94718321321" target="_blank" rel="noreferrer" className="text-xs text-neutral-600 dark:text-neutral-300 mt-0.5 block hover:underline">
                     WhatsApp: +94 718 321 321
                   </a>
                 </div>
@@ -223,30 +223,30 @@ export default function ContactPage({ currentLang }: ContactPageProps) {
 
               {/* Support Email */}
               <div className="flex gap-4">
-                <div className="h-10 w-10 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-700 flex-shrink-0">
+                <div className="h-10 w-10 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-700 dark:text-amber-400 flex-shrink-0">
                   <Mail className="h-5 w-5" />
                 </div>
                 <div>
-                  <h4 className="text-xs font-mono uppercase tracking-wider text-neutral-500 font-semibold">
+                  <h4 className="text-xs font-mono uppercase tracking-wider text-neutral-500 dark:text-neutral-400 font-semibold">
                     {g.emailSupport}
                   </h4>
-                  <a href="mailto:Goldbuyerscolombolk@gmail.com" className="text-sm font-semibold text-neutral-900 mt-1 hover:underline block">
+                  <a href="mailto:Goldbuyerscolombolk@gmail.com" className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mt-1 hover:underline block">
                     Goldbuyerscolombolk@gmail.com
                   </a>
-                  <p className="text-[10px] text-neutral-500 mt-0.5">Response within 1 business hour.</p>
+                  <p className="text-[10px] text-neutral-500 dark:text-neutral-400 mt-0.5">Response within 1 business hour.</p>
                 </div>
               </div>
 
               {/* Address */}
               <div className="flex gap-4">
-                <div className="h-10 w-10 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-700 flex-shrink-0">
+                <div className="h-10 w-10 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-700 dark:text-amber-400 flex-shrink-0">
                   <MapPin className="h-5 w-5" />
                 </div>
                 <div>
-                  <h4 className="text-xs font-mono uppercase tracking-wider text-neutral-500 font-semibold">
+                  <h4 className="text-xs font-mono uppercase tracking-wider text-neutral-500 dark:text-neutral-400 font-semibold">
                     {g.addressTitle}
                   </h4>
-                  <p className="text-sm font-semibold text-neutral-900 mt-1 leading-normal">
+                  <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mt-1 leading-normal">
                     68 S. De S. Jayasinghe Mawatha, Nugegoda 10250, Sri Lanka
                   </p>
                 </div>
@@ -254,17 +254,17 @@ export default function ContactPage({ currentLang }: ContactPageProps) {
 
               {/* Hours */}
               <div className="flex gap-4">
-                <div className="h-10 w-10 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-700 flex-shrink-0">
+                <div className="h-10 w-10 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-700 dark:text-amber-400 flex-shrink-0">
                   <Clock className="h-5 w-5" />
                 </div>
                 <div>
-                  <h4 className="text-xs font-mono uppercase tracking-wider text-neutral-500 font-semibold">
+                  <h4 className="text-xs font-mono uppercase tracking-wider text-neutral-500 dark:text-neutral-400 font-semibold">
                     {g.workingHoursTitle}
                   </h4>
-                  <p className="text-sm text-neutral-900 mt-1 font-semibold">
+                  <p className="text-sm text-neutral-900 dark:text-neutral-100 mt-1 font-semibold">
                     Monday - Saturday: 9:00 AM - 6:00 PM
                   </p>
-                  <p className="text-[10px] text-neutral-500 italic mt-0.5">
+                  <p className="text-[10px] text-neutral-500 dark:text-neutral-400 italic mt-0.5">
                     Closed on Sundays & Government Poya Holidays.
                   </p>
                 </div>
@@ -273,26 +273,26 @@ export default function ContactPage({ currentLang }: ContactPageProps) {
             </div>
 
             {/* Parking & landmarks */}
-            <div className="bg-neutral-50 rounded-2xl border border-neutral-200 p-6 space-y-4 shadow-sm">
-              <h3 className="text-sm font-serif font-bold text-neutral-900 uppercase tracking-wide">
+            <div className="bg-neutral-50 dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-800 p-6 space-y-4 shadow-sm">
+              <h3 className="text-sm font-serif font-bold text-neutral-900 dark:text-white uppercase tracking-wide">
                 {g.transitInstructions}
               </h3>
               
-              <div className="flex gap-3 text-xs text-neutral-600">
-                <Car className="h-5 w-5 text-amber-700 flex-shrink-0" />
+              <div className="flex gap-3 text-xs text-neutral-600 dark:text-neutral-300">
+                <Car className="h-5 w-5 text-amber-700 dark:text-amber-400 flex-shrink-0" />
                 <div>
-                  <h4 className="font-serif font-black text-neutral-900">{t.parkingLabel}</h4>
-                  <p className="text-neutral-600 text-[11px] mt-1 leading-relaxed">
+                  <h4 className="font-serif font-black text-neutral-900 dark:text-white">{t.parkingLabel}</h4>
+                  <p className="text-neutral-600 dark:text-neutral-300 text-[11px] mt-1 leading-relaxed">
                     Dedicated, secure private parking space inside our building gate. Completely safe for clients transporting valuable gold items.
                   </p>
                 </div>
               </div>
 
-              <div className="flex gap-3 text-xs text-neutral-600 border-t border-neutral-200/50 pt-4">
-                <Compass className="h-5 w-5 text-amber-700 flex-shrink-0" />
+              <div className="flex gap-3 text-xs text-neutral-600 dark:text-neutral-300 border-t border-neutral-200/50 dark:border-neutral-800 pt-4">
+                <Compass className="h-5 w-5 text-amber-700 dark:text-amber-400 flex-shrink-0" />
                 <div>
-                  <h4 className="font-serif font-black text-neutral-900">{t.landmarkLabel}</h4>
-                  <p className="text-neutral-600 text-[11px] mt-1 leading-relaxed">
+                  <h4 className="font-serif font-black text-neutral-900 dark:text-white">{t.landmarkLabel}</h4>
+                  <p className="text-neutral-600 dark:text-neutral-300 text-[11px] mt-1 leading-relaxed">
                     Located at 68 S. De S. Jayasinghe Mawatha, Nugegoda 10250, Sri Lanka (ICC Business Complex / Nugegoda Flyover Junction).
                   </p>
                 </div>
@@ -305,23 +305,23 @@ export default function ContactPage({ currentLang }: ContactPageProps) {
           <div className="lg:col-span-7 space-y-6">
             
             {/* Form */}
-            <div className="bg-neutral-50 rounded-2xl border border-neutral-200 p-6 md:p-8 shadow-sm">
-              <h3 className="text-lg font-serif font-bold text-neutral-950 mb-2">
+            <div className="bg-neutral-50 dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-800 p-6 md:p-8 shadow-sm">
+              <h3 className="text-lg font-serif font-bold text-neutral-950 dark:text-white mb-2">
                 {g.formHeading}
               </h3>
-              <p className="text-xs text-neutral-600 leading-relaxed mb-6 border-b border-neutral-200 pb-4">
+              <p className="text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed mb-6 border-b border-neutral-200 dark:border-neutral-800 pb-4">
                 {g.formSub}
               </p>
 
               {isSuccess ? (
                 <div className="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-8 text-center animate-fade-in flex flex-col justify-center items-center">
-                  <CheckCircle2 className="h-12 w-12 text-amber-600 mb-4 animate-bounce" />
-                  <p className="text-sm text-amber-800 font-sans font-bold leading-relaxed">
+                  <CheckCircle2 className="h-12 w-12 text-amber-600 dark:text-amber-400 mb-4 animate-bounce" />
+                  <p className="text-sm text-amber-800 dark:text-amber-300 font-sans font-bold leading-relaxed">
                     {g.submitSuccess}
                   </p>
                   <button
                     onClick={() => setIsSuccess(false)}
-                    className="text-xs text-amber-700 underline uppercase tracking-wider mt-6 hover:text-amber-600 font-bold block"
+                    className="text-xs text-amber-700 dark:text-amber-400 underline uppercase tracking-wider mt-6 hover:text-amber-600 font-bold block"
                   >
                     Submit Another Request
                   </button>
@@ -330,7 +330,7 @@ export default function ContactPage({ currentLang }: ContactPageProps) {
                 <form onSubmit={handleSubmit} className="space-y-4 text-xs">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-neutral-600 mb-1 font-mono uppercase tracking-wider text-[10px] font-semibold">
+                      <label className="block text-neutral-600 dark:text-neutral-300 mb-1 font-mono uppercase tracking-wider text-[10px] font-semibold">
                         {t.formName} *
                       </label>
                       <input
@@ -338,12 +338,12 @@ export default function ContactPage({ currentLang }: ContactPageProps) {
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         required
-                        className="w-full bg-white border border-neutral-250 rounded-lg px-3 py-2.5 text-sm text-neutral-800 focus:outline-none focus:border-amber-500 shadow-sm"
+                        className="w-full bg-white dark:bg-neutral-800 border border-neutral-250 dark:border-neutral-700 rounded-lg px-3 py-2.5 text-sm text-neutral-800 dark:text-neutral-100 focus:outline-none focus:border-amber-500 shadow-sm"
                       />
                     </div>
                     
                     <div>
-                      <label className="block text-neutral-600 mb-1 font-mono uppercase tracking-wider text-[10px] font-semibold">
+                      <label className="block text-neutral-600 dark:text-neutral-300 mb-1 font-mono uppercase tracking-wider text-[10px] font-semibold">
                         {t.formPhone} *
                       </label>
                       <input
@@ -351,25 +351,25 @@ export default function ContactPage({ currentLang }: ContactPageProps) {
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                         required
-                        className="w-full bg-white border border-neutral-250 rounded-lg px-3 py-2.5 text-sm text-neutral-800 font-mono focus:outline-none focus:border-amber-500 shadow-sm"
+                        className="w-full bg-white dark:bg-neutral-800 border border-neutral-250 dark:border-neutral-700 rounded-lg px-3 py-2.5 text-sm text-neutral-800 dark:text-neutral-100 font-mono focus:outline-none focus:border-amber-500 shadow-sm"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-neutral-600 mb-1 font-mono uppercase tracking-wider text-[10px] font-semibold">
+                    <label className="block text-neutral-600 dark:text-neutral-300 mb-1 font-mono uppercase tracking-wider text-[10px] font-semibold">
                       {t.formEmail}
                     </label>
                     <input
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full bg-white border border-neutral-250 rounded-lg px-3 py-2.5 text-sm text-neutral-800 focus:outline-none focus:border-amber-500 shadow-sm"
+                      className="w-full bg-white dark:bg-neutral-800 border border-neutral-250 dark:border-neutral-700 rounded-lg px-3 py-2.5 text-sm text-neutral-800 dark:text-neutral-100 focus:outline-none focus:border-amber-500 shadow-sm"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-neutral-600 mb-1 font-mono uppercase tracking-wider text-[10px] font-semibold">
+                    <label className="block text-neutral-600 dark:text-neutral-300 mb-1 font-mono uppercase tracking-wider text-[10px] font-semibold">
                       {t.formMessage}
                     </label>
                     <textarea
@@ -377,7 +377,7 @@ export default function ContactPage({ currentLang }: ContactPageProps) {
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
                       placeholder="e.g., 22k Gold necklace weight approx 16g (2 pavans)"
-                      className="w-full bg-white border border-neutral-250 rounded-lg px-3 py-2.5 text-sm text-neutral-800 focus:outline-none focus:border-amber-500 shadow-sm"
+                      className="w-full bg-white dark:bg-neutral-800 border border-neutral-250 dark:border-neutral-700 rounded-lg px-3 py-2.5 text-sm text-neutral-800 dark:text-neutral-100 focus:outline-none focus:border-amber-500 shadow-sm"
                     ></textarea>
                   </div>
 
@@ -393,14 +393,14 @@ export default function ContactPage({ currentLang }: ContactPageProps) {
             </div>
 
             {/* Embedded Google Map */}
-            <div className="bg-neutral-50 rounded-2xl border border-neutral-200 p-4 sm:p-6 shadow-sm space-y-4">
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-neutral-200 pb-3">
+            <div className="bg-neutral-50 dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-800 p-4 sm:p-6 shadow-sm space-y-4">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-neutral-200 dark:border-neutral-800 pb-3">
                 <div>
-                  <h4 className="font-serif font-black text-neutral-950 text-base flex items-center gap-2">
-                    <MapPin className="h-5 w-5 text-amber-600" />
+                  <h4 className="font-serif font-black text-neutral-950 dark:text-white text-base flex items-center gap-2">
+                    <MapPin className="h-5 w-5 text-amber-600 dark:text-amber-400" />
                     <span>Headquarters & Exchange Lounge Location</span>
                   </h4>
-                  <p className="text-xs text-neutral-500 mt-0.5">
+                  <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">
                     Gold Buyers Colombo • 68 S. De S. Jayasinghe Mawatha, Nugegoda 10250, Sri Lanka
                   </p>
                 </div>
@@ -415,7 +415,7 @@ export default function ContactPage({ currentLang }: ContactPageProps) {
                 </a>
               </div>
 
-              <div className="relative w-full h-72 rounded-xl overflow-hidden border border-neutral-200 shadow-inner bg-neutral-100">
+              <div className="relative w-full h-72 rounded-xl overflow-hidden border border-neutral-200 dark:border-neutral-800 shadow-inner bg-neutral-100 dark:bg-neutral-800">
                 <iframe
                   title="Gold Buyers Colombo Location Map"
                   src="https://maps.google.com/maps?q=Gold+Buyers+Colombo,+68+S.+De+S.+Jayasinghe+Mawatha,+Nugegoda+10250,+Sri+Lanka&t=&z=15&ie=UTF8&iwloc=&output=embed"
@@ -431,13 +431,13 @@ export default function ContactPage({ currentLang }: ContactPageProps) {
             </div>
 
             {/* Quick help bar */}
-            <div className="bg-amber-500/5 rounded-2xl border border-amber-500/20 p-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div className="bg-amber-500/5 dark:bg-amber-500/10 rounded-2xl border border-amber-500/20 p-6 flex flex-col md:flex-row justify-between items-center gap-4">
               <div className="space-y-1 text-center md:text-left">
-                <h4 className="font-serif font-black text-neutral-950 flex items-center gap-1.5 justify-center md:justify-start">
-                  <HelpCircle className="h-4 w-4 text-amber-700" />
+                <h4 className="font-serif font-black text-neutral-950 dark:text-white flex items-center gap-1.5 justify-center md:justify-start">
+                  <HelpCircle className="h-4 w-4 text-amber-700 dark:text-amber-400" />
                   {g.faqHelpTitle}
                 </h4>
-                <p className="text-xs text-neutral-600 max-w-sm">
+                <p className="text-xs text-neutral-600 dark:text-neutral-300 max-w-sm">
                   {g.faqHelpText}
                 </p>
               </div>

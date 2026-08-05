@@ -72,13 +72,13 @@ export default function Hero({ currentLang }: HeroProps) {
   };
 
   return (
-    <section className="w-full min-h-[calc(100vh-64px)] lg:h-[calc(100vh-64px)] bg-gradient-to-b from-amber-50/80 via-white to-amber-50/40 relative overflow-hidden flex flex-col justify-between pt-16 sm:pt-20 pb-2 px-3 sm:px-6 lg:px-8">
+    <section className="w-full min-h-[calc(100vh-64px)] lg:h-[calc(100vh-64px)] bg-gradient-to-b from-amber-50/80 via-white to-amber-50/40 dark:from-neutral-950 dark:via-neutral-900 dark:to-neutral-950 text-neutral-900 dark:text-neutral-100 relative overflow-hidden flex flex-col justify-between pt-16 sm:pt-20 pb-2 px-3 sm:px-6 lg:px-8 transition-colors">
       {/* Interactive Background with floating particle icons */}
       <InteractiveBackground />
 
       {/* Luxurious Ambient Background Glows */}
-      <div className="absolute top-1/4 -left-32 w-80 h-80 bg-amber-400/20 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute top-1/3 -right-32 w-96 h-96 bg-amber-300/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/4 -left-32 w-80 h-80 bg-amber-400/20 dark:bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/3 -right-32 w-96 h-96 bg-amber-300/20 dark:bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
 
       {/* Main Content Container - Single Viewport Layout */}
       <div className="max-w-7xl mx-auto w-full flex-1 flex flex-col justify-center relative z-10 my-auto">
@@ -245,7 +245,7 @@ export default function Hero({ currentLang }: HeroProps) {
             transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-5 w-full max-w-md mx-auto flex flex-col items-center"
           >
-            <div className="relative w-full rounded-2xl p-2.5 bg-gradient-to-b from-amber-300/40 via-white/90 to-amber-200/30 border border-amber-400/40 shadow-lg backdrop-blur-xl">
+            <div className="relative w-full rounded-2xl p-2.5 bg-gradient-to-b from-amber-300/40 via-white/90 to-amber-200/30 dark:from-neutral-900 dark:via-neutral-900/90 dark:to-neutral-950 border border-amber-400/40 dark:border-neutral-800 shadow-lg backdrop-blur-xl">
               
               {/* Image & Video Frame (Clean, unobstructed video and image) */}
               <div className="relative rounded-xl overflow-hidden aspect-[16/10] bg-neutral-900 group">

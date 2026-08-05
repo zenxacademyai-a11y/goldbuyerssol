@@ -39,32 +39,32 @@ export default function Testimonials({ currentLang }: TestimonialsProps) {
   ];
 
   return (
-    <section className="py-20 px-4 bg-slate-50/90 dark:bg-neutral-950 border-t border-slate-200/60 dark:border-neutral-800 text-neutral-900 dark:text-neutral-100">
+    <section className="py-20 px-4 bg-slate-50/90 dark:bg-neutral-950 border-t border-slate-200/60 dark:border-neutral-800 text-neutral-900 dark:text-neutral-100 transition-colors">
       <div className="max-w-6xl mx-auto">
         
         {/* Header Block */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">
           <div>
-            <span className="text-xs uppercase font-mono tracking-widest text-amber-700 block mb-3 font-semibold">
+            <span className="text-xs uppercase font-mono tracking-widest text-amber-700 dark:text-amber-400 block mb-3 font-semibold">
               Client Feedback
             </span>
-            <h2 className="text-3xl sm:text-4xl font-serif font-bold text-neutral-950 mb-2">
+            <h2 className="text-3xl sm:text-4xl font-serif font-bold text-neutral-950 dark:text-white mb-2">
               Trusted by 3,500+ Sri Lankans
             </h2>
-            <p className="text-neutral-600 text-xs sm:text-sm">
+            <p className="text-neutral-600 dark:text-neutral-300 text-xs sm:text-sm">
               Read real-world reviews from people who got cash for gold with complete honesty.
             </p>
           </div>
  
           {/* Google Ratings Trust Badge */}
-          <div className="flex items-center gap-3 bg-neutral-50 border border-neutral-200 p-4 rounded-xl">
-            <div className="h-10 w-10 rounded-full bg-white flex items-center justify-center font-bold text-amber-700 font-serif border border-amber-500/20 shadow">
+          <div className="flex items-center gap-3 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-4 rounded-xl">
+            <div className="h-10 w-10 rounded-full bg-white dark:bg-neutral-800 flex items-center justify-center font-bold text-amber-700 dark:text-amber-400 font-serif border border-amber-500/20 shadow">
               G
             </div>
             <div>
               <div className="flex items-center gap-1">
-                <span className="text-base font-extrabold text-neutral-900">5.0</span>
-                <div className="flex text-amber-600">
+                <span className="text-base font-extrabold text-neutral-900 dark:text-white">5.0</span>
+                <div className="flex text-amber-600 dark:text-amber-400">
                   <Star className="h-3 w-3 fill-current" />
                   <Star className="h-3 w-3 fill-current" />
                   <Star className="h-3 w-3 fill-current" />
@@ -72,7 +72,7 @@ export default function Testimonials({ currentLang }: TestimonialsProps) {
                   <Star className="h-3 w-3 fill-current" />
                 </div>
               </div>
-              <p className="text-[10px] text-neutral-600 uppercase tracking-widest font-mono mt-0.5">
+              <p className="text-[10px] text-neutral-600 dark:text-neutral-400 uppercase tracking-widest font-mono mt-0.5">
                 Google Business Profile
               </p>
             </div>
@@ -84,35 +84,35 @@ export default function Testimonials({ currentLang }: TestimonialsProps) {
           {reviews.map((rev, idx) => (
             <div
               key={idx}
-              className="bg-neutral-50 rounded-xl border border-neutral-200 p-6 flex flex-col justify-between hover:border-amber-500/30 transition-all group shadow-sm"
+              className="bg-neutral-50 dark:bg-neutral-900 rounded-xl border border-neutral-200 dark:border-neutral-800 p-6 flex flex-col justify-between hover:border-amber-500/30 transition-all group shadow-sm"
             >
               <div>
-                <Quote className="h-6 w-6 text-amber-700/20 mb-4" />
+                <Quote className="h-6 w-6 text-amber-700/20 dark:text-amber-400/20 mb-4" />
                 
                 {/* Stars */}
-                <div className="flex text-amber-600 mb-3">
+                <div className="flex text-amber-600 dark:text-amber-400 mb-3">
                   {Array.from({ length: rev.stars }).map((_, i) => (
                     <Star key={i} className="h-3.5 w-3.5 fill-current" />
                   ))}
                 </div>
  
                 {/* Review Text */}
-                <p className="text-xs text-neutral-700 leading-relaxed italic mb-6">
+                <p className="text-xs text-neutral-700 dark:text-neutral-300 leading-relaxed italic mb-6">
                   "{rev.text}"
                 </p>
               </div>
  
               {/* Author */}
-              <div className="flex justify-between items-center pt-4 border-t border-neutral-200">
+              <div className="flex justify-between items-center pt-4 border-t border-neutral-200 dark:border-neutral-800">
                 <div>
-                  <h4 className="text-xs font-serif font-bold text-neutral-900 group-hover:text-amber-700 transition-colors">
+                  <h4 className="text-xs font-serif font-bold text-neutral-900 dark:text-white group-hover:text-amber-700 dark:group-hover:text-amber-400 transition-colors">
                     {rev.name}
                   </h4>
-                  <p className="text-[10px] text-neutral-500 font-mono mt-0.5">
+                  <p className="text-[10px] text-neutral-500 dark:text-neutral-400 font-mono mt-0.5">
                     {rev.location}
                   </p>
                 </div>
-                <span className="text-[10px] text-neutral-500 font-mono">
+                <span className="text-[10px] text-neutral-500 dark:text-neutral-400 font-mono">
                   {rev.date}
                 </span>
               </div>

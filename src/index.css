@@ -2,6 +2,25 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 
+@layer base {
+  html.dark, .dark {
+    color-scheme: dark;
+    background-color: #0a0a0a;
+    color: #f5f5f5;
+  }
+}
+
+body {
+  background-color: #ffffff;
+  color: #171717;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+html.dark body, body.dark {
+  background-color: #0a0a0a;
+  color: #f5f5f5;
+}
+
 @theme {
   --font-sans: "Poppins", sans-serif;
   --font-serif: "Poppins", sans-serif;

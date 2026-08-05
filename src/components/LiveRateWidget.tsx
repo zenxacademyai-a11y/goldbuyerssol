@@ -47,14 +47,14 @@ export default function LiveRateWidget({
         
         {/* Header Block */}
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-1 text-amber-700 font-mono text-xs uppercase tracking-widest mb-3 font-semibold">
+          <div className="inline-flex items-center gap-1 text-amber-700 dark:text-amber-400 font-mono text-xs uppercase tracking-widest mb-3 font-semibold">
             <span className="h-2 w-2 rounded-full bg-amber-500 animate-pulse"></span>
             <span>Live Pawn Rate Dashboard</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-neutral-950 mb-4">
+          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-neutral-950 dark:text-white mb-4">
             {t.liveRatesTitle}
           </h2>
-          <p className="text-neutral-600 max-w-2xl mx-auto text-sm sm:text-base">
+          <p className="text-neutral-600 dark:text-neutral-300 max-w-2xl mx-auto text-sm sm:text-base">
             {t.liveRatesSubtitle}
           </p>
         </div>
@@ -63,21 +63,21 @@ export default function LiveRateWidget({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-16">
           
           {/* Main Table/Cards (lg:col-span-7) */}
-          <div className="lg:col-span-7 bg-neutral-50 rounded-xl border border-neutral-200 p-6 shadow-sm min-h-[400px]">
+          <div className="lg:col-span-7 bg-neutral-50 dark:bg-neutral-900 rounded-xl border border-neutral-200 dark:border-neutral-800 p-6 shadow-sm min-h-[400px]">
             
               <>
                 {/* Table Header Controls */}
                 <div className="flex justify-between items-center mb-6">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs uppercase font-mono tracking-widest text-neutral-500">
+                    <span className="text-xs uppercase font-mono tracking-widest text-neutral-500 dark:text-neutral-400">
                       {t.lastUpdated}:
                     </span>
-                    <span className="text-xs text-amber-700 font-mono font-bold">{formattedDate}</span>
+                    <span className="text-xs text-amber-700 dark:text-amber-400 font-mono font-bold">{formattedDate}</span>
                   </div>
                   {onRefresh && (
                     <button
                       onClick={onRefresh}
-                      className="p-2 rounded-full border border-neutral-200 hover:border-amber-500/30 text-neutral-600 hover:text-amber-600 transition-all flex items-center justify-center bg-white shadow-sm active:rotate-180 duration-500 cursor-pointer"
+                      className="p-2 rounded-full border border-neutral-200 dark:border-neutral-700 hover:border-amber-500/30 text-neutral-600 dark:text-neutral-300 hover:text-amber-600 transition-all flex items-center justify-center bg-white dark:bg-neutral-800 shadow-sm active:rotate-180 duration-500 cursor-pointer"
                       title="Refresh Live Rates"
                     >
                       <RefreshCw className="h-3.5 w-3.5" />
@@ -89,29 +89,29 @@ export default function LiveRateWidget({
                 <div className="hidden sm:block overflow-x-auto">
                   <table className="w-full text-left">
                     <thead>
-                      <tr className="border-b border-neutral-200 text-xs font-mono uppercase tracking-wider text-neutral-500">
+                      <tr className="border-b border-neutral-200 dark:border-neutral-800 text-xs font-mono uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
                         <th className="pb-4 font-normal">{t.karat}</th>
                         <th className="pb-4 font-normal">{t.purity}</th>
                         <th className="pb-4 font-normal text-right">{t.perGram}</th>
                         <th className="pb-4 font-normal text-right">{t.perPavan}</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-neutral-200">
+                    <tbody className="divide-y divide-neutral-200 dark:divide-neutral-800">
                       {rates.map((r) => {
                         const ratePerGram = r.ratePerGram;
                         const ratePerPavan = r.ratePerGram * settings.pavanWeightGrams;
                         return (
-                          <tr key={r.karat} className="hover:bg-neutral-100 transition-colors group">
-                            <td className="py-4 font-serif font-bold text-lg text-neutral-900 group-hover:text-amber-700 transition-colors">
+                          <tr key={r.karat} className="hover:bg-neutral-100 dark:hover:bg-neutral-800/50 transition-colors group">
+                            <td className="py-4 font-serif font-bold text-lg text-neutral-900 dark:text-white group-hover:text-amber-700 dark:group-hover:text-amber-400 transition-colors">
                               {r.karat} Pure Gold
                             </td>
-                            <td className="py-4 text-xs font-mono text-neutral-500">
+                            <td className="py-4 text-xs font-mono text-neutral-500 dark:text-neutral-400">
                               {(r.purity * 100).toFixed(1)}% {r.karat === "22K" ? "(916 Hallmarked)" : ""}
                             </td>
-                            <td className="py-4 text-right text-base font-bold font-mono text-neutral-900">
+                            <td className="py-4 text-right text-base font-bold font-mono text-neutral-900 dark:text-neutral-100">
                               LKR {Math.round(ratePerGram).toLocaleString()}
                             </td>
-                            <td className="py-4 text-right text-base font-bold font-mono text-amber-700">
+                            <td className="py-4 text-right text-base font-bold font-mono text-amber-700 dark:text-amber-400">
                               LKR {Math.round(ratePerPavan).toLocaleString()}
                             </td>
                           </tr>
@@ -181,20 +181,20 @@ export default function LiveRateWidget({
           </div>
  
           {/* Historical Trends Chart (lg:col-span-5) */}
-          <div className="lg:col-span-5 bg-neutral-50 rounded-xl border border-neutral-200 p-6 shadow-sm min-h-[400px]">
+          <div className="lg:col-span-5 bg-neutral-50 dark:bg-neutral-900 rounded-xl border border-neutral-200 dark:border-neutral-800 p-6 shadow-sm min-h-[400px]">
               <>
                 <div className="flex justify-between items-center mb-6">
-                  <h3 className="text-sm font-mono uppercase tracking-widest text-neutral-600 flex items-center gap-1.5 font-semibold">
-                    <TrendingUp className="h-4 w-4 text-amber-600" />
+                  <h3 className="text-sm font-mono uppercase tracking-widest text-neutral-600 dark:text-neutral-300 flex items-center gap-1.5 font-semibold">
+                    <TrendingUp className="h-4 w-4 text-amber-600 dark:text-amber-400" />
                     Historical LKR Gold Trends
                   </h3>
-                  <div className="inline-flex rounded-md bg-white p-1 border border-neutral-200 text-xs shadow-sm">
+                  <div className="inline-flex rounded-md bg-white dark:bg-neutral-800 p-1 border border-neutral-200 dark:border-neutral-700 text-xs shadow-sm">
                     <button
                       onClick={() => setChartRange("Monthly")}
                       className={`px-3 py-1 rounded transition-all cursor-pointer ${
                         chartRange === "Monthly"
                           ? "bg-amber-600 text-black font-extrabold"
-                          : "text-neutral-500 hover:text-neutral-800"
+                          : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200"
                       }`}
                     >
                       12M
@@ -204,7 +204,7 @@ export default function LiveRateWidget({
                       className={`px-3 py-1 rounded transition-all cursor-pointer ${
                         chartRange === "Weekly"
                           ? "bg-amber-600 text-black font-extrabold"
-                          : "text-neutral-500 hover:text-neutral-800"
+                          : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200"
                       }`}
                     >
                       7M
@@ -222,19 +222,19 @@ export default function LiveRateWidget({
                           <stop offset="95%" stopColor="#d97706" stopOpacity={0.0} />
                         </linearGradient>
                       </defs>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                      <XAxis dataKey="date" stroke="#9ca3af" fontSize={10} tickLine={false} />
+                      <CartesianGrid strokeDasharray="3 3" stroke="#404040" />
+                      <XAxis dataKey="date" stroke="#a3a3a3" fontSize={10} tickLine={false} />
                       <YAxis
-                        stroke="#9ca3af"
+                        stroke="#a3a3a3"
                         fontSize={10}
                         domain={["auto", "auto"]}
                         tickLine={false}
                         tickFormatter={(val) => `${Math.round(val / 1000)}k`}
                       />
                       <Tooltip
-                        contentStyle={{ backgroundColor: "#ffffff", borderColor: "#e5e7eb", borderRadius: "8px", boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)" }}
-                        labelStyle={{ color: "#b45309", fontFamily: "monospace", fontSize: "11px" }}
-                        itemStyle={{ color: "#111827", fontSize: "12px" }}
+                        contentStyle={{ backgroundColor: "#171717", borderColor: "#404040", borderRadius: "8px", boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.5)", color: "#f5f5f5" }}
+                        labelStyle={{ color: "#fbbf24", fontFamily: "monospace", fontSize: "11px" }}
+                        itemStyle={{ color: "#f5f5f5", fontSize: "12px" }}
                         formatter={(value: any) => [`LKR ${Number(value).toLocaleString()}`, "22K Pawn Rate"]}
                       />
                       <Area isAnimationActive={false}
@@ -250,15 +250,15 @@ export default function LiveRateWidget({
                 </div>
      
                 {/* GBC Buying Bonus Card */}
-                <div className="mt-6 p-4 rounded-lg bg-gradient-to-br from-amber-600/5 via-yellow-500/5 to-transparent border border-amber-500/20 flex items-center gap-3">
-                  <div className="p-2 rounded bg-amber-500/10 border border-amber-500/30 text-amber-700 flex-shrink-0">
+                <div className="mt-6 p-4 rounded-lg bg-gradient-to-br from-amber-600/10 via-yellow-500/5 to-transparent border border-amber-500/30 flex items-center gap-3">
+                  <div className="p-2 rounded bg-amber-500/10 border border-amber-500/30 text-amber-600 dark:text-amber-400 flex-shrink-0">
                     <Landmark className="h-5 w-5" />
                   </div>
                   <div>
-                    <h4 className="text-xs font-serif font-black text-amber-700 uppercase tracking-wider">
+                    <h4 className="text-xs font-serif font-black text-amber-700 dark:text-amber-400 uppercase tracking-wider">
                       Outright Liquidation Premium
                     </h4>
-                    <p className="text-[11px] text-neutral-600 leading-normal mt-0.5">
+                    <p className="text-[11px] text-neutral-600 dark:text-neutral-300 leading-normal mt-0.5">
                       Get paid up to <strong>+{settings.bonusPremiumRate}% extra</strong> bonus value for selling outright compared to commercial pawn rate limits.
                     </p>
                   </div>
