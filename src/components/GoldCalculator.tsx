@@ -266,14 +266,25 @@ I'd like to book an appointment to test and sell my gold today.`
 
             {/* CTAs */}
             <div className="space-y-3 pt-2">
-              <button
-                type="button"
-                onClick={() => setIsInvoiceOpen(true)}
-                className="w-full py-3.5 px-4 bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-neutral-950 font-black text-xs sm:text-sm uppercase tracking-wider rounded-xl shadow-lg shadow-amber-500/20 transition-all active:scale-98 flex items-center justify-center gap-2 cursor-pointer border border-amber-400/50"
-              >
-                <FileText className="h-4 w-4 shrink-0 text-neutral-950" />
-                <span>Generate & Download Invoice PDF</span>
-              </button>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <button
+                  type="button"
+                  onClick={() => setIsInvoiceOpen(true)}
+                  className="py-3 px-3 bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-neutral-950 font-black text-xs uppercase tracking-wider rounded-xl shadow-lg shadow-amber-500/20 transition-all active:scale-98 flex items-center justify-center gap-2 cursor-pointer border border-amber-400/50"
+                >
+                  <Printer className="h-4 w-4 shrink-0 text-neutral-950" />
+                  <span>Print Valuation Receipt</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setIsInvoiceOpen(true)}
+                  className="py-3 px-3 bg-neutral-800 hover:bg-neutral-700 text-amber-300 font-bold text-xs uppercase tracking-wider rounded-xl transition-all active:scale-98 flex items-center justify-center gap-2 cursor-pointer border border-neutral-700"
+                >
+                  <FileText className="h-4 w-4 shrink-0 text-amber-400" />
+                  <span>Download PDF Receipt</span>
+                </button>
+              </div>
 
               <a
                 href={whatsappUrl}

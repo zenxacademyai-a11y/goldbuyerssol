@@ -99,27 +99,49 @@ html.dark ::-webkit-scrollbar-thumb:hover {
   scrollbar-color: #404040 #171717;
 }
 
-/* Print Stylesheet integration for Gold Calculator Valuation vouchers */
+/* Print Stylesheet integration for Gold Calculator Valuation Vouchers & Receipts */
 @media print {
   body {
     background-color: white !important;
     color: black !important;
   }
-  header, footer, nav, button, form, section:not(#calculator) {
+
+  header, footer, nav, button, form, .print\:hidden {
     display: none !important;
   }
-  #calculator {
+
+  #gbc-invoice-certificate {
     display: block !important;
-    color: black !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 20px !important;
+    box-shadow: none !important;
+    border: 2px solid #d97706 !important;
     background: white !important;
-    border: none !important;
-    padding: 0 !important;
-  }
-  #calculator * {
     color: black !important;
-    border-color: #ddd !important;
+    page-break-inside: avoid;
   }
-  #calc_share_wa, #calc_print_pdf {
-    display: none !important;
+
+  #gbc-invoice-certificate * {
+    color: black !important;
+  }
+
+  #gbc-invoice-certificate .bg-amber-100 {
+    background-color: #fef3c7 !important;
+    color: #78350f !important;
+  }
+
+  #gbc-invoice-certificate .bg-emerald-50\/60 {
+    background-color: #ecfdf5 !important;
+  }
+
+  #gbc-invoice-certificate .bg-gradient-to-r {
+    background: #0f172a !important;
+    color: #fbbf24 !important;
+  }
+
+  #gbc-invoice-certificate .text-amber-400 {
+    color: #d97706 !important;
   }
 }

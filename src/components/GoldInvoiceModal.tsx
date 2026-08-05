@@ -21,7 +21,9 @@ import {
   User,
   Calendar,
   Clock,
-  Award
+  Award,
+  Receipt,
+  Check
 } from "lucide-react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
@@ -42,6 +44,70 @@ interface GoldInvoiceModalProps {
   finalPayout: number;
 }
 
+// Branch location details
+export const BRANCH_LOCATIONS = [
+  {
+    id: "nugegoda",
+    name: "Nugegoda Head Office",
+    address: "68 S. De S. Jayasinghe Mawatha, Nugegoda 10250",
+    city: "Colombo / Nugegoda",
+    phone: "+94 718 321 321",
+    hours: "Mon - Sat: 9:00 AM - 6:00 PM",
+  },
+  {
+    id: "kandy",
+    name: "Kandy Premier Branch",
+    address: "142 Peradeniya Road, Kandy 20000",
+    city: "Kandy",
+    phone: "+94 812 222 321",
+    hours: "Mon - Sat: 9:00 AM - 6:00 PM",
+  },
+  {
+    id: "galle",
+    name: "Galle Fort Branch",
+    address: "88 Main Street, Galle 80000",
+    city: "Galle",
+    phone: "+94 912 233 321",
+    hours: "Mon - Sat: 9:00 AM - 6:00 PM",
+  },
+  {
+    id: "negombo",
+    name: "Negombo Coastal Branch",
+    address: "215 Colombo Road, Negombo 11500",
+    city: "Negombo",
+    phone: "+94 312 244 321",
+    hours: "Mon - Sat: 9:00 AM - 6:00 PM",
+  },
+  {
+    id: "jaffna",
+    name: "Jaffna Town Branch",
+    address: "45 Hospital Road, Jaffna 40000",
+    city: "Jaffna",
+    phone: "+94 212 255 321",
+    hours: "Mon - Sat: 9:00 AM - 6:00 PM",
+  },
+];
+
+// Utility: Convert number to English Sri Lankan Rupees in words
+function numberToWordsLkr(amount: number): string {
+  const num = Math.round(amount);
+  if (num === 0) return "Zero Sri Lankan Rupees";
+
+  const units = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"];
+  const tens = ["", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"];
+
+  function convert(n: number): string {
+    if (n < 20) return units[n];
+    if (n < 100) return tens[Math.floor(n / 10)] + (n % 10 !== 0 ? " " + units[n % 10] : "");
+    if (n < 1000) return units[Math.floor(n / 100)] + " Hundred" + (n % 100 !== 0 ? " " + convert(n % 100) : "");
+    if (n < 100000) return convert(Math.floor(n / 1000)) + " Thousand" + (n % 1000 !== 0 ? " " + convert(n % 1000) : "");
+    if (n < 10000000) return convert(Math.floor(n / 100000)) + " Lakh" + (n % 100000 !== 0 ? " " + convert(n % 100000) : "");
+    return convert(Math.floor(n / 10000000)) + " Crore" + (n % 10000000 !== 0 ? " " + convert(n % 10000000) : "");
+  }
+
+  return convert(num) + " Sri Lankan Rupees Only";
+}
+
 export default function GoldInvoiceModal({
   isOpen,
   onClose,
@@ -60,25 +126,29 @@ export default function GoldInvoiceModal({
   // Invoice form state
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
-  const [branch, setBranch] = useState("Nugegoda Head Office (68 S. De S. Jayasinghe Mawatha)");
+  const [selectedBranchId, setSelectedBranchId] = useState("nugegoda");
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
   const [pdfSuccess, setPdfSuccess] = useState(false);
 
-  // Generate unique invoice number & timestamp once per modal session
+  // Get active branch info
+  const selectedBranch = BRANCH_LOCATIONS.find((b) => b.id === selectedBranchId) || BRANCH_LOCATIONS[0];
+
+  // Generate unique receipt number & timestamp
   const [invoiceDetails] = useState(() => {
-    const randomId = Math.floor(1000 + Math.random() * 9000);
-    const dateStr = new Date().toLocaleDateString("en-GB", {
+    const randomId = Math.floor(10000 + Math.random() * 90000);
+    const now = new Date();
+    const dateStr = now.toLocaleDateString("en-GB", {
       day: "2-digit",
       month: "short",
       year: "numeric",
     });
-    const timeStr = new Date().toLocaleTimeString("en-US", {
+    const timeStr = now.toLocaleTimeString("en-US", {
       hour: "2-digit",
       minute: "2-digit",
       hour12: true,
     });
     return {
-      invoiceNo: `GBC-VAL-2026-${randomId}`,
+      receiptNo: `GBC-VAL-${randomId}`,
       date: dateStr,
       time: timeStr,
     };
@@ -94,11 +164,8 @@ export default function GoldInvoiceModal({
     if (!invoiceRef.current) return;
     try {
       setIsGeneratingPdf(true);
-      
-      // Target element
       const element = invoiceRef.current;
-      
-      // Capture at high resolution scale
+
       const canvas = await html2canvas(element, {
         scale: 2,
         useCORS: true,
@@ -113,19 +180,18 @@ export default function GoldInvoiceModal({
         format: "a4",
       });
 
-      const imgWidth = 210; // A4 width in mm
-      const pageHeight = 297; // A4 height in mm
+      const imgWidth = 210;
+      const pageHeight = 297;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
       pdf.addImage(imgData, "JPEG", 0, 0, imgWidth, Math.min(imgHeight, pageHeight));
-      
-      pdf.save(`GBC-Gold-Valuation-Invoice-${invoiceDetails.invoiceNo}.pdf`);
-      
+      pdf.save(`GBC-Valuation-Receipt-${invoiceDetails.receiptNo}.pdf`);
+
       setPdfSuccess(true);
       setTimeout(() => setPdfSuccess(false), 3000);
     } catch (err) {
       console.error("PDF generation failed:", err);
-      alert("Failed to generate PDF. You can also click 'Print Invoice' to print or save as PDF.");
+      alert("Generating PDF... You can also click 'Print Receipt' for a direct print copy.");
     } finally {
       setIsGeneratingPdf(false);
     }
@@ -136,65 +202,88 @@ export default function GoldInvoiceModal({
     window.print();
   };
 
-  // WhatsApp share
+  // WhatsApp share message
   const waMessage = encodeURIComponent(
-    `Hi GBC Colombo! Here is my Gold Valuation Invoice #${invoiceDetails.invoiceNo}:
-- Name: ${customerName || "Valued Client"}
+    `Hi GBC Colombo! Here is my Gold Valuation Receipt #${invoiceDetails.receiptNo}:
+- Client: ${customerName || "Valued Client"}
+- Branch: ${selectedBranch.name}
 - Karat: ${karat}
 - Weight: ${weightInGrams.toFixed(2)}g (${pavanValue} Pavans)
-- Estimated Payout: LKR ${Math.round(finalPayout).toLocaleString()}
-- Date: ${invoiceDetails.date}
+- Calculated Gold Payout: LKR ${Math.round(finalPayout).toLocaleString()}
+- Date: ${invoiceDetails.date} at ${invoiceDetails.time}
 
-I would like to book an appointment for instant cash payout.`
+I would like to book an appointment to sell my gold at this estimated payout.`
   );
   const whatsappUrl = `https://wa.me/94718321321?text=${waMessage}`;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 md:p-6 print:p-0 print:bg-white print:fixed print:inset-0">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/85 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 md:p-6 print:p-0 print:bg-white print:fixed print:inset-0">
       
-      {/* Container */}
-      <div className="relative w-full max-w-4xl bg-neutral-900 rounded-2xl border border-neutral-800 shadow-2xl overflow-hidden my-auto flex flex-col max-h-[92vh] print:max-h-none print:border-none print:shadow-none print:rounded-none">
+      {/* Modal Container */}
+      <div className="relative w-full max-w-4xl bg-neutral-900 rounded-2xl border border-neutral-800 shadow-2xl overflow-hidden my-auto flex flex-col max-h-[94vh] print:max-h-none print:border-none print:shadow-none print:rounded-none">
         
         {/* Top Modal Navigation Header (Hidden during Print) */}
         <div className="flex justify-between items-center px-4 sm:px-6 py-3.5 bg-neutral-950 border-b border-neutral-800 text-white shrink-0 print:hidden">
-          <div className="flex items-center gap-2">
-            <div className="p-1.5 bg-amber-500/10 border border-amber-500/30 rounded-lg text-amber-400">
-              <FileText className="h-5 w-5" />
+          <div className="flex items-center gap-2.5">
+            <div className="p-2 bg-amber-500/10 border border-amber-500/30 rounded-xl text-amber-400">
+              <Receipt className="h-5 w-5" />
             </div>
             <div>
-              <h3 className="font-serif font-bold text-sm sm:text-base text-white">
-                Official Gold Valuation Invoice & Voucher
+              <h3 className="font-serif font-bold text-sm sm:text-base text-white flex items-center gap-2">
+                <span>Gold Valuation Receipt & Voucher</span>
+                <span className="text-[10px] font-mono bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded uppercase font-bold">
+                  Print Ready
+                </span>
               </h3>
               <p className="text-[11px] text-neutral-400 font-mono">
-                Invoice ID: <span className="text-amber-400 font-bold">{invoiceDetails.invoiceNo}</span>
+                Voucher ID: <span className="text-amber-400 font-bold">{invoiceDetails.receiptNo}</span>
               </p>
             </div>
           </div>
 
           <button
             onClick={onClose}
-            className="p-2 text-neutral-400 hover:text-white hover:bg-neutral-800 rounded-lg transition-colors cursor-pointer"
+            className="p-2 text-neutral-400 hover:text-white hover:bg-neutral-800 rounded-xl transition-colors cursor-pointer"
             title="Close"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
-        {/* Form Inputs for Optional Customer Details (Hidden on print) */}
+        {/* Customer & Branch Customizer Bar (Hidden during Print) */}
         <div className="bg-neutral-900/90 border-b border-neutral-800 px-4 sm:px-6 py-3 flex flex-wrap items-center gap-3 text-xs text-white shrink-0 print:hidden">
-          <div className="flex items-center gap-1.5 min-w-[180px] flex-1">
-            <User className="h-3.5 w-3.5 text-amber-400 shrink-0" />
+          
+          {/* Branch Location Picker */}
+          <div className="flex items-center gap-1.5 min-w-[220px] flex-1">
+            <Building2 className="h-4 w-4 text-amber-400 shrink-0" />
+            <select
+              value={selectedBranchId}
+              onChange={(e) => setSelectedBranchId(e.target.value)}
+              className="w-full bg-neutral-950 border border-neutral-700 rounded-lg px-2.5 py-1.5 text-xs text-amber-300 font-semibold focus:outline-none focus:border-amber-500"
+            >
+              {BRANCH_LOCATIONS.map((b) => (
+                <option key={b.id} value={b.id}>
+                  📍 {b.name} ({b.city})
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Customer Name */}
+          <div className="flex items-center gap-1.5 min-w-[170px] flex-1">
+            <User className="h-4 w-4 text-amber-400 shrink-0" />
             <input
               type="text"
-              placeholder="Customer Name (Optional)"
+              placeholder="Client Name (Optional)"
               value={customerName}
               onChange={(e) => setCustomerName(e.target.value)}
               className="w-full bg-neutral-950 border border-neutral-750 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-amber-500"
             />
           </div>
 
-          <div className="flex items-center gap-1.5 min-w-[160px] flex-1">
-            <Phone className="h-3.5 w-3.5 text-amber-400 shrink-0" />
+          {/* Customer Phone */}
+          <div className="flex items-center gap-1.5 min-w-[150px] flex-1">
+            <Phone className="h-4 w-4 text-amber-400 shrink-0" />
             <input
               type="text"
               placeholder="Contact No (Optional)"
@@ -204,20 +293,6 @@ I would like to book an appointment for instant cash payout.`
             />
           </div>
 
-          <div className="flex items-center gap-1.5 min-w-[200px] flex-1">
-            <Building2 className="h-3.5 w-3.5 text-amber-400 shrink-0" />
-            <select
-              value={branch}
-              onChange={(e) => setBranch(e.target.value)}
-              className="w-full bg-neutral-950 border border-neutral-750 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-amber-500"
-            >
-              <option value="Nugegoda Head Office (68 S. De S. Jayasinghe Mawatha)">Nugegoda Head Office (68 S. De S. Jayasinghe Mawatha)</option>
-              <option value="Kandy Branch (Peradeniya Rd)">Kandy Branch (Peradeniya Rd)</option>
-              <option value="Galle Branch (Main St)">Galle Branch (Main St)</option>
-              <option value="Negombo Branch (Colombo Rd)">Negombo Branch (Colombo Rd)</option>
-              <option value="Jaffna Branch (Hospital Rd)">Jaffna Branch (Hospital Rd)</option>
-            </select>
-          </div>
         </div>
 
         {/* Printable/PDF Certificate Paper Container */}
@@ -226,15 +301,16 @@ I would like to book an appointment for instant cash payout.`
           <div
             ref={invoiceRef}
             id="gbc-invoice-certificate"
-            className="w-full max-w-[800px] mx-auto bg-white text-neutral-900 p-6 sm:p-10 rounded-xl shadow-xl border border-neutral-200 font-sans print:shadow-none print:border-none print:p-6 print:max-w-none"
+            className="w-full max-w-[800px] mx-auto bg-white text-neutral-900 p-6 sm:p-10 rounded-xl shadow-xl border-2 border-amber-500/80 font-sans print:shadow-none print:border-2 print:border-amber-600 print:p-6 print:max-w-none"
           >
-            {/* Header with Logo */}
-            <div className="border-b-2 border-amber-500/80 pb-5 mb-6">
+            
+            {/* Header: Logo, Title, Official Govt Registration */}
+            <div className="border-b-2 border-amber-500 pb-5 mb-6">
               <div className="flex justify-between items-start gap-4 flex-wrap sm:flex-nowrap">
                 
                 {/* Logo & Company Title */}
                 <div className="flex items-center gap-3.5">
-                  <div className="h-14 w-14 sm:h-16 sm:w-16 rounded-full overflow-hidden border-2 border-amber-500 bg-neutral-950 shrink-0 flex items-center justify-center shadow-md">
+                  <div className="h-16 w-16 rounded-full overflow-hidden border-2 border-amber-500 bg-neutral-950 shrink-0 flex items-center justify-center shadow-md">
                     <img
                       src="/gbc-logo-original.png"
                       alt="Gold Buyers Colombo"
@@ -245,128 +321,145 @@ I would like to book an appointment for instant cash payout.`
                     <h1 className="text-xl sm:text-2xl font-serif font-black text-neutral-950 uppercase tracking-tight m-0 leading-tight">
                       GOLD BUYERS COLOMBO
                     </h1>
-                    <p className="text-[11px] font-mono font-bold text-amber-700 uppercase tracking-wider m-0 mt-0.5">
-                      THE PREMIUM GOLD EXCHANGE IN SRI LANKA
+                    <p className="text-[11px] font-mono font-bold text-amber-800 uppercase tracking-wider m-0 mt-0.5">
+                      PREMIUM GOLD VALUATION & EXCHANGE RECEIPT
                     </p>
-                    <p className="text-[10px] text-neutral-500 font-mono m-0 mt-0.5">
+                    <p className="text-[10px] text-neutral-600 font-mono m-0 mt-0.5">
                       Govt. Reg # GBC-LK-8831 | Licensed Bullion Exchange & Buyer
                     </p>
                   </div>
                 </div>
 
-                {/* Invoice Metadata */}
+                {/* Receipt Metadata */}
                 <div className="text-left sm:text-right font-mono text-xs">
-                  <div className="inline-block bg-amber-50 border border-amber-300 text-amber-900 px-3 py-1 rounded-md font-bold text-xs uppercase mb-1.5">
-                    VALUATION INVOICE
+                  <div className="inline-block bg-amber-50 border-2 border-amber-400 text-amber-950 px-3 py-1 rounded-md font-extrabold text-xs uppercase mb-1.5 shadow-2xs">
+                    OFFICIAL VALUATION RECEIPT
                   </div>
-                  <p className="m-0 font-bold text-neutral-800">
-                    ID: <span className="text-amber-700">{invoiceDetails.invoiceNo}</span>
+                  <p className="m-0 font-bold text-neutral-900">
+                    RECEIPT NO: <span className="text-amber-800 font-extrabold">{invoiceDetails.receiptNo}</span>
                   </p>
-                  <p className="m-0 text-neutral-600 text-[11px]">
-                    Date: {invoiceDetails.date} ({invoiceDetails.time})
+                  <p className="m-0 text-neutral-700 text-[11px] font-semibold">
+                    DATE: <span className="text-neutral-900 font-bold">{invoiceDetails.date}</span> ({invoiceDetails.time})
                   </p>
-                  <p className="m-0 text-emerald-700 text-[10px] font-bold mt-0.5">
-                    ★ Live Exchange Rate Applied
+                  <p className="m-0 text-emerald-800 text-[10px] font-extrabold mt-0.5 flex items-center justify-start sm:justify-end gap-1">
+                    <CheckCircle2 className="h-3 w-3 text-emerald-600 inline" />
+                    Guaranteed Live Market Rate Applied
                   </p>
                 </div>
 
               </div>
             </div>
 
-            {/* Client & Branch Information Bar */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-neutral-50 border border-neutral-200 rounded-lg p-3.5 mb-6 text-xs">
-              <div>
-                <p className="text-[10px] font-mono uppercase text-neutral-500 font-bold mb-1">
-                  CUSTOMER DETAILS
+            {/* Branch Location & Client Details Panel */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-amber-50/40 border border-amber-300/80 rounded-xl p-4 mb-6 text-xs">
+              
+              {/* Branch Details */}
+              <div className="border-b sm:border-b-0 sm:border-r border-amber-200/80 pb-3 sm:pb-0 sm:pr-4">
+                <p className="text-[10px] font-mono uppercase text-amber-900 font-bold tracking-wider mb-1 flex items-center gap-1">
+                  <Building2 className="h-3.5 w-3.5 text-amber-700" />
+                  <span>APPRAISER BRANCH LOCATION</span>
                 </p>
-                <p className="font-bold text-neutral-900 m-0">
-                  {customerName.trim() || "Valued Client / Gold Owner"}
+                <p className="font-extrabold text-neutral-950 text-sm m-0">
+                  {selectedBranch.name}
+                </p>
+                <p className="text-neutral-700 font-semibold m-0 mt-0.5">
+                  📍 {selectedBranch.address}
+                </p>
+                <p className="text-neutral-600 font-mono text-[11px] m-0 mt-0.5">
+                  📞 Hotline: {selectedBranch.phone}
+                </p>
+                <p className="text-neutral-500 text-[10px] m-0 mt-0.5 font-mono">
+                  ⏰ Hours: {selectedBranch.hours}
+                </p>
+              </div>
+
+              {/* Customer / Appraisal Details */}
+              <div className="sm:pl-2">
+                <p className="text-[10px] font-mono uppercase text-amber-900 font-bold tracking-wider mb-1 flex items-center gap-1">
+                  <User className="h-3.5 w-3.5 text-amber-700" />
+                  <span>CLIENT & APPRAISAL SPECIFICATIONS</span>
+                </p>
+                <p className="font-bold text-neutral-900 m-0 text-xs">
+                  Client: <strong className="text-neutral-950">{customerName.trim() || "Valued Customer / Gold Owner"}</strong>
                 </p>
                 {customerPhone && (
-                  <p className="text-neutral-600 font-mono text-[11px] m-0">
-                    Phone: {customerPhone}
+                  <p className="text-neutral-700 font-mono text-[11px] m-0 mt-0.5">
+                    Contact Phone: {customerPhone}
                   </p>
                 )}
-                <p className="text-neutral-500 text-[11px] m-0">
-                  Verification: Computerized XRF Spectrometer Assessment
+                <p className="text-neutral-700 text-[11px] m-0 mt-0.5">
+                  Method: Computerized XRF Spectrometer Non-Destructive Assay
+                </p>
+                <p className="text-emerald-800 text-[10px] font-bold m-0 mt-0.5">
+                  Status: Payout Guaranteed for Same-Day Exchange
                 </p>
               </div>
 
-              <div>
-                <p className="text-[10px] font-mono uppercase text-neutral-500 font-bold mb-1">
-                  BRANCH & APPRAISER LOCATION
-                </p>
-                <p className="font-bold text-amber-900 m-0">
-                  {branch}
-                </p>
-                <p className="text-neutral-600 text-[11px] m-0">
-                  Desk Hotline: +94 718 321 321
-                </p>
-                <p className="text-neutral-500 text-[11px] m-0">
-                  Status: Payout Quotation Ready
-                </p>
-              </div>
             </div>
 
-            {/* Gold Item Valuation Table */}
+            {/* Calculated Gold Value Itemized Table */}
             <div className="mb-6">
-              <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-neutral-700 mb-2">
-                1. Itemized Gold Payout Breakdown
+              <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-neutral-800 mb-2 flex items-center gap-1.5">
+                <Receipt className="h-4 w-4 text-amber-700" />
+                <span>Summary of Calculated Gold Specifications & Value</span>
               </h4>
               
-              <div className="overflow-x-auto border border-neutral-300 rounded-lg">
+              <div className="overflow-x-auto border-2 border-neutral-900 rounded-lg shadow-2xs">
                 <table className="w-full text-left text-xs border-collapse">
                   <thead>
-                    <tr className="bg-neutral-900 text-white font-mono text-[11px] uppercase border-b border-neutral-900">
-                      <th className="p-2.5">Item Assessment</th>
-                      <th className="p-2.5">Karat</th>
-                      <th className="p-2.5 text-right">Weight (g)</th>
-                      <th className="p-2.5 text-right">Pavans (8g)</th>
-                      <th className="p-2.5 text-right">Rate/Gram</th>
-                      <th className="p-2.5 text-right">Gross Value (LKR)</th>
+                    <tr className="bg-neutral-950 text-amber-400 font-mono text-[11px] uppercase border-b-2 border-neutral-900">
+                      <th className="p-3">Specification / Description</th>
+                      <th className="p-3">Gold Karat</th>
+                      <th className="p-3 text-right">Measured Weight</th>
+                      <th className="p-3 text-right">Pavans (8.0g)</th>
+                      <th className="p-3 text-right">Rate / Gram</th>
+                      <th className="p-3 text-right">Gross Market Value</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-neutral-200 text-neutral-800">
-                    <tr>
-                      <td className="p-2.5 font-bold">
-                        Gold Jewelry / Coin / Scrap Assessment
+                  <tbody className="divide-y divide-neutral-200 text-neutral-900 font-sans">
+                    <tr className="bg-white">
+                      <td className="p-3 font-bold">
+                        Jewelry / Scrap / Coin Appraisal
+                        <span className="block text-[10px] text-neutral-500 font-mono font-normal">
+                          Full metal purity non-destructive spectrometer test
+                        </span>
                       </td>
-                      <td className="p-2.5">
-                        <span className="bg-amber-100 text-amber-900 font-bold px-2 py-0.5 rounded text-[11px]">
+                      <td className="p-3">
+                        <span className="bg-amber-100 border border-amber-300 text-amber-950 font-extrabold px-2.5 py-1 rounded font-mono text-[11px]">
                           {karat}
                         </span>
                       </td>
-                      <td className="p-2.5 text-right font-mono font-bold">
+                      <td className="p-3 text-right font-mono font-bold text-sm text-neutral-950">
                         {weightInGrams.toFixed(2)} g
                       </td>
-                      <td className="p-2.5 text-right font-mono">
-                        {pavanValue} pavan
+                      <td className="p-3 text-right font-mono font-semibold">
+                        {pavanValue} pavans
                       </td>
-                      <td className="p-2.5 text-right font-mono">
+                      <td className="p-3 text-right font-mono font-semibold">
                         LKR {ratePerGram.toLocaleString()}
                       </td>
-                      <td className="p-2.5 text-right font-mono font-bold text-neutral-900">
+                      <td className="p-3 text-right font-mono font-extrabold text-neutral-950 text-sm">
                         LKR {Math.round(marketValue).toLocaleString()}
                       </td>
                     </tr>
 
                     {makingCharges > 0 && (
-                      <tr className="bg-rose-50/50 text-rose-900">
-                        <td colSpan={5} className="p-2.5 italic">
-                          Stone / Design / Impurity Deduction
+                      <tr className="bg-rose-50/70 text-rose-950">
+                        <td colSpan={5} className="p-3 italic font-semibold">
+                          Less: Stone / Design / Impurity Deduction
                         </td>
-                        <td className="p-2.5 text-right font-mono font-bold text-rose-700">
+                        <td className="p-3 text-right font-mono font-bold text-rose-700">
                           -LKR {makingCharges.toLocaleString()}
                         </td>
                       </tr>
                     )}
 
-                    <tr className="bg-emerald-50/50">
-                      <td colSpan={5} className="p-2.5 text-emerald-800">
-                        <span className="font-bold">Computerized XRF Spectrometer Testing Fee</span>
-                        <span className="text-[10px] text-emerald-600 block">100% Non-destructive analysis preserving full gold weight</span>
+                    <tr className="bg-emerald-50/60">
+                      <td colSpan={5} className="p-3 text-emerald-950">
+                        <span className="font-extrabold">Computerized XRF Testing & Assay Fee</span>
+                        <span className="text-[10px] text-emerald-700 block">Preserves 100% of gold weight without melting or scratching</span>
                       </td>
-                      <td className="p-2.5 text-right font-mono font-bold text-emerald-700">
+                      <td className="p-3 text-right font-mono font-extrabold text-emerald-800">
                         FREE (LKR 0)
                       </td>
                     </tr>
@@ -375,74 +468,76 @@ I would like to book an appointment for instant cash payout.`
               </div>
             </div>
 
-            {/* Total Net Payout Box */}
-            <div className="bg-gradient-to-r from-neutral-950 via-neutral-900 to-neutral-950 text-white rounded-xl p-4 sm:p-5 mb-6 border-2 border-amber-500 shadow-md flex flex-wrap justify-between items-center gap-4">
+            {/* Total Calculated Net Payout Hero Box */}
+            <div className="bg-gradient-to-r from-neutral-950 via-neutral-900 to-black text-white rounded-xl p-5 mb-6 border-2 border-amber-500 shadow-md flex flex-wrap justify-between items-center gap-4">
               <div>
-                <span className="text-[11px] font-mono uppercase tracking-widest text-amber-400 font-bold block mb-0.5">
-                  NET ESTIMATED CASH / BANK PAYOUT
+                <span className="text-[11px] font-mono uppercase tracking-widest text-amber-400 font-extrabold block mb-1">
+                  NET CALCULATED GOLD PAYOUT (ESTIMATE)
                 </span>
-                <span className="text-2xl sm:text-3xl font-mono font-black text-amber-400 tracking-tight">
+                <span className="text-3xl sm:text-4xl font-mono font-black text-amber-400 tracking-tight block">
                   LKR {Math.round(finalPayout).toLocaleString()}
                 </span>
-                <span className="text-[10px] text-neutral-400 block mt-0.5">
-                  (In Words: Sri Lankan Rupees {Math.round(finalPayout).toLocaleString()} Only)
+                <span className="text-[11px] text-amber-200/90 font-mono block mt-1 italic">
+                  In Words: {numberToWordsLkr(finalPayout)}
                 </span>
               </div>
 
-              <div className="bg-amber-500/10 border border-amber-500/30 px-3 py-1.5 rounded-lg text-amber-300 font-mono text-[11px] font-bold text-right shrink-0">
-                <span>IMMEDIATE SETTLEMENT</span>
-                <span className="block text-[10px] text-emerald-400">Cash or Wire Transfer</span>
+              <div className="bg-amber-500/10 border-2 border-amber-400/50 px-4 py-2.5 rounded-xl text-amber-300 font-mono text-xs font-bold text-right shrink-0">
+                <span className="text-white block font-extrabold uppercase">IMMEDIATE SETTLEMENT</span>
+                <span className="block text-[11px] text-emerald-400 font-bold">Direct Cash or Bank Wire</span>
               </div>
             </div>
 
-            {/* Terms & Certification Disclaimer */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 border-t border-neutral-200 pt-4 mb-6 text-[10px] text-neutral-600">
+            {/* Terms, Verification & Appraiser Stamp */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 border-t-2 border-neutral-200 pt-4 mb-6 text-[10px] text-neutral-700">
+              
               <div className="sm:col-span-2 space-y-1">
-                <p className="font-bold text-neutral-800 m-0 uppercase font-mono">
-                  TERMS & GUARANTEE CONDITIONS
+                <p className="font-extrabold text-neutral-950 m-0 uppercase font-mono text-[11px]">
+                  VALUATION & PAYOUT GUARANTEE TERMS
                 </p>
-                <ol className="list-decimal pl-3 space-y-0.5 m-0 text-[10px] leading-tight">
-                  <li>This valuation invoice is calculated based on live Colombo bullion exchange rates.</li>
-                  <li>Final payment is subject to physical verification and XRF spectrometer testing at any GBC branch.</li>
-                  <li>Valid Government National ID (NIC) or Passport is required for instant cash settlement as per Sri Lankan regulations.</li>
+                <ol className="list-decimal pl-4 space-y-1 m-0 text-[10px] leading-relaxed text-neutral-800 font-medium">
+                  <li>Valuation is calculated using live Colombo Bullion Exchange market spot rates.</li>
+                  <li>Final payout is verified upon physical XRF spectrometer testing at any GBC branch.</li>
+                  <li>Valid Government NIC or Passport required for immediate cash disbursement per CBSL guidelines.</li>
                 </ol>
               </div>
 
-              {/* Official Stamp & QR Code Representation */}
-              <div className="flex flex-col items-center justify-center border border-dashed border-amber-400 bg-amber-50/50 p-2.5 rounded-lg text-center">
-                <div className="flex items-center gap-1.5 text-amber-800 font-black text-[11px] mb-1">
+              {/* Official Stamp Box */}
+              <div className="flex flex-col items-center justify-center border-2 border-dashed border-amber-500/80 bg-amber-50/60 p-3 rounded-xl text-center">
+                <div className="flex items-center gap-1.5 text-amber-950 font-black text-[11px] mb-1 uppercase tracking-wider">
                   <ShieldCheck className="h-4 w-4 text-amber-600" />
-                  <span>GBC VERIFIED</span>
+                  <span>GBC VERIFIED SEAL</span>
                 </div>
                 <div className="h-12 w-12 bg-white border border-neutral-300 rounded p-1 flex items-center justify-center my-0.5 shadow-2xs">
-                  <QrCode className="h-10 w-10 text-neutral-800" />
+                  <QrCode className="h-10 w-10 text-neutral-900" />
                 </div>
-                <span className="text-[9px] font-mono text-neutral-500 font-bold">
-                  AUTH CODE: {invoiceDetails.invoiceNo}
+                <span className="text-[9px] font-mono text-neutral-600 font-extrabold">
+                  AUTH CODE: {invoiceDetails.receiptNo}
                 </span>
               </div>
+
             </div>
 
-            {/* Official Footer with Company Information */}
-            <div className="border-t-2 border-neutral-900 pt-4 text-center sm:text-left text-[11px] text-neutral-700 font-mono flex flex-wrap justify-between items-center gap-3">
+            {/* Receipt Footer */}
+            <div className="border-t-2 border-neutral-950 pt-4 text-center sm:text-left text-[11px] text-neutral-800 font-mono flex flex-wrap justify-between items-center gap-3">
               <div>
-                <p className="font-bold text-neutral-950 m-0">
+                <p className="font-extrabold text-neutral-950 m-0">
                   GOLD BUYERS COLOMBO (PVT) LTD
                 </p>
                 <p className="m-0 text-[10px] text-neutral-600">
-                  Head Office: 68 S. De S. Jayasinghe Mawatha, Nugegoda 10250, Sri Lanka
+                  Branch: {selectedBranch.name} • {selectedBranch.address}
                 </p>
                 <p className="m-0 text-[10px] text-neutral-600">
-                  Hotline: +94 718 321 321 | WhatsApp: +94 718 321 321 | Email: info@goldlanka.lk
+                  Direct Line: {selectedBranch.phone} | Official Site: www.goldlanka.lk
                 </p>
               </div>
 
               <div className="text-right shrink-0">
-                <p className="font-bold text-amber-800 m-0 text-[10px]">
-                  WWW.GOLDLANKA.LK
+                <p className="font-extrabold text-amber-800 m-0 text-[11px]">
+                  SRI LANKA'S TRUSTED GOLD EXCHANGE
                 </p>
                 <p className="m-0 text-[9px] text-neutral-500">
-                  Hours: Mon-Sat 9:00 AM - 6:00 PM
+                  Generated on {invoiceDetails.date} at {invoiceDetails.time}
                 </p>
               </div>
             </div>
@@ -456,16 +551,16 @@ I would like to book an appointment for instant cash payout.`
           
           <div className="flex items-center gap-2 text-xs text-neutral-400">
             <Award className="h-4 w-4 text-amber-400" />
-            <span>Sri Lanka's #1 Rated Gold Buyer</span>
+            <span>Highest Gold Buying Rates in Sri Lanka</span>
           </div>
 
           <div className="flex flex-wrap items-center gap-2 sm:gap-3">
             <button
               onClick={handlePrint}
-              className="px-4 py-2.5 bg-neutral-800 hover:bg-neutral-700 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-colors cursor-pointer flex items-center gap-1.5 border border-neutral-700"
+              className="px-5 py-2.5 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-neutral-950 font-black text-xs uppercase tracking-wider rounded-xl hover:from-amber-400 hover:to-yellow-300 transition-all cursor-pointer flex items-center gap-1.5 shadow-lg shadow-amber-500/20 active:scale-98"
             >
-              <Printer className="h-4 w-4" />
-              <span>Print Invoice</span>
+              <Printer className="h-4 w-4 text-neutral-950" />
+              <span>Print Valuation Receipt</span>
             </button>
 
             <a
@@ -475,28 +570,28 @@ I would like to book an appointment for instant cash payout.`
               className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-colors cursor-pointer flex items-center gap-1.5 no-underline shadow-md"
             >
               <MessageCircle className="h-4 w-4" />
-              <span>Send to WhatsApp</span>
+              <span>Send via WhatsApp</span>
             </a>
 
             <button
               onClick={handleDownloadPDF}
               disabled={isGeneratingPdf}
-              className="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-neutral-950 font-black text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer flex items-center gap-1.5 shadow-lg shadow-amber-500/20 active:scale-98 disabled:opacity-50"
+              className="px-4 py-2.5 bg-neutral-800 hover:bg-neutral-700 text-amber-300 font-bold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer flex items-center gap-1.5 border border-neutral-700 disabled:opacity-50"
             >
               {isGeneratingPdf ? (
                 <>
-                  <div className="h-4 w-4 border-2 border-neutral-950 border-t-transparent rounded-full animate-spin"></div>
+                  <div className="h-4 w-4 border-2 border-amber-400 border-t-transparent rounded-full animate-spin"></div>
                   <span>Generating PDF...</span>
                 </>
               ) : pdfSuccess ? (
                 <>
-                  <CheckCircle2 className="h-4 w-4 text-neutral-950" />
+                  <Check className="h-4 w-4 text-emerald-400" />
                   <span>PDF Downloaded!</span>
                 </>
               ) : (
                 <>
-                  <Download className="h-4 w-4 text-neutral-950" />
-                  <span>Download PDF Invoice</span>
+                  <Download className="h-4 w-4 text-amber-400" />
+                  <span>Download PDF Receipt</span>
                 </>
               )}
             </button>

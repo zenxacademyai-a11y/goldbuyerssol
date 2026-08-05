@@ -8,6 +8,7 @@ import { Lock, Settings, RefreshCw, Trash2, Edit, Plus, FileText, Check, Sparkle
 import { Language, translations } from "../lib/translations.js";
 import { GoldRate, SystemSettings, CustomerLead, BlogPost } from "../types.js";
 import RichTextEditor from "./RichTextEditor.js";
+import AdminGoldPriceControl from "./AdminGoldPriceControl.js";
 
 interface AdminDashboardProps {
   currentLang: Language;
@@ -577,68 +578,13 @@ Include relevant Colombo landmarks (Sea Street Pettah, Wellawatte, Bambalapitiya
         <div className="space-y-8">
           {/* Rate and Settings Configs */}
           {activeTab === "rates" && (
-            <div className="bg-neutral-900/40 rounded-xl border border-neutral-800 p-6 space-y-6 max-w-3xl mx-auto w-full">
-              <h3 className="text-sm uppercase tracking-widest font-mono text-amber-400 border-b border-neutral-850 pb-2 flex items-center gap-1.5">
-                <Settings className="h-4 w-4" />
-                Live Rates & Pricing Manual Options (LKR)
-              </h3>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {editRates.map((r, i) => (
-                  <div key={r.karat} className="space-y-1">
-                    <span className="text-xs font-mono text-neutral-400 uppercase tracking-wider">
-                      {r.karat} Pawn Rate
-                    </span>
-                    <div className="relative">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-mono text-neutral-600">LKR</span>
-                      <input
-                        type="number"
-                        value={r.ratePerGram || ""}
-                        onChange={(e) => handleRateChange(i, "ratePerGram", Number(e.target.value))}
-                        className="w-full bg-black border border-neutral-800 rounded pl-12 pr-4 py-2 text-sm font-mono text-amber-400 font-bold focus:outline-none focus:border-amber-500"
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* General Config parameters */}
-              {editSettings && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-neutral-900">
-                  <div className="space-y-1">
-                    <span className="text-xs font-mono text-neutral-400 uppercase tracking-wider">
-                      Bonus Premium Rate (%)
-                    </span>
-                    <input
-                      type="number"
-                      step="0.1"
-                      value={editSettings.bonusPremiumRate || ""}
-                      onChange={(e) => handleSettingsChange("bonusPremiumRate", Number(e.target.value))}
-                      className="w-full bg-black border border-neutral-800 rounded px-3 py-2 text-sm font-mono text-neutral-300 focus:outline-none focus:border-amber-500"
-                    />
-                  </div>
-
-                  <div className="space-y-1">
-                    <span className="text-xs font-mono text-neutral-400 uppercase tracking-wider">
-                      Testing/Cleaning Fee (LKR/g)
-                    </span>
-                    <input
-                      type="number"
-                      value={editSettings.testingFeePerGram || ""}
-                      onChange={(e) => handleSettingsChange("testingFeePerGram", Number(e.target.value))}
-                      className="w-full bg-black border border-neutral-800 rounded px-3 py-2 text-sm font-mono text-neutral-300 focus:outline-none focus:border-amber-500"
-                    />
-                  </div>
-                </div>
-              )}
-
-              <button
-                onClick={handleSaveRatesAndSettings}
-                className="w-full py-3 bg-gradient-to-r from-amber-600 to-yellow-500 text-black font-extrabold text-xs uppercase tracking-wider rounded-xl transition-all"
-              >
-                Apply Rates & Database Settings
-              </button>
-            </div>
+            <AdminGoldPriceControl
+              rates={rates}
+              settings={settings}
+              onUpdateRates={onUpdateRates}
+              onUpdateSettings={onUpdateSettings}
+              currentLang={currentLang}
+            />
           )}
 
           {/* Lead pipeline management */}
