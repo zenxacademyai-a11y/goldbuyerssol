@@ -692,18 +692,12 @@ export default function App({
               </Suspense>
       </main>
 
-      {/* Install PWA App Banner for Mobile Users */}
-      <InstallAppBanner currentLang={currentLang} />
-
       {/* Sticky Bottom Bar for Mobile Users */}
       <MobileStickyBar
         currentLang={currentLang}
         todayRate24k={todayRate24k}
         todayRate22k={todayRate22k}
       />
-
-      {/* Exit Intent conversion pop-up */}
-      <ExitIntentPopup currentLang={currentLang} />
 
       {/* Floating 'Chat with Consultant' WhatsApp desk */}
       <ChatWithConsultant currentLang={currentLang} />

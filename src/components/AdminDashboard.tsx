@@ -472,7 +472,7 @@ Include relevant Colombo landmarks (Sea Street Pettah, Wellawatte, Bambalapitiya
           <form onSubmit={handleLogin} className="space-y-4">
             <input
               type="password"
-              placeholder="Enter PIN (e.g. 1976)"
+              placeholder="Enter PIN"
               value={pin}
               onChange={(e) => setPin(e.target.value)}
               className="w-full bg-black border border-neutral-800 rounded px-3 py-2.5 text-center text-sm font-mono tracking-widest text-amber-500 focus:outline-none focus:border-amber-500"
@@ -490,10 +490,6 @@ Include relevant Colombo landmarks (Sea Street Pettah, Wellawatte, Bambalapitiya
               Verify Credentials
             </button>
           </form>
-
-          <p className="text-[10px] text-neutral-600 mt-6 font-mono">
-            *Standard trial passcodes: 1976 or gbcadmin
-          </p>
         </div>
       </section>
     );
