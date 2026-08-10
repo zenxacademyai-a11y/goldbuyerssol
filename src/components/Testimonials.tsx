@@ -20,7 +20,7 @@ export default function Testimonials({ currentLang }: TestimonialsProps) {
       location: "Colombo 03",
       stars: 5,
       date: "2 weeks ago",
-      text: "Sold some old family jewelry to GBC. Truly amazed by the computerized testing. Standard shops tried to claim the gold was lower carat to cut rates, but GBC showed me the spectrometer readings on screen. Got 45,000 LKR more than standard jewelry shops offered!",
+      text: "Sold some old family jewelry to GBC. Truly amazed by the computerized testing. Standard shops tried to claim the gold was lower karat to cut rates, but GBC showed me the spectrometer readings on screen. Got 45,000 LKR more than standard jewelry shops offered!",
     },
     {
       name: "Tharushi de Silva",

@@ -25,7 +25,7 @@ const contactPageTranslations = {
     formSub: "Submit this form to pre-register your gold items and lock in the current hourly Colombo spot market price for 24 hours.",
     faqHelpTitle: "Need Immediate Help?",
     faqHelpText: "Have questions about the valuation process? Give us a call at our appraisal desk or click the WhatsApp button to chat instantly with a senior agent.",
-    workingHoursTitle: "Standard Appraisals Hours"
+    workingHoursTitle: "Standard Appraisal Hours"
   },
   si: {
     pageTitle: "GBC ඇගයීම් කාර්යාලය හා සම්බන්ධ වන්න",
