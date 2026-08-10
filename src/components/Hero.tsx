@@ -19,6 +19,8 @@ import ResponsiveImage from "./ResponsiveImage.js";
 
 interface HeroProps {
   currentLang: Language;
+  todayRate24k?: number;
+  todayRate22k?: number;
 }
 
 // Smooth Count Up component
@@ -49,7 +51,7 @@ function Counter({ end, suffix = "", prefix = "", decimals = 0 }: { end: number;
   );
 }
 
-export default function Hero({ currentLang }: HeroProps) {
+export default function Hero({ currentLang, todayRate24k, todayRate22k }: HeroProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -93,19 +95,36 @@ export default function Hero({ currentLang }: HeroProps) {
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-7 flex flex-col items-start text-left min-w-0"
           >
-            {/* Top Badge */}
-            <div className="inline-flex max-w-full items-center gap-2 px-3 py-1 rounded-full border border-amber-500/30 bg-amber-500/10 backdrop-blur-md shadow-2xs mb-2">
-              <span className="relative flex h-2 w-2 shrink-0">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
-              </span>
-              <span className="text-[10px] sm:text-xs font-bold tracking-wider text-amber-950 dark:text-amber-300 uppercase leading-tight truncate">
-                {currentLang === "si" 
-                  ? "කොළඹ නො.1 බලපත්‍රලාභී රන් ගැනුම්කරුවෝ" 
-                  : currentLang === "ta" 
-                  ? "கொழும்பின் No.1 சான்றளிக்கப்பட்ட தங்கம் வாங்குபவர்" 
-                  : "No.1 Licensed Gold Buyer in Colombo, Sri Lanka"}
-              </span>
+            {/* Top Badges Area */}
+            <div className="flex flex-wrap items-center gap-2 mb-2">
+              <div className="inline-flex max-w-full items-center gap-2 px-3 py-1 rounded-full border border-amber-500/30 bg-amber-500/10 backdrop-blur-md shadow-2xs">
+                <span className="relative flex h-2 w-2 shrink-0">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                </span>
+                <span className="text-[10px] sm:text-xs font-bold tracking-wider text-amber-950 dark:text-amber-300 uppercase leading-tight truncate">
+                  {currentLang === "si" 
+                    ? "කොළඹ නො.1 බලපත්‍රලාභී රන් ගැනුම්කරුවෝ" 
+                    : currentLang === "ta" 
+                    ? "கொழும்பின் No.1 சான்றளிக்கப்பட்ட தங்கம் வாங்குபவர்" 
+                    : "No.1 Licensed Gold Buyer in Colombo, Sri Lanka"}
+                </span>
+              </div>
+
+              {todayRate24k && todayRate22k && (
+                <a
+                  href="#live-rates"
+                  className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 dark:bg-emerald-950/40 backdrop-blur-md text-emerald-800 dark:text-emerald-300 text-[10px] sm:text-xs font-mono font-extrabold uppercase shadow-2xs hover:scale-105 transition-transform no-underline"
+                >
+                  <span className="relative flex h-2 w-2 shrink-0">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                  </span>
+                  <span>
+                    Today: 24K LKR {Math.round(todayRate24k).toLocaleString()}/g • 22K LKR {Math.round(todayRate22k).toLocaleString()}/g
+                  </span>
+                </a>
+              )}
             </div>
 
             {/* Main Headline */}

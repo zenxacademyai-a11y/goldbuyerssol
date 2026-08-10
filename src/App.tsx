@@ -349,12 +349,13 @@ export default function App({
   const fetchAllData = async () => {
     try {
       setIsLoading(true);
+      const jsonCheck = (r: Response) => (r.ok && r.headers.get("content-type")?.includes("application/json") ? r.json() : Promise.reject());
       const [ratesRes, settingsRes, leadsRes, blogsRes, histRes] = await Promise.all([
-        fetch("/api/rates").then((r) => r.ok ? r.json() : Promise.reject()),
-        fetch("/api/settings").then((r) => r.ok ? r.json() : Promise.reject()),
-        fetch("/api/leads").then((r) => r.ok ? r.json() : Promise.reject()),
-        fetch("/api/blogs").then((r) => r.ok ? r.json() : Promise.reject()),
-        fetch("/api/historical").then((r) => r.ok ? r.json() : Promise.reject()),
+        fetch("/api/rates").then(jsonCheck),
+        fetch("/api/settings").then(jsonCheck),
+        fetch("/api/leads").then(jsonCheck),
+        fetch("/api/blogs").then(jsonCheck),
+        fetch("/api/historical").then(jsonCheck),
       ]);
 
       setRates(ratesRes);
@@ -363,7 +364,7 @@ export default function App({
       setBlogs(blogsRes);
       setHistoricalRates(histRes);
     } catch (e) {
-      console.warn("Backend unavailable (Hostinger Static Hosting), falling back to localDb...");
+      console.warn("Backend unavailable or static mode, loading from localDb...");
       const fallback = fetchFallbackData();
       setRates(fallback.rates);
       setSettings(fallback.settings);
@@ -377,29 +378,62 @@ export default function App({
 
   useEffect(() => {
     fetchAllData();
+
+    // Listen for storage / rate update events to keep UI synchronized
+    const handleSync = () => {
+      const fallback = fetchFallbackData();
+      setRates(fallback.rates);
+      setSettings(fallback.settings);
+      setHistoricalRates(fallback.historical);
+    };
+
+    window.addEventListener("gbc_rates_updated", handleSync);
+    window.addEventListener("storage", handleSync);
+    return () => {
+      window.removeEventListener("gbc_rates_updated", handleSync);
+      window.removeEventListener("storage", handleSync);
+    };
   }, []);
 
   // API Call Handlers to write updates back to db.json or localDb
   const handleUpdateRates = async (updatedRates: GoldRate[]) => {
+    // 1. Immediately persist to local storage for static/offline compatibility
+    localDb.set("rates", updatedRates);
+    setRates(updatedRates);
+
+    const newSettings = { ...activeSettings, lastUpdated: new Date().toISOString() };
+    localDb.set("settings", newSettings);
+    setSettings(newSettings);
+
+    // 2. Update historical chart latest point to reflect the new 22K rate
+    const rate22 = updatedRates.find((r) => r.karat === GoldKarat.K22)?.ratePerGram;
+    if (rate22 && historicalRates.length > 0) {
+      const updatedHist = [...historicalRates];
+      const lastIdx = updatedHist.length - 1;
+      updatedHist[lastIdx] = {
+        ...updatedHist[lastIdx],
+        "22K": Math.round(rate22 * activeSettings.pavanWeightGrams),
+      };
+      localDb.set("historical", updatedHist);
+      setHistoricalRates(updatedHist);
+    }
+
+    // 3. Dispatch broadcast event for instantaneous UI re-render across components
+    window.dispatchEvent(new Event("gbc_rates_updated"));
+
+    // 4. Send background POST request if a PHP/Express API server is configured
     try {
       const response = await fetch("/api/rates", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedRates),
       });
-      if (response.ok) {
-        setRates(updatedRates);
+      if (response.ok && response.headers.get("content-type")?.includes("application/json")) {
         const freshSettings = await fetch("/api/settings").then((r) => r.json());
-        setSettings(freshSettings);
-      } else throw new Error("API not ok");
+        if (freshSettings) setSettings(freshSettings);
+      }
     } catch (e) {
-      console.warn("Saving to localDb (Static Hosting Mode)");
-      localDb.set("rates", updatedRates);
-      setRates(updatedRates);
-      
-      const newSettings = { ...settings!, lastUpdated: new Date().toISOString() };
-      localDb.set("settings", newSettings);
-      setSettings(newSettings);
+      console.warn("Backend API POST failed; rate change retained locally in browser storage.");
     }
   };
 
@@ -502,7 +536,7 @@ export default function App({
           <>
             {/* 1. Hero Section */}
             <ScrollReveal>
-              <Hero currentLang={currentLang} />
+              <Hero currentLang={currentLang} todayRate24k={todayRate24k} todayRate22k={todayRate22k} />
             </ScrollReveal>
 
             {/* 2. Why Choose Gold Buyers Colombo */}

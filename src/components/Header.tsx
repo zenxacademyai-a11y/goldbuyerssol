@@ -324,6 +324,22 @@ export default function Header({
 
           {/* Desktop Right Controls (Theme, Language, Call CTA) */}
           <div className="hidden md:flex items-center gap-2.5">
+            {/* Live Gold Rate Badge */}
+            <a
+              href="/rates"
+              onClick={(e) => { e.preventDefault(); handleNav("rates"); }}
+              className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-xs font-mono font-bold text-amber-700 dark:text-amber-400 transition-all no-underline shadow-2xs hover:scale-105 active:scale-95"
+              title="Click to view full Live Gold Rate dashboard & calculator"
+            >
+              <span className="relative flex h-2 w-2 shrink-0">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span>24K: LKR {Math.round(todayRate24k).toLocaleString()}/g</span>
+              <span className="text-neutral-300 dark:text-neutral-700">|</span>
+              <span>22K: LKR {Math.round(todayRate22k).toLocaleString()}/g</span>
+            </a>
+
             <ThemeToggle />
 
             {/* Language Selection Dropdown */}
