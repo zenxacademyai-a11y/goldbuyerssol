@@ -6,6 +6,7 @@
 import React from "react";
 import { Award, ShieldCheck, Mail, Phone, MapPin, Building2, ChevronRight, Navigation, ArrowUp, Clock, HelpCircle, FileText, Calculator, TrendingUp, Sparkles, Info } from "lucide-react";
 import { Language, translations } from "../lib/translations.js";
+import InstallWebAppButton from "./InstallWebAppButton.js";
 
 interface FooterProps {
   currentLang: Language;
@@ -170,6 +171,9 @@ export default function Footer({ currentLang, setView, showAdmin = false, onLogo
                 <HelpCircle className="h-3.5 w-3.5 text-amber-500 shrink-0" />
                 <span>{t.faq}</span>
               </a>
+            </li>
+            <li className="col-span-2 lg:col-span-1 pt-1">
+              <InstallWebAppButton currentLang={currentLang} variant="footer-button" />
             </li>
             {showAdmin && (
               <li>

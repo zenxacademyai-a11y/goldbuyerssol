@@ -736,6 +736,9 @@ export default function App({
       {/* Floating 'Chat with Consultant' WhatsApp desk */}
       <ChatWithConsultant currentLang={currentLang} />
 
+      {/* 10-Second Timed Auto Popup for App Install & Free Gold Valuation */}
+      <ExitIntentPopup currentLang={currentLang} />
+
       {/* Footer */}
       <Footer currentLang={currentLang} setView={setActiveView} showAdmin={showAdmin} onLogoClick={handleLogoClick} />
     </div>
