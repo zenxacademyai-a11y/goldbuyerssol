@@ -10,7 +10,7 @@ import { Language } from "../lib/translations.js";
 
 interface InstallWebAppButtonProps {
   currentLang: Language;
-  variant?: "header" | "footer" | "floating";
+  variant?: "header" | "footer" | "floating" | "drawer";
 }
 
 const pwaTranslations = {
@@ -145,6 +145,85 @@ export default function InstallWebAppButton({ currentLang, variant = "header" }:
   // If already running in standalone mode (installed), don't show the component
   if (isStandalone) {
     return null;
+  }
+
+  // Mobile Navigation Drawer Mode
+  if (variant === "drawer") {
+    return (
+      <>
+        <button
+          onClick={handleInstallClick}
+          className="w-full flex items-center justify-between py-3 px-3.5 rounded-xl text-sm font-extrabold bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-400 hover:to-yellow-400 text-neutral-950 border border-amber-400/80 shadow-md transition-all cursor-pointer mt-1 active:scale-[0.98]"
+        >
+          <div className="flex items-center gap-2">
+            <Download className="h-4 w-4 animate-bounce text-neutral-950 shrink-0" />
+            <span className="font-bold tracking-tight">{t.installTitle}</span>
+          </div>
+          <span className="text-[10px] font-mono font-black uppercase bg-neutral-950 text-amber-300 px-2.5 py-1 rounded-lg border border-amber-500/30 shrink-0">
+            {t.installApp}
+          </span>
+        </button>
+
+        {/* iOS installation guide overlay */}
+        <AnimatePresence>
+          {showIosGuide && (
+            <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                className="bg-white dark:bg-neutral-900 rounded-3xl border border-neutral-200 dark:border-neutral-800 p-6 sm:p-8 max-w-md w-full shadow-2xl relative text-neutral-900 dark:text-neutral-100 overflow-hidden"
+              >
+                <div className="flex justify-between items-start pb-4 border-b border-neutral-100 dark:border-neutral-800 mb-6">
+                  <div className="flex items-center gap-2">
+                    <Smartphone className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+                    <h3 className="font-serif font-bold text-neutral-950 dark:text-white text-base sm:text-lg">
+                      {t.iosTitle}
+                    </h3>
+                  </div>
+                  <button
+                    onClick={() => setShowIosGuide(false)}
+                    className="p-1.5 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-500 hover:text-neutral-800 dark:hover:text-white transition-colors cursor-pointer"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+
+                <div className="space-y-4 text-xs sm:text-sm">
+                  <div className="flex items-start gap-3">
+                    <span className="flex-shrink-0 h-6 w-6 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-800 dark:text-amber-300 flex items-center justify-center font-mono font-bold">1</span>
+                    <p className="text-neutral-700 dark:text-neutral-300 leading-normal pt-0.5">
+                      {t.iosStep1} <Share className="inline h-4 w-4 text-blue-500 mx-1 align-middle" />
+                    </p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <span className="flex-shrink-0 h-6 w-6 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-800 dark:text-amber-300 flex items-center justify-center font-mono font-bold">2</span>
+                    <p className="text-neutral-700 dark:text-neutral-300 leading-normal pt-0.5">
+                      {t.iosStep2} <PlusSquare className="inline h-4 w-4 text-neutral-800 dark:text-neutral-200 mx-1 align-middle" />
+                    </p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <span className="flex-shrink-0 h-6 w-6 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-800 dark:text-amber-300 flex items-center justify-center font-mono font-bold">3</span>
+                    <p className="text-neutral-700 dark:text-neutral-300 leading-normal pt-0.5">
+                      {t.iosStep3}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-8 pt-4 border-t border-neutral-100 dark:border-neutral-800 flex justify-end">
+                  <button
+                    onClick={() => setShowIosGuide(false)}
+                    className="px-5 py-2.5 bg-neutral-950 hover:bg-neutral-800 text-white font-extrabold uppercase tracking-widest text-[10px] rounded transition-all cursor-pointer"
+                  >
+                    {t.close}
+                  </button>
+                </div>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
+      </>
+    );
   }
 
   // Header Mode

@@ -7,6 +7,8 @@ export enum GoldKarat {
   K24 = "24K",
   K22 = "22K",
   K21 = "21K",
+  K18 = "18K",
+  CUSTOM = "Custom",
 }
 
 export interface GoldRate {

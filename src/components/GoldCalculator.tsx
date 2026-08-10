@@ -20,7 +20,9 @@ export default function GoldCalculator({ currentLang, rates, settings, isLoading
   const t = translations[currentLang] || translations.en;
   
   // State
-  const [karat, setKarat] = useState<GoldKarat>(GoldKarat.K22);
+  const [karat, setKarat] = useState<GoldKarat | string>(GoldKarat.K22);
+  const [customPurity, setCustomPurity] = useState<number>(85); // Default 85% custom purity
+  const [metal, setMetal] = useState<string>("Gold");
   const [weight, setWeight] = useState<number>(8); // 8g (1 pavan) default as requested
   const [unit, setUnit] = useState<"grams" | "pavans">("grams");
   const [makingCharges, setMakingCharges] = useState<number>(0); // Custom deductions option
@@ -34,10 +36,22 @@ export default function GoldCalculator({ currentLang, rates, settings, isLoading
     finalPayout: 0,
   });
 
+  // Base 24K rate
+  const base24kRate = rates.find((r) => r.karat === GoldKarat.K24)?.ratePerGram || 31250;
+
+  // Compute active rate per gram
+  let activeRate = 0;
+  if (karat === GoldKarat.CUSTOM || karat === "Custom") {
+    activeRate = Math.round(base24kRate * (customPurity / 99.9));
+  } else if (karat === GoldKarat.K18 || karat === "18K") {
+    const r18 = rates.find((r) => r.karat === GoldKarat.K18)?.ratePerGram;
+    activeRate = r18 || Math.round(base24kRate * (0.750 / 0.999));
+  } else {
+    activeRate = rates.find((r) => r.karat === karat)?.ratePerGram || base24kRate;
+  }
+
   // Calculate whenever inputs change
   useEffect(() => {
-    const activeRate = rates.find((r) => r.karat === karat)?.ratePerGram || 0;
-    
     // Weight conversion
     const weightInGrams = unit === "pavans" ? weight * settings.pavanWeightGrams : weight;
     
@@ -64,19 +78,27 @@ export default function GoldCalculator({ currentLang, rates, settings, isLoading
     } catch {
       // ignore quota / restricted mode errors
     }
-  }, [karat, weight, unit, makingCharges, rates, settings]);
+  }, [karat, customPurity, weight, unit, makingCharges, rates, settings, activeRate]);
 
   // Prefilled WhatsApp link
+  const displayKaratLabel = karat === GoldKarat.CUSTOM || karat === "Custom" ? `Custom (${customPurity}%)` : karat;
   const waText = encodeURIComponent(
     `Hi GBC Colombo! I just calculated my gold payout online:
-- Karat: ${karat}
+- Metal: ${metal}
+- Purity: ${displayKaratLabel}
 - Weight: ${weight} ${unit === "grams" ? "g" : "pavan(s)"}
 - Estimated Payout: LKR ${Math.round(calcResult.finalPayout).toLocaleString()}
 I'd like to book an appointment to test and sell my gold today.`
   );
   const whatsappUrl = `https://wa.me/94718321321?text=${waText}`;
 
-  const featuredKarats = [GoldKarat.K24, GoldKarat.K22, GoldKarat.K21];
+  const featuredKarats = [
+    { label: "24K", value: GoldKarat.K24 },
+    { label: "22K", value: GoldKarat.K22 },
+    { label: "21K", value: GoldKarat.K21 },
+    { label: "18K", value: GoldKarat.K18 },
+    { label: "Custom", value: GoldKarat.CUSTOM },
+  ];
 
   return (
     <section id="calculator" className="py-16 sm:py-20 px-4 bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 scroll-mt-20 border-t border-neutral-100 dark:border-neutral-900 transition-colors">
@@ -107,26 +129,99 @@ I'd like to book an appointment to test and sell my gold today.`
                 <span>1. Specify Gold Specifications</span>
               </h3>
 
-              {/* Karat Selection */}
-              <div>
-                <label className="block text-xs uppercase tracking-wider font-mono text-neutral-700 dark:text-neutral-300 mb-2 font-semibold">
-                  Gold Type / Karat
-                </label>
-                <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+              {/* Metal & Purity Selection Controls */}
+              <div className="space-y-4">
+                {/* Metal Selector */}
+                <div>
+                  <label className="block text-xs uppercase tracking-wider font-mono text-neutral-700 dark:text-neutral-300 mb-1.5 font-semibold">
+                    Metal
+                  </label>
+                  <select
+                    value={metal}
+                    onChange={(e) => setMetal(e.target.value)}
+                    className="w-full bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-neutral-800 dark:text-neutral-100 focus:outline-none focus:border-amber-500 shadow-2xs cursor-pointer"
+                  >
+                    <option value="Gold">Gold</option>
+                  </select>
+                </div>
+
+                {/* Purity / Karat Dropdown Select */}
+                <div>
+                  <label className="block text-xs uppercase tracking-wider font-mono text-neutral-700 dark:text-neutral-300 mb-1.5 font-semibold">
+                    Purity
+                  </label>
+                  <select
+                    value={karat}
+                    onChange={(e) => setKarat(e.target.value)}
+                    className="w-full bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-neutral-800 dark:text-neutral-100 focus:outline-none focus:border-amber-500 shadow-2xs cursor-pointer"
+                  >
+                    <option value={GoldKarat.K24}>24 Karat (99.9% Pure)</option>
+                    <option value={GoldKarat.K22}>22 Karat (91.6% Pure)</option>
+                    <option value={GoldKarat.K21}>21 Karat (87.5% Pure)</option>
+                    <option value={GoldKarat.K18}>18 Karat (75.0% Pure)</option>
+                    <option value={GoldKarat.CUSTOM}>Custom Purity</option>
+                  </select>
+                </div>
+
+                {/* Quick Selection Buttons */}
+                <div className="grid grid-cols-5 gap-1.5">
                   {featuredKarats.map((k) => (
                     <button
-                      key={k}
-                      onClick={() => setKarat(k)}
-                      className={`py-3 rounded-xl text-sm font-bold tracking-wide border transition-all cursor-pointer ${
-                        karat === k
+                      key={k.value}
+                      onClick={() => setKarat(k.value)}
+                      className={`py-2 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
+                        karat === k.value
                           ? "bg-gradient-to-r from-amber-500 to-yellow-500 border-amber-400 text-neutral-950 font-black shadow-md"
                           : "bg-white dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700 text-neutral-800 dark:text-neutral-200 hover:border-amber-500/50 hover:bg-neutral-100 dark:hover:bg-neutral-700/60 shadow-2xs"
                       }`}
                     >
-                      {k}
+                      {k.label}
                     </button>
                   ))}
                 </div>
+
+                {/* Custom Purity Input Controls */}
+                {(karat === GoldKarat.CUSTOM || karat === "Custom") && (
+                  <div className="p-4 bg-amber-500/10 dark:bg-amber-950/30 border border-amber-500/30 rounded-xl space-y-3 transition-all animate-fadeIn">
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <label className="block text-xs uppercase tracking-wider font-mono font-bold text-amber-900 dark:text-amber-300">
+                          Custom Gold Purity (%)
+                        </label>
+                        <span className="text-[11px] text-neutral-500 dark:text-neutral-400">
+                          Enter custom purity or percentage
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <input
+                          type="number"
+                          min="1"
+                          max="100"
+                          step="0.1"
+                          value={customPurity}
+                          onChange={(e) => setCustomPurity(Math.min(100, Math.max(1, Number(e.target.value))))}
+                          className="w-20 bg-white dark:bg-neutral-800 border border-amber-500 rounded-lg px-2.5 py-1 text-right text-sm font-mono font-bold text-amber-700 dark:text-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-2xs"
+                        />
+                        <span className="text-xs font-mono font-bold text-amber-700 dark:text-amber-400">%</span>
+                      </div>
+                    </div>
+
+                    <input
+                      type="range"
+                      min="30"
+                      max="99.9"
+                      step="0.5"
+                      value={customPurity}
+                      onChange={(e) => setCustomPurity(Number(e.target.value))}
+                      className="w-full accent-amber-500 h-1.5 bg-neutral-200 dark:bg-neutral-700 rounded-lg cursor-pointer"
+                    />
+
+                    <div className="flex justify-between items-center text-xs font-mono pt-1.5 border-t border-amber-500/20 text-neutral-700 dark:text-neutral-300">
+                      <span>Equiv. Karat: <strong className="text-amber-700 dark:text-amber-400 font-bold">{((customPurity / 100) * 24).toFixed(1)}K</strong></span>
+                      <span>Rate: <strong className="text-amber-700 dark:text-amber-400 font-bold">LKR {activeRate.toLocaleString()}/g</strong></span>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Weight Unit Toggles */}
@@ -241,7 +336,7 @@ I'd like to book an appointment to test and sell my gold today.`
                   LKR {Math.round(calcResult.finalPayout).toLocaleString()}
                 </div>
                 <span className="text-[11px] text-neutral-400 font-mono mt-1 block">
-                  Based on {calcResult.weightInGrams.toFixed(2)}g of {karat} Gold
+                  Based on {calcResult.weightInGrams.toFixed(2)}g of {displayKaratLabel} Gold
                 </span>
               </div>
 
@@ -313,11 +408,11 @@ I'd like to book an appointment to test and sell my gold today.`
         isOpen={isInvoiceOpen}
         onClose={() => setIsInvoiceOpen(false)}
         currentLang={currentLang}
-        karat={karat}
+        karat={displayKaratLabel}
         weight={weight}
         unit={unit}
         weightInGrams={calcResult.weightInGrams}
-        ratePerGram={rates.find((r) => r.karat === karat)?.ratePerGram || 0}
+        ratePerGram={activeRate}
         marketValue={calcResult.marketValue}
         makingCharges={makingCharges}
         finalPayout={calcResult.finalPayout}

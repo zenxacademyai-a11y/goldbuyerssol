@@ -32,7 +32,7 @@ interface GoldInvoiceModalProps {
   isOpen: boolean;
   onClose: () => void;
   currentLang: Language;
-  karat: GoldKarat;
+  karat: GoldKarat | string;
   weight: number;
   unit: "grams" | "pavans";
   weightInGrams: number;

@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import { Language, translations } from "../lib/translations.js";
 import { ThemeToggle } from "./ThemeToggle.js";
+import InstallWebAppButton from "./InstallWebAppButton.js";
 
 interface HeaderProps {
   currentLang: Language;
@@ -340,6 +341,8 @@ export default function Header({
               <span>22K: LKR {Math.round(todayRate22k).toLocaleString()}/g</span>
             </a>
 
+            <InstallWebAppButton currentLang={currentLang} variant="header" />
+
             <ThemeToggle />
 
             {/* Language Selection Dropdown */}
@@ -561,6 +564,9 @@ export default function Header({
                 <span>{t.faq}</span>
                 <HelpCircle className="h-4 w-4 text-amber-500" />
               </a>
+
+              {/* Install Web App CTA Button in Mobile Navigation Drawer */}
+              <InstallWebAppButton currentLang={currentLang} variant="drawer" />
 
               {showAdmin && (
                 <a
