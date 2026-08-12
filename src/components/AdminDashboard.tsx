@@ -289,7 +289,7 @@ export default function AdminDashboard({
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     // Simple administrative PIN barrier
-    if (pin === "1976" || pin === "gbcadmin") {
+    if (pin === "@Buyers2026" || pin === "gbcadmin") {
       setIsAuthenticated(true);
       setAuthError("");
     } else {
