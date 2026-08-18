@@ -3,17 +3,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-const CACHE_NAME = "gbc-cache-v4";
+const CACHE_NAME = "gbc-cache-v6-live";
 const ASSETS_TO_CACHE = [
   "/",
-  "/index.html",
   "/manifest.json",
-  "/gbc-logo-original.png",
-  "/images/gallery-1.jpg",
-  "/images/gallery-2.jpg",
-  "/images/gallery-3.jpg",
-  "/images/gallery-4.jpg",
-  "/images/gallery-5.jpg"
+  "/gbc-logo-original.png"
 ];
 
 // Install Event
@@ -28,13 +22,14 @@ self.addEventListener("install", (event) => {
   self.skipWaiting();
 });
 
-// Activate Event
+// Activate Event - purge any previous stale caches
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys().then((keys) => {
       return Promise.all(
         keys.map((key) => {
           if (key !== CACHE_NAME) {
+            console.log("[SW] Deleting old cache:", key);
             return caches.delete(key);
           }
         })
@@ -46,37 +41,33 @@ self.addEventListener("activate", (event) => {
 
 // Fetch Event
 self.addEventListener("fetch", (event) => {
-  // Only handle GET requests and local scope
-  if (event.request.method !== "GET" || !event.request.url.startsWith(self.location.origin)) {
-    return;
+  // STRICT RULE: Never intercept or cache API endpoints or dynamic backend routes
+  const url = new URL(event.request.url);
+  if (
+    event.request.method !== "GET" ||
+    !event.request.url.startsWith(self.location.origin) ||
+    url.pathname.startsWith("/api/") ||
+    url.pathname.startsWith("/backend/") ||
+    url.searchParams.has("_t") ||
+    url.searchParams.has("nocache")
+  ) {
+    return; // Pass through directly to network
   }
 
+  // For static assets, use Network-First or Cache fallback
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        // Fetch fresh in background to update cache (stale-while-revalidate)
-        fetch(event.request).then((networkResponse) => {
-          if (networkResponse.status === 200) {
-            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, networkResponse));
-          }
-        }).catch(() => {});
-        return cachedResponse;
-      }
-
-      return fetch(event.request).then((networkResponse) => {
-        if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== "basic") {
-          return networkResponse;
+    fetch(event.request)
+      .then((networkResponse) => {
+        if (networkResponse && networkResponse.status === 200 && networkResponse.type === "basic") {
+          const responseToCache = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, responseToCache);
+          });
         }
-
-        const responseToCache = networkResponse.clone();
-        caches.open(CACHE_NAME).then((cache) => {
-          cache.put(event.request, responseToCache);
-        });
-
         return networkResponse;
-      }).catch(() => {
-        // Offline fallback can be implemented here if needed
-      });
-    })
+      })
+      .catch(() => {
+        return caches.match(event.request);
+      })
   );
 });

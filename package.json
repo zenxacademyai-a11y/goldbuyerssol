@@ -4,8 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "node scripts/restore_images.cjs && vite build && node scripts/generate-sitemap.js && node scripts/ssg.js",
+    "dev": "tsx server.ts",
+    "build": "node scripts/restore_images.cjs && vite build && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs && node scripts/generate-sitemap.js && node scripts/ssg.js",
+    "start": "node dist/server.cjs",
     "clean": "rm -rf dist",
     "lint": "tsc --noEmit"
   },

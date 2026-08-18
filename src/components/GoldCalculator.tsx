@@ -36,8 +36,8 @@ export default function GoldCalculator({ currentLang, rates, settings, isLoading
     finalPayout: 0,
   });
 
-  // Base 24K rate
-  const base24kRate = rates.find((r) => r.karat === GoldKarat.K24)?.ratePerGram || 31250;
+  // Base 24K rate from dynamic database rates
+  const base24kRate = rates.find((r) => r.karat === GoldKarat.K24)?.ratePerGram || rates[0]?.ratePerGram || 0;
 
   // Compute active rate per gram
   let activeRate = 0;
@@ -45,7 +45,7 @@ export default function GoldCalculator({ currentLang, rates, settings, isLoading
     activeRate = Math.round(base24kRate * (customPurity / 99.9));
   } else if (karat === GoldKarat.K18 || karat === "18K") {
     const r18 = rates.find((r) => r.karat === GoldKarat.K18)?.ratePerGram;
-    activeRate = r18 || Math.round(base24kRate * (0.750 / 0.999));
+    activeRate = r18 || (base24kRate > 0 ? Math.round(base24kRate * (0.750 / 0.999)) : 0);
   } else {
     activeRate = rates.find((r) => r.karat === karat)?.ratePerGram || base24kRate;
   }

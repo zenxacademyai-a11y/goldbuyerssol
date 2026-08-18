@@ -345,32 +345,62 @@ export default function App({
   const [historicalRates, setHistoricalRates] = useState<HistoricalRate[]>(initialData.historical);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Fetch initial data from server
+  // Fetch authoritative initial data from server
   const fetchAllData = async () => {
     try {
       setIsLoading(true);
-      const jsonCheck = (r: Response) => (r.ok && r.headers.get("content-type")?.includes("application/json") ? r.json() : Promise.reject());
+      const jsonCheck = (r: Response) => {
+        if (r.ok && r.headers.get("content-type")?.includes("application/json")) {
+          return r.json();
+        }
+        throw new Error(`Non-JSON or error response: ${r.status}`);
+      };
+
+      const ts = Date.now();
+      const fetchOpts = {
+        cache: "no-store" as RequestCache,
+        headers: {
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+          "Pragma": "no-cache",
+        },
+      };
+
       const [ratesRes, settingsRes, leadsRes, blogsRes, histRes] = await Promise.all([
-        fetch("/api/rates").then(jsonCheck),
-        fetch("/api/settings").then(jsonCheck),
-        fetch("/api/leads").then(jsonCheck),
-        fetch("/api/blogs").then(jsonCheck),
-        fetch("/api/historical").then(jsonCheck),
+        fetch(`/api/rates?_t=${ts}`, fetchOpts).then(jsonCheck),
+        fetch(`/api/settings?_t=${ts}`, fetchOpts).then(jsonCheck),
+        fetch(`/api/leads?_t=${ts}`, fetchOpts).then(jsonCheck),
+        fetch(`/api/blogs?_t=${ts}`, fetchOpts).then(jsonCheck),
+        fetch(`/api/historical?_t=${ts}`, fetchOpts).then(jsonCheck),
       ]);
 
-      setRates(ratesRes);
-      setSettings(settingsRes);
-      setLeads(leadsRes);
-      setBlogs(blogsRes);
-      setHistoricalRates(histRes);
+      if (Array.isArray(ratesRes) && ratesRes.length > 0) {
+        setRates(ratesRes);
+        localDb.set("rates", ratesRes);
+      }
+      if (settingsRes && typeof settingsRes === "object") {
+        setSettings(settingsRes);
+        localDb.set("settings", settingsRes);
+      }
+      if (Array.isArray(leadsRes)) {
+        setLeads(leadsRes);
+        localDb.set("leads", leadsRes);
+      }
+      if (Array.isArray(blogsRes)) {
+        setBlogs(blogsRes);
+        localDb.set("blogs", blogsRes);
+      }
+      if (Array.isArray(histRes)) {
+        setHistoricalRates(histRes);
+        localDb.set("historical", histRes);
+      }
     } catch (e) {
-      console.warn("Backend unavailable or static mode, loading from localDb...");
+      console.warn("Backend API not reachable or static export mode, using localDb state:", e);
       const fallback = fetchFallbackData();
-      setRates(fallback.rates);
-      setSettings(fallback.settings);
-      setLeads(fallback.leads);
-      setBlogs(fallback.blogs);
-      setHistoricalRates(fallback.historical);
+      setRates((prev) => (prev && prev.length > 0 ? prev : fallback.rates));
+      setSettings((prev) => prev || fallback.settings);
+      setLeads((prev) => (prev && prev.length > 0 ? prev : fallback.leads));
+      setBlogs((prev) => (prev && prev.length > 0 ? prev : fallback.blogs));
+      setHistoricalRates((prev) => (prev && prev.length > 0 ? prev : fallback.historical));
     } finally {
       setIsLoading(false);
     }
@@ -382,9 +412,15 @@ export default function App({
     // Listen for storage / rate update events to keep UI synchronized
     const handleSync = () => {
       const fallback = fetchFallbackData();
-      setRates(fallback.rates);
-      setSettings(fallback.settings);
-      setHistoricalRates(fallback.historical);
+      if (fallback.rates && fallback.rates.length > 0) {
+        setRates(fallback.rates);
+      }
+      if (fallback.settings) {
+        setSettings(fallback.settings);
+      }
+      if (fallback.historical && fallback.historical.length > 0) {
+        setHistoricalRates(fallback.historical);
+      }
     };
 
     window.addEventListener("gbc_rates_updated", handleSync);
@@ -395,13 +431,14 @@ export default function App({
     };
   }, []);
 
-  // API Call Handlers to write updates back to db.json or localDb
+  // API Call Handlers to write updates back to db.json and broadcast
   const handleUpdateRates = async (updatedRates: GoldRate[]) => {
-    // 1. Immediately persist to local storage for static/offline compatibility
+    // 1. Immediately persist to local storage
     localDb.set("rates", updatedRates);
     setRates(updatedRates);
 
-    const newSettings = { ...activeSettings, lastUpdated: new Date().toISOString() };
+    const nowIso = new Date().toISOString();
+    const newSettings = { ...activeSettings, lastUpdated: nowIso };
     localDb.set("settings", newSettings);
     setSettings(newSettings);
 
@@ -421,50 +458,67 @@ export default function App({
     // 3. Dispatch broadcast event for instantaneous UI re-render across components
     window.dispatchEvent(new Event("gbc_rates_updated"));
 
-    // 4. Send background POST request if a PHP/Express API server is configured
+    // 4. Send POST request to backend API to write to database
     try {
       const response = await fetch("/api/rates", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "Cache-Control": "no-cache"
+        },
         body: JSON.stringify(updatedRates),
       });
-      if (response.ok && response.headers.get("content-type")?.includes("application/json")) {
-        const freshSettings = await fetch("/api/settings").then((r) => r.json());
-        if (freshSettings) setSettings(freshSettings);
+      if (response.ok) {
+        const data = await response.json();
+        if (data.rates) {
+          setRates(data.rates);
+          localDb.set("rates", data.rates);
+        }
+        if (data.settings) {
+          setSettings(data.settings);
+          localDb.set("settings", data.settings);
+        }
+        window.dispatchEvent(new Event("gbc_rates_updated"));
       }
     } catch (e) {
-      console.warn("Backend API POST failed; rate change retained locally in browser storage.");
+      console.warn("Backend API POST failed; rate change retained locally in browser storage.", e);
     }
   };
 
   const handleUpdateSettings = async (updatedSettings: SystemSettings) => {
+    localDb.set("settings", updatedSettings);
+    setSettings(updatedSettings);
+
     try {
       const response = await fetch("/api/settings", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "Cache-Control": "no-cache"
+        },
         body: JSON.stringify(updatedSettings),
       });
       if (response.ok) {
-        setSettings(updatedSettings);
-      } else throw new Error("API not ok");
+        const data = await response.json();
+        if (data.settings) {
+          setSettings(data.settings);
+          localDb.set("settings", data.settings);
+        }
+      }
     } catch (e) {
       console.warn("Saving to localDb (Static Hosting Mode)");
-      localDb.set("settings", updatedSettings);
-      setSettings(updatedSettings);
     }
   };
 
   const handleDeleteLead = async (id: string) => {
+    const updated = leads.filter((l) => l.id !== id);
+    setLeads(updated);
+    localDb.set("leads", updated);
+
     try {
-      const response = await fetch(`/api/leads/${id}`, { method: "DELETE" });
-      if (response.ok) {
-        setLeads(leads.filter((l) => l.id !== id));
-      } else throw new Error("API not ok");
+      await fetch(`/api/leads/${id}`, { method: "DELETE" });
     } catch (e) {
       console.warn("Deleting from localDb (Static Hosting Mode)");
-      const updated = leads.filter((l) => l.id !== id);
-      localDb.set("leads", updated);
-      setLeads(updated);
     }
   };
 
@@ -476,8 +530,10 @@ export default function App({
         body: JSON.stringify(newBlog),
       });
       if (response.ok) {
-        const freshBlogs = await fetch("/api/blogs").then((r) => r.json());
+        const data = await response.json();
+        const freshBlogs = data.blogs || (await fetch("/api/blogs").then((r) => r.json()));
         setBlogs(freshBlogs);
+        localDb.set("blogs", freshBlogs);
       } else throw new Error("API not ok");
     } catch (e) {
       console.warn("Saving to localDb (Static Hosting Mode)");
@@ -489,22 +545,20 @@ export default function App({
   };
 
   const handleDeleteBlog = async (id: string) => {
+    const updated = blogs.filter((b) => b.id !== id);
+    setBlogs(updated);
+    localDb.set("blogs", updated);
+
     try {
-      const response = await fetch(`/api/blogs/${id}`, { method: "DELETE" });
-      if (response.ok) {
-        setBlogs(blogs.filter((b) => b.id !== id));
-      } else throw new Error("API not ok");
+      await fetch(`/api/blogs/${id}`, { method: "DELETE" });
     } catch (e) {
       console.warn("Deleting from localDb (Static Hosting Mode)");
-      const updated = blogs.filter((b) => b.id !== id);
-      localDb.set("blogs", updated);
-      setBlogs(updated);
     }
   };
 
   // Helper defaults to avoid null errors on load
-  const todayRate24k = rates.find((r) => r.karat === "24K")?.ratePerGram || 31250;
-  const todayRate22k = rates.find((r) => r.karat === "22K")?.ratePerGram || 28650;
+  const todayRate24k = rates.find((r) => r.karat === "24K")?.ratePerGram || rates[0]?.ratePerGram || 0;
+  const todayRate22k = rates.find((r) => r.karat === "22K")?.ratePerGram || rates[1]?.ratePerGram || 0;
   const activeSettings = settings || {
     bonusPremiumRate: 2.5,
     testingFeePerGram: 150,
@@ -554,11 +608,7 @@ export default function App({
               <ScrollReveal>
                 <LiveRateWidget
                   currentLang={currentLang}
-                  rates={rates.length > 0 ? rates : [
-                    { karat: GoldKarat.K24, purity: 0.999, ratePerGram: 31250 },
-                    { karat: GoldKarat.K22, purity: 0.916, ratePerGram: 28650 },
-                    { karat: GoldKarat.K21, purity: 0.875, ratePerGram: 27350 },
-                  ]}
+                  rates={rates}
                   settings={activeSettings}
                   historicalRates={historicalRates}
                   onRefresh={fetchAllData}
@@ -569,11 +619,7 @@ export default function App({
               <ScrollReveal>
                 <GoldCalculator
                   currentLang={currentLang}
-                  rates={rates.length > 0 ? rates : [
-                    { karat: GoldKarat.K24, purity: 0.999, ratePerGram: 31250 },
-                    { karat: GoldKarat.K22, purity: 0.916, ratePerGram: 28650 },
-                    { karat: GoldKarat.K21, purity: 0.875, ratePerGram: 27350 },
-                  ]}
+                  rates={rates}
                   settings={activeSettings}
                   isLoading={isLoading}
                 />
@@ -664,11 +710,7 @@ export default function App({
           <div className="pt-8 pb-12 min-h-[60vh] bg-white dark:bg-neutral-950 transition-colors">
             <LiveRateWidget
               currentLang={currentLang}
-              rates={rates.length > 0 ? rates : [
-                { karat: GoldKarat.K24, purity: 0.999, ratePerGram: 31250 },
-                { karat: GoldKarat.K22, purity: 0.916, ratePerGram: 28650 },
-                { karat: GoldKarat.K21, purity: 0.875, ratePerGram: 27350 },
-              ]}
+              rates={rates}
               settings={activeSettings}
               historicalRates={historicalRates}
               onRefresh={fetchAllData}
@@ -679,11 +721,7 @@ export default function App({
           <div className="pt-8 pb-12 min-h-[60vh] bg-neutral-50 dark:bg-neutral-950 transition-colors">
             <GoldCalculator
               currentLang={currentLang}
-              rates={rates.length > 0 ? rates : [
-                { karat: GoldKarat.K24, purity: 0.999, ratePerGram: 31250 },
-                { karat: GoldKarat.K22, purity: 0.916, ratePerGram: 28650 },
-                { karat: GoldKarat.K21, purity: 0.875, ratePerGram: 27350 },
-              ]}
+              rates={rates}
               settings={activeSettings}
               isLoading={isLoading}
             />

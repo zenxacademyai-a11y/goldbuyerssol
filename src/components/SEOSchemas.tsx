@@ -13,9 +13,9 @@ interface SEOSchemasProps {
 export default function SEOSchemas({ rates }: SEOSchemasProps) {
   useEffect(() => {
     // 1. Resolve gold rates
-    const rate24k = rates.find((r) => r.karat === "24K")?.ratePerGram || 31250;
-    const rate22k = rates.find((r) => r.karat === "22K")?.ratePerGram || 28650;
-    const rate21k = rates.find((r) => r.karat === "21K")?.ratePerGram || 27350;
+    const rate24k = rates.find((r) => r.karat === "24K")?.ratePerGram || rates[0]?.ratePerGram || 0;
+    const rate22k = rates.find((r) => r.karat === "22K")?.ratePerGram || rates[1]?.ratePerGram || 0;
+    const rate21k = rates.find((r) => r.karat === "21K")?.ratePerGram || rates[2]?.ratePerGram || 0;
 
     // Get today's ISO date
     const todayStr = new Date().toISOString().split("T")[0];

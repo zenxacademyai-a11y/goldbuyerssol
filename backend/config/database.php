@@ -46,7 +46,7 @@ class Database {
                 'message' => 'Database connection error',
                 'error' => [
                     'code' => 'DATABASE_CONNECTION_ERROR',
-                    'details' => process.env['NODE_ENV'] === 'development' ? $e->getMessage() : 'Unable to connect to MySQL database server'
+                    'details' => (isset($_ENV['APP_ENV']) && $_ENV['APP_ENV'] === 'development') ? $e->getMessage() : 'Unable to connect to MySQL database server'
                 ]
             ]);
             exit;

@@ -34,7 +34,13 @@ import {
   Maximize2,
   Minimize2,
   Sparkles,
-  Upload
+  Upload,
+  Table as TableIcon,
+  Plus,
+  Trash2,
+  Columns,
+  Rows,
+  FileText
 } from "lucide-react";
 
 interface RichTextEditorProps {
@@ -95,6 +101,7 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
   // Popovers and dropdown states
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [showHighlightPicker, setShowHighlightPicker] = useState(false);
+  const [showTableMenu, setShowTableMenu] = useState(false);
   const [activeFont, setActiveFont] = useState(FONTS[0].value);
   const [activeSize, setActiveSize] = useState(FONT_SIZES[1].value);
 
@@ -125,35 +132,150 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
     }
   };
 
-  // Google Docs Paste Handler to preserve formatting beautifully
+  // Google Docs Paste Handler to preserve formatting, tables, headings, and clean HTML
   const handlePaste = (e: React.ClipboardEvent) => {
     e.preventDefault();
     const html = e.clipboardData.getData("text/html");
     const text = e.clipboardData.getData("text/plain");
 
     if (html) {
-      // Google Docs has massive CSS block in head. We want to clean or paste the main HTML elements.
-      // Simply executing standard paste might bring in complex styles. 
-      // But browsers' native rendering of standard text/html handles this quite well if injected.
-      // For absolute security & cleanliness we can sanitise or directly insert standard parsed nodes.
       const parser = new DOMParser();
       const doc = parser.parseFromString(html, "text/html");
-      
-      // Select the main body or the outer google doc elements if matching
       const contentBody = doc.body;
-      
-      // Let's strip script and style blocks that might crash page
-      const styles = contentBody.querySelectorAll("style, script, meta");
-      styles.forEach(s => s.remove());
 
-      // Insert clean HTML
+      // 1. Remove dangerous or unwanted tags (script, style, meta, head, link)
+      const unwanted = contentBody.querySelectorAll("style, script, meta, link, noscript");
+      unwanted.forEach(s => s.remove());
+
+      // 2. Clean Google Docs internal wrappers & spans
+      const googleWrappers = contentBody.querySelectorAll("[id^='docs-internal-guid'], [class*='docs-']");
+      googleWrappers.forEach(w => {
+        w.removeAttribute("id");
+        w.removeAttribute("class");
+      });
+
+      // 3. Format and sanitize tables from Google Docs or Word
+      const tables = contentBody.querySelectorAll("table");
+      tables.forEach(tbl => {
+        tbl.classList.add("w-full", "border-collapse", "border", "border-neutral-300", "dark:border-neutral-700", "my-4", "text-sm");
+        tbl.querySelectorAll("th").forEach(th => {
+          th.classList.add("border", "border-neutral-300", "dark:border-neutral-700", "bg-neutral-100", "dark:bg-neutral-800", "p-2", "font-semibold", "text-left");
+        });
+        tbl.querySelectorAll("td").forEach(td => {
+          td.classList.add("border", "border-neutral-300", "dark:border-neutral-700", "p-2");
+        });
+      });
+
+      // 4. Style links cleanly
+      const links = contentBody.querySelectorAll("a");
+      links.forEach(a => {
+        a.classList.add("text-amber-700", "dark:text-amber-400", "underline", "font-medium");
+        a.setAttribute("target", "_blank");
+        a.setAttribute("rel", "noopener noreferrer");
+      });
+
       const cleanedHtml = contentBody.innerHTML;
       document.execCommand("insertHTML", false, cleanedHtml);
     } else {
-      // Fallback to text insertion
       document.execCommand("insertText", false, text);
     }
     handleInput();
+  };
+
+  // Table Management Operations
+  const insertTable = (rows: number = 3, cols: number = 3) => {
+    let tableHtml = `<div class="overflow-x-auto my-4"><table class="w-full border-collapse border border-neutral-300 dark:border-neutral-700 text-sm"><thead><tr class="bg-neutral-100 dark:bg-neutral-800">`;
+    for (let c = 0; c < cols; c++) {
+      tableHtml += `<th class="border border-neutral-300 dark:border-neutral-700 p-2 font-semibold text-left">Header ${c + 1}</th>`;
+    }
+    tableHtml += `</tr></thead><tbody>`;
+    for (let r = 0; r < rows; r++) {
+      tableHtml += `<tr class="${r % 2 === 1 ? "bg-neutral-50/50 dark:bg-neutral-900/50" : ""}">`;
+      for (let c = 0; c < cols; c++) {
+        tableHtml += `<td class="border border-neutral-300 dark:border-neutral-700 p-2">Data ${r + 1},${c + 1}</td>`;
+      }
+      tableHtml += `</tr>`;
+    }
+    tableHtml += `</tbody></table></div><p><br></p>`;
+    executeCmd("insertHTML", tableHtml);
+    setShowTableMenu(false);
+  };
+
+  const getClosestTableElement = <T extends HTMLElement>(tagName: string): T | null => {
+    const selection = window.getSelection();
+    if (!selection || selection.rangeCount === 0) return null;
+    let node: Node | null = selection.getRangeAt(0).commonAncestorContainer;
+    while (node && node !== editorRef.current) {
+      if (node.nodeName.toLowerCase() === tagName.toLowerCase()) {
+        return node as T;
+      }
+      node = node.parentNode;
+    }
+    return null;
+  };
+
+  const addTableRow = (below: boolean = true) => {
+    const currentTr = getClosestTableElement<HTMLTableRowElement>("tr");
+    if (!currentTr) {
+      insertTable(2, 3);
+      return;
+    }
+    const colsCount = currentTr.cells.length;
+    const newTr = document.createElement("tr");
+    for (let i = 0; i < colsCount; i++) {
+      const td = document.createElement("td");
+      td.className = "border border-neutral-300 dark:border-neutral-700 p-2";
+      td.innerHTML = "New cell";
+      newTr.appendChild(td);
+    }
+    if (below && currentTr.nextSibling) {
+      currentTr.parentNode?.insertBefore(newTr, currentTr.nextSibling);
+    } else if (below) {
+      currentTr.parentNode?.appendChild(newTr);
+    } else {
+      currentTr.parentNode?.insertBefore(newTr, currentTr);
+    }
+    handleInput();
+    setShowTableMenu(false);
+  };
+
+  const addTableColumn = () => {
+    const table = getClosestTableElement<HTMLTableElement>("table");
+    if (!table) {
+      insertTable(3, 3);
+      return;
+    }
+    const rows = table.rows;
+    for (let r = 0; r < rows.length; r++) {
+      const isHeader = rows[r].parentNode?.nodeName.toLowerCase() === "thead" || r === 0;
+      const cell = document.createElement(isHeader ? "th" : "td");
+      cell.className = isHeader 
+        ? "border border-neutral-300 dark:border-neutral-700 bg-neutral-100 dark:bg-neutral-800 p-2 font-semibold text-left"
+        : "border border-neutral-300 dark:border-neutral-700 p-2";
+      cell.innerHTML = isHeader ? `Header ${rows[r].cells.length + 1}` : "New cell";
+      rows[r].appendChild(cell);
+    }
+    handleInput();
+    setShowTableMenu(false);
+  };
+
+  const deleteTableRow = () => {
+    const currentTr = getClosestTableElement<HTMLTableRowElement>("tr");
+    if (currentTr) {
+      currentTr.remove();
+      handleInput();
+    }
+    setShowTableMenu(false);
+  };
+
+  const deleteTable = () => {
+    const table = getClosestTableElement<HTMLTableElement>("table");
+    if (table) {
+      const wrapper = table.closest(".overflow-x-auto") || table;
+      wrapper.remove();
+      handleInput();
+    }
+    setShowTableMenu(false);
   };
 
   // Custom Selection Range Styling for Font Sizes & Font Families
@@ -612,6 +734,79 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
             <Sparkles className="h-3.5 w-3.5 text-amber-600 animate-pulse" />
             <span className="text-[10px] font-bold font-sans">Alt SEO</span>
           </button>
+
+          {/* Table Operations Dropdown */}
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setShowTableMenu(!showTableMenu)}
+              className={`p-1 rounded transition-colors flex items-center gap-1 ${
+                showTableMenu ? "bg-amber-100 text-amber-900 font-semibold" : "hover:bg-neutral-200 text-neutral-700"
+              }`}
+              title="Table Tools (Google Docs Style)"
+            >
+              <TableIcon className="h-3.5 w-3.5" />
+              <span className="text-[10px] hidden sm:inline font-sans">Table</span>
+            </button>
+            {showTableMenu && (
+              <div className="absolute left-0 mt-1 p-2 bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 rounded-lg shadow-xl z-30 w-56 text-xs space-y-1">
+                <div className="px-2 py-1 font-semibold text-[11px] text-neutral-500 uppercase tracking-wider border-b border-neutral-200 dark:border-neutral-800">
+                  Insert Table
+                </div>
+                <button
+                  type="button"
+                  onClick={() => insertTable(3, 3)}
+                  className="w-full text-left px-2 py-1.5 hover:bg-amber-50 dark:hover:bg-amber-950/30 rounded flex items-center justify-between"
+                >
+                  <span className="flex items-center gap-1.5"><TableIcon className="h-3.5 w-3.5 text-amber-600" /> 3x3 Standard Grid</span>
+                  <span className="text-[10px] text-neutral-400">3x3</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const r = parseInt(prompt("Enter number of rows (1-10):", "4") || "4", 10);
+                    const c = parseInt(prompt("Enter number of columns (1-8):", "3") || "3", 10);
+                    insertTable(Math.max(1, Math.min(15, r)), Math.max(1, Math.min(10, c)));
+                  }}
+                  className="w-full text-left px-2 py-1.5 hover:bg-amber-50 dark:hover:bg-amber-950/30 rounded flex items-center gap-1.5"
+                >
+                  <Plus className="h-3.5 w-3.5 text-emerald-600" /> Custom Rows & Columns...
+                </button>
+
+                <div className="px-2 py-1 font-semibold text-[11px] text-neutral-500 uppercase tracking-wider border-b border-t border-neutral-200 dark:border-neutral-800 mt-1">
+                  Active Table Actions
+                </div>
+                <button
+                  type="button"
+                  onClick={() => addTableRow(true)}
+                  className="w-full text-left px-2 py-1 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded flex items-center gap-1.5 text-neutral-700 dark:text-neutral-300"
+                >
+                  <Rows className="h-3.5 w-3.5 text-blue-600" /> Insert Row Below
+                </button>
+                <button
+                  type="button"
+                  onClick={() => addTableColumn()}
+                  className="w-full text-left px-2 py-1 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded flex items-center gap-1.5 text-neutral-700 dark:text-neutral-300"
+                >
+                  <Columns className="h-3.5 w-3.5 text-indigo-600" /> Insert Column Right
+                </button>
+                <button
+                  type="button"
+                  onClick={() => deleteTableRow()}
+                  className="w-full text-left px-2 py-1 hover:bg-red-50 dark:hover:bg-red-950/30 text-red-600 rounded flex items-center gap-1.5"
+                >
+                  <Trash2 className="h-3.5 w-3.5" /> Delete Current Row
+                </button>
+                <button
+                  type="button"
+                  onClick={() => deleteTable()}
+                  className="w-full text-left px-2 py-1 hover:bg-red-50 dark:hover:bg-red-950/30 text-red-600 font-medium rounded flex items-center gap-1.5"
+                >
+                  <Trash2 className="h-3.5 w-3.5" /> Delete Entire Table
+                </button>
+              </div>
+            )}
+          </div>
 
           <div className="h-4 w-px bg-neutral-300 mx-1"></div>
 
