@@ -5,18 +5,39 @@
 
 import fs from "fs";
 import path from "path";
-import { GoldKarat, GoldRate, SystemSettings, Lead, BlogPost, HistoricalRate } from "../src/types.js";
+import { 
+  GoldKarat, 
+  GoldRate, 
+  SystemSettings, 
+  Lead, 
+  BlogPost, 
+  HistoricalRate,
+  CategoryItem,
+  TagItem,
+  MediaItem,
+  CommentItem,
+  UserItem,
+  AuditLogItem,
+  CmsSettings
+} from "../src/types.js";
 import { injectSEOAndAuthorityLinks } from "./blog_hyperlinker.js";
 
 const DB_DIR = path.join(process.cwd(), "data");
 const DB_FILE = path.join(DB_DIR, "db.json");
 
-interface DatabaseSchema {
+export interface DatabaseSchema {
   rates: GoldRate[];
   settings: SystemSettings;
   leads: Lead[];
   blogs: BlogPost[];
   historicalRates: HistoricalRate[];
+  categories?: CategoryItem[];
+  tags?: TagItem[];
+  media?: MediaItem[];
+  comments?: CommentItem[];
+  users?: UserItem[];
+  auditLogs?: AuditLogItem[];
+  cmsSettings?: CmsSettings;
 }
 
 // Ensure the data directory and db.json file exist with seeded data
@@ -379,12 +400,149 @@ export function initializeDb(): DatabaseSchema {
     };
   });
 
+  const defaultCategories: CategoryItem[] = [
+    { id: 1, name: "Gold Market Rates", slug: "gold-market-rates", description: "Daily updates and expert analysis on gold market buying and selling rates in Sri Lanka.", post_count: 5 },
+    { id: 2, name: "Selling Guides", slug: "selling-guides", description: "Step-by-step guides for consumers on how to sell gold jewellery safely in Colombo.", post_count: 8 },
+    { id: 3, name: "Appraisal & XRF Testing", slug: "appraisal-xrf-testing", description: "Technical breakdowns of computerised XRF non-destructive gold testing methods.", post_count: 3 },
+    { id: 4, name: "Industry News", slug: "industry-news", description: "Latest news regarding CBSL regulations, import tariffs, and bullion trends.", post_count: 2 },
+  ];
+
+  const defaultTags: TagItem[] = [
+    { id: 1, name: "Colombo Gold Buyers", slug: "colombo-gold-buyers", post_count: 12 },
+    { id: 2, name: "22K Gold Price", slug: "22k-gold-price", post_count: 10 },
+    { id: 3, name: "Sri Lanka Pavan Rate", slug: "sri-lanka-pavan-rate", post_count: 9 },
+    { id: 4, name: "Cash For Gold", slug: "cash-for-gold", post_count: 7 },
+    { id: 5, name: "XRF Testing", slug: "xrf-testing", post_count: 5 },
+  ];
+
+  const defaultMedia: MediaItem[] = [
+    {
+      id: "media-1",
+      fileName: "gold-bar-colombo-xrf.jpg",
+      url: "https://images.unsplash.com/photo-1610375461246-83df859d849d?auto=format&fit=crop&w=800&q=80",
+      originalKb: 420,
+      compressedKb: 158,
+      width: 1200,
+      height: 800,
+      alt_text: "24K Gold Bar Valuation at Colombo Appraisal Center",
+      uploadDate: "2026-08-01 10:30"
+    },
+    {
+      id: "media-2",
+      fileName: "pawn-jewellery-cash-colombo.jpg",
+      url: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=800&q=80",
+      originalKb: 512,
+      compressedKb: 194,
+      width: 1200,
+      height: 800,
+      alt_text: "Pawn Ticket Release and Gold Cash Settlement",
+      uploadDate: "2026-08-02 14:15"
+    },
+    {
+      id: "media-3",
+      fileName: "xrf-spectrometer-testing-lab.jpg",
+      url: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=800&q=80",
+      originalKb: 680,
+      compressedKb: 210,
+      width: 1200,
+      height: 800,
+      alt_text: "Computerised XRF Spectrometer Purity Analysis",
+      uploadDate: "2026-08-03 09:45"
+    }
+  ];
+
+  const defaultComments: CommentItem[] = [
+    {
+      id: 1,
+      post_id: "blog_u1",
+      post_title: "10 Best Gold Buyers in Colombo (2026 Guide)",
+      post_slug: "10-best-gold-buyers-in-colombo-2026-guide",
+      author_name: "Kavinda Perera",
+      author_email: "kavinda.perera@gmail.com",
+      content: "Very informative article! Sold my 22K sovereign at Gold Buyers Colombo Bambalapitiya branch last week. The computerized XRF reading was 91.67% and got paid immediately via bank transfer.",
+      status: "approved",
+      ip_address: "112.134.14.22",
+      created_at: new Date(Date.now() - 3600000 * 48).toISOString()
+    },
+    {
+      id: 2,
+      post_id: "blog_u1",
+      post_title: "10 Best Gold Buyers in Colombo (2026 Guide)",
+      post_slug: "10-best-gold-buyers-in-colombo-2026-guide",
+      author_name: "Mohamed Rameez",
+      author_email: "rameez.traders@yahoo.com",
+      content: "Is XRF testing available in Kandy as well, or only in Colombo branches?",
+      status: "approved",
+      ip_address: "175.157.82.10",
+      created_at: new Date(Date.now() - 3600000 * 18).toISOString()
+    }
+  ];
+
+  const defaultUsers: UserItem[] = [
+    {
+      id: 1,
+      user_uuid: "8f2d1e2a-1111-4444-8888-999988887777",
+      name: "Chief Appraiser Admin",
+      email: "admin@goldlanka.lk",
+      role: "super_admin",
+      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
+      bio: "Senior Gold Market Analyst and Head Appraiser at Gold Buyers Colombo.",
+      status: "active",
+      post_count: 14,
+      created_at: "2026-01-15 08:00:00"
+    },
+    {
+      id: 2,
+      user_uuid: "7a1b2c3d-2222-3333-4444-555566667777",
+      name: "Samantha Alwis",
+      email: "samantha.alwis@goldlanka.lk",
+      role: "editor",
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80",
+      bio: "Chief Valuation Officer and Metallurgical Testing Specialist.",
+      status: "active",
+      post_count: 8,
+      created_at: "2026-02-01 10:30:00"
+    }
+  ];
+
+  const defaultAuditLogs: AuditLogItem[] = [
+    {
+      id: 1,
+      user_name: "Chief Appraiser Admin",
+      action: "DATABASE_SYNC",
+      entity_type: "SYSTEM",
+      entity_id: 1,
+      ip_address: "127.0.0.1",
+      created_at: new Date().toISOString(),
+      payload: { db_name: "u923048970_goldbuyers", status: "CONNECTED" }
+    }
+  ];
+
+  const defaultCmsSettings: CmsSettings = {
+    site_name: "Gold Buyers Colombo Blog & Valuation CMS",
+    site_tagline: "Premier Gold & Precious Asset Purchasing Authority in Sri Lanka",
+    admin_email: "admin@goldlanka.lk",
+    default_author: "Samantha Alwis (Chief Valuation Officer)",
+    posts_per_page: "10",
+    enable_comments: "1",
+    auto_approve_comments: "1",
+    google_analytics_id: "G-GBCCOLOMBO2026",
+    default_meta_description: "Official Blog of Gold Buyers Colombo. Daily gold rates, XRF testing guides, and market analysis in Sri Lanka."
+  };
+
   const emptyDb: DatabaseSchema = {
     rates: defaultRates,
     settings: defaultSettings,
     leads: defaultLeads,
     blogs: defaultBlogs,
     historicalRates: defaultHistoricalRates,
+    categories: defaultCategories,
+    tags: defaultTags,
+    media: defaultMedia,
+    comments: defaultComments,
+    users: defaultUsers,
+    auditLogs: defaultAuditLogs,
+    cmsSettings: defaultCmsSettings
   };
 
   if (!fs.existsSync(DB_FILE)) {
@@ -395,12 +553,25 @@ export function initializeDb(): DatabaseSchema {
   try {
     const fileContent = fs.readFileSync(DB_FILE, "utf-8");
     const parsed = JSON.parse(fileContent);
-    // Deep check to ensure keys exist, fallback if corrupted
-    if (parsed.rates && parsed.settings && parsed.leads && parsed.blogs && parsed.historicalRates) {
-      return parsed;
+    // Deep check to ensure all keys exist, enrich if missing
+    let modified = false;
+    if (!parsed.rates) { parsed.rates = defaultRates; modified = true; }
+    if (!parsed.settings) { parsed.settings = defaultSettings; modified = true; }
+    if (!parsed.leads) { parsed.leads = defaultLeads; modified = true; }
+    if (!parsed.blogs) { parsed.blogs = defaultBlogs; modified = true; }
+    if (!parsed.historicalRates) { parsed.historicalRates = defaultHistoricalRates; modified = true; }
+    if (!parsed.categories) { parsed.categories = defaultCategories; modified = true; }
+    if (!parsed.tags) { parsed.tags = defaultTags; modified = true; }
+    if (!parsed.media) { parsed.media = defaultMedia; modified = true; }
+    if (!parsed.comments) { parsed.comments = defaultComments; modified = true; }
+    if (!parsed.users) { parsed.users = defaultUsers; modified = true; }
+    if (!parsed.auditLogs) { parsed.auditLogs = defaultAuditLogs; modified = true; }
+    if (!parsed.cmsSettings) { parsed.cmsSettings = defaultCmsSettings; modified = true; }
+
+    if (modified) {
+      fs.writeFileSync(DB_FILE, JSON.stringify(parsed, null, 2), "utf-8");
     }
-    fs.writeFileSync(DB_FILE, JSON.stringify(emptyDb, null, 2), "utf-8");
-    return emptyDb;
+    return parsed;
   } catch (e) {
     fs.writeFileSync(DB_FILE, JSON.stringify(emptyDb, null, 2), "utf-8");
     return emptyDb;

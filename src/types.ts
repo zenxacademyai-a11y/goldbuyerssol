@@ -72,3 +72,84 @@ export interface HistoricalRate {
   "22K": number;
   "21K": number;
 }
+
+export interface CategoryItem {
+  id: number | string;
+  name: string;
+  slug: string;
+  description?: string;
+  post_count?: number;
+  created_at?: string;
+}
+
+export interface TagItem {
+  id: number | string;
+  name: string;
+  slug: string;
+  post_count?: number;
+  created_at?: string;
+}
+
+export interface MediaItem {
+  id: string;
+  fileName: string;
+  url: string;
+  originalKb: number;
+  compressedKb: number;
+  width: number;
+  height: number;
+  alt_text?: string;
+  uploadDate: string;
+}
+
+export interface CommentItem {
+  id: number | string;
+  post_id: number | string;
+  post_title?: string;
+  post_slug?: string;
+  author_name: string;
+  author_email: string;
+  content: string;
+  status: "approved" | "pending" | "spam" | "trash";
+  ip_address?: string;
+  created_at: string;
+}
+
+export interface UserItem {
+  id: number | string;
+  user_uuid?: string;
+  name: string;
+  email: string;
+  role: "super_admin" | "editor" | "author" | "contributor";
+  avatar?: string;
+  bio?: string;
+  status?: string;
+  last_login_at?: string;
+  post_count?: number;
+  created_at?: string;
+}
+
+export interface AuditLogItem {
+  id: number;
+  user_name: string;
+  action: string;
+  entity_type: string;
+  entity_id: number | null;
+  ip_address: string;
+  created_at: string;
+  payload?: any;
+}
+
+export interface CmsSettings {
+  site_name?: string;
+  site_tagline?: string;
+  admin_email?: string;
+  default_author?: string;
+  posts_per_page?: string;
+  enable_comments?: string;
+  auto_approve_comments?: string;
+  google_analytics_id?: string;
+  default_meta_description?: string;
+  [key: string]: string | undefined;
+}
+

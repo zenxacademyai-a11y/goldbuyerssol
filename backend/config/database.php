@@ -16,8 +16,8 @@ class Database {
 
     public function __construct() {
         $this->host = $_ENV['DB_HOST'] ?? 'localhost';
-        $this->db_name = $_ENV['DB_NAME'] ?? 'gbc_blog_cms';
-        $this->username = $_ENV['DB_USER'] ?? 'root';
+        $this->db_name = $_ENV['DB_NAME'] ?? 'u923048970_goldbuyers';
+        $this->username = $_ENV['DB_USER'] ?? 'u923048970_goldbuyers';
         $this->password = $_ENV['DB_PASS'] ?? '';
         $this->charset = 'utf8mb4';
     }

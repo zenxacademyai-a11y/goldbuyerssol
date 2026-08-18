@@ -41,11 +41,32 @@ import {
   CheckSquare,
   Square,
   FileSpreadsheet,
-  HardDrive
+  HardDrive,
+  MessageSquare,
+  FolderTree,
+  Sliders,
+  Server,
+  UserPlus,
+  LayoutDashboard
 } from "lucide-react";
 import { Language } from "../lib/translations.js";
-import { BlogPost } from "../types.js";
+import { 
+  BlogPost, 
+  CategoryItem, 
+  TagItem, 
+  MediaItem as MediaItemType, 
+  CommentItem, 
+  UserItem, 
+  AuditLogItem,
+  CmsSettings 
+} from "../types.js";
 import RichTextEditor from "./RichTextEditor.js";
+import CmsDashboardTab from "./cms/CmsDashboardTab.js";
+import CmsTaxonomiesTab from "./cms/CmsTaxonomiesTab.js";
+import CmsCommentsTab from "./cms/CmsCommentsTab.js";
+import CmsUsersTab from "./cms/CmsUsersTab.js";
+import CmsSettingsTab from "./cms/CmsSettingsTab.js";
+import CmsDatabaseModal from "./cms/CmsDatabaseModal.js";
 
 interface AdminBlogCMSProps {
   currentLang: Language;
@@ -53,6 +74,18 @@ interface AdminBlogCMSProps {
   onSaveBlog: (blog: Partial<BlogPost>) => Promise<void>;
   onDeleteBlog: (id: string) => Promise<void>;
 }
+
+export type CmsTabKey = 
+  | "dashboard" 
+  | "editor" 
+  | "list" 
+  | "taxonomies" 
+  | "comments" 
+  | "media" 
+  | "users" 
+  | "settings" 
+  | "audit" 
+  | "api_docs";
 
 interface MediaItem {
   id: string;
@@ -85,7 +118,65 @@ export default function AdminBlogCMS({
   onDeleteBlog,
 }: AdminBlogCMSProps) {
   // CMS Sub Tab
-  const [cmsTab, setCmsTab] = useState<"editor" | "list" | "media" | "audit" | "api_docs">("editor");
+  const [cmsTab, setCmsTab] = useState<CmsTabKey>("dashboard");
+
+  // Relational Database State
+  const [loadedCategories, setLoadedCategories] = useState<CategoryItem[]>([]);
+  const [loadedTags, setLoadedTags] = useState<TagItem[]>([]);
+  const [loadedComments, setLoadedComments] = useState<CommentItem[]>([]);
+  const [loadedUsers, setLoadedUsers] = useState<UserItem[]>([]);
+  const [loadedCmsSettings, setLoadedCmsSettings] = useState<CmsSettings>({});
+  const [isDbModalOpen, setIsDbModalOpen] = useState(false);
+
+  // Refresh all CMS dynamic state from REST API
+  const refreshAllData = async () => {
+    try {
+      const [catsRes, tagsRes, mediaRes, commsRes, usersRes, settingsRes, auditRes] = await Promise.all([
+        fetch("/api/categories"),
+        fetch("/api/tags"),
+        fetch("/api/media"),
+        fetch("/api/comments"),
+        fetch("/api/users"),
+        fetch("/api/cms-settings"),
+        fetch("/api/audit/logs"),
+      ]);
+
+      if (catsRes.ok) {
+        const d = await catsRes.json();
+        if (d.categories) setLoadedCategories(d.categories);
+      }
+      if (tagsRes.ok) {
+        const d = await tagsRes.json();
+        if (d.tags) setLoadedTags(d.tags);
+      }
+      if (mediaRes.ok) {
+        const d = await mediaRes.json();
+        if (d.media) setMediaItems(d.media);
+      }
+      if (commsRes.ok) {
+        const d = await commsRes.json();
+        if (d.comments) setLoadedComments(d.comments);
+      }
+      if (usersRes.ok) {
+        const d = await usersRes.json();
+        if (d.users) setLoadedUsers(d.users);
+      }
+      if (settingsRes.ok) {
+        const d = await settingsRes.json();
+        if (d.settings) setLoadedCmsSettings(d.settings);
+      }
+      if (auditRes.ok) {
+        const d = await auditRes.json();
+        if (d.logs) setAuditLogs(d.logs);
+      }
+    } catch (err) {
+      console.warn("API refresh error:", err);
+    }
+  };
+
+  useEffect(() => {
+    refreshAllData();
+  }, []);
 
   // Post Editor Form State
   const [editingPostId, setEditingPostId] = useState<string | null>(null);
@@ -484,57 +575,48 @@ export default function AdminBlogCMS({
   };
 
   // Simulate Image Upload with GD Compression & Media Items store
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     setUploadingImage(true);
     const originalKb = Math.round(file.size / 1024);
 
-    setTimeout(() => {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const compressedKb = Math.round(originalKb * 0.38); // ~62% compression
-        const newUrl = event.target?.result as string;
-        setCoverImage(newUrl);
-        setUploadCompressionStats({
-          originalKb,
-          compressedKb,
-          savingsPct: 62,
+    const reader = new FileReader();
+    reader.onload = async (event) => {
+      const compressedKb = Math.round(originalKb * 0.38); // ~62% compression
+      const newUrl = event.target?.result as string;
+      setCoverImage(newUrl);
+      setUploadCompressionStats({
+        originalKb,
+        compressedKb,
+        savingsPct: 62,
+      });
+
+      try {
+        const res = await fetch("/api/media", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            file_name: file.name,
+            file_path: newUrl,
+            file_size_kb: originalKb,
+            compressed_size_kb: compressedKb,
+            width: 1200,
+            height: 800,
+            uploaded_by: 1
+          }),
         });
+        if (res.ok) {
+          await refreshAllData();
+        }
+      } catch (err) {
+        console.error("Failed to persist media to API:", err);
+      }
 
-        // Add to Media Library store
-        const newMedia: MediaItem = {
-          id: `media-${Date.now()}`,
-          fileName: file.name,
-          url: newUrl,
-          originalKb,
-          compressedKb,
-          width: 1200,
-          height: 800,
-          uploadDate: new Date().toISOString().replace('T', ' ').substring(0, 16)
-        };
-        setMediaItems((prev) => [newMedia, ...prev]);
-
-        // Audit log entry
-        setAuditLogs((prev) => [
-          {
-            id: Date.now(),
-            user_name: author,
-            action: "MEDIA_UPLOAD",
-            entity_type: "MEDIA",
-            entity_id: Date.now(),
-            ip_address: "127.0.0.1",
-            created_at: new Date().toLocaleString(),
-            payload: { file_name: file.name, originalKb, compressedKb }
-          },
-          ...prev
-        ]);
-
-        setUploadingImage(false);
-      };
-      reader.readAsDataURL(file);
-    }, 800);
+      setUploadingImage(false);
+    };
+    reader.readAsDataURL(file);
   };
 
   // Media Library Bulk Selection Handlers
@@ -552,24 +634,19 @@ export default function AdminBlogCMS({
     }
   };
 
-  const handleBulkDeleteMedia = () => {
+  const handleBulkDeleteMedia = async () => {
     if (selectedMediaIds.length === 0) return;
     if (confirm(`Are you sure you want to delete ${selectedMediaIds.length} selected media asset(s)?`)) {
-      setMediaItems((prev) => prev.filter((m) => !selectedMediaIds.includes(m.id)));
-      
-      setAuditLogs((prev) => [
-        {
-          id: Date.now(),
-          user_name: author,
-          action: "MEDIA_DELETE_BULK",
-          entity_type: "MEDIA",
-          entity_id: null,
-          ip_address: "127.0.0.1",
-          created_at: new Date().toLocaleString(),
-          payload: { count: selectedMediaIds.length, ids: selectedMediaIds }
-        },
-        ...prev
-      ]);
+      try {
+        await fetch("/api/media/delete", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ids: selectedMediaIds }),
+        });
+        await refreshAllData();
+      } catch (err) {
+        console.error("Failed to delete media via API:", err);
+      }
 
       setSelectedMediaIds([]);
       setSaveSuccessMsg("Selected media assets deleted permanently.");
@@ -704,8 +781,20 @@ export default function AdminBlogCMS({
         {/* Quick Action Tabs */}
         <div className="flex flex-wrap gap-2 text-xs font-mono">
           <button
+            onClick={() => setCmsTab("dashboard")}
+            className={`px-3 py-2 rounded-xl border transition-all flex items-center gap-1.5 cursor-pointer font-bold ${
+              cmsTab === "dashboard"
+                ? "bg-amber-500 text-neutral-950 border-amber-400 shadow-md shadow-amber-500/20"
+                : "bg-neutral-900 text-neutral-300 border-neutral-800 hover:border-amber-500/50"
+            }`}
+          >
+            <LayoutDashboard className="h-4 w-4" />
+            <span>Dashboard</span>
+          </button>
+
+          <button
             onClick={() => setCmsTab("editor")}
-            className={`px-3.5 py-2 rounded-xl border transition-all flex items-center gap-1.5 cursor-pointer font-bold ${
+            className={`px-3 py-2 rounded-xl border transition-all flex items-center gap-1.5 cursor-pointer font-bold ${
               cmsTab === "editor"
                 ? "bg-amber-500 text-neutral-950 border-amber-400 shadow-md shadow-amber-500/20"
                 : "bg-neutral-900 text-neutral-300 border-neutral-800 hover:border-amber-500/50"
@@ -717,50 +806,98 @@ export default function AdminBlogCMS({
 
           <button
             onClick={() => setCmsTab("list")}
-            className={`px-3.5 py-2 rounded-xl border transition-all flex items-center gap-1.5 cursor-pointer font-bold ${
+            className={`px-3 py-2 rounded-xl border transition-all flex items-center gap-1.5 cursor-pointer font-bold ${
               cmsTab === "list"
                 ? "bg-amber-500 text-neutral-950 border-amber-400 shadow-md shadow-amber-500/20"
                 : "bg-neutral-900 text-neutral-300 border-neutral-800 hover:border-amber-500/50"
             }`}
           >
             <FileText className="h-4 w-4" />
-            <span>All Posts ({blogs.length})</span>
+            <span>Posts ({blogs.length})</span>
+          </button>
+
+          <button
+            onClick={() => setCmsTab("taxonomies")}
+            className={`px-3 py-2 rounded-xl border transition-all flex items-center gap-1.5 cursor-pointer font-bold ${
+              cmsTab === "taxonomies"
+                ? "bg-amber-500 text-neutral-950 border-amber-400 shadow-md shadow-amber-500/20"
+                : "bg-neutral-900 text-neutral-300 border-neutral-800 hover:border-amber-500/50"
+            }`}
+          >
+            <FolderTree className="h-4 w-4" />
+            <span>Categories & Tags</span>
+          </button>
+
+          <button
+            onClick={() => setCmsTab("comments")}
+            className={`px-3 py-2 rounded-xl border transition-all flex items-center gap-1.5 cursor-pointer font-bold ${
+              cmsTab === "comments"
+                ? "bg-amber-500 text-neutral-950 border-amber-400 shadow-md shadow-amber-500/20"
+                : "bg-neutral-900 text-neutral-300 border-neutral-800 hover:border-amber-500/50"
+            }`}
+          >
+            <MessageSquare className="h-4 w-4 text-purple-400" />
+            <span>Comments ({loadedComments.length})</span>
           </button>
 
           <button
             onClick={() => setCmsTab("media")}
-            className={`px-3.5 py-2 rounded-xl border transition-all flex items-center gap-1.5 cursor-pointer font-bold ${
+            className={`px-3 py-2 rounded-xl border transition-all flex items-center gap-1.5 cursor-pointer font-bold ${
               cmsTab === "media"
                 ? "bg-amber-500 text-neutral-950 border-amber-400 shadow-md shadow-amber-500/20"
                 : "bg-neutral-900 text-neutral-300 border-neutral-800 hover:border-amber-500/50"
             }`}
           >
-            <ImageIcon className="h-4 w-4" />
-            <span>Media Library ({mediaItems.length})</span>
+            <ImageIcon className="h-4 w-4 text-emerald-400" />
+            <span>Media ({mediaItems.length})</span>
+          </button>
+
+          <button
+            onClick={() => setCmsTab("users")}
+            className={`px-3 py-2 rounded-xl border transition-all flex items-center gap-1.5 cursor-pointer font-bold ${
+              cmsTab === "users"
+                ? "bg-amber-500 text-neutral-950 border-amber-400 shadow-md shadow-amber-500/20"
+                : "bg-neutral-900 text-neutral-300 border-neutral-800 hover:border-amber-500/50"
+            }`}
+          >
+            <ShieldCheck className="h-4 w-4" />
+            <span>Team ({loadedUsers.length})</span>
+          </button>
+
+          <button
+            onClick={() => setCmsTab("settings")}
+            className={`px-3 py-2 rounded-xl border transition-all flex items-center gap-1.5 cursor-pointer font-bold ${
+              cmsTab === "settings"
+                ? "bg-amber-500 text-neutral-950 border-amber-400 shadow-md shadow-amber-500/20"
+                : "bg-neutral-900 text-neutral-300 border-neutral-800 hover:border-amber-500/50"
+            }`}
+          >
+            <Sliders className="h-4 w-4 text-sky-400" />
+            <span>Settings</span>
           </button>
 
           <button
             onClick={() => setCmsTab("audit")}
-            className={`px-3.5 py-2 rounded-xl border transition-all flex items-center gap-1.5 cursor-pointer font-bold ${
+            className={`px-3 py-2 rounded-xl border transition-all flex items-center gap-1.5 cursor-pointer font-bold ${
               cmsTab === "audit"
                 ? "bg-amber-500 text-neutral-950 border-amber-400 shadow-md shadow-amber-500/20"
                 : "bg-neutral-900 text-neutral-300 border-neutral-800 hover:border-amber-500/50"
             }`}
           >
-            <ShieldCheck className="h-4 w-4 text-emerald-400" />
-            <span>Audit Trail</span>
+            <History className="h-4 w-4" />
+            <span>Audit</span>
           </button>
 
           <button
             onClick={() => setCmsTab("api_docs")}
-            className={`px-3.5 py-2 rounded-xl border transition-all flex items-center gap-1.5 cursor-pointer font-bold ${
+            className={`px-3 py-2 rounded-xl border transition-all flex items-center gap-1.5 cursor-pointer font-bold ${
               cmsTab === "api_docs"
                 ? "bg-amber-500 text-neutral-950 border-amber-400 shadow-md shadow-amber-500/20"
                 : "bg-neutral-900 text-neutral-300 border-neutral-800 hover:border-amber-500/50"
             }`}
           >
-            <Database className="h-4 w-4" />
-            <span>MySQL & PHP REST API</span>
+            <Database className="h-4 w-4 text-amber-400" />
+            <span>MySQL & PHP API</span>
           </button>
         </div>
       </div>
@@ -796,6 +933,67 @@ export default function AdminBlogCMS({
             </button>
           </div>
         </div>
+      )}
+
+      {/* ==================================================================== */}
+      {/* 0. CMS DASHBOARD OVERVIEW TAB                                        */}
+      {/* ==================================================================== */}
+      {cmsTab === "dashboard" && (
+        <CmsDashboardTab
+          blogs={blogs}
+          categories={loadedCategories}
+          tags={loadedTags}
+          media={mediaItems}
+          comments={loadedComments}
+          users={loadedUsers}
+          auditLogs={auditLogs}
+          onNavigateTab={(tab) => setCmsTab(tab)}
+          onEditPost={handleEditPost}
+          onOpenDbModal={() => setIsDbModalOpen(true)}
+          onRefreshAll={refreshAllData}
+        />
+      )}
+
+      {/* ==================================================================== */}
+      {/* 1. TAXONOMIES (CATEGORIES & TAGS) TAB                                */}
+      {/* ==================================================================== */}
+      {cmsTab === "taxonomies" && (
+        <CmsTaxonomiesTab
+          categories={loadedCategories}
+          tags={loadedTags}
+          onRefresh={refreshAllData}
+        />
+      )}
+
+      {/* ==================================================================== */}
+      {/* 2. COMMENTS MODERATION TAB                                           */}
+      {/* ==================================================================== */}
+      {cmsTab === "comments" && (
+        <CmsCommentsTab
+          comments={loadedComments}
+          onRefresh={refreshAllData}
+        />
+      )}
+
+      {/* ==================================================================== */}
+      {/* 3. TEAM & CMS USERS TAB                                              */}
+      {/* ==================================================================== */}
+      {cmsTab === "users" && (
+        <CmsUsersTab
+          users={loadedUsers}
+          onRefresh={refreshAllData}
+        />
+      )}
+
+      {/* ==================================================================== */}
+      {/* 4. CMS SYSTEM & SEO SETTINGS TAB                                     */}
+      {/* ==================================================================== */}
+      {cmsTab === "settings" && (
+        <CmsSettingsTab
+          settings={loadedCmsSettings}
+          onRefresh={refreshAllData}
+          onOpenDbModal={() => setIsDbModalOpen(true)}
+        />
       )}
 
       {/* ==================================================================== */}
@@ -1174,11 +1372,19 @@ export default function AdminBlogCMS({
                   onChange={(e) => setCategory(e.target.value)}
                   className="w-full bg-black border border-neutral-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500 font-semibold"
                 >
-                  {categories.map((cat, idx) => (
-                    <option key={idx} value={cat}>
-                      📁 {cat}
-                    </option>
-                  ))}
+                  {loadedCategories.length > 0 ? (
+                    loadedCategories.map((cat) => (
+                      <option key={cat.id} value={cat.name}>
+                        📁 {cat.name} ({cat.post_count || 0} posts)
+                      </option>
+                    ))
+                  ) : (
+                    categories.map((cat, idx) => (
+                      <option key={idx} value={cat}>
+                        📁 {cat}
+                      </option>
+                    ))
+                  )}
                 </select>
               </div>
 
@@ -1759,11 +1965,19 @@ export default function AdminBlogCMS({
               <div className="p-3 bg-neutral-900 border border-neutral-800 rounded-lg text-xs font-mono text-emerald-400">
                 <p className="m-0 font-bold text-white mb-1">Hostinger Database Config:</p>
                 <p className="m-0 text-neutral-400">Host: localhost</p>
-                <p className="m-0 text-neutral-400">User: gbc_user</p>
-                <p className="m-0 text-neutral-400">Database: gbc_blog_cms</p>
+                <p className="m-0 text-neutral-400">User: <strong className="text-amber-300">u923048970_goldbuyers</strong></p>
+                <p className="m-0 text-neutral-400">Database: <strong className="text-amber-300">u923048970_goldbuyers</strong></p>
+                <p className="m-0 text-neutral-400">Port: 3306</p>
               </div>
 
-              <div className="pt-2">
+              <div className="pt-2 flex flex-col gap-2">
+                <button
+                  onClick={() => setIsDbModalOpen(true)}
+                  className="w-full py-2.5 bg-amber-500 hover:bg-amber-400 text-neutral-950 font-mono text-xs rounded-xl cursor-pointer flex items-center justify-center gap-2 transition-colors font-bold shadow-md shadow-amber-500/20"
+                >
+                  <Server className="h-4 w-4" />
+                  <span>Launch Live MySQL Table Diagnostics</span>
+                </button>
                 <button
                   onClick={handleDownloadDatabaseBackup}
                   className="w-full py-2.5 bg-neutral-800 hover:bg-neutral-700 text-amber-300 font-mono text-xs rounded-xl border border-neutral-700 cursor-pointer flex items-center justify-center gap-2 transition-colors font-bold"
@@ -1777,6 +1991,12 @@ export default function AdminBlogCMS({
           </div>
         </div>
       )}
+
+      {/* Live Database Diagnostics & Table Health Modal */}
+      <CmsDatabaseModal
+        isOpen={isDbModalOpen}
+        onClose={() => setIsDbModalOpen(false)}
+      />
 
     </div>
   );

@@ -310,10 +310,16 @@ Generates a complete SQL dump (`.sql`) of all blog CMS tables for download and d
 ## 💻 Database Import Setup Instructions
 
 1. Log into your hosting account (e.g., Hostinger / cPanel / phpMyAdmin).
-2. Create a new MySQL database named `gold_buyers_colombo_db`.
-3. Open **phpMyAdmin** -> Select the new database -> Click **Import**.
+2. Create a new MySQL database named `u923048970_goldbuyers` with user `u923048970_goldbuyers`.
+3. Open **phpMyAdmin** -> Select database `u923048970_goldbuyers` -> Click **Import**.
 4. Choose the file `/backend/database/schema.sql` and click **Go**.
-5. Update `/backend/config/database.php` credentials to match your database host, name, username, and password.
+5. Ensure `/backend/config/database.php` has your database password configured:
+   ```php
+   $this->host = 'localhost';
+   $this->db_name = 'u923048970_goldbuyers';
+   $this->username = 'u923048970_goldbuyers';
+   $this->password = 'YOUR_DB_PASSWORD';
+   ```
 
 ---
 

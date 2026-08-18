@@ -177,6 +177,41 @@ CREATE TABLE `audit_logs` (
   KEY `idx_audit_action` (`action`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- ------------------------------------------------------------------------------
+-- 9. COMMENTS TABLE
+-- ------------------------------------------------------------------------------
+CREATE TABLE `comments` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `post_id` INT UNSIGNED NOT NULL,
+  `user_id` INT UNSIGNED NULL DEFAULT NULL,
+  `author_name` VARCHAR(120) NOT NULL,
+  `author_email` VARCHAR(180) NOT NULL,
+  `content` TEXT NOT NULL,
+  `status` ENUM('pending', 'approved', 'spam', 'trash') NOT NULL DEFAULT 'approved',
+  `ip_address` VARCHAR(45) NULL DEFAULT NULL,
+  `parent_id` INT UNSIGNED NULL DEFAULT NULL,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_comments_post` (`post_id`),
+  KEY `idx_comments_status` (`status`),
+  CONSTRAINT `fk_comments_post` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_comments_parent` FOREIGN KEY (`parent_id`) REFERENCES `comments` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------------------------
+-- 10. SYSTEM SETTINGS TABLE
+-- ------------------------------------------------------------------------------
+CREATE TABLE `settings` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `setting_key` VARCHAR(100) NOT NULL,
+  `setting_value` LONGTEXT NULL DEFAULT NULL,
+  `group_name` VARCHAR(50) NOT NULL DEFAULT 'general',
+  `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_settings_key` (`setting_key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- INITIAL SEED DATA
 INSERT INTO `users` (`id`, `user_uuid`, `name`, `email`, `password_hash`, `role`, `bio`) VALUES
 (1, '8f2d1e2a-1111-4444-8888-999988887777', 'Chief Appraiser Admin', 'admin@goldlanka.lk', '$2y$10$e0MYzXyjpJS7Pd0RVvHwHe14a.zDq6/vCqQ5yFqV7xW3mY8k7mOOS', 'super_admin', 'Senior Gold Market Analyst and Head Appraiser at Gold Buyers Colombo.');
@@ -216,3 +251,19 @@ INSERT INTO `posts` (
 
 INSERT INTO `post_tags` (`post_id`, `tag_id`) VALUES
 (1, 1), (1, 2), (1, 4);
+
+INSERT INTO `comments` (`id`, `post_id`, `author_name`, `author_email`, `content`, `status`, `created_at`) VALUES
+(1, 1, 'Kavinda Perera', 'kavinda.perera@gmail.com', 'Very informative article! Sold my 22K sovereign at Gold Buyers Colombo Bambalapitiya branch last week. The computerized XRF reading was 91.67% and got paid immediately via bank transfer.', 'approved', NOW()),
+(2, 1, 'Mohamed Rameez', 'rameez.traders@yahoo.com', 'Is XRF testing available in Kandy as well, or only in Colombo branches?', 'approved', NOW());
+
+INSERT INTO `settings` (`setting_key`, `setting_value`, `group_name`) VALUES
+('site_name', 'Gold Buyers Colombo Blog & Valuation CMS', 'general'),
+('site_tagline', 'Premier Gold & Precious Asset Purchasing Authority in Sri Lanka', 'general'),
+('admin_email', 'admin@goldlanka.lk', 'general'),
+('default_author', 'Samantha Alwis (Chief Valuation Officer)', 'blog'),
+('posts_per_page', '10', 'blog'),
+('enable_comments', '1', 'comments'),
+('auto_approve_comments', '1', 'comments'),
+('google_analytics_id', 'G-GBCCOLOMBO2026', 'seo'),
+('default_meta_description', 'Official Blog of Gold Buyers Colombo. Daily gold rates, XRF testing guides, and market analysis in Sri Lanka.', 'seo');
+
