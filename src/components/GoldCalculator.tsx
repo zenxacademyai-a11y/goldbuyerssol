@@ -7,6 +7,7 @@ import React, { useState, useEffect } from "react";
 import { Calculator, Scale, FileText, Share2, Printer, Check, Info, MessageCircle, Download, FileSpreadsheet } from "lucide-react";
 import { Language, translations } from "../lib/translations.js";
 import { GoldKarat, GoldRate, SystemSettings } from "../types.js";
+import { safeStorage } from "../lib/localDb.js";
 import GoldInvoiceModal from "./GoldInvoiceModal.js";
 
 interface GoldCalculatorProps {
@@ -73,8 +74,10 @@ export default function GoldCalculator({ currentLang, rates, settings, isLoading
 
     // Signal calculator interaction to trigger PWA banner if appropriate
     try {
-      localStorage.setItem("gbc_calculator_interacted", "true");
-      window.dispatchEvent(new Event("gbc_calculator_interaction"));
+      safeStorage.setItem("gbc_calculator_interacted", "true");
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new Event("gbc_calculator_interaction"));
+      }
     } catch {
       // ignore quota / restricted mode errors
     }

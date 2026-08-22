@@ -187,8 +187,60 @@ async function startServer() {
   });
 
   // ==========================================
-  // BLOGS API ENDPOINTS
   // ==========================================
+  // BLOGS & POSTS API ENDPOINTS
+  // ==========================================
+
+  const handleGetPosts = (req: Request, res: Response) => {
+    try {
+      const db = readDb();
+      const blogs = db.blogs || [];
+      const status = (req.query.status as string) || "all";
+      const category = req.query.category as string;
+      const search = req.query.search as string;
+
+      let filtered = blogs;
+      if (status !== "all" && status !== "all_with_trash") {
+        if (status === "published") {
+          filtered = filtered.filter((b) => b.isPublished !== false && b.status !== "draft" && b.status !== "trash");
+        } else if (status === "draft") {
+          filtered = filtered.filter((b) => b.isPublished === false || b.status === "draft");
+        } else if (status === "scheduled") {
+          filtered = filtered.filter((b) => b.status === "scheduled");
+        }
+      }
+
+      if (category && category !== "All") {
+        filtered = filtered.filter((b) => b.category?.toLowerCase() === category.toLowerCase());
+      }
+
+      if (search) {
+        const s = search.toLowerCase();
+        filtered = filtered.filter((b) => b.title?.toLowerCase().includes(s) || b.content?.toLowerCase().includes(s));
+      }
+
+      // If client requests raw array (e.g. standard fetch) or standard REST envelope
+      res.json({
+        success: true,
+        message: "Posts fetched successfully",
+        data: {
+          posts: filtered,
+          pagination: {
+            total_items: filtered.length,
+            current_page: 1,
+            limit: 50,
+            total_pages: 1,
+            has_next: false,
+            has_prev: false
+          }
+        },
+        posts: filtered,
+        blogs: filtered
+      });
+    } catch (err: any) {
+      res.status(500).json({ success: false, error: "Failed to fetch posts" });
+    }
+  };
 
   app.get("/api/blogs", (req: Request, res: Response) => {
     try {
@@ -199,7 +251,10 @@ async function startServer() {
     }
   });
 
-  app.post("/api/blogs", (req: Request, res: Response) => {
+  app.get("/api/posts", handleGetPosts);
+  app.get("/api/posts/index.php", handleGetPosts);
+
+  app.post(["/api/blogs", "/api/posts"], (req: Request, res: Response) => {
     try {
       const blogData = req.body;
       const db = readDb();
@@ -208,7 +263,7 @@ async function startServer() {
 
       if (blogData.id) {
         // Update existing
-        const index = db.blogs.findIndex((b) => b.id === blogData.id);
+        const index = db.blogs.findIndex((b) => String(b.id) === String(blogData.id));
         if (index !== -1) {
           db.blogs[index] = { ...db.blogs[index], ...blogData, updatedAt: new Date().toISOString() };
         } else {
@@ -235,21 +290,33 @@ async function startServer() {
       }
 
       writeDb(db);
-      res.json({ success: true, blogs: db.blogs });
+      res.json({ 
+        success: true, 
+        message: "Post saved successfully",
+        data: { posts: db.blogs },
+        blogs: db.blogs, 
+        posts: db.blogs 
+      });
     } catch (err: any) {
-      res.status(500).json({ error: "Failed to save blog post" });
+      res.status(500).json({ success: false, error: "Failed to save blog post" });
     }
   });
 
-  app.delete("/api/blogs/:id", (req: Request, res: Response) => {
+  app.delete(["/api/blogs/:id", "/api/posts/:id"], (req: Request, res: Response) => {
     try {
       const { id } = req.params;
       const db = readDb();
-      db.blogs = (db.blogs || []).filter((b) => b.id !== id);
+      db.blogs = (db.blogs || []).filter((b) => String(b.id) !== String(id));
       writeDb(db);
-      res.json({ success: true, message: `Blog ${id} deleted` });
+      res.json({ 
+        success: true, 
+        message: `Blog ${id} deleted`,
+        data: { posts: db.blogs },
+        blogs: db.blogs,
+        posts: db.blogs
+      });
     } catch (err: any) {
-      res.status(500).json({ error: "Failed to delete blog post" });
+      res.status(500).json({ success: false, error: "Failed to delete blog post" });
     }
   });
 

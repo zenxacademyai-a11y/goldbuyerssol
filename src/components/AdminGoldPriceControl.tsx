@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import { GoldKarat, GoldRate, SystemSettings } from "../types.js";
 import { Language } from "../lib/translations.js";
+import { safeStorage } from "../lib/localDb.js";
 
 interface AdminGoldPriceControlProps {
   rates: GoldRate[];
@@ -63,7 +64,7 @@ export default function AdminGoldPriceControl({
   // History log local state
   const [historyLogs, setHistoryLogs] = useState<RateHistoryLog[]>(() => {
     try {
-      const saved = localStorage.getItem("gbc_rate_history");
+      const saved = safeStorage.getItem("gbc_rate_history");
       if (saved) return JSON.parse(saved);
     } catch {
       // ignore
@@ -193,7 +194,7 @@ export default function AdminGoldPriceControl({
       const nextLogs = [newLog, ...historyLogs].slice(0, 10);
       setHistoryLogs(nextLogs);
       try {
-        localStorage.setItem("gbc_rate_history", JSON.stringify(nextLogs));
+        safeStorage.setItem("gbc_rate_history", JSON.stringify(nextLogs));
       } catch {
         // ignore
       }

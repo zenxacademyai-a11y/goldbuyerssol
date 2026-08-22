@@ -15,7 +15,7 @@ import { Language } from "./lib/translations.js";
 import { GoldKarat, GoldRate, SystemSettings, CustomerLead, BlogPost, HistoricalRate } from "./types.js";
 import { updateMetaTags } from "./lib/seo.js";
 import SEOSchemas from "./components/SEOSchemas.js";
-import { localDb, fetchFallbackData } from "./lib/localDb.js";
+import { localDb, fetchFallbackData, safeStorage } from "./lib/localDb.js";
 import GoldCalculator from "./components/GoldCalculator.js";
 import SellingProcess from "./components/SellingProcess.js";
 import Services from "./components/Services.js";
@@ -36,6 +36,54 @@ import HomeAboutSection from "./components/HomeAboutSection.js";
 import FinalCTASection from "./components/FinalCTASection.js";
 import InstallAppBanner from "./components/InstallAppBanner.js";
 
+// Helper to normalize blog posts from any API envelope or MySQL schema format
+function normalizeBlogPosts(raw: any): BlogPost[] {
+  if (!raw) return [];
+  const list = Array.isArray(raw) 
+    ? raw 
+    : (raw.data?.posts || raw.posts || raw.data || []);
+  
+  if (!Array.isArray(list)) return [];
+
+  return list.map((item: any) => {
+    let tagsList: string[] = [];
+    if (Array.isArray(item.tags)) {
+      tagsList = item.tags.map((t: any) => typeof t === "string" ? t : (t.name || t.slug || "")).filter(Boolean);
+    } else if (typeof item.tags === "string") {
+      tagsList = item.tags.split(",").map((s: string) => s.trim()).filter(Boolean);
+    }
+
+    const isPub = item.isPublished !== undefined 
+      ? Boolean(item.isPublished) 
+      : (item.status ? item.status === "published" : true);
+
+    const postDate = item.date || item.published_at?.split(" ")[0]?.split("T")[0] || item.created_at?.split(" ")[0]?.split("T")[0] || new Date().toISOString().split("T")[0];
+
+    return {
+      id: String(item.id || item.post_uuid || `blog_${Date.now()}`),
+      slug: item.slug || `post-${item.id || Date.now()}`,
+      title: item.title || "Untitled Post",
+      content: item.content || "",
+      excerpt: item.excerpt || "",
+      author: item.author || item.author_name || "Samantha Alwis (Chief Valuation Officer, GBC)",
+      date: postDate,
+      category: item.category || item.category_name || "Selling Gold",
+      tags: tagsList.length > 0 ? tagsList : ["Gold Buyers", "Colombo"],
+      image: item.image || item.cover_image || "https://images.unsplash.com/photo-1610375461246-83df859d849d?auto=format&fit=crop&w=1200&q=80",
+      metaTitle: item.metaTitle || item.meta_title || item.title || "",
+      metaDescription: item.metaDescription || item.meta_description || item.excerpt || "",
+      isPublished: isPub,
+      status: item.status || (isPub ? "published" : "draft"),
+      isFeatured: Boolean(item.isFeatured ?? item.is_featured),
+      canonicalUrl: item.canonicalUrl || item.canonical_url || "",
+      focusKeyword: item.focusKeyword || item.focus_keyword || "",
+      readTime: item.readTime || `${Math.max(1, Math.ceil((item.content?.split(/\s+/).length || 200) / 200))} min read`,
+      createdAt: item.createdAt || item.created_at || new Date().toISOString(),
+      questions: item.questions || []
+    };
+  });
+}
+
 interface AppProps {
   initialView?: "home" | "blog" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "faq" | "services";
   initialBlogSlug?: string | null;
@@ -54,57 +102,52 @@ export default function App({
   // Increment visit count for PWA install prompt & analytics on mount
   useEffect(() => {
     try {
-      if (typeof window !== "undefined" && typeof localStorage !== "undefined") {
-        const currentVisits = parseInt(localStorage.getItem("gbc_visit_count") || "0", 10);
-        localStorage.setItem("gbc_visit_count", (currentVisits + 1).toString());
-      }
+      const currentVisits = parseInt(safeStorage.getItem("gbc_visit_count") || "0", 10);
+      safeStorage.setItem("gbc_visit_count", (currentVisits + 1).toString());
     } catch {
-      // ignore restricted mode / localStorage errors
+      // ignore restricted mode / storage errors
     }
   }, []);
 
   // Navigation & Language
   const [currentLang, setCurrentLang] = useState<Language>(() => {
-    if (typeof window === "undefined" || typeof localStorage === "undefined") {
-      return "en";
-    }
     // 1. Check if user has a persisted language choice
-    const saved = localStorage.getItem("gbc_user_lang");
+    const saved = safeStorage.getItem("gbc_user_lang");
     if (saved === "en" || saved === "si" || saved === "ta") {
       return saved as Language;
     }
 
     // 2. First visit - detect browser language (English, Sinhala, or Tamil)
     try {
-      const browserLangs = navigator.languages || [navigator.language];
-      for (const lang of browserLangs) {
-        const lowerLang = lang.toLowerCase();
-        if (lowerLang.startsWith("si")) {
-          localStorage.setItem("gbc_user_lang", "si");
-          return "si";
-        }
-        if (lowerLang.startsWith("ta")) {
-          localStorage.setItem("gbc_user_lang", "ta");
-          return "ta";
-        }
-        if (lowerLang.startsWith("en")) {
-          localStorage.setItem("gbc_user_lang", "en");
-          return "en";
+      if (typeof navigator !== "undefined") {
+        const browserLangs = navigator.languages || [navigator.language];
+        for (const lang of browserLangs) {
+          const lowerLang = lang.toLowerCase();
+          if (lowerLang.startsWith("si")) {
+            safeStorage.setItem("gbc_user_lang", "si");
+            return "si";
+          }
+          if (lowerLang.startsWith("ta")) {
+            safeStorage.setItem("gbc_user_lang", "ta");
+            return "ta";
+          }
+          if (lowerLang.startsWith("en")) {
+            safeStorage.setItem("gbc_user_lang", "en");
+            return "en";
+          }
         }
       }
-    } catch (e) {
-      console.warn("Failed to automatically detect browser language:", e);
+    } catch {
+      // ignore language detection failure
     }
 
     // Default to "en"
     return "en";
   });
 
-  // Sync manual language selection changes to localStorage for subsequent sessions
+  // Sync manual language selection changes to safeStorage for subsequent sessions
   useEffect(() => {
-    if (typeof window !== "undefined" && typeof localStorage !== "undefined") {
-      localStorage.setItem("gbc_user_lang", currentLang);
-    }
+    safeStorage.setItem("gbc_user_lang", currentLang);
   }, [currentLang]);
 
   const [activeView, setActiveView] = useState<"home" | "blog" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "faq" | "services">(
@@ -308,16 +351,20 @@ export default function App({
     handleUrlRouting();
     window.addEventListener("popstate", handleUrlRouting);
 
-    const isUrlAdmin = window.location.search.includes("admin=true") || window.location.hash === "#admin";
-    const isLocalAdmin = localStorage.getItem("gbc_admin_mode") === "true";
+    const isUrlAdmin = typeof window !== "undefined" && (window.location.search.includes("admin=true") || window.location.hash === "#admin");
+    const isLocalAdmin = safeStorage.getItem("gbc_admin_mode") === "true";
     if (isUrlAdmin || isLocalAdmin) {
       setShowAdmin(true);
       if (isUrlAdmin) {
-        localStorage.setItem("gbc_admin_mode", "true");
+        safeStorage.setItem("gbc_admin_mode", "true");
       }
     }
 
-    return () => window.removeEventListener("popstate", handleUrlRouting);
+    return () => {
+      if (typeof window !== "undefined") {
+        window.removeEventListener("popstate", handleUrlRouting);
+      }
+    };
   }, []);
 
   const handleLogoClick = () => {
@@ -325,9 +372,11 @@ export default function App({
       const next = prev + 1;
       if (next >= 5) {
         setShowAdmin(true);
-        localStorage.setItem("gbc_admin_mode", "true");
+        safeStorage.setItem("gbc_admin_mode", "true");
         setActiveView("admin");
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        if (typeof window !== "undefined") {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
         return 0;
       }
       return next;
@@ -385,10 +434,13 @@ export default function App({
         setLeads(leadsRes);
         localDb.set("leads", leadsRes);
       }
-      if (Array.isArray(blogsRes)) {
-        setBlogs(blogsRes);
-        localDb.set("blogs", blogsRes);
+      
+      const normalizedBlogs = normalizeBlogPosts(blogsRes);
+      if (normalizedBlogs.length > 0) {
+        setBlogs(normalizedBlogs);
+        localDb.set("blogs", normalizedBlogs);
       }
+      
       if (Array.isArray(histRes)) {
         setHistoricalRates(histRes);
         localDb.set("historical", histRes);
@@ -399,7 +451,7 @@ export default function App({
       setRates((prev) => (prev && prev.length > 0 ? prev : fallback.rates));
       setSettings((prev) => prev || fallback.settings);
       setLeads((prev) => (prev && prev.length > 0 ? prev : fallback.leads));
-      setBlogs((prev) => (prev && prev.length > 0 ? prev : fallback.blogs));
+      setBlogs((prev) => (prev && prev.length > 0 ? prev : normalizeBlogPosts(fallback.blogs)));
       setHistoricalRates((prev) => (prev && prev.length > 0 ? prev : fallback.historical));
     } finally {
       setIsLoading(false);
@@ -531,9 +583,11 @@ export default function App({
       });
       if (response.ok) {
         const data = await response.json();
-        const freshBlogs = data.blogs || (await fetch("/api/blogs").then((r) => r.json()));
-        setBlogs(freshBlogs);
-        localDb.set("blogs", freshBlogs);
+        const freshBlogs = normalizeBlogPosts(data.blogs || data);
+        if (freshBlogs.length > 0) {
+          setBlogs(freshBlogs);
+          localDb.set("blogs", freshBlogs);
+        }
       } else throw new Error("API not ok");
     } catch (e) {
       console.warn("Saving to localDb (Static Hosting Mode)");

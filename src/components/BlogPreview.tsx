@@ -139,10 +139,26 @@ export default function BlogPreview({
   const categories = ["All", "Gold Price", "Gold Investment", "Selling Gold", "Jewelry", "Sri Lanka News"];
 
   // Filter blog list
-  const filteredBlogs = blogs.filter((b) => {
-    const matchesSearch = b.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                          b.content.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === "All" || b.category === selectedCategory;
+  const filteredBlogs = (blogs || []).filter((b) => {
+    if (!b) return false;
+    // Only show published articles in public blog view if status or isPublished flag is present
+    if (b.isPublished === false || b.status === "draft" || b.status === "trash") return false;
+    
+    const postTitle = b.title || "";
+    const postContent = b.content || "";
+    const postExcerpt = b.excerpt || "";
+    const postCat = b.category || (b as any).category_name || "";
+
+    const term = searchTerm.toLowerCase();
+    const matchesSearch = !term || 
+                          postTitle.toLowerCase().includes(term) || 
+                          postContent.toLowerCase().includes(term) ||
+                          postExcerpt.toLowerCase().includes(term);
+
+    const matchesCategory = selectedCategory === "All" || 
+                            postCat.toLowerCase() === selectedCategory.toLowerCase() ||
+                            (selectedCategory === "Selling Gold" && (postCat.includes("Selling") || postCat.includes("Gold")));
+                            
     return matchesSearch && matchesCategory;
   });
 

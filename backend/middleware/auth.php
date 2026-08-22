@@ -52,3 +52,13 @@ function requireAuth(?PDO $db = null, array $requiredRoles = ['super_admin', 'ed
     ]);
     exit;
 }
+
+function requireRole(array $user, array $allowedRoles): void {
+    if (!in_array($user['role'] ?? '', $allowedRoles, true)) {
+        sendApiResponse(false, "Forbidden: Insufficient role permissions", null, 403, [
+            'code' => 'ROLE_FORBIDDEN',
+            'details' => 'Action requires one of the following roles: ' . implode(', ', $allowedRoles)
+        ]);
+        exit;
+    }
+}

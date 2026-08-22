@@ -60,6 +60,7 @@ import {
   AuditLogItem,
   CmsSettings 
 } from "../types.js";
+import { safeStorage } from "../lib/localDb.js";
 import RichTextEditor from "./RichTextEditor.js";
 import CmsDashboardTab from "./cms/CmsDashboardTab.js";
 import CmsTaxonomiesTab from "./cms/CmsTaxonomiesTab.js";
@@ -346,10 +347,10 @@ export default function AdminBlogCMS({
         };
 
         try {
-          localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(draftData));
+          safeStorage.setItem(AUTOSAVE_KEY, JSON.stringify(draftData));
           setLastAutosavedTime(timeString);
-        } catch (e) {
-          console.warn("LocalStorage error during draft autosave", e);
+        } catch {
+          // ignore draft autosave failure
         }
       }
     }, 30000); // 30 Seconds
@@ -360,7 +361,7 @@ export default function AdminBlogCMS({
   // Check for saved draft on mount
   useEffect(() => {
     try {
-      const saved = localStorage.getItem(AUTOSAVE_KEY);
+      const saved = safeStorage.getItem(AUTOSAVE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
         if (parsed && (parsed.title || parsed.content)) {
@@ -368,7 +369,7 @@ export default function AdminBlogCMS({
           setRestorableDraftData(parsed);
         }
       }
-    } catch (e) {
+    } catch {
       // ignore
     }
   }, []);
@@ -395,7 +396,7 @@ export default function AdminBlogCMS({
   };
 
   const handleDiscardDraft = () => {
-    localStorage.removeItem(AUTOSAVE_KEY);
+    safeStorage.removeItem(AUTOSAVE_KEY);
     setHasRestorableDraft(false);
     setRestorableDraftData(null);
     setLastAutosavedTime(null);
@@ -459,7 +460,7 @@ export default function AdminBlogCMS({
     setCanonicalUrl("");
     setTags("Colombo Gold Buyers, 22K Gold Price");
     setStatus("published");
-    localStorage.removeItem(AUTOSAVE_KEY);
+    safeStorage.removeItem(AUTOSAVE_KEY);
     setLastAutosavedTime(null);
   };
 
@@ -496,7 +497,7 @@ export default function AdminBlogCMS({
       };
 
       await onSaveBlog(postPayload);
-      localStorage.removeItem(AUTOSAVE_KEY);
+      safeStorage.removeItem(AUTOSAVE_KEY);
       setLastAutosavedTime(null);
       setSaveSuccessMsg(editingPostId ? "Article updated successfully!" : "New blog post published!");
       

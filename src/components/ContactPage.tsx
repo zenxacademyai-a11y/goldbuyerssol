@@ -7,6 +7,7 @@ import React, { useState } from "react";
 import { motion } from "motion/react";
 import { MapPin, Phone, Clock, Car, Compass, CheckCircle2, MessageCircle, HelpCircle, Mail, ShieldAlert, Navigation, PhoneCall } from "lucide-react";
 import { Language, translations } from "../lib/translations.js";
+import { safeStorage } from "../lib/localDb.js";
 
 interface ContactPageProps {
   currentLang: Language;
@@ -99,9 +100,9 @@ export default function ContactPage({ currentLang }: ContactPageProps) {
 
       if (!isOk) {
         // Fallback for static hosting
-        const existing = JSON.parse(localStorage.getItem("gbc_leads") || "[]");
+        const existing = JSON.parse(safeStorage.getItem("gbc_leads") || "[]");
         existing.push(payload);
-        localStorage.setItem("gbc_leads", JSON.stringify(existing));
+        safeStorage.setItem("gbc_leads", JSON.stringify(existing));
         isOk = true;
       }
 

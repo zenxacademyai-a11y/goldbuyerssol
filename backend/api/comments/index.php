@@ -34,8 +34,8 @@ try {
                 ORDER BY c.created_at DESC
             ");
             $isAdmin = 0;
-            $token = extractBearerToken();
-            if ($token && SecurityHelper::validateSessionToken($token)) {
+            $token = SecurityHelper::getBearerToken();
+            if ($token) {
                 $isAdmin = 1;
             }
             $stmt->execute([':post_id' => $postId, ':is_admin' => $isAdmin]);

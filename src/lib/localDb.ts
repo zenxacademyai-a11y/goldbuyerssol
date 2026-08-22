@@ -1,5 +1,42 @@
 import { GoldRate, SystemSettings, CustomerLead, BlogPost, HistoricalRate, GoldKarat } from "../types.js";
 
+const memoryStore: Record<string, string> = {};
+
+export const safeStorage = {
+  getItem: (key: string): string | null => {
+    try {
+      if (typeof window !== "undefined" && typeof window.localStorage !== "undefined" && window.localStorage !== null) {
+        return window.localStorage.getItem(key);
+      }
+    } catch {
+      // ignore restricted mode / sandbox errors
+    }
+    return memoryStore[key] ?? null;
+  },
+  setItem: (key: string, value: string): void => {
+    try {
+      if (typeof window !== "undefined" && typeof window.localStorage !== "undefined" && window.localStorage !== null) {
+        window.localStorage.setItem(key, value);
+        return;
+      }
+    } catch {
+      // ignore restricted mode / sandbox errors
+    }
+    memoryStore[key] = value;
+  },
+  removeItem: (key: string): void => {
+    try {
+      if (typeof window !== "undefined" && typeof window.localStorage !== "undefined" && window.localStorage !== null) {
+        window.localStorage.removeItem(key);
+        return;
+      }
+    } catch {
+      // ignore restricted mode / sandbox errors
+    }
+    delete memoryStore[key];
+  }
+};
+
 const DEFAULT_RATES: GoldRate[] = [
   { karat: GoldKarat.K24, purity: 0.999, ratePerGram: 25500 },
   { karat: GoldKarat.K22, purity: 0.916, ratePerGram: 23380 },
@@ -26,18 +63,18 @@ const DEFAULT_HISTORICAL: HistoricalRate[] = [
 export const localDb = {
   get: (key: string, defaultValue: any) => {
     try {
-      const item = localStorage.getItem(`gbc_${key}`);
+      const item = safeStorage.getItem(`gbc_${key}`);
       if (item) return JSON.parse(item);
-    } catch (e) {
-      console.warn("localStorage error", e);
+    } catch {
+      // Safe fallback without uncaught exceptions
     }
     return defaultValue;
   },
   set: (key: string, value: any) => {
     try {
-      localStorage.setItem(`gbc_${key}`, JSON.stringify(value));
-    } catch (e) {
-      console.warn("localStorage error", e);
+      safeStorage.setItem(`gbc_${key}`, JSON.stringify(value));
+    } catch {
+      // Safe fallback without uncaught exceptions
     }
   }
 };
