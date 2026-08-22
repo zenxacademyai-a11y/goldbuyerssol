@@ -44,7 +44,7 @@ export default function RecentPosts({ currentLang, blogs, onSelectBlog, onViewAl
 
   // Filter only published blogs and take the latest 3
   const recentBlogs = blogs
-    .filter((b) => b.isPublished)
+    .filter((b) => b.isPublished !== false && b.status !== "draft" && b.status !== "trash")
     .slice(0, 3);
 
   if (recentBlogs.length === 0) {

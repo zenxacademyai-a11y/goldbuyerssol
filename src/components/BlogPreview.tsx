@@ -135,14 +135,16 @@ export default function BlogPreview({
     }
   }, [activeArticle, currentLang]);
 
-  // Available categories
-  const categories = ["All", "Gold Price", "Gold Investment", "Selling Gold", "Jewelry", "Sri Lanka News"];
+  // Available categories (default + dynamically discovered from blog articles)
+  const baseCategories = ["All", "Gold Price", "Gold Investment", "Selling Gold", "Jewelry", "Sri Lanka News"];
+  const dynamicCategories = Array.from(new Set(blogs.map(b => b.category).filter(Boolean)));
+  const categories = ["All", ...Array.from(new Set([...baseCategories.filter(c => c !== "All"), ...dynamicCategories]))];
 
   // Filter blog list
   const filteredBlogs = (blogs || []).filter((b) => {
     if (!b) return false;
-    // Only show published articles in public blog view if status or isPublished flag is present
-    if (b.isPublished === false || b.status === "draft" || b.status === "trash") return false;
+    // Only show published articles in public blog view (hide trash or explicit drafts)
+    if (b.status === "trash" || b.status === "draft" || b.isPublished === false) return false;
     
     const postTitle = b.title || "";
     const postContent = b.content || "";

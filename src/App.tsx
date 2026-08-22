@@ -39,9 +39,26 @@ import InstallAppBanner from "./components/InstallAppBanner.js";
 // Helper to normalize blog posts from any API envelope or MySQL schema format
 function normalizeBlogPosts(raw: any): BlogPost[] {
   if (!raw) return [];
-  const list = Array.isArray(raw) 
-    ? raw 
-    : (raw.data?.posts || raw.posts || raw.data || []);
+  let list: any[] = [];
+  if (Array.isArray(raw)) {
+    list = raw;
+  } else if (Array.isArray(raw.data?.posts)) {
+    list = raw.data.posts;
+  } else if (Array.isArray(raw.posts)) {
+    list = raw.posts;
+  } else if (Array.isArray(raw.blogs)) {
+    list = raw.blogs;
+  } else if (Array.isArray(raw.data)) {
+    list = raw.data;
+  } else if (raw.data?.post && typeof raw.data.post === "object") {
+    list = [raw.data.post];
+  } else if (raw.post && typeof raw.post === "object") {
+    list = [raw.post];
+  } else if (raw.data && typeof raw.data === "object" && (raw.data.id || raw.data.title)) {
+    list = [raw.data];
+  } else if (raw.id || raw.title) {
+    list = [raw];
+  }
   
   if (!Array.isArray(list)) return [];
 
@@ -575,26 +592,85 @@ export default function App({
   };
 
   const handleSaveBlog = async (newBlog: Partial<BlogPost>) => {
-    try {
-      const response = await fetch("/api/blogs", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newBlog),
-      });
-      if (response.ok) {
-        const data = await response.json();
-        const freshBlogs = normalizeBlogPosts(data.blogs || data);
-        if (freshBlogs.length > 0) {
-          setBlogs(freshBlogs);
-          localDb.set("blogs", freshBlogs);
-        }
-      } else throw new Error("API not ok");
-    } catch (e) {
-      console.warn("Saving to localDb (Static Hosting Mode)");
-      const blogToSave = { ...newBlog, id: newBlog.id || Date.now().toString() } as BlogPost;
-      const updated = newBlog.id ? blogs.map(b => b.id === newBlog.id ? blogToSave : b) : [...blogs, blogToSave];
+    // 1. Construct authoritative complete BlogPost record
+    const blogId = String(newBlog.id || `blog_${Date.now()}`);
+    const isPub = newBlog.isPublished !== undefined 
+      ? Boolean(newBlog.isPublished) 
+      : (newBlog.status ? newBlog.status === "published" : true);
+
+    const postDate = newBlog.date || new Date().toISOString().split("T")[0];
+
+    const blogToSave: BlogPost = {
+      id: blogId,
+      slug: newBlog.slug || `post-${Date.now()}`,
+      title: newBlog.title || "Untitled Post",
+      content: newBlog.content || "",
+      excerpt: newBlog.excerpt || (newBlog.content ? newBlog.content.replace(/<[^>]*>/g, "").substring(0, 160) + "..." : ""),
+      author: newBlog.author || "Samantha Alwis (Chief Valuation Officer, GBC)",
+      date: postDate,
+      category: newBlog.category || "Selling Gold",
+      tags: Array.isArray(newBlog.tags) ? newBlog.tags : (newBlog.tags ? String(newBlog.tags).split(",").map(s => s.trim()).filter(Boolean) : ["Gold Buyers", "Colombo"]),
+      image: newBlog.image || "https://images.unsplash.com/photo-1610375461246-83df859d849d?auto=format&fit=crop&w=1200&q=80",
+      metaTitle: newBlog.metaTitle || newBlog.title || "",
+      metaDescription: newBlog.metaDescription || newBlog.excerpt || "",
+      isPublished: isPub,
+      status: newBlog.status || (isPub ? "published" : "draft"),
+      isFeatured: Boolean(newBlog.isFeatured),
+      canonicalUrl: newBlog.canonicalUrl || "",
+      focusKeyword: newBlog.focusKeyword || "",
+      readTime: newBlog.readTime || `${Math.max(2, Math.ceil(((newBlog.content || "").split(/\s+/).length || 200) / 200))} min read`,
+      createdAt: newBlog.createdAt || new Date().toISOString(),
+      questions: newBlog.questions || []
+    };
+
+    // 2. Immediately update local state & safeStorage so the post is never lost
+    setBlogs((prev) => {
+      const existingIdx = prev.findIndex((b) => String(b.id) === String(blogId) || (b.slug && b.slug === blogToSave.slug));
+      let updated: BlogPost[];
+      if (existingIdx !== -1) {
+        updated = [...prev];
+        updated[existingIdx] = { ...updated[existingIdx], ...blogToSave };
+      } else {
+        updated = [blogToSave, ...prev];
+      }
       localDb.set("blogs", updated);
-      setBlogs(updated);
+      return updated;
+    });
+
+    // 3. Attempt API persistence across supported endpoints
+    const endpoints = ["/api/blogs", "/api/posts", "/backend/api/posts/create.php"];
+    for (const ep of endpoints) {
+      try {
+        const response = await fetch(ep, {
+          method: "POST",
+          headers: { 
+            "Content-Type": "application/json",
+            "Authorization": "Bearer gbc_admin_token_2026"
+          },
+          body: JSON.stringify(blogToSave),
+        });
+        if (response.ok) {
+          const data = await response.json();
+          const fresh = normalizeBlogPosts(data.blogs || data.posts || data.data?.posts || data.data || data);
+          if (fresh.length > 0) {
+            setBlogs((current) => {
+              const map = new Map<string, BlogPost>();
+              fresh.forEach((p) => map.set(String(p.id), p));
+              current.forEach((p) => {
+                if (!map.has(String(p.id))) {
+                  map.set(String(p.id), p);
+                }
+              });
+              const merged = Array.from(map.values());
+              localDb.set("blogs", merged);
+              return merged;
+            });
+          }
+          break;
+        }
+      } catch (err) {
+        // Fallback silently
+      }
     }
   };
 
@@ -813,6 +889,11 @@ export default function App({
             onDeleteLead={handleDeleteLead}
             onSaveBlog={handleSaveBlog}
             onDeleteBlog={handleDeleteBlog}
+            onViewBlog={(slug) => {
+              setSelectedBlogSlug(slug);
+              setActiveView("blog");
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
           />
         )}
               </Suspense>

@@ -22,6 +22,7 @@ interface AdminDashboardProps {
   onDeleteLead: (id: string) => Promise<void>;
   onSaveBlog: (blog: Partial<BlogPost>) => Promise<void>;
   onDeleteBlog: (id: string) => Promise<void>;
+  onViewBlog?: (slug: string) => void;
 }
 
 export default function AdminDashboard({
@@ -35,6 +36,7 @@ export default function AdminDashboard({
   onDeleteLead,
   onSaveBlog,
   onDeleteBlog,
+  onViewBlog,
 }: AdminDashboardProps) {
   const t = translations[currentLang];
   
@@ -654,6 +656,7 @@ Include relevant Colombo landmarks (Sea Street Pettah, Wellawatte, Bambalapitiya
               blogs={blogs}
               onSaveBlog={onSaveBlog}
               onDeleteBlog={onDeleteBlog}
+              onViewBlog={onViewBlog}
             />
           </div>
         )}

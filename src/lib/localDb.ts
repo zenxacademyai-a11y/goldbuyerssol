@@ -1,4 +1,5 @@
 import { GoldRate, SystemSettings, CustomerLead, BlogPost, HistoricalRate, GoldKarat } from "../types.js";
+import { DEFAULT_BLOGS } from "../data/defaultBlogs.js";
 
 const memoryStore: Record<string, string> = {};
 
@@ -84,7 +85,7 @@ export const fetchFallbackData = () => {
     rates: localDb.get("rates", DEFAULT_RATES),
     settings: localDb.get("settings", DEFAULT_SETTINGS),
     leads: localDb.get("leads", []),
-    blogs: localDb.get("blogs", []),
+    blogs: localDb.get("blogs", DEFAULT_BLOGS),
     historical: localDb.get("historical", DEFAULT_HISTORICAL),
   };
 };

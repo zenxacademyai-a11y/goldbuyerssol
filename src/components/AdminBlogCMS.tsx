@@ -74,6 +74,7 @@ interface AdminBlogCMSProps {
   blogs: BlogPost[];
   onSaveBlog: (blog: Partial<BlogPost>) => Promise<void>;
   onDeleteBlog: (id: string) => Promise<void>;
+  onViewBlog?: (slug: string) => void;
 }
 
 export type CmsTabKey = 
@@ -117,6 +118,7 @@ export default function AdminBlogCMS({
   blogs,
   onSaveBlog,
   onDeleteBlog,
+  onViewBlog,
 }: AdminBlogCMSProps) {
   // CMS Sub Tab
   const [cmsTab, setCmsTab] = useState<CmsTabKey>("dashboard");
@@ -209,6 +211,7 @@ export default function AdminBlogCMS({
   // Saving / API Status
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccessMsg, setSaveSuccessMsg] = useState("");
+  const [lastSavedSlug, setLastSavedSlug] = useState<string | null>(null);
   const [copiedUrl, setCopiedUrl] = useState("");
 
   // Filter / Search State for Posts Table
@@ -499,7 +502,13 @@ export default function AdminBlogCMS({
       await onSaveBlog(postPayload);
       safeStorage.removeItem(AUTOSAVE_KEY);
       setLastAutosavedTime(null);
-      setSaveSuccessMsg(editingPostId ? "Article updated successfully!" : "New blog post published!");
+      setLastSavedSlug(slug);
+      setSaveSuccessMsg(editingPostId ? "Article updated successfully!" : "New blog post published successfully!");
+      
+      // Dispatch sync event
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new Event("gbc_blogs_updated"));
+      }
       
       // Log audit
       setAuditLogs((prev) => [
@@ -516,7 +525,7 @@ export default function AdminBlogCMS({
         ...prev
       ]);
 
-      setTimeout(() => setSaveSuccessMsg(""), 3500);
+      setTimeout(() => setSaveSuccessMsg(""), 6000);
 
       if (!editingPostId) {
         handleResetForm();
@@ -904,9 +913,36 @@ export default function AdminBlogCMS({
       </div>
 
       {saveSuccessMsg && (
-        <div className="bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 px-4 py-3 rounded-xl text-xs font-mono flex items-center gap-2 animate-fade-in">
-          <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
-          <span>{saveSuccessMsg}</span>
+        <div className="bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 px-4 py-3 rounded-xl text-xs font-mono flex flex-wrap items-center justify-between gap-3 animate-fade-in">
+          <div className="flex items-center gap-2">
+            <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
+            <span className="font-semibold">{saveSuccessMsg}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            {lastSavedSlug && (
+              <button
+                type="button"
+                onClick={() => {
+                  if (onViewBlog) {
+                    onViewBlog(lastSavedSlug);
+                  } else {
+                    window.open(`/blog/${lastSavedSlug}`, "_blank");
+                  }
+                }}
+                className="px-3 py-1 bg-emerald-500 text-neutral-950 font-bold rounded-lg hover:bg-emerald-400 cursor-pointer flex items-center gap-1.5 transition-colors"
+              >
+                <Eye className="h-3.5 w-3.5" />
+                <span>View on Live Blog</span>
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={() => setCmsTab("list")}
+              className="px-3 py-1 bg-neutral-800 text-neutral-200 rounded-lg hover:bg-neutral-700 cursor-pointer transition-colors"
+            >
+              All Posts Directory ({blogs.length})
+            </button>
+          </div>
         </div>
       )}
 
@@ -1542,14 +1578,19 @@ export default function AdminBlogCMS({
                               <img src={post.image} alt="" className="h-10 w-14 object-cover rounded-md shrink-0 border border-neutral-800" />
                             )}
                             <div>
-                              <a
-                                href={`/blog/${post.slug || post.id}`}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="font-serif font-bold text-white hover:text-amber-400 transition-colors text-sm line-clamp-1"
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  if (onViewBlog) {
+                                    onViewBlog(post.slug || post.id);
+                                  } else {
+                                    window.open(`/blog/${post.slug || post.id}`, "_blank");
+                                  }
+                                }}
+                                className="text-left font-serif font-bold text-white hover:text-amber-400 transition-colors text-sm line-clamp-1 cursor-pointer"
                               >
                                 {post.title}
-                              </a>
+                              </button>
                               <span className="text-[10px] text-neutral-500 font-mono block">
                                 /blog/{post.slug || post.id}
                               </span>
@@ -1609,6 +1650,20 @@ export default function AdminBlogCMS({
                               </>
                             ) : (
                               <>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    if (onViewBlog) {
+                                      onViewBlog(post.slug || post.id);
+                                    } else {
+                                      window.open(`/blog/${post.slug || post.id}`, "_blank");
+                                    }
+                                  }}
+                                  className="p-1.5 bg-neutral-800 text-neutral-300 hover:text-amber-400 hover:bg-neutral-700 rounded-lg transition-colors cursor-pointer"
+                                  title="View on Live Blog"
+                                >
+                                  <Eye className="h-3.5 w-3.5" />
+                                </button>
                                 <button
                                   onClick={() => handleEditPost(post)}
                                   className="p-1.5 bg-amber-500/20 text-amber-300 hover:bg-amber-500/30 rounded-lg transition-colors cursor-pointer"

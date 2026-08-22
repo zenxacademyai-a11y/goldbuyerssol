@@ -51,7 +51,7 @@ export interface BlogPost {
   metaTitle: string;
   metaDescription: string;
   isPublished: boolean;
-  createdAt: string;
+  createdAt?: string;
   excerpt?: string;
   image?: string;
   status?: "draft" | "published" | "scheduled" | "archived" | string;
