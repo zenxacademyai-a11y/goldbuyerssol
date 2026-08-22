@@ -3,11 +3,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-const CACHE_NAME = "gbc-cache-v6-live";
+const CACHE_NAME = "gbc-cache-v7-live";
 const ASSETS_TO_CACHE = [
   "/",
   "/manifest.json",
-  "/gbc-logo-original.png"
+  "/assest/gbc-logo.png"
 ];
 
 // Install Event

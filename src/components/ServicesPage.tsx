@@ -51,7 +51,7 @@ export const servicesData: ServiceDetail[] = [
     subtitle: "Highest Cash Prices in Sri Lanka for Gold Jewelry, Coins & Scrap",
     badge: "Most Popular",
     icon: <Coins className="h-6 w-6 text-amber-500" />,
-    image: "/img-1.jpeg",
+    image: "/assest/img-1.jpeg",
     desc: "Looking for a trusted gold buying service in Sri Lanka? We offer competitive market-leading prices for all types of gold, including gold jewelry, chains, bangles, rings, gold coins, gold bars, broken items, and scrap gold. Our experienced metallurgical team provides free evaluations, 100% damage-free XRF computerized testing, transparent weight verification, and instant cash payments on the spot.",
     acceptedItems: [
       "24K, 22K, 21K, 18K, 14K Gold Jewelry",
@@ -78,7 +78,7 @@ export const servicesData: ServiceDetail[] = [
     subtitle: "Certified Evaluation for Loose Diamonds, Rubies & Ceylon Sapphires",
     badge: "Certified Gemologists",
     icon: <Gem className="h-6 w-6 text-amber-500" />,
-    image: "/img-4.jpeg",
+    image: "/assest/img-4.jpeg",
     desc: "Looking to sell natural diamonds or precious gemstones in Sri Lanka? We buy natural diamonds, GIA/IGI certified stones, loose diamonds, Ceylon blue sapphires, rubies, emeralds, and fine gemstone jewelry at competitive international market prices. We ensure a secure, confidential, and hassle-free valuation experience with instant payouts.",
     acceptedItems: [
       "Loose & Certified Diamonds (GIA, IGI, HRD)",
@@ -104,7 +104,7 @@ export const servicesData: ServiceDetail[] = [
     subtitle: "Instant Cash Payouts for Authentic Pre-Owned & New Timepieces",
     badge: "Watch Experts",
     icon: <Watch className="h-6 w-6 text-amber-500" />,
-    image: "/img-6.jpeg",
+    image: "/assest/img-6.jpeg",
     desc: "Looking to sell your luxury timepiece? We are trusted luxury watch buyers in Colombo, Sri Lanka, offering top competitive prices for authentic luxury timepieces. We buy pre-owned and new luxury watches including Rolex, Patek Philippe, Audemars Piguet, Omega, Cartier, Breitling, and Tag Heuer with professional movement authentication, fair market valuation, and instant payout.",
     acceptedItems: [
       "Rolex (Submariner, Daytona, Datejust, GMT-Master II)",
@@ -130,7 +130,7 @@ export const servicesData: ServiceDetail[] = [
     subtitle: "We Settle Bank Debt & Pawn Tickets so You Walk Away with Cash Profit",
     badge: "Debt Relief Service",
     icon: <FileText className="h-6 w-6 text-amber-500" />,
-    image: "/img-2.jpeg",
+    image: "/assest/img-2.jpeg",
     desc: "Is your gold pledged at a bank or pawn shop with high monthly compound interest rates? Don't let your valuable gold get auctioned! GBC offers a specialized Pawn Ticket Settlement Service. We pay off your bank debt or pawn balance on your behalf, retrieve your gold items, evaluate them at today's peak market gold rates, and hand you the remaining cash profit!",
     acceptedItems: [
       "Commercial Bank Pawn Receipts",
@@ -156,7 +156,7 @@ export const servicesData: ServiceDetail[] = [
     subtitle: "Maximum Payouts for 24K & 22K Investment Gold Sovereigns & Bars",
     badge: "100% Full Payout",
     icon: <Coins className="h-6 w-6 text-amber-500" />,
-    image: "/img-8.jpeg",
+    image: "/assest/img-8.jpeg",
     desc: "Selling investment gold coins or 24K bullion bars? We purchase Sovereign gold coins (English Sovereigns, King George, Queen Elizabeth), 22K coins, PAMP Suisse bars, Valcambi, and local gold mint bars at maximum spot market value with zero processing or assaying fees.",
     acceptedItems: [
       "Gold Sovereigns (Pawan / 8g Coins)",
@@ -579,11 +579,11 @@ export default function ServicesPage({
               {/* Photo Showcase Grid */}
               <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                 {[
-                  { src: "/img-1.jpeg", title: "Precision Gold Valuation", desc: "Evaluating gold weight and testing purity with high precision instrumentation." },
-                  { src: "/img-2.jpeg", title: "Gold Jewelry Inspection", desc: "Comprehensive testing for chains, bangles, and family heirlooms." },
-                  { src: "/img-3.jpeg", title: "XRF Purity Testing", desc: "Advanced non-destructive X-Ray spectrometer analysis." },
-                  { src: "/img-4.jpeg", title: "Diamond Appraisal", desc: "Certified gemologist evaluation for loose diamonds and sapphires." },
-                  { src: "/img-5.jpeg", title: "Certified Scales", desc: "Calibrated digital scales guaranteeing 100% accurate weight." }
+                  { src: "/assest/img-1.jpeg", title: "Precision Gold Valuation", desc: "Evaluating gold weight and testing purity with high precision instrumentation." },
+                  { src: "/assest/img-2.jpeg", title: "Gold Jewelry Inspection", desc: "Comprehensive testing for chains, bangles, and family heirlooms." },
+                  { src: "/assest/img-3.jpeg", title: "XRF Purity Testing", desc: "Advanced non-destructive X-Ray spectrometer analysis." },
+                  { src: "/assest/img-4.jpeg", title: "Diamond Appraisal", desc: "Certified gemologist evaluation for loose diamonds and sapphires." },
+                  { src: "/assest/img-5.jpeg", title: "Certified Scales", desc: "Calibrated digital scales guaranteeing 100% accurate weight." }
                 ].map((item, idx) => (
                   <div
                     key={idx}

@@ -316,7 +316,7 @@ I would like to book an appointment to sell my gold at this estimated payout.`
                 <div className="flex items-center gap-3.5">
                   <div className="h-16 w-16 rounded-full overflow-hidden border-2 border-amber-500 bg-neutral-950 shrink-0 flex items-center justify-center shadow-md">
                     <img
-                      src="/gbc-logo-original.png"
+                      src="/assest/gbc-logo.png"
                       alt="Gold Buyers Colombo"
                       className="h-full w-full object-cover"
                     />

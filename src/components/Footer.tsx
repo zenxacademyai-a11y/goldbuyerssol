@@ -39,7 +39,7 @@ export default function Footer({ currentLang, setView, showAdmin = false, onLogo
               <img 
                 loading="lazy" 
                 decoding="async" 
-                src="/gbc-logo-original.png" 
+                src="/assest/gbc-logo.png" 
                 alt="Gold Buyers Colombo Logo" 
                 className="h-full w-full object-cover"
                 referrerPolicy="no-referrer"

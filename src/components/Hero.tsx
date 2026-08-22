@@ -273,13 +273,12 @@ export default function Hero({ currentLang, todayRate24k, todayRate22k }: HeroPr
                   loop
                   muted
                   playsInline
-                  poster="/img-1.jpeg"
+                  poster="/assest/img-1.jpeg"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 >
-                  <source src="/gbc-hero-bg-video.mp4" type="video/mp4" />
-                  <source src="/assets/gbc-hero-bg-video.mp4" type="video/mp4" />
+                  <source src="/assest/gbc-hero-bg-video.mp4" type="video/mp4" />
                   <img
-                    src="/img-1.jpeg"
+                    src="/assest/img-1.jpeg"
                     alt="Precision Computerized Gold Purity Valuation at Gold Buyers Colombo"
                     className="w-full h-full object-cover"
                   />

@@ -720,7 +720,7 @@ export default function AdminBlogCMS({
         name: "Gold Buyers Colombo",
         logo: {
           "@type": "ImageObject",
-          url: "https://www.goldlanka.lk/gbc-logo-original.png",
+          url: "https://www.goldlanka.lk/assest/gbc-logo.png",
         },
       },
       datePublished: new Date().toISOString(),

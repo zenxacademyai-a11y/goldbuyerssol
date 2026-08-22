@@ -4,7 +4,7 @@
   "description": "Calculate and lock in the highest gold payout rates in Sri Lanka, view live gold spot rates, and contact the Colombo appraisal desk.",
   "icons": [
     {
-      "src": "/gbc-logo-original.png",
+      "src": "/assest/gbc-logo.png",
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "any maskable"

@@ -20,7 +20,7 @@ export default function SEOSchemas({ rates }: SEOSchemasProps) {
     // Get today's ISO date
     const todayStr = new Date().toISOString().split("T")[0];
     const origin = typeof window !== "undefined" ? window.location.origin : "";
-    const logoUrl = origin ? `${origin}/gbc-logo-original.png` : "/gbc-logo-original.png";
+    const logoUrl = origin ? `${origin}/assest/gbc-logo.png` : "/assest/gbc-logo.png";
 
     // 2. Build Unified LocalBusiness, Review, and Gold Rate Schema
     const localBusinessSchema = {
