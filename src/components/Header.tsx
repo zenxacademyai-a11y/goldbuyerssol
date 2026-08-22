@@ -31,8 +31,8 @@ import InstallWebAppButton from "./InstallWebAppButton.js";
 interface HeaderProps {
   currentLang: Language;
   setLang: (lang: Language) => void;
-  activeView: "home" | "blog" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "faq" | "services";
-  setView: (view: "home" | "blog" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "faq" | "services") => void;
+  activeView: "home" | "blog" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "services";
+  setView: (view: "home" | "blog" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "services") => void;
   todayRate24k: number;
   todayRate22k: number;
   showAdmin?: boolean;
@@ -84,7 +84,7 @@ export default function Header({
     };
   }, [mobileMenuOpen]);
 
-  const handleNav = (view: "home" | "blog" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "faq" | "services") => {
+  const handleNav = (view: "home" | "blog" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "services") => {
     setView(view);
     setMobileMenuOpen(false);
     setMoreMenuOpen(false);
@@ -226,7 +226,7 @@ export default function Header({
                 type="button"
                 onClick={() => setMoreMenuOpen(!moreMenuOpen)}
                 className={`px-2.5 py-2 rounded-xl text-xs xl:text-sm font-bold transition-all duration-150 flex items-center gap-1 focus:outline-none cursor-pointer whitespace-nowrap ${
-                  ["about", "blog", "contact", "admin", "faq"].includes(activeView)
+                  ["about", "blog", "contact", "admin"].includes(activeView)
                     ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20 shadow-2xs"
                     : "text-neutral-700 dark:text-neutral-200 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-neutral-100 dark:hover:bg-neutral-900"
                 }`}
@@ -283,22 +283,6 @@ export default function Header({
                   >
                     <MapPin className="h-4 w-4 text-amber-600 shrink-0" />
                     <span>{t.contact}</span>
-                  </a>
-
-                  <a
-                    href="/faq"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleNav("faq");
-                    }}
-                    className={`w-full text-left px-4 py-2.5 text-xs font-bold transition-colors flex items-center gap-2.5 ${
-                      activeView === "faq"
-                        ? "bg-amber-500/10 text-amber-700 dark:text-amber-400"
-                        : "text-neutral-800 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-amber-600 dark:hover:text-amber-400"
-                    }`}
-                  >
-                    <HelpCircle className="h-4 w-4 text-amber-600 shrink-0" />
-                    <span>{t.faq}</span>
                   </a>
 
                   {showAdmin && (
@@ -532,19 +516,6 @@ export default function Header({
               >
                 <span>{t.contact}</span>
                 <MapPin className="h-4 w-4 text-amber-500" />
-              </a>
-
-              <a
-                href="/faq"
-                onClick={(e) => { e.preventDefault(); handleNav("faq"); }}
-                className={`flex items-center justify-between py-3 px-3.5 rounded-xl text-sm font-bold transition-colors ${
-                  activeView === "faq" 
-                    ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20" 
-                    : "text-neutral-900 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-900"
-                }`}
-              >
-                <span>{t.faq}</span>
-                <HelpCircle className="h-4 w-4 text-amber-500" />
               </a>
 
               {/* Install Web App CTA Button in Mobile Navigation Drawer */}

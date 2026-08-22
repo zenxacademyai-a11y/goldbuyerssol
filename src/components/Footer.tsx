@@ -10,7 +10,7 @@ import InstallWebAppButton from "./InstallWebAppButton.js";
 
 interface FooterProps {
   currentLang: Language;
-  setView: (view: "home" | "blog" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "faq" | "services") => void;
+  setView: (view: "home" | "blog" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "services") => void;
   showAdmin?: boolean;
   onLogoClick?: () => void;
 }
@@ -160,16 +160,6 @@ export default function Footer({ currentLang, setView, showAdmin = false, onLogo
               >
                 <MapPin className="h-3.5 w-3.5 text-amber-500 shrink-0" />
                 <span>{t.contact}</span>
-              </a>
-            </li>
-            <li>
-              <a 
-                href="/faq" 
-                onClick={(e) => { e.preventDefault(); setView("faq"); window.scrollTo(0,0); }} 
-                className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors cursor-pointer flex items-center gap-1.5 py-1"
-              >
-                <HelpCircle className="h-3.5 w-3.5 text-amber-500 shrink-0" />
-                <span>{t.faq}</span>
               </a>
             </li>
             <li className="col-span-2 lg:col-span-1 pt-1">

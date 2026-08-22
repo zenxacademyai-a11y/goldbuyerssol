@@ -21,7 +21,6 @@ import SellingProcess from "./components/SellingProcess.js";
 import Services from "./components/Services.js";
 import WhyChooseUs from "./components/WhyChooseUs.js";
 import Testimonials from "./components/Testimonials.js";
-import FAQSection from "./components/FAQSection.js";
 import ContactSection from "./components/ContactSection.js";
 import BlogPreview from "./components/BlogPreview.js";
 import AdminDashboard from "./components/AdminDashboard.js";
@@ -102,7 +101,7 @@ function normalizeBlogPosts(raw: any): BlogPost[] {
 }
 
 interface AppProps {
-  initialView?: "home" | "blog" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "faq" | "services";
+  initialView?: "home" | "blog" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "services";
   initialBlogSlug?: string | null;
   initialServiceId?: string | null;
   initialBranchId?: string | null;
@@ -167,7 +166,7 @@ export default function App({
     safeStorage.setItem("gbc_user_lang", currentLang);
   }, [currentLang]);
 
-  const [activeView, setActiveView] = useState<"home" | "blog" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "faq" | "services">(
+  const [activeView, setActiveView] = useState<"home" | "blog" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "services">(
     () => {
       if (initialView) return initialView;
       if (typeof window !== "undefined") {
@@ -178,7 +177,6 @@ export default function App({
         if (path === "/services" || path.startsWith("/services/")) return "services";
         if (path === "/rates") return "rates";
         if (path === "/calculator") return "calculator";
-        if (path === "/faq") return "faq";
         if (path === "/blog" || path.startsWith("/blog/")) return "blog";
         if (path === "/admin" || path.startsWith("/admin/")) return "admin";
       }
@@ -349,8 +347,6 @@ export default function App({
         setActiveView("rates");
       } else if (path === "/calculator") {
         setActiveView("calculator");
-      } else if (path === "/faq") {
-        setActiveView("faq");
       } else if (path === "/blog" || path.startsWith("/blog/")) {
         setActiveView("blog");
         if (path.startsWith("/blog/") && path.length > 6) {
@@ -776,12 +772,7 @@ export default function App({
               <HomeAboutSection currentLang={currentLang} setView={setActiveView} />
             </ScrollReveal>
 
-            {/* 9. FAQ Section */}
-            <ScrollReveal>
-              <FAQSection currentLang={currentLang} />
-            </ScrollReveal>
-
-            {/* 10. Educational Resources / Blog Posts */}
+            {/* 9. Educational Resources / Blog Posts */}
             <ScrollReveal>
               <RecentPosts
                 currentLang={currentLang}
@@ -799,7 +790,7 @@ export default function App({
               />
             </ScrollReveal>
             
-            {/* 11. Final High-Converting CTA & Contact Location */}
+            {/* 10. Final High-Converting CTA & Contact Location */}
             <ScrollReveal>
               <FinalCTASection currentLang={currentLang} />
             </ScrollReveal>
@@ -855,10 +846,6 @@ export default function App({
               settings={activeSettings}
               isLoading={isLoading}
             />
-          </div>
-        ) : activeView === "faq" ? (
-          <div className="pt-8 pb-12 min-h-[60vh] bg-white dark:bg-neutral-950 transition-colors">
-            <FAQSection currentLang={currentLang} />
           </div>
         ) : activeView === "blog" ? (
           <BlogPreview
