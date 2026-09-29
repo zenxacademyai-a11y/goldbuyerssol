@@ -186,6 +186,22 @@ export default function Footer({ currentLang, setView, showAdmin = false, onLogo
             </li>
             <li>
               <a 
+                href="#faq" 
+                onClick={(e) => { 
+                  e.preventDefault();
+                  setView("home");
+                  setTimeout(() => {
+                    document.getElementById("faq")?.scrollIntoView({ behavior: "smooth" });
+                  }, 50);
+                }} 
+                className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors cursor-pointer flex items-center gap-1.5 py-1"
+              >
+                <HelpCircle className="h-3.5 w-3.5 text-amber-500 shrink-0" />
+                <span>Frequently Asked Questions</span>
+              </a>
+            </li>
+            <li>
+              <a 
                 href="https://goldbuyerscolombo.com/blog/" 
                 target="_blank" 
                 rel="noopener noreferrer" 

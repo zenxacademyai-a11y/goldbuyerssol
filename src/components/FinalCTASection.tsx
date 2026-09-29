@@ -8,11 +8,12 @@ interface FinalCTAProps {
 
 export default function FinalCTASection({ currentLang }: FinalCTAProps) {
   return (
-    <section className="py-16 sm:py-20 px-4 bg-gradient-to-b from-amber-500 via-amber-400 to-yellow-500 text-neutral-950 relative overflow-hidden border-y border-amber-600/30 shadow-inner">
+    <section className="w-full py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-amber-500 via-amber-400 to-yellow-500 text-neutral-950 relative overflow-hidden border-y border-amber-600/30 shadow-inner">
       {/* Subtle background luxury pattern */}
       <div className="absolute inset-0 bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:16px_16px] opacity-5 pointer-events-none" />
       
-      <div className="max-w-5xl mx-auto relative z-10 text-center">
+      <div className="max-w-7xl mx-auto w-full relative z-10 text-center">
+        <div className="max-w-5xl mx-auto">
         
         {/* Top Floating Badge */}
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-neutral-950 text-amber-400 text-xs font-black uppercase tracking-widest mb-6 shadow-xl">
@@ -62,6 +63,7 @@ export default function FinalCTASection({ currentLang }: FinalCTAProps) {
             <MessageCircle className="h-5 w-5 fill-emerald-600 text-emerald-600" />
             <span>Chat on WhatsApp</span>
           </a>
+        </div>
         </div>
 
         {/* Store Address & Hours Trust Footer Bar */}

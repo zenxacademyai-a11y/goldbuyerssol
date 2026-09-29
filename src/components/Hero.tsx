@@ -90,13 +90,14 @@ export default function Hero({ currentLang, todayRate24k, todayRate22k }: HeroPr
   };
 
   return (
-    <section className="w-full min-h-[calc(100vh-64px)] lg:h-[calc(100vh-64px)] bg-gradient-to-b from-amber-50/80 via-white to-amber-50/40 dark:from-neutral-950 dark:via-neutral-900 dark:to-neutral-950 text-neutral-900 dark:text-neutral-100 relative overflow-hidden flex flex-col justify-between pt-16 sm:pt-20 pb-2 px-3 sm:px-6 lg:px-8 transition-colors">
+    <section className="w-full min-h-[calc(100vh-64px)] bg-gradient-to-b from-amber-50/80 via-white to-amber-50/40 dark:from-neutral-950 dark:via-neutral-900 dark:to-neutral-950 text-neutral-900 dark:text-neutral-100 relative flex flex-col justify-between pt-16 sm:pt-20 pb-8 sm:pb-12 px-4 sm:px-6 lg:px-8 transition-colors overflow-x-hidden">
       {/* Interactive Background with floating particle icons */}
-      <InteractiveBackground />
-
-      {/* Luxurious Ambient Background Glows */}
-      <div className="absolute top-1/4 -left-32 w-80 h-80 bg-amber-400/20 dark:bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute top-1/3 -right-32 w-96 h-96 bg-amber-300/20 dark:bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <InteractiveBackground />
+        {/* Luxurious Ambient Background Glows */}
+        <div className="absolute top-1/4 -left-32 w-80 h-80 bg-amber-400/20 dark:bg-amber-500/10 rounded-full blur-3xl" />
+        <div className="absolute top-1/3 -right-32 w-96 h-96 bg-amber-300/20 dark:bg-amber-500/10 rounded-full blur-3xl" />
+      </div>
 
       {/* Main Content Container - Single Viewport Layout */}
       <div className="max-w-7xl mx-auto w-full flex-1 flex flex-col justify-center relative z-10 my-auto">
@@ -176,13 +177,13 @@ export default function Hero({ currentLang, todayRate24k, todayRate22k }: HeroPr
             </h1>
 
             {/* Subtitle / Concise Value Proposition */}
-            <p className="text-xs sm:text-sm lg:text-base text-neutral-600 dark:text-neutral-300 font-normal leading-relaxed mb-4 max-w-xl">
+            <p className="text-xs sm:text-sm lg:text-base text-neutral-600 dark:text-neutral-300 font-normal leading-relaxed mb-4 max-w-2xl">
               {currentLang === "si" ? (
-                "100% නිවැරදි පරිගණක XRF පරීක්ෂාවෙන් පසු ශ්‍රී ලංකාවේ ඉහළම වෙළඳපල මිලට ක්ෂණික මුදල් හෝ බැංකු තැන්පතු ලබා ගන්න. කිසිදු අසාධාරණ කැපීමක් නැත."
+                "GBC (Gold Buyers Colombo) යනු වසර 50කට වැඩි පළපුරුද්දක් සහිත කොළඹ ප්‍රමුඛතම රන් ගැනුම්කරුවා වේ. රන්, දියමන්ති, මැණික් සහ සුඛෝපභෝගී අත්ඔරලෝසු සඳහා ඉහළම වෙළඳපල මිල, විනිවිද පෙනෙන තක්සේරුව සහ ක්ෂණික මුදල් ගෙවීම් අපෙන් ලබා ගන්න."
               ) : currentLang === "ta" ? (
-                "100% கணினி எக்ஸ்ஆர்எஃப் பரிசோதனை மூலம் இலங்கையின் மிக உயர்ந்த சந்தை விலைக்கு உடனடி பணமளிப்பு பெறுக."
+                "GBC (Gold Buyers Colombo) கொழும்பில் 50 வருடங்களுக்கும் மேலான அனுபவம் கொண்ட நம்பகமான தங்க கொள்வனவாளர் ஆகும். தங்கம், வைரங்கள், நவரத்தினங்கள் மற்றும் சொகுசு கைக்கடிகாரங்களுக்கு சிறந்த சந்தை விலை, வெளிப்படையான மதிப்பீடு மற்றும் உடனடி பணமளிப்பு வழங்குகிறோம்."
               ) : (
-                "Get the absolute highest cash payout for your gold with 100% transparent XRF computerized purity testing and instant payment on the spot."
+                "GBC (Gold Buyers Colombo) is a trusted gold buyer in Colombo, Sri Lanka, with 50+ years of experience. We offer competitive market rates, transparent gold valuation, instant cash payments, and professional service for gold, diamonds, gemstones, and luxury watches."
               )}
             </p>
 
@@ -403,27 +404,29 @@ export default function Hero({ currentLang, todayRate24k, todayRate22k }: HeroPr
       </div>
 
       {/* Docked Horizontal Marquee Ticker with Dynamic Live Rates */}
-      <div className="w-full py-2.5 sm:py-3 bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 text-neutral-950 font-black text-[11px] sm:text-xs tracking-wider uppercase overflow-hidden rounded-xl shadow-sm mt-8 sm:mt-12 relative z-10">
-        <div className="flex w-max animate-marquee-left gap-8 items-center">
-          {[
-            `⚡ TODAY 24K: LKR ${Math.round(todayRate24k || 25500).toLocaleString()}/G`,
-            `★ TODAY 22K (916): LKR ${Math.round(todayRate22k || 23380).toLocaleString()}/G`,
-            `⚡ 22K 1 PAVAN (8G): LKR ${Math.round((todayRate22k || 23380) * 8).toLocaleString()}`,
-            "★ NO.1 TRUSTED GOLD BUYER IN COLOMBO",
-            "⚡ 100% XRF COMPUTERIZED PURITY TESTING",
-            "★ INSTANT CASH & BANK TRANSFER",
-            "⚡ ZERO ACID & DIRT DEDUCTIONS",
-            "★ LICENSED SLGJA GOLD MERCHANT",
-            "⚡ 50+ YEARS TRUSTED LEGACY",
-            "★ 3,500+ SATISFIED CLIENTS",
-            `⚡ TODAY 24K: LKR ${Math.round(todayRate24k || 25500).toLocaleString()}/G`,
-            `★ TODAY 22K (916): LKR ${Math.round(todayRate22k || 23380).toLocaleString()}/G`,
-            `⚡ 22K 1 PAVAN (8G): LKR ${Math.round((todayRate22k || 23380) * 8).toLocaleString()}`,
-          ].map((item, idx) => (
-            <span key={idx} className="flex items-center gap-2 whitespace-nowrap">
-              {item}
-            </span>
-          ))}
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 sm:mt-10 mb-2 sm:mb-4 relative z-10 shrink-0">
+        <div className="w-full py-3 sm:py-3.5 bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 text-neutral-950 font-black text-xs sm:text-sm tracking-wider uppercase overflow-hidden rounded-xl shadow-md">
+          <div className="flex w-max animate-marquee-left gap-8 items-center py-0.5">
+            {[
+              `⚡ TODAY 24K: LKR ${Math.round(todayRate24k || 25500).toLocaleString()}/G`,
+              `★ TODAY 22K (916): LKR ${Math.round(todayRate22k || 23380).toLocaleString()}/G`,
+              `⚡ 22K 1 PAVAN (8G): LKR ${Math.round((todayRate22k || 23380) * 8).toLocaleString()}`,
+              "★ NO.1 TRUSTED GOLD BUYER IN COLOMBO",
+              "⚡ 100% XRF COMPUTERIZED PURITY TESTING",
+              "★ INSTANT CASH & BANK TRANSFER",
+              "⚡ ZERO ACID & DIRT DEDUCTIONS",
+              "★ LICENSED SLGJA GOLD MERCHANT",
+              "⚡ 50+ YEARS TRUSTED LEGACY",
+              "★ 3,500+ SATISFIED CLIENTS",
+              `⚡ TODAY 24K: LKR ${Math.round(todayRate24k || 25500).toLocaleString()}/G`,
+              `★ TODAY 22K (916): LKR ${Math.round(todayRate22k || 23380).toLocaleString()}/G`,
+              `⚡ 22K 1 PAVAN (8G): LKR ${Math.round((todayRate22k || 23380) * 8).toLocaleString()}`,
+            ].map((item, idx) => (
+              <span key={idx} className="flex items-center gap-2 whitespace-nowrap">
+                {item}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
 

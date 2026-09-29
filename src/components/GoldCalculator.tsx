@@ -97,8 +97,9 @@ I'd like to book an appointment to test and sell my gold today.`
   ];
 
   return (
-    <section id="calculator" className="py-16 sm:py-20 px-4 bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 scroll-mt-20 border-t border-neutral-100 dark:border-neutral-900 transition-colors">
-      <div className="max-w-5xl mx-auto">
+    <section id="calculator" className="w-full py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 scroll-mt-20 border-t border-neutral-100 dark:border-neutral-900 transition-colors">
+      <div className="max-w-7xl mx-auto w-full">
+        <div className="max-w-5xl mx-auto w-full">
         
         {/* Header */}
         <div className="text-center mb-10 sm:mb-12">
@@ -397,6 +398,7 @@ I'd like to book an appointment to test and sell my gold today.`
           </div>
 
         </div>
+      </div>
       </div>
 
       {/* Invoice PDF Generation Modal */}

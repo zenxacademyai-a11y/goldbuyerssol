@@ -142,7 +142,7 @@ export default function SitemapPage({
       </section>
 
       {/* Main Content Grid */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
+      <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-10 space-y-12">
         
         {/* Section 1: Main Platform Views */}
         <section className="space-y-4">

@@ -48,8 +48,8 @@ export default function WhyChooseUs({ currentLang }: WhyChooseUsProps) {
   ];
 
   return (
-    <section className="py-20 px-4 bg-neutral-50/60 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 border-t border-neutral-200/80 dark:border-neutral-800 transition-colors">
-      <div className="max-w-6xl mx-auto">
+    <section className="w-full py-20 px-4 sm:px-6 lg:px-8 bg-neutral-50/60 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 border-t border-neutral-200/80 dark:border-neutral-800 transition-colors">
+      <div className="max-w-7xl mx-auto w-full">
         
         {/* Header Block */}
         <div className="text-center mb-16">

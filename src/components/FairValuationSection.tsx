@@ -47,12 +47,12 @@ export default function FairValuationSection({ currentLang }: FairValuationProps
   ];
 
   return (
-    <section className="py-20 px-4 bg-amber-50/40 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 border-t border-amber-200/50 dark:border-neutral-800 relative overflow-hidden transition-colors">
+    <section className="w-full py-20 px-4 sm:px-6 lg:px-8 bg-amber-50/40 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 border-t border-amber-200/50 dark:border-neutral-800 relative overflow-hidden transition-colors">
       {/* Subtle gold glow background effects */}
       <div className="absolute top-1/2 left-0 -translate-y-1/2 w-96 h-96 bg-amber-400/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-6xl mx-auto relative z-10">
+      <div className="max-w-7xl mx-auto w-full relative z-10">
         
         {/* Header Block */}
         <div className="text-center mb-16">

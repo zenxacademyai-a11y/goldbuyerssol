@@ -154,8 +154,8 @@ export default function Services({ currentLang }: ServicesProps) {
   ];
 
   return (
-    <section className="py-20 px-4 bg-white dark:bg-neutral-950 text-neutral-900 dark:text-white border-t border-neutral-200/80 dark:border-neutral-800 transition-colors" id="services">
-      <div className="max-w-7xl mx-auto">
+    <section className="w-full py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-neutral-950 text-neutral-900 dark:text-white border-t border-neutral-200/80 dark:border-neutral-800 transition-colors" id="services">
+      <div className="max-w-7xl mx-auto w-full">
         <div className="text-center mb-16">
           <span className="text-xs uppercase font-mono tracking-widest text-amber-700 dark:text-amber-400 block mb-3 font-semibold">
             Our Expertise

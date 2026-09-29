@@ -10,8 +10,8 @@ interface HomeAboutSectionProps {
 
 export default function HomeAboutSection({ currentLang, setView }: HomeAboutSectionProps) {
   return (
-    <section className="py-20 px-4 bg-amber-100/30 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 border-t border-amber-200/50 dark:border-neutral-800 relative overflow-hidden transition-colors">
-      <div className="max-w-6xl mx-auto">
+    <section className="w-full py-20 px-4 sm:px-6 lg:px-8 bg-amber-100/30 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 border-t border-amber-200/50 dark:border-neutral-800 relative overflow-hidden transition-colors">
+      <div className="max-w-7xl mx-auto w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
           {/* Left Column: Image Showcase */}

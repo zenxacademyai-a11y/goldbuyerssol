@@ -62,8 +62,8 @@ I would like to receive an immediate cash valuation quote.`;
   };
 
   return (
-    <section id="contact" className="py-20 px-4 bg-amber-50/50 dark:bg-neutral-950 border-t border-amber-200/50 dark:border-neutral-900 text-neutral-900 dark:text-neutral-100 scroll-mt-20 transition-colors">
-      <div className="max-w-7xl mx-auto">
+    <section id="contact" className="w-full py-20 px-4 sm:px-6 lg:px-8 bg-amber-50/50 dark:bg-neutral-950 border-t border-amber-200/50 dark:border-neutral-900 text-neutral-900 dark:text-neutral-100 scroll-mt-20 transition-colors">
+      <div className="max-w-7xl mx-auto w-full">
         
         {/* Header Block */}
         <div className="text-center mb-16">

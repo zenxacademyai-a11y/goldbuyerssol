@@ -268,6 +268,22 @@ export default function Header({
                     <span>{t.contact}</span>
                   </a>
 
+                  <a
+                    href="#faq"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setMoreMenuOpen(false);
+                      handleNav("home");
+                      setTimeout(() => {
+                        document.getElementById("faq")?.scrollIntoView({ behavior: "smooth" });
+                      }, 100);
+                    }}
+                    className="w-full text-left px-4 py-2.5 text-xs font-bold transition-colors flex items-center gap-2.5 text-neutral-800 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-amber-600 dark:hover:text-amber-400"
+                  >
+                    <HelpCircle className="h-4 w-4 text-amber-600 shrink-0" />
+                    <span>FAQ</span>
+                  </a>
+
                   {showAdmin && (
                     <a
                       href="/admin"
@@ -487,6 +503,22 @@ export default function Header({
               >
                 <span>{t.contact}</span>
                 <MapPin className="h-4 w-4 text-amber-500" />
+              </a>
+
+              <a
+                href="#faq"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setMobileMenuOpen(false);
+                  handleNav("home");
+                  setTimeout(() => {
+                    document.getElementById("faq")?.scrollIntoView({ behavior: "smooth" });
+                  }, 100);
+                }}
+                className="flex items-center justify-between py-3 px-3.5 rounded-xl text-sm font-bold transition-colors text-neutral-900 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-900"
+              >
+                <span>Frequently Asked Questions</span>
+                <HelpCircle className="h-4 w-4 text-amber-500" />
               </a>
 
               {/* Install Web App CTA Button in Mobile Navigation Drawer */}

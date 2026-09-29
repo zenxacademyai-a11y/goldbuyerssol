@@ -39,8 +39,8 @@ export default function Testimonials({ currentLang }: TestimonialsProps) {
   ];
 
   return (
-    <section className="py-20 px-4 bg-neutral-50/60 dark:bg-neutral-950 border-t border-neutral-200/80 dark:border-neutral-800 text-neutral-900 dark:text-neutral-100 transition-colors">
-      <div className="max-w-6xl mx-auto">
+    <section className="w-full py-20 px-4 sm:px-6 lg:px-8 bg-neutral-50/60 dark:bg-neutral-950 border-t border-neutral-200/80 dark:border-neutral-800 text-neutral-900 dark:text-neutral-100 transition-colors">
+      <div className="max-w-7xl mx-auto w-full">
         
         {/* Header Block */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">

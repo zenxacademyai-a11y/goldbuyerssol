@@ -30,6 +30,7 @@ import BranchesPage from "./components/BranchesPage.js";
 import ChatWithConsultant from "./components/ChatWithConsultant.js";
 import FairValuationSection from "./components/FairValuationSection.js";
 import HomeAboutSection from "./components/HomeAboutSection.js";
+import HomeFAQSection from "./components/HomeFAQSection.js";
 import FinalCTASection from "./components/FinalCTASection.js";
 import InstallAppBanner from "./components/InstallAppBanner.js";
 import SitemapPage from "./components/SitemapPage.js";
@@ -537,7 +538,7 @@ export default function App({
   const rate22k = rates.find((r) => r.karat === GoldKarat.K22 || (r.karat as string) === "22K")?.ratePerGram || 23450;
 
   return (
-    <div className="min-h-screen bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 flex flex-col selection:bg-amber-500 selection:text-neutral-950 transition-colors">
+    <div className="min-h-screen w-full overflow-x-hidden bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 flex flex-col selection:bg-amber-500 selection:text-neutral-950 transition-colors">
       {/* Search Engine Optimization JSON-LD Schemas */}
       <SEOSchemas rates={rates} />
 
@@ -562,7 +563,7 @@ export default function App({
       <InstallAppBanner currentLang={currentLang} />
 
       {/* Main Dynamic View Layout */}
-      <main className="flex-1">
+      <main className="flex-1 w-full overflow-x-hidden">
         <Suspense fallback={<div className="min-h-[50vh] flex items-center justify-center text-amber-500 font-mono text-sm">Loading Gold Buyers Colombo...</div>}>
         {activeView === "home" ? (
           <>
@@ -584,7 +585,7 @@ export default function App({
             </ScrollReveal>
 
             {/* 4. Live Rates Matrix & Instant Calculator */}
-            <div className="space-y-12">
+            <div className="w-full space-y-12">
               <ScrollReveal>
                 <LiveRateWidget
                   currentLang={currentLang}
@@ -625,8 +626,13 @@ export default function App({
             <ScrollReveal>
               <HomeAboutSection currentLang={currentLang} setView={setActiveView} />
             </ScrollReveal>
+
+            {/* 9. Frequently Asked Questions (FAQ) - Container Scroll & H2 Titles */}
+            <ScrollReveal>
+              <HomeFAQSection currentLang={currentLang} />
+            </ScrollReveal>
             
-            {/* 9. Final High-Converting CTA & Contact Location */}
+            {/* 10. Final High-Converting CTA & Contact Location */}
             <ScrollReveal>
               <FinalCTASection currentLang={currentLang} />
             </ScrollReveal>
@@ -677,24 +683,28 @@ export default function App({
             setView={setActiveView}
           />
         ) : activeView === "rates" ? (
-          <div className="pt-8 pb-12 min-h-[60vh] bg-white dark:bg-neutral-950 transition-colors">
-            <LiveRateWidget
-              currentLang={currentLang}
-              rates={rates}
-              settings={activeSettings}
-              historicalRates={historicalRates}
-              onRefresh={fetchAllData}
-              isLoading={isLoading}
-            />
+          <div className="w-full pt-8 pb-12 min-h-[60vh] bg-white dark:bg-neutral-950 transition-colors">
+            <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <LiveRateWidget
+                currentLang={currentLang}
+                rates={rates}
+                settings={activeSettings}
+                historicalRates={historicalRates}
+                onRefresh={fetchAllData}
+                isLoading={isLoading}
+              />
+            </div>
           </div>
         ) : activeView === "calculator" ? (
-          <div className="pt-8 pb-12 min-h-[60vh] bg-neutral-50 dark:bg-neutral-950 transition-colors">
-            <GoldCalculator
-              currentLang={currentLang}
-              rates={rates}
-              settings={activeSettings}
-              isLoading={isLoading}
-            />
+          <div className="w-full pt-8 pb-12 min-h-[60vh] bg-neutral-50 dark:bg-neutral-950 transition-colors">
+            <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <GoldCalculator
+                currentLang={currentLang}
+                rates={rates}
+                settings={activeSettings}
+                isLoading={isLoading}
+              />
+            </div>
           </div>
         ) : (
           <AdminDashboard

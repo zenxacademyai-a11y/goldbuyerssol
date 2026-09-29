@@ -156,6 +156,94 @@ export default function SEOSchemas({ rates }: SEOSchemasProps) {
       ]
     };
 
+    // 3. Build FAQPage Schema with 10 Home FAQs
+    const faqSchema = {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Who is a trusted place to sell gold in Colombo?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "GBC is a recognized and trusted name in Colombo, Sri Lanka, with more than 50 years of experience. GBC provides transparent gold evaluations, competitive market-based rates, professional service, and a convenient selling experience for customers looking to sell their gold."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where can I get a good price for my gold?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "GBC provides competitive gold-buying rates in Colombo, Sri Lanka, based on factors such as purity, weight, and current market conditions. With decades of experience, GBC focuses on transparent assessments and professional service when customers choose to sell their gold."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why do customers choose GBC for selling gold?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "In Colombo, Sri Lanka, GBC combines 50+ years of experience with transparent valuations, competitive rates, and professional customer care. GBC aims to make the process of selling gold simple, clear, and convenient while helping customers understand the value of their items."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How can I check today's gold price before selling?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Customers in Colombo, Sri Lanka can contact GBC to check the latest applicable gold-buying rate before selling. Gold prices can change with market conditions, while GBC considers purity, weight, and other relevant factors when professionally assessing each gold item."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is GBC an established gold-buying company?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "GBC is an established gold-buying business serving customers in Colombo, Sri Lanka, with more than 50 years of experience. GBC focuses on professional assessment, transparent transactions, competitive valuations, and customer service for people looking to sell gold and other valuable items."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How is the value of my jewellery determined?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "GBC assesses jewellery in Colombo, Sri Lanka, by considering important factors such as gold purity, weight, item characteristics, and prevailing market conditions. The professional evaluation helps customers understand the value of their jewellery clearly before deciding whether to proceed with the transaction."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What gold jewellery and items can I sell?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "GBC buys various gold items in Colombo, Sri Lanka, including jewellery, ornaments, coins, and other gold articles. Each item is individually assessed according to its purity, weight, and relevant market factors to determine its applicable buying value."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How quickly can I receive payment after selling gold?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "GBC provides a convenient gold-selling service in Colombo, Sri Lanka. After the item has been assessed and the transaction terms are agreed, payment can be made promptly, helping customers complete their gold-selling process efficiently and with greater convenience."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I sell diamonds, gemstones, or luxury watches?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "GBC also provides buying services for diamonds, gemstones, and luxury watches in Colombo, Sri Lanka. These valuable items can be professionally assessed according to their individual characteristics and relevant market considerations, giving customers a convenient option for selling different types of valuables."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why is GBC recognized among established gold-buying businesses?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "With more than 50 years of experience, GBC provides trusted gold-buying services in Colombo, Sri Lanka. GBC focuses on transparent evaluations, competitive market-based pricing, professional customer care, and convenient transactions for customers looking to sell gold and valuable items."
+          }
+        }
+      ]
+    };
+
     // Inject/Update LocalBusiness schema
     let lbScript = document.getElementById("gbc-lb-jsonld");
     if (!lbScript) {
@@ -166,11 +254,25 @@ export default function SEOSchemas({ rates }: SEOSchemasProps) {
     }
     lbScript.innerHTML = JSON.stringify(localBusinessSchema);
 
+    // Inject/Update FAQPage schema
+    let faqScript = document.getElementById("gbc-faq-jsonld");
+    if (!faqScript) {
+      faqScript = document.createElement("script");
+      faqScript.id = "gbc-faq-jsonld";
+      faqScript.setAttribute("type", "application/ld+json");
+      document.head.appendChild(faqScript);
+    }
+    faqScript.innerHTML = JSON.stringify(faqSchema);
+
     // Cleanup on unmount
     return () => {
       const scriptToClean = document.getElementById("gbc-lb-jsonld");
       if (scriptToClean) {
         scriptToClean.remove();
+      }
+      const faqToClean = document.getElementById("gbc-faq-jsonld");
+      if (faqToClean) {
+        faqToClean.remove();
       }
     };
   }, [rates]);
