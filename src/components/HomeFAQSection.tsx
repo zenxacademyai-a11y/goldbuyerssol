@@ -188,11 +188,67 @@ export default function HomeFAQSection({ currentLang }: HomeFAQSectionProps) {
     );
   }, [allFaqs, searchQuery]);
 
+  // Construct JSON-LD FAQPage Schema for Search Engine Visibility
+  const faqPageSchema = useMemo(() => {
+    return {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "@id": "https://goldbuyerscolombo.com/#faq-schema",
+      "name": currentLang === "si" 
+        ? "කොළඹ රන් විකිණීම පිළිබඳ නිතර අසන ප්‍රශ්න | GBC" 
+        : currentLang === "ta" 
+        ? "கொழும்பில் தங்கம் விற்பனை செய்வது பற்றிய முக்கிய கேள்விகள் | GBC" 
+        : "Frequently Asked Questions About Selling Gold in Colombo | GBC",
+      "description": currentLang === "si"
+        ? "වසර 50ක විශ්වාසනීය පළපුරුද්ද සමඟ කොළඹ රන් විකිණීම, නිවැරදි තක්සේරු කිරීම්, සහ ක්ෂණික ගෙවීම් පිළිබඳ විස්තර."
+        : currentLang === "ta"
+        ? "கொழும்பில் தங்கம் விற்பனை, உடனடி பணப்பரிமாற்றம் மற்றும் வெளிப்படையான மதிப்பீடு பற்றிய வழிகாட்டி."
+        : "Expert answers regarding trusted gold evaluations, current market rates, same-day cash payments, and selling gold, diamonds, and luxury watches in Colombo, Sri Lanka.",
+      "url": "https://goldbuyerscolombo.com/#faq",
+      "inLanguage": currentLang === "si" ? "si-LK" : currentLang === "ta" ? "ta-LK" : "en-LK",
+      "mainEntity": allFaqs.map((faq) => ({
+        "@type": "Question",
+        "name": faq.q,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.a
+        }
+      }))
+    };
+  }, [allFaqs, currentLang]);
+
+  // Sync to document.head for search crawlers that strictly parse <head>
+  React.useEffect(() => {
+    if (typeof document === "undefined") return;
+    let scriptTag = document.getElementById("gbc-home-faqpage-jsonld") as HTMLScriptElement | null;
+    if (!scriptTag) {
+      scriptTag = document.createElement("script");
+      scriptTag.id = "gbc-home-faqpage-jsonld";
+      scriptTag.setAttribute("type", "application/ld+json");
+      document.head.appendChild(scriptTag);
+    }
+    scriptTag.textContent = JSON.stringify(faqPageSchema);
+
+    return () => {
+      const el = document.getElementById("gbc-home-faqpage-jsonld");
+      if (el) el.remove();
+    };
+  }, [faqPageSchema]);
+
   return (
     <section 
       id="faq" 
       className="w-full py-20 px-4 sm:px-6 lg:px-8 bg-neutral-50/70 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 border-t border-neutral-200/80 dark:border-neutral-800 scroll-mt-20 transition-colors"
     >
+      {/* Inline Schema.org FAQPage JSON-LD for Crawlers & Static Pre-Rendering */}
+      <script
+        type="application/ld+json"
+        id="home-faqpage-schema"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(faqPageSchema)
+        }}
+      />
+
       <div className="max-w-7xl mx-auto w-full">
         
         {/* Section Header */}
