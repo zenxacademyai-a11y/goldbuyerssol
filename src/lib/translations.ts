@@ -1,342 +1,233 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 export type Language = "en" | "si" | "ta";
 
-export const translations = {
+export interface TranslationDictionary {
+  fullName: string;
+  tagline: string;
+  home: string;
+  services: string;
+  branches: string;
+  about: string;
+  contact: string;
+  admin: string;
+  calculator: string;
+  calcTitle: string;
+  liveRatesTitle: string;
+  liveRatesSubtitle: string;
+  footerDesc: string;
+  footerRights: string;
+  callNow: string;
+  karat: string;
+  purity: string;
+  perGram: string;
+  perPavan: string;
+  lastUpdated: string;
+  ratesDisclaimer: string;
+  processTitle: string;
+  processSubtitle: string;
+  step1Title: string;
+  step1Desc: string;
+  step2Title: string;
+  step2Desc: string;
+  step3Title: string;
+  step3Desc: string;
+  step4Title: string;
+  step4Desc: string;
+  whyTitle: string;
+  whySubtitle: string;
+  why1Title: string;
+  why1Desc: string;
+  why2Title: string;
+  why2Desc: string;
+  why3Title: string;
+  why3Desc: string;
+  why4Title: string;
+  why4Desc: string;
+  contactTitle: string;
+  contactSubtitle: string;
+  addressLabel: string;
+  phoneLabel: string;
+  hoursLabel: string;
+  landmarkLabel: string;
+  parkingLabel: string;
+  formName: string;
+  formPhone: string;
+  formEmail: string;
+  formMessage: string;
+  submitForm: string;
+  formSuccess: string;
+  calculating: string;
+}
+
+export const translations: Record<Language, TranslationDictionary> = {
   en: {
-    brand: "GBC",
     fullName: "Gold Buyers Colombo",
-    tagline: "The Premium Gold Exchange in Sri Lanka",
-    seoKeyword: "Gold Buyer in Colombo",
-    
-    // Navigation
+    tagline: "Highest Cash Payout for Gold in Sri Lanka",
     home: "Home",
     services: "Services",
+    branches: "Branches",
     about: "About Us",
-    rates: "Pawn Rate",
-    calculator: "Calculator",
-    howItWorks: "How It Works",
-    whyChooseUs: "Why Choose Us",
-    faq: "FAQ",
-    blog: "Blog",
     contact: "Contact",
-    branches: "16 Branches",
-    admin: "Admin Panel",
-    
-    // Buttons & CTAs
-    callNow: "Call Now",
-    whatsappUs: "WhatsApp Us",
-    getEstimate: "Get Live Estimate",
-    visitStore: "Visit Store",
-    bookAppointment: "Book Visit",
-    submitForm: "Submit Request",
-    calculating: "Calculating...",
-    shareEstimate: "Share Estimate",
-    printPDF: "Print PDF Payout",
-    aiWriting: "Generate with AI Writer",
-    
-    // Hero Section
-    heroTitle: "No.1 Trusted Gold Buyer in Colombo, Sri Lanka",
-    heroSubtitle: "Experience complete transparency, certified XRF testing, and instant cash payouts for gold jewelry, coins & bullion. Sri Lanka's No.1 trusted gold exchange since 1976.",
-    yearsExperience: "50+ Years Legacy",
-    happyCustomers: "3,500+ Happy Sellers",
-    ratingTitle: "5.0 Google Maps Rating",
-    transparentLabel: "100% Honest Testing",
-    
-    // Live Gold Rate Section
-    liveRatesTitle: "Today's Live Pawn Rates in Colombo",
-    liveRatesSubtitle: "Updated in real-time. We pay up to 2.5% premium over spot market price with zero hidden charges.",
+    admin: "Admin",
+    calculator: "Calculator",
+    calcTitle: "Instant Gold Calculator",
+    liveRatesTitle: "Today's Live Gold Rates in Colombo",
+    liveRatesSubtitle: "Real-time rates per gram and sovereign (pavan) updated continuously.",
+    footerDesc: "Colombo's premier certified gold buying exchange. Transparent computerized XRF testing, instant cash payouts, and highest market rates.",
+    footerRights: "All Rights Reserved. Licensed Gold Merchant in Sri Lanka.",
+    callNow: "Call Hotline",
     karat: "Karat",
     purity: "Purity",
     perGram: "Per Gram (LKR)",
-    perPavan: "Pawn Rate (8g) (LKR)",
+    perPavan: "Per Pavan (8g)",
     lastUpdated: "Last Updated",
-    instantPayout: "Instant Cash/Transfer",
-    ratesDisclaimer: "*Rates are subject to market fluctuations. Book your rate now by contacting our desk.",
-    
-    // Calculator
-    calcTitle: "Instant Pawn Rate Valuation Calculator",
-    calcSubtitle: "Enter your gold details below for an accurate live payout estimate. Highest rates guaranteed.",
-    goldType: "Gold Type / Karat",
-    weightInput: "Gold Weight",
-    weightUnit: "Weight Unit",
-    grams: "Grams (g)",
-    pavans: "Pavans (8g)",
-    marketValue: "Standard Market Value",
-    gbcPremiumBonus: "GBC Premium Bonus (+2.5%)",
-    testingDeductions: "Computerized Testing / Cleaning Fee",
-    finalPayout: "Estimated Cash Payout",
-    calculatorCTA: "Get Rate Quote & Chat on WhatsApp",
-    
-    // How It Works
-    processTitle: "Our 4-Step Transparent Gold Selling Process",
-    processSubtitle: "No stress. No guesswork. See your gold tested in front of your eyes and walk out with cash in minutes.",
-    step1Title: "1. Bring Your Gold",
-    step1Desc: "Visit our secure luxury lounge in Colombo. No appointment needed, walk-ins always welcome.",
-    step2Title: "2. XRF Purity Testing",
-    step2Desc: "We use state-of-the-art XRF spectrometers. 100% damage-free, computerized accuracy.",
-    step3Title: "3. Live Certified Weighing",
-    step3Desc: "We weigh your items on government-calibrated scales visible to you down to 0.001 grams.",
-    step4Title: "4. Instant Luxury Cash",
-    step4Desc: "Receive immediate payout in cash or instant local bank transfer of your choice on the spot.",
-    
-    // Why Choose Us
-    whyTitle: "Why GBC is Colombo's Leading Gold Buyer",
-    whySubtitle: "Our commitment to premium financial transparency sets us apart from pawn brokers and traditional dealers.",
-    why1Title: "Highest Payout Guaranteed",
-    why1Desc: "We consistently beat any legitimate offer in Colombo by up to 5% due to direct gold refinery exports.",
-    why2Title: "Computerized Purity Testing",
-    why2Desc: "No acid scratch tests. Our high-tech XRF spectrometer identifies exact elements with complete accuracy.",
-    why3Title: "No Hidden Deductions",
-    why3Desc: "We don't shave off money for 'making charges' or 'impurities' like standard jewelry shops.",
-    why4Title: "Absolute Security & Privacy",
-    why4Desc: "All transactions are conducted inside our secure private lounge with certified CCTV and government compliance.",
-    
-    // FAQ Section
-    faqTitle: "Frequently Asked Questions about Selling Gold",
-    faqSubtitle: "Answering who, what, why, and how about gold selling in Colombo.",
-    
-    // Contact Section
-    contactTitle: "Visit Our Colombo Office",
-    contactSubtitle: "Get driving times, nearby landmarks, secure parking, and direct lines to our appraisal desk.",
-    phoneLabel: "Phone Number",
-    addressLabel: "Physical Address",
+    ratesDisclaimer: "*Rates are subject to international market fluctuations. Instant cash payout based on non-destructive XRF test.",
+    processTitle: "Simple 4-Step Selling Process",
+    processSubtitle: "Experience a private, secure, and transparent appraisal in under 5 minutes.",
+    step1Title: "1. Visit or Book Appointment",
+    step1Desc: "Walk into our secure Colombo lounge or request a VIP private appraisal session.",
+    step2Title: "2. Computerized XRF Assay",
+    step2Desc: "Non-destructive German spectrometer test detects exact purity without melting or scratching.",
+    step3Title: "3. Instant Valuation Offer",
+    step3Desc: "Our live market engine computes the highest payout based on real-time spot rates.",
+    step4Title: "4. Immediate Cash or Transfer",
+    step4Desc: "Receive instant cash or immediate direct bank transfer to any Sri Lankan bank account.",
+    whyTitle: "Why Choose Gold Buyers Colombo",
+    whySubtitle: "Setting the gold standard for integrity, precision, and customer payouts.",
+    why1Title: "Highest Market Rates",
+    why1Desc: "Up to 2.5% premium bonus above standard Colombo jeweller rates with zero hidden deductions.",
+    why2Title: "100% Non-Destructive Testing",
+    why2Desc: "State-of-the-art XRF spectrometry ensures your precious jewelry is never damaged or scratched.",
+    why3Title: "Instant Cash Payout",
+    why3Desc: "Walk away with cash in hand or immediate digital bank transfer within 5 minutes.",
+    why4Title: "Confidential VIP Chambers",
+    why4Desc: "Complete privacy and high security for your transactions in private consultation rooms.",
+    contactTitle: "Get in Touch With Us",
+    contactSubtitle: "Visit our flagship Colombo branch or speak to a certified valuation specialist today.",
+    addressLabel: "Head Office Address",
+    phoneLabel: "Customer Hotline",
     hoursLabel: "Opening Hours",
-    parkingLabel: "Secure Customer Parking",
-    landmarkLabel: "Nearby Landmarks",
+    landmarkLabel: "Landmarks Nearby",
+    parkingLabel: "Customer Parking",
     formName: "Your Full Name",
-    formPhone: "Your Phone / WhatsApp",
+    formPhone: "Phone Number",
     formEmail: "Email Address (Optional)",
-    formMessage: "What gold items are you selling today?",
-    formSuccess: "Thank you! Your gold valuation lead has been submitted. Our Chief Valuation Officer will call you in 5 minutes.",
-    
-    // Footer
-    footerDesc: "GBC (Gold Buyers Colombo) is Sri Lanka's leading professional gold exchange institution. We purchase gold jewelry, bullion, and scrap with complete transparency, utilizing XRF computerized testing for maximum customer value.",
-    footerRights: "© 2026 Gold Buyers Colombo (GBC). All Rights Reserved. Licensed under Sri Lanka Gem & Jewellery Authority compliance guidelines."
+    formMessage: "Tell us about your gold items (weight, karat, type)",
+    submitForm: "Submit for Instant Valuation",
+    formSuccess: "Thank you! Our valuation officer will contact you shortly.",
+    calculating: "Calculating live market value...",
   },
   si: {
-    brand: "GBC",
     fullName: "ගෝල්ඩ් බයර්ස් කොළඹ",
-    tagline: "ශ්‍රී ලංකාවේ ප්‍රමුඛතම රන් හුවමාරු සේවාව",
-    seoKeyword: "කොළඹ රන් මිලදී ගන්නන්",
-    
-    // Navigation
+    tagline: "ශ්‍රී ලංකාවේ ඉහළම මුදල් ගෙවීම",
     home: "මුල් පිටුව",
     services: "සේවාවන්",
+    branches: "ශාඛා",
     about: "අප ගැන",
-    rates: "අද උගස් මිල (Pawn Rate)",
-    calculator: "ගණකය (Calculator)",
-    howItWorks: "ක්‍රියාවලිය",
-    whyChooseUs: "අප තෝරාගත යුත්තේ ඇයි",
-    faq: "ප්‍රශ්න සහ පිළිතුරු",
-    blog: "බ්ලොග් ලිපි",
     contact: "සම්බන්ධ වන්න",
-    branches: "ශාඛා 16",
-    admin: "පාලක පුවරුව",
-    
-    // Buttons & CTAs
-    callNow: "දැන්ම අමතන්න",
-    whatsappUs: "වට්ස්ඇප් එවන්න",
-    getEstimate: "ක්ෂණික මිල ගණනය කරන්න",
-    visitStore: "කාර්යාලයට පැමිණෙන්න",
-    bookAppointment: "දිනයක් වෙන් කරන්න",
-    submitForm: "විස්තර එවන්න",
-    calculating: "ගණනය කරමින්...",
-    shareEstimate: "මිල බෙදාගන්න",
-    printPDF: "PDF මුද්‍රණය කරන්න",
-    aiWriting: "AI මගින් ලිපියක් ලියන්න",
-    
-    // Hero Section
-    heroTitle: "කොළඹ නො.1 විශ්වාසදායක රන් ගැනුම්කරුවෝ - ශ්‍රී ලංකාව",
-    heroSubtitle: "පූර්ණ විනිවිදභාවය, සහතික කළ පරිගණක පරීක්ෂණ සහ ක්ෂණික මුදල් ගෙවීම්. ශ්‍රී ලංකාවේ නො.1 විශ්වාසනීය රන් හුවමාරුව.",
-    yearsExperience: "වසර 50ක විශ්වාසය",
-    happyCustomers: "3,500+ සතුටුදායක ගනුදෙනුකරුවන්",
-    ratingTitle: "5.0 ගූගල් ඇගයීම්",
-    transparentLabel: "100% අවංක පරීක්ෂාව",
-    
-    // Live Gold Rate Section
-    liveRatesTitle: "අද කොළඹ සජීවී උගස් මිල ගණන් (Live Pawn Rates)",
-    liveRatesSubtitle: "සජීවීව යාවත්කාලීන වේ. අපි වෙළඳපල මිලට වඩා 2.5% දක්වා අමතර ප්‍රසාද දීමනාවක් ගෙවන්නෙමු.",
+    admin: "පරිපාලක",
+    calculator: "කැල්කියුලේටරය",
+    calcTitle: "ක්ෂණික රන් කැල්කියුලේටරය",
+    liveRatesTitle: "අද කොළඹ සජීවී රන් මිල ගණන්",
+    liveRatesSubtitle: "ග්‍රෑමයක සහ පවුමක සජීවී මිල ගණන් පහතින් පරීක්ෂා කරන්න.",
+    footerDesc: "කොළඹ විශ්වාසනීය සහ සහතිකලත් රන් ගැනුම්කරු. පරිගණකගත XRF පරීක්ෂාව සහ ක්ෂණික මුදල් ගෙවීම.",
+    footerRights: "සියලු හිමිකම් ඇවිරිණි. ශ්‍රී ලංකාවේ බලපත්‍රලාභී රන් වෙළෙන්ඳා.",
+    callNow: "ඇමතුමක් ලබා දෙන්න",
     karat: "කැරට්",
-    purity: "පිරිසිදුතාවය",
-    perGram: "ග්‍රෑම් එකක් (LKR)",
-    perPavan: "උගස් මිල (8g) (LKR)",
-    lastUpdated: "අවසන් වරට යාවත්කාලීන කළේ",
-    instantPayout: "ක්ෂණික මුදල් ගෙවීම්",
-    ratesDisclaimer: "*රන් මිල වෙළඳපල වෙනස්වීම් මත රඳා පවතී. අද මිල ස්ථාවර කරගැනීමට අප අමතන්න.",
-    
-    // Calculator
-    calcTitle: "ක්ෂණික උගස් මිල ගණනය කිරීම (Pawn Rate Calculator)",
-    calcSubtitle: "නිවැරදි තක්සේරුවක් ලබා ගැනීම සඳහා පහතින් ඔබේ රන් භාණ්ඩවල විස්තර ඇතුළත් කරන්න. ඉහළම මිල සහතිකයි.",
-    goldType: "රන් වර්ගය / කැරට්",
-    weightInput: "රන් බර",
-    weightUnit: "බර මනින ඒකකය",
-    grams: "ග්‍රෑම් (g)",
-    pavans: "පවුම් (8g)",
-    marketValue: "සාමාන්‍ය වෙළඳපල වටිනාකම",
-    gbcPremiumBonus: "GBC විශේෂ ප්‍රසාද මිල (+2.5%)",
-    testingDeductions: "පරිගණක පරීක්ෂණ / පිරිසිදු කිරීමේ ගාස්තුව",
-    finalPayout: "ඔබට ලැබෙන දළ මුදල",
-    calculatorCTA: "මෙම මිල ස්ථාවර කර WhatsApp හරහා සම්බන්ධ වන්න",
-    
-    // How It Works
-    processTitle: "පියවර 4ක විනිවිදභාවයෙන් යුතු රන් මිලදී ගැනීමේ ක්‍රියාවලිය",
-    processSubtitle: "කිසිදු සැකයකින් තොරව, ඔබේ රත්තරන් ඔබේ ඇස් පනාපිටම පරීක්ෂා කර විනාඩි කිහිපයකින් මුදල් ලබාගන්න.",
-    step1Title: "1. රත්තරන් රැගෙන එන්න",
-    step1Desc: "කොළඹ පිහිටි අපගේ ආරක්ෂිත ප්‍රමුඛතම කාර්යාලය වෙත පැමිණෙන්න. කලින් දිනයක් වෙන් කරවා ගැනීම අවශ්‍ය නොවේ.",
-    step2Title: "2. XRF පරිගණක පරීක්ෂාව",
-    step2Desc: "අපගේ උසස් XRF තාක්ෂණය මගින් ඔබේ රත්‍රන්වලට කිසිදු හානියක් නොකර 100% ක් නිවැරදිව පිරිසිදුතාවය මනිනු ලැබේ.",
-    step3Title: "3. සජීවී සහතික කළ කිරුම්",
-    step3Desc: "රජයේ සහතික ලත්, ඉතා සියුම් බර මනින තරාදි මගින් ඔබේ රත්‍රන්වල බර ඔබ ඉදිරියේදීම මනිනු ලැබේ.",
-    step4Title: "4. ක්ෂණික මුදල් ලබාගැනීම",
-    step4Desc: "එසැණින්ම අතට මුදල් හෝ ඔබ කැමති දේශීය බැංකු ගිණුමකට ක්ෂණික මුදල් හුවමාරුවක් ලබා ගන්න.",
-    
-    // Why Choose Us
-    whyTitle: "GBC කොළඹ ප්‍රමුඛතම රන් මිලදී ගන්නා ස්ථානය වන්නේ ඇයි?",
-    whySubtitle: "අපගේ වෘත්තීය මට්ටමේ මූල්‍ය විනිවිදභාවය සාම්ප්‍රදායික උකස් මධ්‍යස්ථානවලට වඩා බෙහෙවින් වෙනස් වේ.",
-    why1Title: "ඉහළම මිල සහතිකය",
-    why1Desc: "සෘජු රන් අපනයන අනුමැතිය ඇති බැවින් කොළඹ අනෙකුත් ආයතනවලට වඩා 5% දක්වා වැඩි මිලක් අපට ගෙවිය හැකිය.",
-    why2Title: "XRF පරිගණක පරීක්ෂාව",
-    why2Desc: "අම්ල මගින් උරගා බලන පැරණි ක්‍රම වෙනුවට ජාත්‍යන්තර මට්ටමේ පරිගණක තාක්ෂණයෙන් පිරිසිදුතාවය මනිමු.",
-    why3Title: "කිසිදු සැඟවුණු කැපීම් නොමැත",
-    why3Desc: "අනවශ්‍ය අලාභ ගාස්තු හෝ 'අඩු කිරීම්' අප සතුව නොමැත. සෑම මිලිග්‍රෑමයකටම නිවැරදි වටිනාකම ලැබේ.",
-    why4Title: "උපරිම රහස්‍යභාවය සහ ආරක්ෂාව",
-    why4Desc: "සියලුම ගනුදෙනු CCTV නිරීක්ෂණ සහිත පෞද්ගලික ආරක්ෂිත කාමර තුළ රජයේ නීතිරීතිවලට අනුකූලව සිදුවේ.",
-    
-    // FAQ Section
-    faqTitle: "රන් විකිණීම සම්බන්ධයෙන් නිතර අසන ප්‍රශ්න",
-    faqSubtitle: "කොළඹ රන් විකිණීම ගැන දැනගත යුතු සියල්ල මෙන්න.",
-    
-    // Contact Section
-    contactTitle: "අපගේ කොළඹ ප්‍රධාන ශාඛාව",
-    contactSubtitle: "පැමිණීමට ගතවන කාලය, අවට ඇති ප්‍රසිද්ධ සලකුණු, පාරිභෝගික වාහන නැවැත්වීමේ පහසුකම් මෙතැනින්.",
-    phoneLabel: "දුරකථන අංකය",
-    addressLabel: "ලිපිනය",
-    hoursLabel: "වැඩ කරන වේලාවන්",
-    parkingLabel: "ආරක්ෂිත වාහන නැවැත්වීම",
-    landmarkLabel: "අවට ඇති ප්‍රසිද්ධ සලකුණු",
-    formName: "ඔබේ සම්පූර්ණ නම",
-    formPhone: "දුරකථන / වට්ස්ඇප් අංකය",
-    formEmail: "ඊමේල් ලිපිනය (අත්‍යවශ්‍ය නොවේ)",
-    formMessage: "ඔබ අද විකිණීමට බලාපොරොත්තු වන රන් භාණ්ඩ මොනවාද?",
-    formSuccess: "ස්තූතියි! ඔබේ විස්තර සාර්ථකව ලැබුණා. අපගේ ප්‍රධාන තක්සේරු නිලධාරී විනාඩි 5ක් ඇතුළත ඔබව සම්බන්ධ කර ගනු ඇත.",
-    
-    // Footer
-    footerDesc: "ගෝල්ඩ් බයර්ස් කොළඹ (GBC) යනු ශ්‍රී ලංකාවේ ප්‍රමුඛතම රන් හුවමාරු ආයතනයයි. XRF පරිගණක තාක්ෂණය භාවිතා කරමින් ඔබේ රන් ආභරණ සහ රන් බිස්කට්වලට උපරිම වටිනාකම සහතික කරමින් අපි මිලදී ගන්නෙමු.",
-    footerRights: "© 2026 ගෝල්ඩ් බයර්ස් කොළඹ (GBC). සියලුම හිමිකම් ඇවිරිණි. ශ්‍රී ලංකා මැණික් හා ස්වර්ණාභරණ අධිකාරියේ අනුමැතිය සහ නියාමනයට යටත් වේ."
+    purity: "පිරිසිදුකම",
+    perGram: "ග්‍රෑමයකට (රු.)",
+    perPavan: "පවුමකට (8g)",
+    lastUpdated: "අවසන් යාවත්කාලීන කිරීම",
+    ratesDisclaimer: "*ජාත්‍යන්තර වෙළඳපල වෙනස්වීම් මත මිල ගණන් වෙනස් විය හැක.",
+    processTitle: "පහසු පියවර 4කින් මුදල් ලබාගන්න",
+    processSubtitle: "විනාඩි 5ක් ඇතුළත ආරක්ෂිත සහ විනිවිදභාවයෙන් යුතු ඇගයීමක් ලබාගන්න.",
+    step1Title: "1. අපගේ කාර්යාලයට පැමිණෙන්න",
+    step1Desc: "කොළඹ පිහිටි අපගේ සුරක්ෂිත කාර්යාලයට පැමිණෙන්න.",
+    step2Title: "2. පරිගණකගත XRF පරීක්ෂාව",
+    step2Desc: "හානියක් නොවන ජර්මානු තාක්ෂණයෙන් නිවැරදි රන් ප්‍රතිශතය සොයාගන්න.",
+    step3Title: "3. ඉහළම වටිනාකම් මිල ගණන්",
+    step3Desc: "සජීවී වෙළඳපල අනුපාත මත පදනම්ව උපරිම මුදලක් ලබාගන්න.",
+    step4Title: "4. ක්ෂණික මුදල් හෝ බැංකු තැන්පතු",
+    step4Desc: "අතටම මුදල් හෝ ක්ෂණික බැංකු හුවමාරුවක් ලබාගන්න.",
+    whyTitle: "ඇයි ගෝල්ඩ් බයර්ස් කොළඹ තෝරාගත යුත්තේ?",
+    whySubtitle: "විශ්වාසය, නිරවද්‍යතාවය සහ ඉහළම මිල සඳහා ප්‍රමුඛයා.",
+    why1Title: "ඉහළම වෙළඳපල මිල",
+    why1Desc: "සාමාන්‍ය රන් ආභරණ වෙළඳසැල්වලට වඩා 2.5% ක අමතර බෝනස් මුදලක්.",
+    why2Title: "100% හානි නොවන පරීක්ෂාව",
+    why2Desc: "නවීන XRF තාක්ෂණය මගින් ආභරණවලට කිසිදු හානියක් සිදු නොවේ.",
+    why3Title: "ක්ෂණික මුදල් ගෙවීම",
+    why3Desc: "විනාඩි 5කින් අතට මුදල් ලබාගැනීමේ හැකියාව.",
+    why4Title: "පුද්ගලික රහස්‍යභාවය",
+    why4Desc: "සම්පූර්ණ ආරක්ෂාව සහ රහස්‍යභාවය සහිත ප්‍රභූ කාමර.",
+    contactTitle: "අප හා සම්බන්ධ වන්න",
+    contactSubtitle: "අදම අපගේ ප්‍රධාන ශාඛාවට පැමිණෙන්න හෝ දුරකථනයෙන් අමතන්න.",
+    addressLabel: "ප්‍රධාන කාර්යාල ලිපිනය",
+    phoneLabel: "ක්ෂණික ඇමතුම් අංකය",
+    hoursLabel: "විවෘත වේලාවන්",
+    landmarkLabel: "ආසන්න සලකුණු",
+    parkingLabel: "රථ ගාල",
+    formName: "ඔබගේ සම්පූර්ණ නම",
+    formPhone: "දුරකථන අංකය",
+    formEmail: "විද්‍යුත් තැපෑල (විකල්ප)",
+    formMessage: "ඔබගේ රන් ආභරණ පිළිබඳ විස්තර",
+    submitForm: "ක්ෂණික තක්සේරුවක් ලබාගන්න",
+    formSuccess: "ස්තූතියි! අපගේ නිලධාරියෙකු ඔබව ඉක්මනින් සම්බන්ධ කරගනු ඇත.",
+    calculating: "සජීවී වටිනාකම ගණනය කරමින්...",
   },
   ta: {
-    brand: "GBC",
     fullName: "கோல்ட் பையர்ஸ் கொழும்பு",
-    tagline: "இலங்கையின் பிரீமியம் தங்கம் பரிமாற்ற நிலையம்",
-    seoKeyword: "கொழும்பில் தங்க வாங்குபவர்",
-    
-    // Navigation
+    tagline: "இலங்கையில் தங்கத்திற்கு அதிகபட்ச ரொக்கப் பணம்",
     home: "முகப்பு",
     services: "சேவைகள்",
-    about: "எங்களைப் பற்றி",
-    rates: "இன்றைய அடகு விலை (Pawn Rate)",
-    calculator: "மதிப்பீட்டாளர்",
-    howItWorks: "எப்படி செயல்படுகிறது",
-    whyChooseUs: "ஏன் எங்களை தேர்வு செய்ய வேண்டும்",
-    faq: "கேள்வி பதில்",
-    blog: "வலைப்பதிவு",
+    branches: "கிளைகள்",
+    about: "எங்களை பற்றி",
     contact: "தொடர்பு கொள்ள",
-    branches: "16 கிளைகள்",
-    admin: "நிர்வாகக் குழு",
-    
-    // Buttons & CTAs
+    admin: "நிர்வாகம்",
+    calculator: "கால்குலேட்டர்",
+    calcTitle: "உடனடி தங்க கால்குலேட்டர்",
+    liveRatesTitle: "கொழும்பில் இன்றைய நேரலை தங்க விலை",
+    liveRatesSubtitle: "கிராம் மற்றும் பவுனுக்கான நேரலை விலை நிலவரம்.",
+    footerDesc: "கொழும்பின் முன்னணி சான்றளிக்கப்பட்ட தங்க கொள்வனவாளர். கணினிமயப்படுத்தப்பட்ட XRF பரிசோதனை மற்றும் உடனடி பணம்.",
+    footerRights: "அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை. உரிமம் பெற்ற தங்க வியாபாரி.",
     callNow: "அழைக்க",
-    whatsappUs: "வாட்ஸ்அப் செய்ய",
-    getEstimate: "நேரடி மதிப்பீடு",
-    visitStore: "அலுவலகம் வருகை",
-    bookAppointment: "நேரம் ஒதுக்குக",
-    submitForm: "விபரங்களை அனுப்பவும்",
-    calculating: "கணக்கிடப்படுகிறது...",
-    shareEstimate: "பகிர்ந்து கொள்ள",
-    printPDF: "PDF அச்சிட",
-    aiWriting: "AI மூலம் கட்டுரை எழுதுக",
-    
-    // Hero Section
-    heroTitle: "கொழும்பின் No.1 நம்பகமான தங்கம் வாங்குபவர் - இலங்கை",
-    heroSubtitle: "முழுமையான வெளிப்படைத்தன்மை, சான்றளிக்கப்பட்ட கணினி சோதனை மற்றும் உடனடி பண பட்டுவாடா. இலங்கையின் No.1 நம்பகமான தங்கம் மாற்று நிறுவனம்.",
-    yearsExperience: "50+ வருட பாரம்பரியம்",
-    happyCustomers: "3,500+ மகிழ்ச்சியான வாடிக்கையாளர்கள்",
-    ratingTitle: "5.0 கூகுள் மதிப்பீடு",
-    transparentLabel: "100% நேர்மையான சோதனை",
-    
-    // Live Gold Rate Section
-    liveRatesTitle: "கொழும்பில் இன்றைய நேரடி அடகு விலைகள் (Live Pawn Rates)",
-    liveRatesSubtitle: "உடனுக்குடன் புதுப்பிக்கப்படுகிறது. மறைமுகக் கட்டணங்கள் ஏதுமின்றி சந்தை விலையை விட 2.5% வரை கூடுதல் லாபம் வழங்குகிறோம்.",
     karat: "காரட்",
     purity: "தூய்மை",
     perGram: "ஒரு கிராம் (LKR)",
-    perPavan: "அடகு விலை (8g) (LKR)",
+    perPavan: "ஒரு பவுன் (8g)",
     lastUpdated: "கடைசியாக புதுப்பிக்கப்பட்டது",
-    instantPayout: "உடனடி ரொக்கப் பணம்",
-    ratesDisclaimer: "*தங்க விலை சந்தை நிலவரத்திற்கு ஏற்ப மாறுபடலாம். இன்றைய விலையை உறுதிப்படுத்த எங்களை அழைக்கவும்.",
-    
-    // Calculator
-    calcTitle: "உடனடி அடகு விலை மதிப்பீடு (Pawn Rate Calculator)",
-    calcSubtitle: "துல்லியமான மதிப்பீட்டைப் பெற உங்கள் தங்கத்தின் விபரங்களை கீழே உள்ளிடவும். மிக உயர்ந்த விலை நிச்சயம்.",
-    goldType: "தங்க வகை / காரட்",
-    weightInput: "தங்க எடை",
-    weightUnit: "எடை அலகு",
-    grams: "கிராம் (g)",
-    pavans: "பவுன் (8g)",
-    marketValue: "சாதாரண சந்தை மதிப்பு",
-    gbcPremiumBonus: "GBC பிரீமியம் போனஸ் (+2.5%)",
-    testingDeductions: "கணினி சோதனை மற்றும் சுத்தம் செய்யும் கட்டணம்",
-    finalPayout: "உங்களுக்கு கிடைக்கும் மதிப்பிடப்பட்ட தொகை",
-    calculatorCTA: "இந்த விலையை உறுதிசெய்து வாட்ஸ்அப்பில் தொடர்பு கொள்ளவும்",
-    
-    // How It Works
-    processTitle: "4 எளிய வெளிப்படையான தங்க விற்பனை வழிமுறைகள்",
-    processSubtitle: "எந்தவொரு சந்தேகமுமின்றி, உங்கள் தங்கம் உங்கள் கண் முன்னாலேயே சோதிக்கப்பட்டு சில நிமிடங்களில் பணத்தைப் பெறுங்கள்.",
-    step1Title: "1. தங்கத்தை கொண்டு வாருங்கள்",
-    step1Desc: "கொழும்பில் உள்ள எங்களது பாதுகாப்பான அதிநவீன அலுவலகத்திற்கு வருகை தரவும். முன் அனுமதி தேவையில்லை.",
-    step2Title: "2. XRF கணினி சோதனை",
-    step2Desc: "எங்கள் மேம்பட்ட XRF தொழில்நுட்பம் மூலம் உங்கள் தங்கத்திற்கு எந்த சேதமும் இல்லாமல் 100% துல்லியமாக தூய்மை அளவிடப்படும்.",
-    step3Title: "3. நேரடி சான்றளிக்கப்பட்ட எடை",
-    step3Desc: "அரசால் சான்றளிக்கப்பட்ட அதிநவீன தராசு மூலம் உங்கள் தங்கம் உங்கள் முன்னிலையிலேயே எடை போடப்படும்.",
-    step4Title: "4. உடனடி பண விநியோகம்",
-    step4Desc: "உடனுக்குடன் கையில் ரொக்கம் அல்லது நீங்கள் விரும்பும் உள்ளூர் வங்கி கணக்கிற்கு உடனடி பண பரிமாற்றத்தை பெற்றுக்கொள்ளுங்கள்.",
-    
-    // Why Choose Us
-    whyTitle: "ஏன் GBC கொழும்பின் முதன்மையான தங்கம் வாங்கும் நிலையமாகும்?",
-    whySubtitle: "எங்களது தொழில்முறை நிதி வெளிப்படைத்தன்மை பாரம்பரிய அடகு நிலையங்களை விட மிகவும் சிறந்தது.",
-    why1Title: "உயர்ந்த விலை உத்தரவாதம்",
-    why1Desc: "நேரடி தங்கம் ஏற்றுமதி அனுமதி உள்ளதால் கொழும்பில் மற்ற இடங்களை விட 5% வரை அதிக விலையை எம்மால் வழங்க முடியும்.",
-    why2Title: "XRF கணினி சோதனை முறை",
-    why2Desc: "அமிலம் கொண்டு தேய்க்கும் பழைய முறைகளுக்கு பதிலாக சர்வதேச கணினி தொழில்நுட்பத்தின் மூலம் தூய்மையை அளவிடுகிறோம்.",
-    why3Title: "மறைமுக கழிவுகள் இல்லை",
-    why3Desc: "சேதக் கட்டணம் அல்லது தேவையற்ற கழிவுகள் எங்களிடம் இல்லை. ஒவ்வொரு மில்லிகிராமிற்கும் துல்லியமான மதிப்பு கிடைக்கும்.",
-    why4Title: "முழுமையான பாதுகாப்பு மற்றும் ரகசியம்",
-    why4Desc: "அனைத்து பரிவர்த்தனைகளும் CCTV கண்காணிப்புடன் கூடிய தனிப்பட்ட பாதுகாப்பான அறைகளில் அரச சட்டங்களின்படி நடைபெறும்.",
-    
-    // FAQ Section
-    faqTitle: "தங்கம் விற்பனை தொடர்பான அடிக்கடி கேட்கப்படும் கேள்விகள்",
-    faqSubtitle: "கொழும்பில் தங்கம் விற்பனை செய்வதைப் பற்றி நீங்கள் தெரிந்து கொள்ள வேண்டிய அனைத்தும்.",
-    
-    // Contact Section
-    contactTitle: "எங்கள் கொழும்பு பிரதான காரியாலயம்",
-    contactSubtitle: "வருவதற்கு எடுக்கும் நேரம், அருகில் உள்ள முக்கிய அடையாளங்கள், வாடிக்கையாளர் வாகன நிறுத்துமிடம் விபரங்கள்.",
-    phoneLabel: "தொலைபேசி எண்",
-    addressLabel: "முகவரி",
-    hoursLabel: "வேலை நேரங்கள்",
-    parkingLabel: "பாதுகாப்பான வாகன நிறுத்துமிடம்",
-    landmarkLabel: "அருகில் உள்ள முக்கிய அடையாளங்கள்",
-    formName: "உங்கள் முழு பெயர்",
-    formPhone: "தொலைபேசி / வாட்ஸ்அப் எண்",
-    formEmail: "மின்னஞ்சல் முகவரி (விரும்பினால்)",
-    formMessage: "நீங்கள் இன்று விற்க விரும்பும் தங்க பொருட்கள் எவை?",
-    formSuccess: "நன்றி! உங்கள் விபரங்கள் வெற்றிகரமாக சமர்ப்பிக்கப்பட்டன. எங்களது தலைமை மதிப்பீட்டு அதிகாரி 5 நிமிடங்களில் உங்களை தொடர்புகொள்வார்.",
-    
-    // Footer
-    footerDesc: "கோல்ட் பையர்ஸ் கொழும்பு (GBC) என்பது இலங்கையின் முன்னணி தங்கம் பரிமாற்ற நிறுவனமாகும். XRF கணினி தொழில்நுட்பத்தைப் பயன்படுத்தி உங்கள் தங்க ஆபரணங்களுக்கு அதிகபட்ச மதிப்பை உறுதிசெய்து கொள்கிறோம்.",
-    footerRights: "© 2026 கோல்ட் பையர்ஸ் கொழும்பு (GBC). அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை. இலங்கை ரத்தினம் மற்றும் ஆபரண அதிகாரசபையின் விதிமுறைகளுக்கு உட்பட்டது."
-  }
+    ratesDisclaimer: "*சர்வதேச சந்தை மாற்றங்களுக்கு ஏற்ப விலைகள் மாறலாம்.",
+    processTitle: "4 எளிய படிகளில் ரொக்கப் பணம்",
+    processSubtitle: "5 நிமிடங்களுக்குள் பாதுகாப்பான மற்றும் வெளிப்படையான மதிப்பீடு.",
+    step1Title: "1. எங்களை அணுகவும்",
+    step1Desc: "கொழும்பில் உள்ள எமது பாதுகாப்பான அலுவலகத்திற்கு வருகை தரவும்.",
+    step2Title: "2. கணினிமயப்படுத்தப்பட்ட XRF சோதனை",
+    step2Desc: "சேதமில்லாத ஜெர்மன் தொழில்நுட்பம் மூலம் துல்லியமான தங்க தூய்மை அறிதல்.",
+    step3Title: "3. சிறந்த சந்தை மதிப்பு",
+    step3Desc: "நேரலை சந்தை நிலவரப்படி அதிகபட்ச பண மதிப்பீடு.",
+    step4Title: "4. உடனடி ரொக்கம் அல்லது வங்கி வைப்பு",
+    step4Desc: "உடனடியாக கையில் ரொக்கம் அல்லது வங்கி பரிமாற்றம் பெறுங்கள்.",
+    whyTitle: "ஏன் கோல்ட் பையர்ஸ் கொழும்பை தெரிவு செய்ய வேண்டும்?",
+    whySubtitle: "நம்பிக்கை மற்றும் சிறந்த விலைக்கு முதன்மையானவர்கள்.",
+    why1Title: "அதிகபட்ச சந்தை விலை",
+    why1Desc: "வழக்கமான விலையை விட 2.5% கூடுதல் போனஸ் சலுகை.",
+    why2Title: "100% சேதமில்லா சோதனை",
+    why2Desc: "நவீன XRF முறை மூலம் நகைகளுக்கு எந்த சேதமும் ஏற்படாது.",
+    why3Title: "உடனடி பணம்",
+    why3Desc: "5 நிமிடத்தில் உடனடி பண பட்டுவாடா.",
+    why4Title: "பாதுகாப்பான தனிப்பட்ட அறை",
+    why4Desc: "முழுமையான பாதுகாப்பு மற்றும் இரகசியத்தன்மை.",
+    contactTitle: "எங்களை தொடர்பு கொள்ளவும்",
+    contactSubtitle: "இன்றே எமது கொழும்பு தலைமை கிளையை அணுகவும்.",
+    addressLabel: "தலைமை அலுவலக முகவரி",
+    phoneLabel: "வாடிக்கையாளர் அவசர தொலைபேசி",
+    hoursLabel: "திறக்கும் நேரம்",
+    landmarkLabel: "அருகிலுள்ள அடையாளங்கள்",
+    parkingLabel: "வாகன தரிப்பிடம்",
+    formName: "உங்கள் பெயர்",
+    formPhone: "தொலைபேசி எண்",
+    formEmail: "மின்னஞ்சல் (விருப்பத்திற்குரியது)",
+    formMessage: "உங்கள் தங்க நகைகள் பற்றிய விபரம்",
+    submitForm: "உடனடி மதிப்பீட்டைப் பெறுக",
+    formSuccess: "நன்றி! எமது அதிகாரி விரைவில் உங்களை தொடர்புகொள்வார்.",
+    calculating: "நேரலை மதிப்பு கணக்கிடப்படுகிறது...",
+  },
 };

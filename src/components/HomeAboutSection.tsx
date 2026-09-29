@@ -29,14 +29,14 @@ export default function HomeAboutSection({ currentLang, setView }: HomeAboutSect
             </div>
 
             {/* Legacy Info Box Below Image */}
-            <div className="mt-3 p-4 rounded-2xl bg-neutral-900 dark:bg-neutral-900 border border-neutral-800 text-white shadow-md">
+            <div className="mt-3 p-4 rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 text-neutral-900 dark:text-white shadow-xs">
               <div className="flex items-center gap-3">
-                <div className="p-2.5 rounded-xl bg-amber-500/20 border border-amber-500/30 text-amber-400 shrink-0">
+                <div className="p-2.5 rounded-xl bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/20 dark:border-amber-500/30 text-amber-600 dark:text-amber-400 shrink-0">
                   <Award className="h-5 w-5" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-black text-white">50+ Years Legacy Since 1976</h4>
-                  <p className="text-xs text-neutral-300">Sri Lanka's Premier Gold Exchange Merchant</p>
+                  <h4 className="text-sm font-black text-neutral-900 dark:text-white">50+ Years Legacy Since 1976</h4>
+                  <p className="text-xs text-neutral-600 dark:text-neutral-400">Sri Lanka's Premier Gold Exchange Merchant</p>
                 </div>
               </div>
             </div>

@@ -12,161 +12,58 @@ import LiveRateWidget from "./components/LiveRateWidget.js";
 import Footer from "./components/Footer.js";
 import ExitIntentPopup from "./components/ExitIntentPopup.js";
 import { Language } from "./lib/translations.js";
-import { GoldKarat, GoldRate, SystemSettings, CustomerLead, BlogPost, HistoricalRate } from "./types.js";
+import { GoldKarat, GoldRate, SystemSettings, CustomerLead, HistoricalRate } from "./types.js";
 import { updateMetaTags } from "./lib/seo.js";
 import SEOSchemas from "./components/SEOSchemas.js";
-import { localDb, fetchFallbackData, safeStorage } from "./lib/localDb.js";
+import { DEFAULT_RATES, DEFAULT_SETTINGS, DEFAULT_HISTORICAL, DEFAULT_LEADS } from "./lib/constants.js";
 import GoldCalculator from "./components/GoldCalculator.js";
 import SellingProcess from "./components/SellingProcess.js";
 import Services from "./components/Services.js";
 import WhyChooseUs from "./components/WhyChooseUs.js";
 import Testimonials from "./components/Testimonials.js";
 import ContactSection from "./components/ContactSection.js";
-import BlogPreview from "./components/BlogPreview.js";
 import AdminDashboard from "./components/AdminDashboard.js";
 import AboutPage from "./components/AboutPage.js";
 import ContactPage from "./components/ContactPage.js";
 import ServicesPage from "./components/ServicesPage.js";
 import BranchesPage from "./components/BranchesPage.js";
-import RecentPosts from "./components/RecentPosts.js";
 import ChatWithConsultant from "./components/ChatWithConsultant.js";
 import FairValuationSection from "./components/FairValuationSection.js";
 import HomeAboutSection from "./components/HomeAboutSection.js";
 import FinalCTASection from "./components/FinalCTASection.js";
 import InstallAppBanner from "./components/InstallAppBanner.js";
-
-// Helper to normalize blog posts from any API envelope or MySQL schema format
-function normalizeBlogPosts(raw: any): BlogPost[] {
-  if (!raw) return [];
-  let list: any[] = [];
-  if (Array.isArray(raw)) {
-    list = raw;
-  } else if (Array.isArray(raw.data?.posts)) {
-    list = raw.data.posts;
-  } else if (Array.isArray(raw.posts)) {
-    list = raw.posts;
-  } else if (Array.isArray(raw.blogs)) {
-    list = raw.blogs;
-  } else if (Array.isArray(raw.data)) {
-    list = raw.data;
-  } else if (raw.data?.post && typeof raw.data.post === "object") {
-    list = [raw.data.post];
-  } else if (raw.post && typeof raw.post === "object") {
-    list = [raw.post];
-  } else if (raw.data && typeof raw.data === "object" && (raw.data.id || raw.data.title)) {
-    list = [raw.data];
-  } else if (raw.id || raw.title) {
-    list = [raw];
-  }
-  
-  if (!Array.isArray(list)) return [];
-
-  return list.map((item: any) => {
-    let tagsList: string[] = [];
-    if (Array.isArray(item.tags)) {
-      tagsList = item.tags.map((t: any) => typeof t === "string" ? t : (t.name || t.slug || "")).filter(Boolean);
-    } else if (typeof item.tags === "string") {
-      tagsList = item.tags.split(",").map((s: string) => s.trim()).filter(Boolean);
-    }
-
-    const isPub = item.isPublished !== undefined 
-      ? Boolean(item.isPublished) 
-      : (item.status ? item.status === "published" : true);
-
-    const postDate = item.date || item.published_at?.split(" ")[0]?.split("T")[0] || item.created_at?.split(" ")[0]?.split("T")[0] || new Date().toISOString().split("T")[0];
-
-    return {
-      id: String(item.id || item.post_uuid || `blog_${Date.now()}`),
-      slug: item.slug || `post-${item.id || Date.now()}`,
-      title: item.title || "Untitled Post",
-      content: item.content || "",
-      excerpt: item.excerpt || "",
-      author: item.author || item.author_name || "Samantha Alwis (Chief Valuation Officer, GBC)",
-      date: postDate,
-      category: item.category || item.category_name || "Selling Gold",
-      tags: tagsList.length > 0 ? tagsList : ["Gold Buyers", "Colombo"],
-      image: item.image || item.cover_image || "https://images.unsplash.com/photo-1610375461246-83df859d849d?auto=format&fit=crop&w=1200&q=80",
-      metaTitle: item.metaTitle || item.meta_title || item.title || "",
-      metaDescription: item.metaDescription || item.meta_description || item.excerpt || "",
-      isPublished: isPub,
-      status: item.status || (isPub ? "published" : "draft"),
-      isFeatured: Boolean(item.isFeatured ?? item.is_featured),
-      canonicalUrl: item.canonicalUrl || item.canonical_url || "",
-      focusKeyword: item.focusKeyword || item.focus_keyword || "",
-      readTime: item.readTime || `${Math.max(1, Math.ceil((item.content?.split(/\s+/).length || 200) / 200))} min read`,
-      createdAt: item.createdAt || item.created_at || new Date().toISOString(),
-      questions: item.questions || []
-    };
-  });
-}
+import SitemapPage from "./components/SitemapPage.js";
 
 interface AppProps {
-  initialView?: "home" | "blog" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "services";
-  initialBlogSlug?: string | null;
+  initialView?: "home" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "services" | "sitemap";
   initialServiceId?: string | null;
   initialBranchId?: string | null;
-  initialBlogsData?: BlogPost[];
 }
 
 export default function App({
   initialView,
-  initialBlogSlug: propBlogSlug = null,
   initialServiceId: propServiceId = null,
   initialBranchId: propBranchId = null,
-  initialBlogsData,
 }: AppProps = {}) {
-  // Increment visit count for PWA install prompt & analytics on mount
-  useEffect(() => {
-    try {
-      const currentVisits = parseInt(safeStorage.getItem("gbc_visit_count") || "0", 10);
-      safeStorage.setItem("gbc_visit_count", (currentVisits + 1).toString());
-    } catch {
-      // ignore restricted mode / storage errors
-    }
-  }, []);
-
-  // Navigation & Language
+  // Navigation & Language (pure component state - zero local storage)
   const [currentLang, setCurrentLang] = useState<Language>(() => {
-    // 1. Check if user has a persisted language choice
-    const saved = safeStorage.getItem("gbc_user_lang");
-    if (saved === "en" || saved === "si" || saved === "ta") {
-      return saved as Language;
-    }
-
-    // 2. First visit - detect browser language (English, Sinhala, or Tamil)
     try {
       if (typeof navigator !== "undefined") {
         const browserLangs = navigator.languages || [navigator.language];
         for (const lang of browserLangs) {
           const lowerLang = lang.toLowerCase();
-          if (lowerLang.startsWith("si")) {
-            safeStorage.setItem("gbc_user_lang", "si");
-            return "si";
-          }
-          if (lowerLang.startsWith("ta")) {
-            safeStorage.setItem("gbc_user_lang", "ta");
-            return "ta";
-          }
-          if (lowerLang.startsWith("en")) {
-            safeStorage.setItem("gbc_user_lang", "en");
-            return "en";
-          }
+          if (lowerLang.startsWith("si")) return "si";
+          if (lowerLang.startsWith("ta")) return "ta";
+          if (lowerLang.startsWith("en")) return "en";
         }
       }
     } catch {
-      // ignore language detection failure
+      // ignore
     }
-
-    // Default to "en"
     return "en";
   });
 
-  // Sync manual language selection changes to safeStorage for subsequent sessions
-  useEffect(() => {
-    safeStorage.setItem("gbc_user_lang", currentLang);
-  }, [currentLang]);
-
-  const [activeView, setActiveView] = useState<"home" | "blog" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "services">(
+  const [activeView, setActiveView] = useState<"home" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "services" | "sitemap">(
     () => {
       if (initialView) return initialView;
       if (typeof window !== "undefined") {
@@ -177,7 +74,7 @@ export default function App({
         if (path === "/services" || path.startsWith("/services/")) return "services";
         if (path === "/rates") return "rates";
         if (path === "/calculator") return "calculator";
-        if (path === "/blog" || path.startsWith("/blog/")) return "blog";
+        if (path === "/sitemap") return "sitemap";
         if (path === "/admin" || path.startsWith("/admin/")) return "admin";
       }
       return "home";
@@ -206,25 +103,11 @@ export default function App({
     return null;
   });
 
-  const [selectedBlogSlug, setSelectedBlogSlug] = useState<string | null>(() => {
-    if (propBlogSlug) return propBlogSlug;
-    if (typeof window !== "undefined") {
-      const path = window.location.pathname.toLowerCase().replace(/\/$/, "");
-      if (path.startsWith("/blog/") && path.length > 6) {
-        return path.substring(6);
-      }
-    }
-    return null;
-  });
   const [showAdmin, setShowAdmin] = useState(false);
   const [logoClicks, setLogoClicks] = useState(0);
 
   // Dynamic SEO Page Title & Meta description updates for GEO / CRO / AEO
   useEffect(() => {
-    // Skip blog view metadata updates here because BlogPreview component manages its own internal 
-    // active article detail view versus catalog listing metadata dynamically.
-    if (activeView === "blog") return;
-
     if (activeView === "home") {
       const title = currentLang === "si" 
         ? "රන් බයර්ස් කොළඹ (GBC) | ලංකාවේ රන් සඳහා ඉහළම මිල | Gold Buyers Colombo"
@@ -238,15 +121,44 @@ export default function App({
         ? "GBC (கோல்ட் பையர்ஸ் கொழும்பு) மூலம் உங்கள் தங்கத்திற்கு அதிகபட்ச ரொக்கப் பணத்தைப் பெறுங்கள். 100% வெளிப்படையான கணினி XRF சோதனை மற்றும் உடனடி ரொக்கம். இன்றே அணுகவும்."
         : "Sell your gold jewelry, diamonds, gemstones, and luxury watches for the highest cash payout in Colombo, Sri Lanka at GBC. 100% transparent testing and instant cash.";
 
-      const keywords = "gold buyer in colombo, gold price today colombo, sell gold sri lanka, highest gold price colombo, diamond buyers Sri Lanka, sell gemstones Sri Lanka, luxury watch buyers Colombo, cash for diamonds, Rolex buyers Sri Lanka, gbc gold buyers";
-      
+      const keywords = "gold buyers colombo, sell gold Sri Lanka, highest gold price colombo, best place to sell gold Sri Lanka, sell jewelry Colombo, diamond buyers Sri Lanka, sell luxury watch colombo";
+
       updateMetaTags(title, desc, keywords);
-    } else if (activeView === "services") {
-      document.title = "Our Services | Gold Buyers Colombo";
-      updateMetaTags("Our Services | Gold Buyers Colombo", "Explore our gold, diamond, and watch buying services.", "gold buying service, diamond buyer, colombo, sri lanka");
+    } else if (activeView === "rates") {
+      const title = currentLang === "si"
+        ? "අද රන් මිල කොළඹ - 24K, 22K, 21K, 18K සජීවී මිල ගණන් | GBC"
+        : currentLang === "ta"
+        ? "இன்றைய தங்க விலை கொழும்பு - 24K, 22K, 21K, 18K நேரலை விலை | GBC"
+        : "Today's Gold Rate in Colombo - Live 24K, 22K, 21K, 18K Gold Prices | GBC";
+
+      const desc = currentLang === "si"
+        ? "කොළඹ දවසේ සජීවී රන් මිල ගණන්. 24K, 22K, 21K, 18K ග්‍රෑමයක මිල සහ පවුමක මිල ක්ෂණිකව බලාගන්න. GBC ඉහළම වෙළඳපල මිල."
+        : currentLang === "ta"
+        ? "கொழும்பில் இன்றைய நேரலை தங்க விலை நிலவரம். 24K, 22K, 21K, 18K ஒரு கிராம் மற்றும் பவுன் விலைகளை உடனடியாக அறியுங்கள்."
+        : "Check live gold rates in Colombo today. Real-time per gram and pavan rates for 24 Karat, 22 Karat, 21 Karat, and 18 Karat gold in Sri Lankan Rupees.";
+
+      const keywords = "today gold rate colombo, gold price sri lanka, 22k gold price colombo, 24k gold price sri lanka, pavan price colombo, live gold market rate Sri Lanka";
+
+      updateMetaTags(title, desc, keywords);
+    } else if (activeView === "calculator") {
+      const title = currentLang === "si"
+        ? "රන් වටිනාකම් කැල්කියුලේටරය - ඔබගේ රන්වල වටිනාකම ගණනය කරන්න | GBC"
+        : currentLang === "ta"
+        ? "தங்க மதிப்பு கால்குலேட்டர் - உங்கள் தங்கத்தின் மதிப்பை கணக்கிடுங்கள் | GBC"
+        : "Live Gold Value Calculator Sri Lanka - Calculate Cash Payout | GBC";
+
+      const desc = currentLang === "si"
+        ? "ඔබ සතුව ඇති රන් ආභරණවල බර සහ කැරට් අගය ඇතුළත් කර ක්ෂණිකව වටිනාකම ගණනය කරගන්න. රහස්‍ය ගාස්තු නැත."
+        : currentLang === "ta"
+        ? "உங்கள் தங்க நகைகளின் எடை மற்றும் காரட்டை உள்ளிட்டு உடனடி பண மதிப்பைப் பெறுங்கள். மறைமுக கட்டணங்கள் இல்லை."
+        : "Calculate your gold's instant cash value in Colombo with our live gold calculator. Instant estimates for 24K, 22K, 21K, and 18K jewelry.";
+
+      const keywords = "gold calculator sri lanka, calculate gold price colombo, gold valuation calculator, sell gold calculator sri lanka";
+
+      updateMetaTags(title, desc, keywords);
     } else if (activeView === "about") {
       const title = currentLang === "si"
-        ? "අප ගැන - ගෝල්ඩ් බයර්ස් කොළඹ (GBC) | විශ්වාසදායක රන් ගැනුම්කරුවන්"
+        ? "අප ගැන - ගෝල්ඩ් බයර්ස් කොළඹ (GBC) | විශ්වාසනීය රන් ගැනුම්කරු"
         : currentLang === "ta"
         ? "எங்களைப் பற்றி - கோல்ட் பையர்ஸ் கொழும்பு (GBC) | நம்பகமான தங்க கொள்வனவாளர்"
         : "About Us - GBC (Gold Buyers Colombo) | Sri Lanka's Most Trusted Gold Buyers";
@@ -292,6 +204,12 @@ export default function App({
       const keywords = "gold buyer branches colombo, diamond jewelry buyers Sri Lanka, sell luxury watches Colombo, dehiwala gold buyer, kohuwala gold shop, bambalapitiya gold buyer";
 
       updateMetaTags(title, desc, keywords);
+    } else if (activeView === "sitemap") {
+      updateMetaTags(
+        "HTML Sitemap & Architecture | GBC (Gold Buyers Colombo)",
+        "Complete directory of gold appraisal services, 16 Colombo branch locations, all Sri Lanka coverage areas, and services.",
+        "gold buyers colombo sitemap, gbc sitemap, sri lanka gold branches directory"
+      );
     } else if (activeView === "admin") {
       updateMetaTags(
         "Secure Admin Dashboard | GBC (Gold Buyers Colombo)",
@@ -310,16 +228,14 @@ export default function App({
       targetPath = `/services/${selectedServiceId}`;
     } else if (activeView === "branches" && selectedBranchId) {
       targetPath = `/branches/${selectedBranchId}`;
-    } else if (activeView === "blog" && selectedBlogSlug) {
-      targetPath = `/blog/${selectedBlogSlug}`;
-    } else if (activeView === "admin" && (currentPath === "/admin/leads" || currentPath === "/admin/rates" || currentPath === "/admin/blog")) {
+    } else if (activeView === "admin" && (currentPath === "/admin/leads" || currentPath === "/admin/rates" || currentPath === "/admin/database")) {
       targetPath = currentPath;
     }
     
     if (currentPath !== targetPath) {
       window.history.pushState({ view: activeView, service: selectedServiceId, branch: selectedBranchId }, "", targetPath || "/");
     }
-  }, [activeView, selectedServiceId, selectedBranchId, selectedBlogSlug]);
+  }, [activeView, selectedServiceId, selectedBranchId]);
 
   // Pathname routing on load & popstate + Admin check
   useEffect(() => {
@@ -347,13 +263,8 @@ export default function App({
         setActiveView("rates");
       } else if (path === "/calculator") {
         setActiveView("calculator");
-      } else if (path === "/blog" || path.startsWith("/blog/")) {
-        setActiveView("blog");
-        if (path.startsWith("/blog/") && path.length > 6) {
-          setSelectedBlogSlug(path.substring(6));
-        } else {
-          setSelectedBlogSlug(null);
-        }
+      } else if (path === "/sitemap") {
+        setActiveView("sitemap");
       } else if (path === "/admin" || path.startsWith("/admin/")) {
         setActiveView("admin");
       } else {
@@ -365,57 +276,44 @@ export default function App({
     window.addEventListener("popstate", handleUrlRouting);
 
     const isUrlAdmin = typeof window !== "undefined" && (window.location.search.includes("admin=true") || window.location.hash === "#admin");
-    const isLocalAdmin = safeStorage.getItem("gbc_admin_mode") === "true";
-    if (isUrlAdmin || isLocalAdmin) {
+    if (isUrlAdmin) {
       setShowAdmin(true);
-      if (isUrlAdmin) {
-        safeStorage.setItem("gbc_admin_mode", "true");
-      }
     }
 
-    return () => {
-      if (typeof window !== "undefined") {
-        window.removeEventListener("popstate", handleUrlRouting);
-      }
-    };
+    return () => window.removeEventListener("popstate", handleUrlRouting);
   }, []);
 
   const handleLogoClick = () => {
-    setLogoClicks((prev) => {
-      const next = prev + 1;
-      if (next >= 5) {
-        setShowAdmin(true);
-        safeStorage.setItem("gbc_admin_mode", "true");
-        setActiveView("admin");
-        if (typeof window !== "undefined") {
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        }
-        return 0;
-      }
-      return next;
-    });
+    const nextCount = logoClicks + 1;
+    setLogoClicks(nextCount);
+    if (nextCount >= 5) {
+      setShowAdmin(true);
+      setActiveView("admin");
+      setLogoClicks(0);
+    }
   };
 
-  // Pre-populate with fallback data from localDb so pages render instantly without blank frames or layout shifts
-  const initialData = fetchFallbackData();
-
-  // Dynamic state loaded from Express Backend
-  const [rates, setRates] = useState<GoldRate[]>(initialData.rates);
-  const [settings, setSettings] = useState<SystemSettings | null>(initialData.settings);
-  const [leads, setLeads] = useState<CustomerLead[]>(initialData.leads);
-  const [blogs, setBlogs] = useState<BlogPost[]>(initialBlogsData || initialData.blogs);
-  const [historicalRates, setHistoricalRates] = useState<HistoricalRate[]>(initialData.historical);
+  // Dynamic state loaded from PHP/MySQL Backend
+  const [rates, setRates] = useState<GoldRate[]>(DEFAULT_RATES);
+  const [settings, setSettings] = useState<SystemSettings | null>(DEFAULT_SETTINGS);
+  const [leads, setLeads] = useState<CustomerLead[]>(DEFAULT_LEADS);
+  const [historicalRates, setHistoricalRates] = useState<HistoricalRate[]>(DEFAULT_HISTORICAL);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Fetch authoritative initial data from server
+  // Authoritative data loader with PHP REST API and MySQL database
   const fetchAllData = async () => {
     try {
       setIsLoading(true);
-      const jsonCheck = (r: Response) => {
-        if (r.ok && r.headers.get("content-type")?.includes("application/json")) {
-          return r.json();
+      const apiBase = (import.meta as any).env?.VITE_API_BASE_URL || "/api";
+
+      const jsonCheck = async (r: Response) => {
+        if (r.ok) {
+          const contentType = r.headers.get("content-type") || "";
+          if (contentType.includes("application/json")) {
+            return r.json();
+          }
         }
-        throw new Error(`Non-JSON or error response: ${r.status}`);
+        return null;
       };
 
       const ts = Date.now();
@@ -427,310 +325,266 @@ export default function App({
         },
       };
 
-      const [ratesRes, settingsRes, leadsRes, blogsRes, histRes] = await Promise.all([
-        fetch(`/api/rates?_t=${ts}`, fetchOpts).then(jsonCheck),
-        fetch(`/api/settings?_t=${ts}`, fetchOpts).then(jsonCheck),
-        fetch(`/api/leads?_t=${ts}`, fetchOpts).then(jsonCheck),
-        fetch(`/api/blogs?_t=${ts}`, fetchOpts).then(jsonCheck),
-        fetch(`/api/historical?_t=${ts}`, fetchOpts).then(jsonCheck),
-      ]);
+      // Primary Authoritative Production API Endpoint: https://goldbuyerscolombo.com/api/get-gold-rates.php
+      let fetchedFromBackend = false;
+      try {
+        // First try the primary get-gold-rates.php endpoint
+        const primaryRes = await fetch(`${apiBase}/get-gold-rates.php?_t=${ts}`, fetchOpts)
+          .then(jsonCheck)
+          .catch(() => null);
 
-      if (Array.isArray(ratesRes) && ratesRes.length > 0) {
-        setRates(ratesRes);
-        localDb.set("rates", ratesRes);
+        if (primaryRes) {
+          const ratesList = primaryRes.data?.rates || primaryRes.rates;
+          if (Array.isArray(ratesList) && ratesList.length > 0) {
+            setRates(ratesList);
+            fetchedFromBackend = true;
+          }
+
+          const settingsObj = primaryRes.data?.settings || primaryRes.settings;
+          if (settingsObj && typeof settingsObj === "object") {
+            setSettings(settingsObj);
+          }
+
+          const histList = primaryRes.data?.historical || primaryRes.historical;
+          if (Array.isArray(histList) && histList.length > 0) {
+            setHistoricalRates(histList);
+          }
+        }
+
+        // Secondary endpoints for leads, settings, history if not loaded from primary
+        const [ratesRes, settingsRes, leadsRes, histRes] = await Promise.all([
+          !fetchedFromBackend ? fetch(`${apiBase}/rates?_t=${ts}`, fetchOpts).then(jsonCheck).catch(() => null) : null,
+          fetch(`${apiBase}/settings?_t=${ts}`, fetchOpts).then(jsonCheck).catch(() => null),
+          fetch(`${apiBase}/leads?_t=${ts}`, fetchOpts).then(jsonCheck).catch(() => null),
+          fetch(`${apiBase}/rates/history?_t=${ts}`, fetchOpts).then(jsonCheck).catch(() => null),
+        ]);
+
+        // 1. Process Gold Rates from PHP MySQL API if not already fetched
+        if (!fetchedFromBackend && ratesRes) {
+          let parsedRates: GoldRate[] | null = null;
+          if (ratesRes.success && ratesRes.data?.rates && Array.isArray(ratesRes.data.rates)) {
+            parsedRates = ratesRes.data.rates;
+          } else if (Array.isArray(ratesRes)) {
+            parsedRates = ratesRes;
+          } else if (ratesRes.rates && Array.isArray(ratesRes.rates)) {
+            parsedRates = ratesRes.rates;
+          }
+          if (parsedRates && parsedRates.length > 0) {
+            setRates(parsedRates);
+            fetchedFromBackend = true;
+          }
+        }
+
+        // 2. Process System Settings
+        let parsedSettings: SystemSettings | null = null;
+        if (ratesRes?.data?.settings) {
+          parsedSettings = ratesRes.data.settings;
+        } else if (settingsRes) {
+          if (settingsRes.success && settingsRes.data) {
+            parsedSettings = settingsRes.data;
+          } else if (typeof settingsRes === "object") {
+            parsedSettings = settingsRes;
+          }
+        }
+        if (parsedSettings) {
+          setSettings(parsedSettings);
+        }
+
+        // 3. Process Leads from MySQL database
+        if (leadsRes) {
+          const rawLeadsList = leadsRes.success && Array.isArray(leadsRes.data) ? leadsRes.data : (Array.isArray(leadsRes) ? leadsRes : null);
+          if (rawLeadsList) {
+            const mappedLeads: CustomerLead[] = rawLeadsList.map((l: any) => ({
+              id: String(l.id || l.lead_uuid),
+              name: l.name || `${l.first_name || ''} ${l.last_name || ''}`.trim() || 'Valuation Lead',
+              phone: l.phone || '',
+              email: l.email || undefined,
+              goldKarat: (l.karat_interest as GoldKarat) || (l.goldKarat as GoldKarat) || GoldKarat.K22,
+              weightGrams: Number(l.gold_weight || l.weightGrams || 0),
+              estimatedValue: Number(l.estimatedValue || 0),
+              status: l.status === 'new' ? 'New' : l.status === 'contacted' ? 'Contacted' : l.status === 'won' ? 'Completed' : 'New',
+              message: l.notes || l.message || undefined,
+              createdAt: l.created_at || new Date().toISOString()
+            }));
+            setLeads(mappedLeads);
+          }
+        }
+
+        // 4. Process Historical Rates
+        if (histRes) {
+          const rawHist = histRes.success && Array.isArray(histRes.data) ? histRes.data : (Array.isArray(histRes) ? histRes : null);
+          if (rawHist && rawHist.length > 0) {
+            setHistoricalRates(rawHist);
+          }
+        }
+      } catch (networkErr) {
+        console.warn("PHP MySQL Backend API not reachable:", networkErr);
       }
-      if (settingsRes && typeof settingsRes === "object") {
-        setSettings(settingsRes);
-        localDb.set("settings", settingsRes);
-      }
-      if (Array.isArray(leadsRes)) {
-        setLeads(leadsRes);
-        localDb.set("leads", leadsRes);
-      }
-      
-      const normalizedBlogs = normalizeBlogPosts(blogsRes);
-      if (normalizedBlogs.length > 0) {
-        setBlogs(normalizedBlogs);
-        localDb.set("blogs", normalizedBlogs);
-      }
-      
-      if (Array.isArray(histRes)) {
-        setHistoricalRates(histRes);
-        localDb.set("historical", histRes);
+
+      if (!fetchedFromBackend) {
+        setRates(DEFAULT_RATES);
+        setSettings(DEFAULT_SETTINGS);
+        setLeads(DEFAULT_LEADS);
+        setHistoricalRates(DEFAULT_HISTORICAL);
       }
     } catch (e) {
-      console.warn("Backend API not reachable or static export mode, using localDb state:", e);
-      const fallback = fetchFallbackData();
-      setRates((prev) => (prev && prev.length > 0 ? prev : fallback.rates));
-      setSettings((prev) => prev || fallback.settings);
-      setLeads((prev) => (prev && prev.length > 0 ? prev : fallback.leads));
-      setBlogs((prev) => (prev && prev.length > 0 ? prev : normalizeBlogPosts(fallback.blogs)));
-      setHistoricalRates((prev) => (prev && prev.length > 0 ? prev : fallback.historical));
+      console.warn("Client data initialization info:", e);
     } finally {
       setIsLoading(false);
     }
   };
 
+  // Authoritative page load: Fetch rates from MySQL once on page mount (manual refresh updates the UI)
   useEffect(() => {
     fetchAllData();
-
-    // Listen for storage / rate update events to keep UI synchronized
-    const handleSync = () => {
-      const fallback = fetchFallbackData();
-      if (fallback.rates && fallback.rates.length > 0) {
-        setRates(fallback.rates);
-      }
-      if (fallback.settings) {
-        setSettings(fallback.settings);
-      }
-      if (fallback.historical && fallback.historical.length > 0) {
-        setHistoricalRates(fallback.historical);
-      }
-    };
-
-    window.addEventListener("gbc_rates_updated", handleSync);
-    window.addEventListener("storage", handleSync);
-    return () => {
-      window.removeEventListener("gbc_rates_updated", handleSync);
-      window.removeEventListener("storage", handleSync);
-    };
   }, []);
 
-  // API Call Handlers to write updates back to db.json and broadcast
+  // Handlers with PHP MySQL backend synchronization (Zero LocalStorage)
   const handleUpdateRates = async (updatedRates: GoldRate[]) => {
-    // 1. Immediately persist to local storage
-    localDb.set("rates", updatedRates);
+    // 1. Immediately update React state so the UI reflects changes instantly
     setRates(updatedRates);
 
     const nowIso = new Date().toISOString();
     const newSettings = { ...activeSettings, lastUpdated: nowIso };
-    localDb.set("settings", newSettings);
     setSettings(newSettings);
 
     // 2. Update historical chart latest point to reflect the new 22K rate
-    const rate22 = updatedRates.find((r) => r.karat === GoldKarat.K22)?.ratePerGram;
+    const rate22 = updatedRates.find((r) => (r.karat as string) === "22K" || r.karat === GoldKarat.K22)?.ratePerGram;
+    const rate24 = updatedRates.find((r) => (r.karat as string) === "24K" || r.karat === GoldKarat.K24)?.ratePerGram;
     if (rate22 && historicalRates.length > 0) {
       const updatedHist = [...historicalRates];
       const lastIdx = updatedHist.length - 1;
       updatedHist[lastIdx] = {
         ...updatedHist[lastIdx],
         "22K": Math.round(rate22 * activeSettings.pavanWeightGrams),
+        "24K": rate24 ? Math.round(rate24 * activeSettings.pavanWeightGrams) : updatedHist[lastIdx]["24K"]
       };
-      localDb.set("historical", updatedHist);
       setHistoricalRates(updatedHist);
     }
 
-    // 3. Dispatch broadcast event for instantaneous UI re-render across components
-    window.dispatchEvent(new Event("gbc_rates_updated"));
-
-    // 4. Send POST request to backend API to write to database
+    // 3. Save directly to MySQL via PHP API (/api/get-gold-rates.php)
+    const apiBase = (import.meta as any).env?.VITE_API_BASE_URL || "/api";
     try {
-      const response = await fetch("/api/rates", {
+      const response = await fetch(`${apiBase}/get-gold-rates.php`, {
         method: "POST",
         headers: { 
           "Content-Type": "application/json",
           "Cache-Control": "no-cache"
         },
-        body: JSON.stringify(updatedRates),
+        body: JSON.stringify({ 
+          rates: updatedRates,
+          settings: newSettings
+        }),
       });
       if (response.ok) {
-        const data = await response.json();
-        if (data.rates) {
-          setRates(data.rates);
-          localDb.set("rates", data.rates);
+        const resJson = await response.json();
+        if (resJson?.data?.rates && Array.isArray(resJson.data.rates)) {
+          setRates(resJson.data.rates);
         }
-        if (data.settings) {
-          setSettings(data.settings);
-          localDb.set("settings", data.settings);
-        }
-        window.dispatchEvent(new Event("gbc_rates_updated"));
+      } else {
+        // Fallback to /api/rates
+        await fetch(`${apiBase}/rates`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ rates: updatedRates, settings: newSettings })
+        });
       }
     } catch (e) {
-      console.warn("Backend API POST failed; rate change retained locally in browser storage.", e);
+      console.warn("Backend PHP API rate update deferred:", e);
     }
   };
 
   const handleUpdateSettings = async (updatedSettings: SystemSettings) => {
-    localDb.set("settings", updatedSettings);
     setSettings(updatedSettings);
 
+    const apiBase = (import.meta as any).env?.VITE_API_BASE_URL || "/api";
     try {
-      const response = await fetch("/api/settings", {
+      await fetch(`${apiBase}/get-gold-rates.php`, {
         method: "POST",
         headers: { 
           "Content-Type": "application/json",
           "Cache-Control": "no-cache"
         },
-        body: JSON.stringify(updatedSettings),
+        body: JSON.stringify({ settings: updatedSettings }),
       });
-      if (response.ok) {
-        const data = await response.json();
-        if (data.settings) {
-          setSettings(data.settings);
-          localDb.set("settings", data.settings);
-        }
-      }
     } catch (e) {
-      console.warn("Saving to localDb (Static Hosting Mode)");
+      console.warn("Backend settings sync error:", e);
     }
   };
 
   const handleDeleteLead = async (id: string) => {
     const updated = leads.filter((l) => l.id !== id);
     setLeads(updated);
-    localDb.set("leads", updated);
 
+    const apiBase = (import.meta as any).env?.VITE_API_BASE_URL || "/api";
     try {
-      await fetch(`/api/leads/${id}`, { method: "DELETE" });
+      await fetch(`${apiBase}/leads?id=${id}`, { method: "DELETE" });
     } catch (e) {
-      console.warn("Deleting from localDb (Static Hosting Mode)");
+      console.warn("Backend lead delete deferred:", e);
     }
   };
 
-  const handleSaveBlog = async (newBlog: Partial<BlogPost>) => {
-    // 1. Construct authoritative complete BlogPost record
-    const blogId = String(newBlog.id || `blog_${Date.now()}`);
-    const isPub = newBlog.isPublished !== undefined 
-      ? Boolean(newBlog.isPublished) 
-      : (newBlog.status ? newBlog.status === "published" : true);
-
-    const postDate = newBlog.date || new Date().toISOString().split("T")[0];
-
-    const blogToSave: BlogPost = {
-      id: blogId,
-      slug: newBlog.slug || `post-${Date.now()}`,
-      title: newBlog.title || "Untitled Post",
-      content: newBlog.content || "",
-      excerpt: newBlog.excerpt || (newBlog.content ? newBlog.content.replace(/<[^>]*>/g, "").substring(0, 160) + "..." : ""),
-      author: newBlog.author || "Samantha Alwis (Chief Valuation Officer, GBC)",
-      date: postDate,
-      category: newBlog.category || "Selling Gold",
-      tags: Array.isArray(newBlog.tags) ? newBlog.tags : (newBlog.tags ? String(newBlog.tags).split(",").map(s => s.trim()).filter(Boolean) : ["Gold Buyers", "Colombo"]),
-      image: newBlog.image || "https://images.unsplash.com/photo-1610375461246-83df859d849d?auto=format&fit=crop&w=1200&q=80",
-      metaTitle: newBlog.metaTitle || newBlog.title || "",
-      metaDescription: newBlog.metaDescription || newBlog.excerpt || "",
-      isPublished: isPub,
-      status: newBlog.status || (isPub ? "published" : "draft"),
-      isFeatured: Boolean(newBlog.isFeatured),
-      canonicalUrl: newBlog.canonicalUrl || "",
-      focusKeyword: newBlog.focusKeyword || "",
-      readTime: newBlog.readTime || `${Math.max(2, Math.ceil(((newBlog.content || "").split(/\s+/).length || 200) / 200))} min read`,
-      createdAt: newBlog.createdAt || new Date().toISOString(),
-      questions: newBlog.questions || []
-    };
-
-    // 2. Immediately update local state & safeStorage so the post is never lost
-    setBlogs((prev) => {
-      const existingIdx = prev.findIndex((b) => String(b.id) === String(blogId) || (b.slug && b.slug === blogToSave.slug));
-      let updated: BlogPost[];
-      if (existingIdx !== -1) {
-        updated = [...prev];
-        updated[existingIdx] = { ...updated[existingIdx], ...blogToSave };
-      } else {
-        updated = [blogToSave, ...prev];
-      }
-      localDb.set("blogs", updated);
-      return updated;
-    });
-
-    // 3. Attempt API persistence across supported endpoints
-    const endpoints = ["/api/blogs", "/api/posts", "/backend/api/posts/create.php"];
-    for (const ep of endpoints) {
-      try {
-        const response = await fetch(ep, {
-          method: "POST",
-          headers: { 
-            "Content-Type": "application/json",
-            "Authorization": "Bearer gbc_admin_token_2026"
-          },
-          body: JSON.stringify(blogToSave),
-        });
-        if (response.ok) {
-          const data = await response.json();
-          const fresh = normalizeBlogPosts(data.blogs || data.posts || data.data?.posts || data.data || data);
-          if (fresh.length > 0) {
-            setBlogs((current) => {
-              const map = new Map<string, BlogPost>();
-              fresh.forEach((p) => map.set(String(p.id), p));
-              current.forEach((p) => {
-                if (!map.has(String(p.id))) {
-                  map.set(String(p.id), p);
-                }
-              });
-              const merged = Array.from(map.values());
-              localDb.set("blogs", merged);
-              return merged;
-            });
-          }
-          break;
-        }
-      } catch (err) {
-        // Fallback silently
-      }
-    }
-  };
-
-  const handleDeleteBlog = async (id: string) => {
-    const updated = blogs.filter((b) => b.id !== id);
-    setBlogs(updated);
-    localDb.set("blogs", updated);
-
-    try {
-      await fetch(`/api/blogs/${id}`, { method: "DELETE" });
-    } catch (e) {
-      console.warn("Deleting from localDb (Static Hosting Mode)");
-    }
-  };
-
-  // Helper defaults to avoid null errors on load
-  const todayRate24k = rates.find((r) => r.karat === "24K")?.ratePerGram || rates[0]?.ratePerGram || 0;
-  const todayRate22k = rates.find((r) => r.karat === "22K")?.ratePerGram || rates[1]?.ratePerGram || 0;
-  const activeSettings = settings || {
+  const defaultSettingsFallback: SystemSettings = {
     bonusPremiumRate: 2.5,
-    testingFeePerGram: 150,
+    testingFeePerGram: 0,
     pavanWeightGrams: 8,
-    lastUpdated: new Date().toISOString(),
+    lastUpdated: new Date().toISOString()
   };
+
+  const activeSettings = settings || defaultSettingsFallback;
+
+  const rate24k = rates.find((r) => r.karat === GoldKarat.K24 || (r.karat as string) === "24K")?.ratePerGram || 25600;
+  const rate22k = rates.find((r) => r.karat === GoldKarat.K22 || (r.karat as string) === "22K")?.ratePerGram || 23450;
 
   return (
-    <div className="min-h-screen bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 font-sans selection:bg-amber-500 selection:text-black">
-      {/* Dynamic SEO Schemas */}
+    <div className="min-h-screen bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 flex flex-col selection:bg-amber-500 selection:text-neutral-950 transition-colors">
+      {/* Search Engine Optimization JSON-LD Schemas */}
       <SEOSchemas rates={rates} />
 
-      {/* Header */}
+      {/* Main Global Navigation */}
       <Header
         currentLang={currentLang}
         setLang={setCurrentLang}
         activeView={activeView}
-        setView={setActiveView}
-        todayRate24k={todayRate24k}
-        todayRate22k={todayRate22k}
+        setView={(view) => {
+          setActiveView(view);
+          if (view === "services") setSelectedServiceId(null);
+          if (view === "branches") setSelectedBranchId(null);
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }}
+        todayRate24k={rate24k}
+        todayRate22k={rate22k}
         showAdmin={showAdmin}
         onLogoClick={handleLogoClick}
       />
 
-      {/* Primary Views Route Switcher */}
-      <main className="pb-16 md:pb-0">
-        <Suspense fallback={<div className="flex justify-center items-center h-64"><div className="w-8 h-8 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div></div>}>
+      {/* PWA Install Banner */}
+      <InstallAppBanner currentLang={currentLang} />
+
+      {/* Main Dynamic View Layout */}
+      <main className="flex-1">
+        <Suspense fallback={<div className="min-h-[50vh] flex items-center justify-center text-amber-500 font-mono text-sm">Loading Gold Buyers Colombo...</div>}>
         {activeView === "home" ? (
           <>
-            {/* 1. Hero Section */}
-            <ScrollReveal>
-              <Hero currentLang={currentLang} todayRate24k={todayRate24k} todayRate22k={todayRate22k} />
-            </ScrollReveal>
+            {/* 1. Hero Section with Live Rate Highlight */}
+            <Hero
+              currentLang={currentLang}
+              todayRate24k={rate24k}
+              todayRate22k={rate22k}
+            />
 
-            {/* 2. Why Choose Gold Buyers Colombo */}
-            <ScrollReveal>
-              <WhyChooseUs currentLang={currentLang} />
-            </ScrollReveal>
-
-            {/* 3. How It Works (4-Step Visual Timeline) */}
+            {/* 2. Transparent 4-Step Process */}
             <ScrollReveal>
               <SellingProcess currentLang={currentLang} />
             </ScrollReveal>
 
-            {/* 4. Live Gold Price Dashboard & Calculator */}
-            <div id="live-rates">
+            {/* 3. Core Value Proposition */}
+            <ScrollReveal>
+              <WhyChooseUs currentLang={currentLang} />
+            </ScrollReveal>
+
+            {/* 4. Live Rates Matrix & Instant Calculator */}
+            <div className="space-y-12">
               <ScrollReveal>
                 <LiveRateWidget
                   currentLang={currentLang}
@@ -771,26 +625,8 @@ export default function App({
             <ScrollReveal>
               <HomeAboutSection currentLang={currentLang} setView={setActiveView} />
             </ScrollReveal>
-
-            {/* 9. Educational Resources / Blog Posts */}
-            <ScrollReveal>
-              <RecentPosts
-                currentLang={currentLang}
-                blogs={blogs}
-                onSelectBlog={(slug) => {
-                  setSelectedBlogSlug(slug);
-                  setActiveView("blog");
-                  window.scrollTo({ top: 0, behavior: "smooth" });
-                }}
-                onViewAll={() => {
-                  setSelectedBlogSlug(null);
-                  setActiveView("blog");
-                  window.scrollTo({ top: 0, behavior: "smooth" });
-                }}
-              />
-            </ScrollReveal>
             
-            {/* 10. Final High-Converting CTA & Contact Location */}
+            {/* 9. Final High-Converting CTA & Contact Location */}
             <ScrollReveal>
               <FinalCTASection currentLang={currentLang} />
             </ScrollReveal>
@@ -808,6 +644,19 @@ export default function App({
               setActiveView("services");
             }}
             setView={setActiveView}
+            onSelectBranch={(id) => {
+              setSelectedBranchId(id);
+              setActiveView("branches");
+            }}
+          />
+        ) : activeView === "sitemap" ? (
+          <SitemapPage 
+            currentLang={currentLang} 
+            setView={setActiveView}
+            onSelectService={(id) => {
+              setSelectedServiceId(id);
+              setActiveView("services");
+            }}
             onSelectBranch={(id) => {
               setSelectedBranchId(id);
               setActiveView("branches");
@@ -847,57 +696,49 @@ export default function App({
               isLoading={isLoading}
             />
           </div>
-        ) : activeView === "blog" ? (
-          <BlogPreview
-            currentLang={currentLang}
-            blogs={blogs}
-            onRefresh={fetchAllData}
-            initialActiveBlogSlug={selectedBlogSlug}
-            onBackToCatalog={() => setSelectedBlogSlug(null)}
-            onNavigateHomeSection={(sectionId) => {
-              setActiveView("home");
-              setTimeout(() => {
-                const el = document.getElementById(sectionId);
-                if (el) {
-                  el.scrollIntoView({ behavior: "smooth" });
-                }
-              }, 100);
-            }}
-          />
         ) : (
           <AdminDashboard
             currentLang={currentLang}
             rates={rates}
             settings={activeSettings}
             leads={leads}
-            blogs={blogs}
             onUpdateRates={handleUpdateRates}
             onUpdateSettings={handleUpdateSettings}
             onDeleteLead={handleDeleteLead}
-            onSaveBlog={handleSaveBlog}
-            onDeleteBlog={handleDeleteBlog}
-            onViewBlog={(slug) => {
-              setSelectedBlogSlug(slug);
-              setActiveView("blog");
+            onViewSite={() => {
+              setActiveView("home");
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
           />
         )}
-              </Suspense>
+        </Suspense>
       </main>
 
       {/* Sticky Bottom Bar for Mobile Users */}
       <MobileStickyBar
         currentLang={currentLang}
-        todayRate24k={todayRate24k}
-        todayRate22k={todayRate22k}
+        todayRate24k={rate24k}
+        todayRate22k={rate22k}
       />
 
-      {/* Floating 'Chat with Consultant' WhatsApp desk */}
+      {/* Global AI WhatsApp Assistant widget */}
       <ChatWithConsultant currentLang={currentLang} />
 
-      {/* Footer */}
-      <Footer currentLang={currentLang} setView={setActiveView} showAdmin={showAdmin} onLogoClick={handleLogoClick} />
+      {/* Smart Exit-Intent Lead Recovery Popup */}
+      <ExitIntentPopup currentLang={currentLang} />
+
+      {/* Footer with legal info, certifications, quick navigation & contact info */}
+      <Footer
+        currentLang={currentLang}
+        setView={(view) => {
+          setActiveView(view);
+          if (view === "services") setSelectedServiceId(null);
+          if (view === "branches") setSelectedBranchId(null);
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }}
+        showAdmin={showAdmin}
+        onLogoClick={handleLogoClick}
+      />
     </div>
   );
 }

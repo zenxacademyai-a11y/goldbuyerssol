@@ -154,16 +154,16 @@ export default function Services({ currentLang }: ServicesProps) {
   ];
 
   return (
-    <section className="py-20 px-4 bg-neutral-900 text-white" id="services">
+    <section className="py-20 px-4 bg-white dark:bg-neutral-950 text-neutral-900 dark:text-white border-t border-neutral-200/80 dark:border-neutral-800 transition-colors" id="services">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <span className="text-xs uppercase font-mono tracking-widest text-amber-500 block mb-3 font-semibold">
+          <span className="text-xs uppercase font-mono tracking-widest text-amber-700 dark:text-amber-400 block mb-3 font-semibold">
             Our Expertise
           </span>
-          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-white mb-4">
+          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-neutral-900 dark:text-white mb-4">
             Premium Asset Purchasing Services
           </h2>
-          <p className="text-neutral-400 max-w-2xl mx-auto text-sm sm:text-base">
+          <p className="text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto text-sm sm:text-base">
             We specialize in providing secure, transparent, and high-value exchange services for your precious assets in Colombo, Sri Lanka.
           </p>
         </div>
@@ -173,7 +173,7 @@ export default function Services({ currentLang }: ServicesProps) {
           {services.map((service, index) => (
             <div
               key={index}
-              className="bg-neutral-950/50 rounded-2xl border border-neutral-800/80 overflow-hidden hover:border-amber-500/40 transition-all duration-350 flex flex-col group shadow-lg"
+              className="bg-neutral-50/60 dark:bg-neutral-900/60 rounded-2xl border border-neutral-200/80 dark:border-neutral-800/80 overflow-hidden hover:border-amber-500/40 transition-all duration-350 flex flex-col group shadow-xs hover:shadow-lg"
             >
               {/* Image Header (Unobstructed view) */}
               <div className="relative h-52 sm:h-60 w-full overflow-hidden bg-neutral-950">
@@ -191,23 +191,23 @@ export default function Services({ currentLang }: ServicesProps) {
               {/* Card Body */}
               <div className="p-6 sm:p-8 flex-1 flex flex-col">
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="h-10 w-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center shrink-0 text-amber-500">
+                  <div className="h-10 w-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center shrink-0 text-amber-600 dark:text-amber-400">
                     {service.icon}
                   </div>
                   <div>
-                    <h3 className="text-xl font-serif font-bold text-white group-hover:text-amber-400 transition-colors">
+                    <h3 className="text-xl font-serif font-bold text-neutral-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
                       {service.title}
                     </h3>
-                    <p className="text-xs font-semibold text-amber-500 uppercase tracking-wider">{service.subtitle}</p>
+                    <p className="text-xs font-semibold text-amber-700 dark:text-amber-400 uppercase tracking-wider">{service.subtitle}</p>
                   </div>
                 </div>
-                <p className="text-sm text-neutral-400 leading-relaxed mb-6">
+                <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed mb-6">
                   {service.desc}
                 </p>
-                <ul className="space-y-3 mt-auto pt-4 border-t border-neutral-800/60">
+                <ul className="space-y-3 mt-auto pt-4 border-t border-neutral-200/80 dark:border-neutral-800/60">
                   {service.points.map((point, idx) => (
-                    <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-neutral-300">
-                      <CheckCircle2 className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
+                    <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-neutral-700 dark:text-neutral-300">
+                      <CheckCircle2 className="h-4 w-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
                       <span>{point}</span>
                     </li>
                   ))}
@@ -218,15 +218,15 @@ export default function Services({ currentLang }: ServicesProps) {
         </div>
 
         {/* Real Colombo Store & Live Appraisal Gallery Showcase */}
-        <div className="border-t border-neutral-800/60 pt-20">
+        <div className="border-t border-neutral-200/80 dark:border-neutral-800/60 pt-20">
           <div className="text-center mb-12">
-            <span className="text-xs uppercase font-mono tracking-widest text-amber-500 block mb-3 font-semibold">
+            <span className="text-xs uppercase font-mono tracking-widest text-amber-700 dark:text-amber-400 block mb-3 font-semibold">
               Live Office & Appraisal Lab
             </span>
-            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-white mb-4">
+            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-neutral-900 dark:text-white mb-4">
               GBC Colombo Office in Action
             </h2>
-            <p className="text-neutral-400 max-w-2xl mx-auto text-sm">
+            <p className="text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto text-sm">
               We operate a fully equipped, secure private evaluation lounge in Colombo. Take a look at our transparent computerized testing workflow and state-of-the-art appraisal process.
             </p>
           </div>
@@ -239,7 +239,7 @@ export default function Services({ currentLang }: ServicesProps) {
                 onClick={() => setActivePhoto(item)}
                 className="group flex flex-col cursor-pointer"
               >
-                <div className="relative h-40 md:h-48 rounded-xl overflow-hidden border border-neutral-800 bg-neutral-950 hover:border-amber-500/40 transition-all duration-300 shadow-md">
+                <div className="relative h-40 md:h-48 rounded-xl overflow-hidden border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-950 hover:border-amber-500/40 transition-all duration-300 shadow-xs">
                   <ResponsiveImage
                     srcSm={item.srcSm}
                     srcMd={item.srcMd}
@@ -249,13 +249,13 @@ export default function Services({ currentLang }: ServicesProps) {
                     className="h-full w-full"
                     imgClassName="transition-transform duration-500 group-hover:scale-105 object-cover"
                   />
-                  <div className="absolute top-2.5 right-2.5 h-7 w-7 rounded-full bg-neutral-900/90 border border-neutral-700/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10">
-                    <ZoomIn className="h-3.5 w-3.5 text-amber-500" />
+                  <div className="absolute top-2.5 right-2.5 h-7 w-7 rounded-full bg-white/90 dark:bg-neutral-900/90 border border-neutral-200/80 dark:border-neutral-700/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10 shadow-xs">
+                    <ZoomIn className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
                   </div>
                 </div>
                 <div className="mt-2 text-left px-1">
-                  <span className="text-[10px] text-amber-500 font-mono font-bold uppercase tracking-wider block mb-0.5">Appraisal Lounge</span>
-                  <h4 className="text-xs font-serif font-bold text-white line-clamp-1 group-hover:text-amber-300 transition-colors">
+                  <span className="text-[10px] text-amber-700 dark:text-amber-400 font-mono font-bold uppercase tracking-wider block mb-0.5">Appraisal Lounge</span>
+                  <h4 className="text-xs font-serif font-bold text-neutral-900 dark:text-white line-clamp-1 group-hover:text-amber-600 dark:group-hover:text-amber-300 transition-colors">
                     {item.title}
                   </h4>
                 </div>
@@ -264,19 +264,19 @@ export default function Services({ currentLang }: ServicesProps) {
           </div>
 
           {/* Trust Badge Bar */}
-          <div className="mt-12 bg-neutral-950/40 border border-neutral-800/80 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div className="mt-12 bg-neutral-50/80 dark:bg-neutral-900/60 border border-neutral-200/80 dark:border-neutral-800/80 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xs">
             <div className="flex items-center gap-4 text-left">
-              <div className="h-12 w-12 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-500 shrink-0">
+              <div className="h-12 w-12 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-600 dark:text-amber-400 shrink-0">
                 <ShieldCheck className="h-6 w-6" />
               </div>
               <div>
-                <h4 className="font-serif font-bold text-white text-sm sm:text-base">100% Genuine, Transparent & Secure</h4>
-                <p className="text-xs text-neutral-400">Our Colombo office utilizes computerized XRF mineral spectrometry and certified digital scales calibrated to SL standards.</p>
+                <h4 className="font-serif font-bold text-neutral-900 dark:text-white text-sm sm:text-base">100% Genuine, Transparent & Secure</h4>
+                <p className="text-xs text-neutral-600 dark:text-neutral-400">Our Colombo office utilizes computerized XRF mineral spectrometry and certified digital scales calibrated to SL standards.</p>
               </div>
             </div>
             <a 
               href="tel:0718321321" 
-              className="px-6 py-2.5 bg-amber-500 hover:bg-amber-600 text-black font-bold text-xs uppercase tracking-widest rounded-lg transition-colors shadow-lg shadow-amber-500/5"
+              className="px-6 py-2.5 bg-amber-500 hover:bg-amber-600 text-neutral-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-colors shadow-sm"
             >
               Call Colombo Office
             </a>

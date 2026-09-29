@@ -1,5 +1,5 @@
 import React from "react";
-import { Phone, MapPin, Clock, ArrowRight, ShieldCheck, Zap, Sparkles } from "lucide-react";
+import { Phone, MapPin, Clock, ArrowRight, ShieldCheck, Zap, Sparkles, MessageCircle } from "lucide-react";
 import { Language } from "../lib/translations.js";
 
 interface FinalCTAProps {
@@ -8,7 +8,7 @@ interface FinalCTAProps {
 
 export default function FinalCTASection({ currentLang }: FinalCTAProps) {
   return (
-    <section className="py-20 px-4 bg-gradient-to-b from-amber-500 via-amber-400 to-yellow-500 text-neutral-950 relative overflow-hidden shadow-inner">
+    <section className="py-16 sm:py-20 px-4 bg-gradient-to-b from-amber-500 via-amber-400 to-yellow-500 text-neutral-950 relative overflow-hidden border-y border-amber-600/30 shadow-inner">
       {/* Subtle background luxury pattern */}
       <div className="absolute inset-0 bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:16px_16px] opacity-5 pointer-events-none" />
       
@@ -21,7 +21,7 @@ export default function FinalCTASection({ currentLang }: FinalCTAProps) {
         </div>
 
         {/* Headline */}
-        <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black text-neutral-950 tracking-tight leading-tight mb-6 max-w-4xl mx-auto">
+        <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black text-neutral-950 tracking-tight leading-tight mb-6 max-w-4xl mx-auto font-serif">
           {currentLang === "si" ? (
             <>ඔබගේ රන් ආභරණ සඳහා <span className="underline decoration-amber-900/30">අදම ඉහළම මුදල</span> ලබා ගන්න!</>
           ) : currentLang === "ta" ? (
@@ -36,7 +36,7 @@ export default function FinalCTASection({ currentLang }: FinalCTAProps) {
           {currentLang === "si"
             ? "විනාඩි 5කින් 100% ක් නිවැරදි පරිගණක XRF පරීක්ෂාවෙන් පසු ක්ෂණික මුදල් හෝ බැංකු තැන්පතු ලබා ගන්න. කිසිදු අසාධාරණ කැපීමක් නැත."
             : currentLang === "ta"
-            ? "5 நிமிடங்களில் எக்ස්ஆர்எஃப் கணினி பரிசோதனை மூலம் உடனடி பணமளிப்பு பெற அருகிலுள்ள கிளையை தொடர்பு கொள்ளவும்."
+            ? "5 நிமிடங்களில் எக்ஸ்ஆர்எஃப் கணினி பரிசோதனை மூலம் உடனடி பணமளிப்பு பெற அருகிலுள்ள கிளையை தொடர்பு கொள்ளவும்."
             : "Visit our high-security private lounge in Colombo or call us now for a 100% free XRF valuation with instant cash or direct bank transfer."}
         </p>
 
@@ -59,7 +59,7 @@ export default function FinalCTASection({ currentLang }: FinalCTAProps) {
             rel="noopener noreferrer"
             className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 rounded-2xl bg-white hover:bg-neutral-50 text-neutral-950 font-black text-base transition-all duration-200 shadow-xl hover:scale-105 cursor-pointer no-underline"
           >
-            <Phone className="h-5 w-5 fill-emerald-600 text-emerald-600" />
+            <MessageCircle className="h-5 w-5 fill-emerald-600 text-emerald-600" />
             <span>Chat on WhatsApp</span>
           </a>
         </div>

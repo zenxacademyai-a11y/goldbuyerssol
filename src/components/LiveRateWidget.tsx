@@ -42,7 +42,7 @@ export default function LiveRateWidget({
   const chartData = chartRange === "Weekly" ? historicalRates.slice(-7) : historicalRates;
 
   return (
-    <section id="rates" className="py-20 px-4 bg-amber-50/70 dark:bg-neutral-900/90 border-t border-amber-200/60 dark:border-neutral-800 text-neutral-900 dark:text-neutral-100 scroll-mt-20">
+    <section id="rates" className="py-20 px-4 bg-amber-50/40 dark:bg-neutral-950 border-t border-amber-200/50 dark:border-neutral-800 text-neutral-900 dark:text-neutral-100 scroll-mt-20 transition-colors">
       <div className="max-w-7xl mx-auto">
         
         {/* Header Block */}
@@ -54,7 +54,7 @@ export default function LiveRateWidget({
           <h2 className="text-3xl sm:text-4xl font-serif font-bold text-neutral-950 dark:text-white mb-4">
             {t.liveRatesTitle}
           </h2>
-          <p className="text-neutral-600 dark:text-neutral-300 max-w-2xl mx-auto text-sm sm:text-base">
+          <p className="text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto text-sm sm:text-base">
             {t.liveRatesSubtitle}
           </p>
         </div>
@@ -63,7 +63,7 @@ export default function LiveRateWidget({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-16">
           
           {/* Main Table/Cards (lg:col-span-7) */}
-          <div className="lg:col-span-7 bg-neutral-50 dark:bg-neutral-900 rounded-xl border border-neutral-200 dark:border-neutral-800 p-6 shadow-sm min-h-[400px]">
+          <div className="lg:col-span-7 bg-white dark:bg-neutral-900 rounded-2xl border border-amber-200/60 dark:border-neutral-800 p-6 shadow-xs min-h-[400px]">
             
               <>
                 {/* Table Header Controls */}
@@ -181,7 +181,7 @@ export default function LiveRateWidget({
           </div>
  
           {/* Historical Trends Chart (lg:col-span-5) */}
-          <div className="lg:col-span-5 bg-neutral-50 dark:bg-neutral-900 rounded-xl border border-neutral-200 dark:border-neutral-800 p-6 shadow-sm min-h-[400px]">
+          <div className="lg:col-span-5 bg-white dark:bg-neutral-900 rounded-2xl border border-amber-200/60 dark:border-neutral-800 p-6 shadow-xs min-h-[400px]">
               <>
                 <div className="flex justify-between items-center mb-6">
                   <h3 className="text-sm font-mono uppercase tracking-widest text-neutral-600 dark:text-neutral-300 flex items-center gap-1.5 font-semibold">

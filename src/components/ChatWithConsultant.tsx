@@ -204,7 +204,7 @@ export default function ChatWithConsultant({ currentLang }: ChatWithConsultantPr
   const t = translations[currentLang] || translations.en;
 
   return (
-    <div ref={widgetRef} className="fixed bottom-20 right-4 md:bottom-6 md:right-6 z-50">
+    <div ref={widgetRef} className="fixed bottom-[calc(4.75rem+env(safe-area-inset-bottom,0px))] right-4 md:bottom-6 md:right-6 z-40">
       <AnimatePresence>
         {isOpen && (
           <motion.div

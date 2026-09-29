@@ -39,7 +39,7 @@ export default function Testimonials({ currentLang }: TestimonialsProps) {
   ];
 
   return (
-    <section className="py-20 px-4 bg-slate-50/90 dark:bg-neutral-950 border-t border-slate-200/60 dark:border-neutral-800 text-neutral-900 dark:text-neutral-100 transition-colors">
+    <section className="py-20 px-4 bg-neutral-50/60 dark:bg-neutral-950 border-t border-neutral-200/80 dark:border-neutral-800 text-neutral-900 dark:text-neutral-100 transition-colors">
       <div className="max-w-6xl mx-auto">
         
         {/* Header Block */}
@@ -51,14 +51,14 @@ export default function Testimonials({ currentLang }: TestimonialsProps) {
             <h2 className="text-3xl sm:text-4xl font-serif font-bold text-neutral-950 dark:text-white mb-2">
               Trusted by 3,500+ Sri Lankans
             </h2>
-            <p className="text-neutral-600 dark:text-neutral-300 text-xs sm:text-sm">
+            <p className="text-neutral-600 dark:text-neutral-400 text-xs sm:text-sm">
               Read real-world reviews from people who got cash for gold with complete honesty.
             </p>
           </div>
  
           {/* Google Ratings Trust Badge */}
-          <div className="flex items-center gap-3 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-4 rounded-xl">
-            <div className="h-10 w-10 rounded-full bg-white dark:bg-neutral-800 flex items-center justify-center font-bold text-amber-700 dark:text-amber-400 font-serif border border-amber-500/20 shadow">
+          <div className="flex items-center gap-3 bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 p-4 rounded-2xl shadow-xs">
+            <div className="h-10 w-10 rounded-full bg-amber-500/10 dark:bg-neutral-800 flex items-center justify-center font-bold text-amber-700 dark:text-amber-400 font-serif border border-amber-500/20 shadow-xs">
               G
             </div>
             <div>
@@ -84,7 +84,7 @@ export default function Testimonials({ currentLang }: TestimonialsProps) {
           {reviews.map((rev, idx) => (
             <div
               key={idx}
-              className="bg-neutral-50 dark:bg-neutral-900 rounded-xl border border-neutral-200 dark:border-neutral-800 p-6 flex flex-col justify-between hover:border-amber-500/30 transition-all group shadow-sm"
+              className="bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200/80 dark:border-neutral-800 p-6 flex flex-col justify-between hover:border-amber-500/40 transition-all group shadow-xs hover:shadow-md"
             >
               <div>
                 <Quote className="h-6 w-6 text-amber-700/20 dark:text-amber-400/20 mb-4" />
@@ -97,13 +97,13 @@ export default function Testimonials({ currentLang }: TestimonialsProps) {
                 </div>
  
                 {/* Review Text */}
-                <p className="text-xs text-neutral-700 dark:text-neutral-300 leading-relaxed italic mb-6">
+                <p className="text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed italic mb-6">
                   "{rev.text}"
                 </p>
               </div>
  
               {/* Author */}
-              <div className="flex justify-between items-center pt-4 border-t border-neutral-200 dark:border-neutral-800">
+              <div className="flex justify-between items-center pt-4 border-t border-neutral-100 dark:border-neutral-800">
                 <div>
                   <h4 className="text-xs font-serif font-bold text-neutral-900 dark:text-white group-hover:text-amber-700 dark:group-hover:text-amber-400 transition-colors">
                     {rev.name}

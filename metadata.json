@@ -1,6 +1,6 @@
 {
   "name": "Gold Buyers Colombo",
-  "description": "Premium luxury gold buying website and web application with live gold rates, interactive gold calculator, Multilingual support, Blog CMS, and an AI-powered Admin Panel.",
+  "description": "Premium luxury gold buying website and web application with live gold rates, interactive gold calculator, multilingual support, customer lead management, and an Admin Panel with MySQL database integration.",
   "requestFramePermissions": [],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"

@@ -26,7 +26,6 @@ import {
 } from "lucide-react";
 import { GoldKarat, GoldRate, SystemSettings } from "../types.js";
 import { Language } from "../lib/translations.js";
-import { safeStorage } from "../lib/localDb.js";
 
 interface AdminGoldPriceControlProps {
   rates: GoldRate[];
@@ -34,6 +33,7 @@ interface AdminGoldPriceControlProps {
   onUpdateRates: (updatedRates: GoldRate[]) => Promise<void>;
   onUpdateSettings: (updatedSettings: SystemSettings) => Promise<void>;
   currentLang?: Language;
+  onViewSite?: () => void;
 }
 
 interface RateHistoryLog {
@@ -48,6 +48,8 @@ export default function AdminGoldPriceControl({
   settings,
   onUpdateRates,
   onUpdateSettings,
+  currentLang = "en",
+  onViewSite,
 }: AdminGoldPriceControlProps) {
   // Local edit copies for rates and settings
   const [editRates, setEditRates] = useState<GoldRate[]>([]);
@@ -61,27 +63,19 @@ export default function AdminGoldPriceControl({
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [updateReason, setUpdateReason] = useState("Manual Daily Market Adjustment");
 
-  // History log local state
-  const [historyLogs, setHistoryLogs] = useState<RateHistoryLog[]>(() => {
-    try {
-      const saved = safeStorage.getItem("gbc_rate_history");
-      if (saved) return JSON.parse(saved);
-    } catch {
-      // ignore
-    }
-    return [
-      {
-        id: "1",
-        timestamp: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" }),
-        rates: [
-          { karat: GoldKarat.K24, purity: 0.999, ratePerGram: 31250 },
-          { karat: GoldKarat.K22, purity: 0.916, ratePerGram: 28650 },
-          { karat: GoldKarat.K21, purity: 0.875, ratePerGram: 27350 },
-        ],
-        reason: "Initial Morning Opening Rate",
-      },
-    ];
-  });
+  // History log local state (Zero localStorage/cookie usage - authoritative rates are stored in MySQL only)
+  const [historyLogs, setHistoryLogs] = useState<RateHistoryLog[]>([
+    {
+      id: "1",
+      timestamp: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" }),
+      rates: [
+        { karat: GoldKarat.K24, purity: 0.999, ratePerGram: 31250 },
+        { karat: GoldKarat.K22, purity: 0.916, ratePerGram: 28650 },
+        { karat: GoldKarat.K21, purity: 0.875, ratePerGram: 27350 },
+      ],
+      reason: "Initial Morning Opening Rate",
+    },
+  ]);
 
   // Sync props to local edit state
   useEffect(() => {
@@ -193,11 +187,6 @@ export default function AdminGoldPriceControl({
 
       const nextLogs = [newLog, ...historyLogs].slice(0, 10);
       setHistoryLogs(nextLogs);
-      try {
-        safeStorage.setItem("gbc_rate_history", JSON.stringify(nextLogs));
-      } catch {
-        // ignore
-      }
 
       setSaveSuccess(true);
       setTimeout(() => setSaveSuccess(false), 4000);
@@ -284,6 +273,33 @@ export default function AdminGoldPriceControl({
           </div>
         </div>
       </div>
+
+      {/* Real-Time Live Notification Banner on Publish */}
+      {saveSuccess && (
+        <div className="p-4 bg-emerald-950/60 border border-emerald-500/40 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3 text-emerald-300 shadow-lg shadow-emerald-950/30 animate-in fade-in duration-200">
+          <div className="flex items-center gap-2.5">
+            <div className="p-2 rounded-xl bg-emerald-500/20 text-emerald-400">
+              <Check className="h-5 w-5" />
+            </div>
+            <div>
+              <p className="text-xs font-mono font-bold text-white">
+                Gold rates successfully saved to backend database!
+              </p>
+              <p className="text-[11px] font-mono text-emerald-300/90 mt-0.5">
+                Live across the website: 24K LKR {editRates.find((r) => r.karat === "24K")?.ratePerGram.toLocaleString()}/g • 22K LKR {editRates.find((r) => r.karat === "22K")?.ratePerGram.toLocaleString()}/g
+              </p>
+            </div>
+          </div>
+          {onViewSite && (
+            <button
+              onClick={onViewSite}
+              className="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-neutral-950 text-xs font-mono font-bold transition-all cursor-pointer shadow-md shadow-emerald-500/20 whitespace-nowrap"
+            >
+              View on Live Website →
+            </button>
+          )}
+        </div>
+      )}
 
       {/* Main Grid Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">

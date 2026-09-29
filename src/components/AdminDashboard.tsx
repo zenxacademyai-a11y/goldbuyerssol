@@ -4,25 +4,21 @@
  */
 
 import React, { useState, useEffect } from "react";
-import { Lock, Settings, RefreshCw, Trash2, Edit, Plus, FileText, Check, Sparkles, AlertCircle, BarChart3, TrendingUp, HeartPulse, CheckCircle2, XCircle, AlertTriangle, ChevronDown, ChevronUp, Eye, ShieldCheck, HelpCircle } from "lucide-react";
+import { Lock, Trash2, AlertCircle, BarChart3, ArrowLeft } from "lucide-react";
 import { Language, translations } from "../lib/translations.js";
-import { GoldRate, SystemSettings, CustomerLead, BlogPost } from "../types.js";
-import RichTextEditor from "./RichTextEditor.js";
+import { GoldRate, SystemSettings, CustomerLead } from "../types.js";
 import AdminGoldPriceControl from "./AdminGoldPriceControl.js";
-import AdminBlogCMS from "./AdminBlogCMS.js";
+import AdminDatabaseManager from "./AdminDatabaseManager.js";
 
 interface AdminDashboardProps {
   currentLang: Language;
   rates: GoldRate[];
   settings: SystemSettings;
   leads: CustomerLead[];
-  blogs: BlogPost[];
   onUpdateRates: (updatedRates: GoldRate[]) => Promise<void>;
   onUpdateSettings: (updatedSettings: SystemSettings) => Promise<void>;
   onDeleteLead: (id: string) => Promise<void>;
-  onSaveBlog: (blog: Partial<BlogPost>) => Promise<void>;
-  onDeleteBlog: (id: string) => Promise<void>;
-  onViewBlog?: (slug: string) => void;
+  onViewSite?: () => void;
 }
 
 export default function AdminDashboard({
@@ -30,13 +26,10 @@ export default function AdminDashboard({
   rates,
   settings,
   leads,
-  blogs,
   onUpdateRates,
   onUpdateSettings,
   onDeleteLead,
-  onSaveBlog,
-  onDeleteBlog,
-  onViewBlog,
+  onViewSite,
 }: AdminDashboardProps) {
   const t = translations[currentLang];
   
@@ -45,12 +38,12 @@ export default function AdminDashboard({
   const [pin, setPin] = useState("");
   const [authError, setAuthError] = useState("");
 
-  // Sub-routing for admin page tabs (Leads vs Rates vs Blogs)
-  const [activeTab, setActiveTab] = useState<"rates" | "leads" | "blog">(() => {
+  // Sub-routing for admin page tabs (Rates vs Leads vs Database)
+  const [activeTab, setActiveTab] = useState<"rates" | "leads" | "database">(() => {
     const path = window.location.pathname.toLowerCase();
     if (path.includes("/leads")) return "leads";
     if (path.includes("/rates")) return "rates";
-    if (path.includes("/blog")) return "blog";
+    if (path.includes("/database")) return "database";
     return "rates"; // default
   });
 
@@ -64,230 +57,6 @@ export default function AdminDashboard({
     }
   }, [activeTab, isAuthenticated]);
 
-  // Rates edit state
-  const [editRates, setEditRates] = useState<GoldRate[]>([]);
-  const [editSettings, setEditSettings] = useState<SystemSettings | null>(null);
-  
-  // Blog form state
-  const [blogTitle, setBlogTitle] = useState("");
-  const [blogCategory, setBlogCategory] = useState("Gold Price");
-  const [blogContent, setBlogContent] = useState("");
-  const [blogTags, setBlogTags] = useState("");
-  const [blogAuthor, setBlogAuthor] = useState("Chief Appraiser");
-  const [isBlogSaving, setIsBlogSaving] = useState(false);
-
-  // Predefined blog topics for SEO campaign
-  const PREDEFINED_TOPICS = [
-    "10 Best Gold Buyers in Colombo (2026)",
-    "15 Best Places to Sell Gold in Colombo",
-    "12 Trusted Gold Buyers in Sri Lanka",
-    "8 Best Cash for Gold Services in Colombo",
-    "Top 10 Jewellery Buyers in Colombo",
-    "20 Tips Before Selling Gold in Colombo",
-    "9 Best Gold Exchange Companies in Colombo",
-    "10 Best Gold Dealers in Colombo",
-    "Top Gold Buying Companies in Sri Lanka",
-    "15 Highest Paying Gold Buyers in Colombo",
-    "Top Gold Jewellery Buyers Near Colombo",
-    "18 Gold Selling Tips That Save You Money",
-    "10 Best Gold Appraisal Services in Colombo",
-    "Top Gold Testing Centres in Colombo",
-    "Best Gold Buyers for Old Jewellery",
-    "Best Gold Buyers for Broken Jewellery",
-    "Best Gold Buyers for Antique Jewellery",
-    "Best Gold Buyers for Gold Coins",
-    "Best Gold Buyers for Bullion",
-    "Top Gold Shops That Buy Jewellery"
-  ];
-
-  const [selectedPredefinedTopic, setSelectedPredefinedTopic] = useState(PREDEFINED_TOPICS[0]);
-
-  // AI Prompt Assistant state
-  const [aiPrompt, setAiPrompt] = useState("Write a highly optimized Colombo SEO guide titled 'How to Avoid Gold Buying Frauds in Colombo 03'. Include details on XRF spectrometer testing.");
-  const [isAiGenerating, setIsAiGenerating] = useState(false);
-
-  // Blog Edit / Management state
-  const [editingBlogId, setEditingBlogId] = useState<string | null>(null);
-  const [expandedBlogDiagnosticId, setExpandedBlogDiagnosticId] = useState<string | null>(null);
-
-  const handleLoadBlogToEditor = (blog: BlogPost) => {
-    setEditingBlogId(blog.id);
-    setBlogTitle(blog.title);
-    setBlogCategory(blog.category);
-    setBlogContent(blog.content);
-    setBlogTags(blog.tags.join(", "));
-    setBlogAuthor(blog.author);
-    
-    // Smooth scroll to the blog CMS form so the admin can immediately see the form
-    const editorElement = document.getElementById("blog-cms-form");
-    if (editorElement) {
-      editorElement.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
-  const runBlogSchemaDiagnostic = (blog: BlogPost) => {
-    // 1. ARTICLE SCHEMA DIAGNOSTIC
-    const articlePassed: string[] = [];
-    const articleIssues: string[] = [];
-    let articleScore = 0;
-
-    // A. Headline
-    if (blog.title && blog.title.trim().length > 5) {
-      articlePassed.push("Headline (title) is valid and descriptive");
-      articleScore += 20;
-    } else {
-      articleIssues.push("Headline (title) is missing or too short");
-    }
-
-    // B. Author
-    if (blog.author && blog.author.trim().length > 2) {
-      articlePassed.push(`Author is specified: '${blog.author}'`);
-      articleScore += 20;
-    } else {
-      articleIssues.push("Author name is missing (critical for E-E-A-T and Author schema)");
-    }
-
-    // C. Date Published / Modified
-    if (blog.date || blog.createdAt) {
-      articlePassed.push("Date published metadata is defined");
-      articleScore += 20;
-    } else {
-      articleIssues.push("Date published is missing");
-    }
-
-    // D. Meta Description / Abstract
-    if (blog.metaDescription && blog.metaDescription.trim().length >= 50) {
-      articlePassed.push("Meta description is configured and exceeds 50 characters (ideal for search result snippet description)");
-      articleScore += 20;
-    } else {
-      articleIssues.push("Meta description is missing, empty, or too short (should be at least 50 characters for rich snippets)");
-    }
-
-    // E. Images and ALT text
-    const imgRegex = /<img\s+[^>]*src=["']([^"']+)["'][^>]*>/gi;
-    const imgs = [...blog.content.matchAll(imgRegex)];
-    if (imgs.length === 0) {
-      articleIssues.push("No embedded images found in content. Articles with relevant images receive better indexing.");
-      articleScore += 10; 
-    } else {
-      let missingAlt = false;
-      let weakAlt = false;
-      imgs.forEach((match) => {
-        const tag = match[0];
-        const altMatch = tag.match(/alt=["']([^"']*)["']/i);
-        if (!altMatch || !altMatch[1] || altMatch[1].trim() === "") {
-          missingAlt = true;
-        } else if (!altMatch[1].toLowerCase().includes("gold buyer") && !altMatch[1].toLowerCase().includes("colombo")) {
-          weakAlt = true;
-        }
-      });
-
-      if (missingAlt) {
-        articleIssues.push("One or more embedded images are missing ALT text. This harms accessibility and SEO.");
-      } else if (weakAlt) {
-        articleIssues.push("Alt attributes exist but lack target keywords ('Gold Buyer in Colombo'). Use the Alt SEO tool to optimize.");
-        articleScore += 15;
-      } else {
-        articlePassed.push("All embedded images have highly optimized alt attributes containing target SEO keywords");
-        articleScore += 20;
-      }
-    }
-
-    // 2. FAQ SCHEMA DIAGNOSTIC
-    const faqPassed: string[] = [];
-    const faqIssues: string[] = [];
-    let faqScore = 0;
-
-    if (!blog.questions || blog.questions.length === 0) {
-      faqIssues.push("No FAQ schema questions configured. Google cannot display FAQ rich dropdowns for this page.");
-      faqScore = 0;
-    } else {
-      faqPassed.push(`Found ${blog.questions.length} FAQ item(s)`);
-      faqScore += 40;
-
-      if (blog.questions.length >= 2) {
-        faqPassed.push("Has 2 or more FAQ items (Google recommendation for rich snippets)");
-        faqScore += 30;
-      } else {
-        faqIssues.push("Only 1 FAQ item found. Standard search result snippets display best with 2+ Q&As.");
-      }
-
-      // Answer lengths
-      const shortAnswers = blog.questions.some((q) => q.a.trim().length < 20);
-      if (shortAnswers) {
-        faqIssues.push("One or more FAQ answers are too brief (< 20 characters). Content should be thoroughly explanatory.");
-      } else {
-        faqPassed.push("All FAQ answers have highly comprehensive and descriptive details");
-        faqScore += 30;
-      }
-    }
-
-    // 3. LOCALBUSINESS SCHEMA DIAGNOSTIC
-    const lbPassed: string[] = [];
-    const lbIssues: string[] = [];
-    let lbScore = 0;
-
-    // A. Localized pointers
-    if (blog.localizedPointers && blog.localizedPointers.length > 0) {
-      lbPassed.push(`Has localized physical pointers: ${blog.localizedPointers.join(", ")}`);
-      lbScore += 30;
-    } else {
-      lbIssues.push("No explicit localized pointers array configured (used for localized schema grounding).");
-    }
-
-    // B. Brand Mentions
-    const lowerContent = blog.content.toLowerCase() + " " + blog.title.toLowerCase();
-    if (lowerContent.includes("gbc") || lowerContent.includes("gold buyers colombo")) {
-      lbPassed.push("Explicitly mentions authority brand 'GBC' or 'Gold Buyers Colombo'");
-      lbScore += 35;
-    } else {
-      lbIssues.push("Missing authority brand mention ('GBC' / 'Gold Buyers Colombo') in article text.");
-    }
-
-    // C. Local Landmarks & Neighborhoods
-    const landmarkKeywords = ["wellawatte", "pettah", "sea street", "bambalapitiya", "galle road", "kollupitiya", "colombo", "sri lanka"];
-    const foundKeywords = landmarkKeywords.filter((kw) => lowerContent.includes(kw));
-
-    if (foundKeywords.length >= 3) {
-      lbPassed.push(`High GEO-relevance with local landmarks: ${foundKeywords.join(", ")}`);
-      lbScore += 35;
-    } else if (foundKeywords.length > 0) {
-      lbIssues.push(`Weak local grounding. Only mentioned: ${foundKeywords.join(", ")}. Add Wellawatte, Sea Street Pettah, or Colombo 03 landmarks.`);
-      lbScore += 15;
-    } else {
-      lbIssues.push("Lacks local geographical references entirely. Search engines cannot ground this article to the Colombo market.");
-    }
-
-    const getStatus = (score: number): "pass" | "warn" | "fail" => {
-      if (score >= 90) return "pass";
-      if (score >= 50) return "warn";
-      return "fail";
-    };
-
-    const articleStatus = getStatus(articleScore);
-    const faqStatus = getStatus(faqScore);
-    const lbStatus = getStatus(lbScore);
-
-    const totalScore = Math.round((articleScore + faqScore + lbScore) / 3);
-
-    return {
-      article: { status: articleStatus, score: articleScore, issues: articleIssues, passed: articlePassed },
-      faq: { status: faqStatus, score: faqScore, issues: faqIssues, passed: faqPassed },
-      localBusiness: { status: lbStatus, score: lbScore, issues: lbIssues, passed: lbPassed },
-      totalScore
-    };
-  };
-
-  // Sync edit states on component mounts
-  useEffect(() => {
-    if (rates.length > 0) {
-      setEditRates(JSON.parse(JSON.stringify(rates)));
-    }
-    if (settings) {
-      setEditSettings(JSON.parse(JSON.stringify(settings)));
-    }
-  }, [rates, settings]);
-
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     // Simple administrative PIN barrier
@@ -296,163 +65,6 @@ export default function AdminDashboard({
       setAuthError("");
     } else {
       setAuthError("Invalid administrative security pass code. Access Denied.");
-    }
-  };
-
-  const handleRateChange = (idx: number, field: keyof GoldRate, value: any) => {
-    const next = [...editRates];
-    next[idx] = { ...next[idx], [field]: value };
-    setEditRates(next);
-  };
-
-  const handleSettingsChange = (field: keyof SystemSettings, value: any) => {
-    if (!editSettings) return;
-    setEditSettings({ ...editSettings, [field]: value });
-  };
-
-  const handleSaveRatesAndSettings = async () => {
-    try {
-      await onUpdateRates(editRates);
-      if (editSettings) {
-        await onUpdateSettings(editSettings);
-      }
-      alert("Gold pricing and database settings updated successfully!");
-    } catch (e) {
-      console.error(e);
-      alert("Error saving rates.");
-    }
-  };
-
-  const handleAiWriterGenerate = async () => {
-    if (!aiPrompt) return;
-    setIsAiGenerating(true);
-    try {
-      let isOk = false;
-      let data: any = null;
-      let errorText = "";
-      try {
-        const response = await fetch("/api/ai-writer", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt: aiPrompt }),
-        });
-        isOk = response.ok;
-        if (isOk) {
-          data = await response.json();
-        } else {
-          errorText = await response.text();
-        }
-      } catch (err) {
-        isOk = false;
-        errorText = "Static hosting mode: AI writing requires a Node.js backend. Please paste content manually.";
-      }
-
-      if (isOk && data) {
-        // Dynamically auto-fill blog form content with the generated article!
-        setBlogContent(data.content);
-        if (data.title) setBlogTitle(data.title);
-        alert("AI Article composed successfully! Feel free to edit or refine before publishing.");
-      } else {
-        alert(`AI Writer returned error: ${errorText}`);
-      }
-    } catch (e) {
-      console.error(e);
-      alert("Error generating content from server-side Gemini endpoint.");
-    } finally {
-      setIsAiGenerating(false);
-    }
-  };
-
-  const handleGeneratePredefinedTopic = async () => {
-    setIsAiGenerating(true);
-    try {
-      // Build a specialized, comprehensive SEO/AEO/GEO prompt incorporating 'GBC' brand
-      // and explicit instructions to write and position GBC as the leading Colombo authority.
-      // Instructs Gemini to write natural, contextual reference links to internal service & contact anchors
-      // and external authorities.
-      const promptText = `Write an optimized blog post titled "${selectedPredefinedTopic}".
-Target: Colombo Sri Lanka Gold search market.
-Brand mention: "GBC" or "Gold Buyers Colombo".
-Tone: premium, trustworthy, and expert.
-Length: approx 600-900 words.
-
-Ensure you integrate:
-1. Internal hyperlinking references:
-   - To the Gold Value Calculator using the exact link URL '#calculator'
-   - To the Live Gold Rates using the exact link URL '#rates'
-   - To the GBC About page/section using the exact link URL '#about'
-   - To the GBC Contact page/section using the exact link URL '#contact'
-2. External authority links to reputable Sri Lankan institutions:
-   - Central Bank of Sri Lanka (https://www.cbsl.gov.lk)
-   - National Gem and Jewellery Authority (http://www.gemandjewelleryauthority.gov.lk)
-
-Position GBC as the ultra-transparent, Rolex/Cartier-level premium financial exchange offering computerized XRF testing and certified dual-display weighing.
-Include relevant Colombo landmarks (Sea Street Pettah, Wellawatte, Bambalapitiya Galle Road) for local GEO-relevance.`;
-
-      let isOk = false;
-      let data: any = null;
-      let errorText = "";
-      try {
-        const response = await fetch("/api/ai-writer", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt: promptText }),
-        });
-        isOk = response.ok;
-        if (isOk) {
-          data = await response.json();
-        } else {
-          errorText = await response.text();
-        }
-      } catch (err) {
-        isOk = false;
-        errorText = "Static hosting mode: AI writing requires a Node.js backend.";
-      }
-
-      if (isOk && data) {
-        setBlogContent(data.content);
-        if (data.title) setBlogTitle(data.title);
-        if (data.category) setBlogCategory(data.category);
-        if (data.tags) setBlogTags(data.tags.join(", "));
-        alert(`AI Article for "${selectedPredefinedTopic}" composed successfully with 'GBC' brand and hyperlinking patterns! Feel free to edit or refine the populated content below.`);
-      } else {
-        alert(`AI Writer returned error: ${errorText}`);
-      }
-    } catch (e) {
-      console.error(e);
-      alert("Error generating predefined topic content from server-side Gemini endpoint.");
-    } finally {
-      setIsAiGenerating(false);
-    }
-  };
-
-  const handlePublishBlog = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!blogTitle || !blogContent) return;
-
-    setIsBlogSaving(true);
-    try {
-      await onSaveBlog({
-        id: editingBlogId || undefined,
-        title: blogTitle,
-        category: blogCategory as BlogPost["category"],
-        content: blogContent,
-        author: blogAuthor,
-        tags: blogTags.split(",").map(t => t.trim()).filter(Boolean),
-        date: new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }),
-      });
-
-      // Clear form and reset edit state
-      setBlogTitle("");
-      setBlogContent("");
-      setBlogTags("");
-      setEditingBlogId(null);
-      alert(editingBlogId ? "Blog article updated successfully in the database!" : "Blog article published successfully in the database!");
-    } catch (e) {
-      console.error(e);
-      alert("Error saving blog.");
-    } finally {
-      setIsBlogSaving(false);
     }
   };
 
@@ -468,7 +80,7 @@ Include relevant Colombo landmarks (Sea Street Pettah, Wellawatte, Bambalapitiya
             Administrative Access
           </h2>
           <p className="text-xs text-neutral-400 leading-relaxed mb-6">
-            Enter administrative PIN or pass code to view customer leads, edit live gold prices, or create blogs.
+            Enter administrative PIN or pass code to manage customer valuation leads, live gold rates, and MySQL database.
           </p>
 
           <form onSubmit={handleLogin} className="space-y-4">
@@ -487,7 +99,7 @@ Include relevant Colombo landmarks (Sea Street Pettah, Wellawatte, Bambalapitiya
             )}
             <button
               type="submit"
-              className="w-full py-2.5 bg-amber-600 hover:bg-amber-500 text-black font-extrabold uppercase tracking-wider text-xs rounded transition-all"
+              className="w-full py-2.5 bg-amber-600 hover:bg-amber-500 text-black font-extrabold uppercase tracking-wider text-xs rounded transition-all cursor-pointer"
             >
               Verify Credentials
             </button>
@@ -496,26 +108,6 @@ Include relevant Colombo landmarks (Sea Street Pettah, Wellawatte, Bambalapitiya
       </section>
     );
   }
-
-  const computedDiagnostics = blogs.map((blog) => {
-    return {
-      blog,
-      diagnostic: runBlogSchemaDiagnostic(blog),
-    };
-  });
-
-  const totalArticles = blogs.length;
-  const averageHealthScore = totalArticles > 0
-    ? Math.round(computedDiagnostics.reduce((acc, curr) => acc + curr.diagnostic.totalScore, 0) / totalArticles)
-    : 0;
-
-  const articlePerfectCount = computedDiagnostics.filter((d) => d.diagnostic.article.status === "pass").length;
-  const faqPerfectCount = computedDiagnostics.filter((d) => d.diagnostic.faq.status === "pass").length;
-  const lbPerfectCount = computedDiagnostics.filter((d) => d.diagnostic.localBusiness.status === "pass").length;
-
-  const articleCoverage = totalArticles > 0 ? Math.round((articlePerfectCount / totalArticles) * 100) : 0;
-  const faqCoverage = totalArticles > 0 ? Math.round((faqPerfectCount / totalArticles) * 100) : 0;
-  const lbCoverage = totalArticles > 0 ? Math.round((lbPerfectCount / totalArticles) * 100) : 0;
 
   return (
     <section className="py-16 px-4 bg-neutral-950 text-white min-h-[90vh]">
@@ -531,19 +123,30 @@ Include relevant Colombo landmarks (Sea Street Pettah, Wellawatte, Bambalapitiya
               GBC Gilt-Edge Admin Portal
             </h2>
           </div>
-          <button
-            onClick={() => setIsAuthenticated(false)}
-            className="text-xs font-mono uppercase tracking-wider text-neutral-500 hover:text-white transition-colors border border-neutral-800 px-3 py-1.5 rounded"
-          >
-            Logout Secure Session
-          </button>
+          <div className="flex items-center gap-3">
+            {onViewSite && (
+              <button
+                onClick={onViewSite}
+                className="text-xs font-mono font-bold uppercase tracking-wider bg-amber-500 hover:bg-amber-400 text-neutral-950 px-4 py-2 rounded-xl transition-all flex items-center gap-2 cursor-pointer shadow-md shadow-amber-500/10"
+              >
+                <ArrowLeft className="h-3.5 w-3.5" />
+                <span>View Live Website</span>
+              </button>
+            )}
+            <button
+              onClick={() => setIsAuthenticated(false)}
+              className="text-xs font-mono uppercase tracking-wider text-neutral-400 hover:text-white transition-colors border border-neutral-800 hover:border-neutral-700 px-3 py-2 rounded-xl cursor-pointer"
+            >
+              Logout Secure Session
+            </button>
+          </div>
         </div>
 
         {/* Navigation Tabs for separate administrative URLs */}
         <div className="flex flex-wrap items-center gap-2 border-b border-neutral-900 pb-4">
           <button
             onClick={() => setActiveTab("rates")}
-            className={`px-5 py-2.5 rounded-xl font-mono text-xs uppercase tracking-wider transition-all duration-300 border ${
+            className={`px-5 py-2.5 rounded-xl font-mono text-xs uppercase tracking-wider transition-all duration-300 border cursor-pointer ${
               activeTab === "rates"
                 ? "bg-amber-500 text-neutral-950 border-amber-500 font-extrabold shadow-lg shadow-amber-500/10"
                 : "bg-neutral-900 text-neutral-400 border-neutral-800 hover:text-white hover:border-neutral-700"
@@ -553,7 +156,7 @@ Include relevant Colombo landmarks (Sea Street Pettah, Wellawatte, Bambalapitiya
           </button>
           <button
             onClick={() => setActiveTab("leads")}
-            className={`px-5 py-2.5 rounded-xl font-mono text-xs uppercase tracking-wider transition-all duration-300 border ${
+            className={`px-5 py-2.5 rounded-xl font-mono text-xs uppercase tracking-wider transition-all duration-300 border cursor-pointer ${
               activeTab === "leads"
                 ? "bg-amber-500 text-neutral-950 border-amber-500 font-extrabold shadow-lg shadow-amber-500/10"
                 : "bg-neutral-900 text-neutral-400 border-neutral-800 hover:text-white hover:border-neutral-700"
@@ -562,14 +165,14 @@ Include relevant Colombo landmarks (Sea Street Pettah, Wellawatte, Bambalapitiya
             📋 Captured Customer Leads ({leads.length})
           </button>
           <button
-            onClick={() => setActiveTab("blog")}
-            className={`px-5 py-2.5 rounded-xl font-mono text-xs uppercase tracking-wider transition-all duration-300 border ${
-              activeTab === "blog"
+            onClick={() => setActiveTab("database")}
+            className={`px-5 py-2.5 rounded-xl font-mono text-xs uppercase tracking-wider transition-all duration-300 border cursor-pointer ${
+              activeTab === "database"
                 ? "bg-amber-500 text-neutral-950 border-amber-500 font-extrabold shadow-lg shadow-amber-500/10"
                 : "bg-neutral-900 text-neutral-400 border-neutral-800 hover:text-white hover:border-neutral-700"
             }`}
           >
-            ✍️ SEO/AEO Blog Content CMS
+            🗄️ MySQL & phpMyAdmin Database
           </button>
         </div>
 
@@ -583,6 +186,7 @@ Include relevant Colombo landmarks (Sea Street Pettah, Wellawatte, Bambalapitiya
               onUpdateRates={onUpdateRates}
               onUpdateSettings={onUpdateSettings}
               currentLang={currentLang}
+              onViewSite={onViewSite}
             />
           )}
 
@@ -632,7 +236,7 @@ Include relevant Colombo landmarks (Sea Street Pettah, Wellawatte, Bambalapitiya
                           <td className="py-3 text-center">
                             <button
                               onClick={() => onDeleteLead(lead.id)}
-                              className="p-1.5 rounded border border-neutral-800 hover:border-rose-500/40 text-neutral-500 hover:text-rose-400 transition-colors bg-black"
+                              className="p-1.5 rounded border border-neutral-800 hover:border-rose-500/40 text-neutral-500 hover:text-rose-400 transition-colors bg-black cursor-pointer"
                               title="Delete Lead"
                             >
                               <Trash2 className="h-3.5 w-3.5" />
@@ -646,318 +250,11 @@ Include relevant Colombo landmarks (Sea Street Pettah, Wellawatte, Bambalapitiya
               )}
             </div>
           )}
-        </div>
 
-        {/* Blog CMS & AI Assistant Section */}
-        {activeTab === "blog" && (
-          <div className="pt-4 border-t border-neutral-900">
-            <AdminBlogCMS
-              currentLang={currentLang}
-              blogs={blogs}
-              onSaveBlog={onSaveBlog}
-              onDeleteBlog={onDeleteBlog}
-              onViewBlog={onViewBlog}
-            />
-          </div>
-        )}
-
-        {/* Schema Health-Check & Validation Dashboard */}
-        <div className="bg-neutral-900/40 rounded-xl border border-neutral-800 p-6 space-y-6 pt-6 mt-12">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-neutral-850 pb-4">
-            <div>
-              <div className="flex items-center gap-2 text-amber-400">
-                <HeartPulse className="h-5 w-5 text-amber-500 animate-pulse" />
-                <h3 className="text-base font-serif font-bold uppercase tracking-wider">
-                  GBC SEO Schema Health & Rich Snippets Dashboard
-                </h3>
-              </div>
-              <p className="text-xs text-neutral-400 mt-1">
-                Validates critical Google Search Engine crawl requirements: Article, FAQ, and LocalBusiness GEO-location schemas.
-              </p>
-            </div>
-            
-            <div className="flex items-center gap-3">
-              <span className="text-xs font-mono text-neutral-400">Overall Health:</span>
-              <div className="flex items-center gap-2 bg-neutral-950 px-3 py-1.5 rounded-lg border border-neutral-800">
-                <div className={`h-2.5 w-2.5 rounded-full ${averageHealthScore >= 90 ? 'bg-amber-500' : averageHealthScore >= 60 ? 'bg-amber-500' : 'bg-rose-500'}`}></div>
-                <span className="text-sm font-mono font-bold text-white">{averageHealthScore}%</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Aggregates row */}
-          {totalArticles > 0 && (
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <div className="bg-black/40 border border-neutral-850 p-4 rounded-lg flex flex-col justify-between">
-                <span className="text-[10px] uppercase font-mono text-neutral-500 tracking-wider">Total Articles Audited</span>
-                <span className="text-2xl font-bold text-white mt-1">{totalArticles}</span>
-                <span className="text-[10px] text-neutral-400 mt-1">Indexed in sitemap.xml</span>
-              </div>
-              <div className="bg-black/40 border border-neutral-850 p-4 rounded-lg flex flex-col justify-between">
-                <span className="text-[10px] uppercase font-mono text-neutral-500 tracking-wider">Article Schema Pass Rate</span>
-                <span className="text-2xl font-bold text-amber-400 mt-1">{articleCoverage}%</span>
-                <span className="text-[10px] text-neutral-400 mt-1">{articlePerfectCount} of {totalArticles} fully optimized</span>
-              </div>
-              <div className="bg-black/40 border border-neutral-850 p-4 rounded-lg flex flex-col justify-between">
-                <span className="text-[10px] uppercase font-mono text-neutral-500 tracking-wider">FAQ Page Schema Pass Rate</span>
-                <span className="text-2xl font-bold text-amber-400 mt-1">{faqCoverage}%</span>
-                <span className="text-[10px] text-neutral-400 mt-1">{faqPerfectCount} of {totalArticles} have rich Q&As</span>
-              </div>
-              <div className="bg-black/40 border border-neutral-850 p-4 rounded-lg flex flex-col justify-between">
-                <span className="text-[10px] uppercase font-mono text-neutral-500 tracking-wider">LocalBusiness Grounding Rate</span>
-                <span className="text-2xl font-bold text-amber-500 mt-1">{lbCoverage}%</span>
-                <span className="text-[10px] text-neutral-400 mt-1">{lbPerfectCount} of {totalArticles} geo-optimized</span>
-              </div>
-            </div>
-          )}
-
-          {/* List of articles with details */}
-          {totalArticles === 0 ? (
-            <div className="text-center py-12 border border-dashed border-neutral-800 rounded-lg text-neutral-500 text-xs font-mono">
-              <ShieldCheck className="h-8 w-8 text-neutral-600 mx-auto mb-2" />
-              NO GENERATED ARTICLES DETECTED IN SYSTEM DATABASE.
-              <p className="text-[11px] text-neutral-600 mt-1">Use the Gemini Assistant or Publish form to seed your SEO articles catalog.</p>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {computedDiagnostics.map(({ blog, diagnostic }) => {
-                const isExpanded = expandedBlogDiagnosticId === blog.id;
-                
-                return (
-                  <div 
-                    key={blog.id} 
-                    className={`border rounded-lg transition-all overflow-hidden ${
-                      isExpanded 
-                        ? 'border-amber-500/40 bg-black/50 shadow-lg' 
-                        : 'border-neutral-850 bg-neutral-900/10 hover:border-neutral-850'
-                    }`}
-                  >
-                    {/* Header Row */}
-                    <div 
-                      onClick={() => setExpandedBlogDiagnosticId(isExpanded ? null : blog.id)}
-                      className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 cursor-pointer select-none"
-                    >
-                      <div className="space-y-1 flex-1">
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs font-mono font-semibold bg-neutral-800 text-neutral-300 px-2 py-0.5 rounded uppercase">
-                            {blog.category}
-                          </span>
-                          <span className="text-xs text-neutral-500 font-mono">
-                            {blog.date}
-                          </span>
-                        </div>
-                        <h4 className="text-sm font-bold text-white hover:text-amber-400 transition-colors">
-                          {blog.title}
-                        </h4>
-                      </div>
-
-                      <div className="flex items-center gap-4 flex-wrap sm:flex-nowrap">
-                        {/* Article Schema Badge */}
-                        <div className="text-center">
-                          <span className="text-[9px] uppercase font-mono text-neutral-500 block">Article</span>
-                          <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-mono font-bold mt-0.5 ${
-                            diagnostic.article.status === "pass" 
-                              ? "bg-amber-950/60 text-amber-400 border border-amber-850" 
-                              : diagnostic.article.status === "warn"
-                              ? "bg-amber-950/60 text-amber-400 border border-amber-850"
-                              : "bg-rose-950/60 text-rose-400 border border-rose-850"
-                          }`}>
-                            {diagnostic.article.status === "pass" ? "PASS" : diagnostic.article.status === "warn" ? "WARN" : "FAIL"} ({diagnostic.article.score}%)
-                          </span>
-                        </div>
-
-                        {/* FAQ Schema Badge */}
-                        <div className="text-center">
-                          <span className="text-[9px] uppercase font-mono text-neutral-500 block">FAQ</span>
-                          <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-mono font-bold mt-0.5 ${
-                            diagnostic.faq.status === "pass" 
-                              ? "bg-amber-950/60 text-amber-400 border border-amber-850" 
-                              : diagnostic.faq.status === "warn"
-                              ? "bg-amber-950/60 text-amber-400 border border-amber-850"
-                              : "bg-rose-950/60 text-rose-400 border border-rose-850"
-                          }`}>
-                            {diagnostic.faq.status === "pass" ? "PASS" : diagnostic.faq.status === "warn" ? "WARN" : "FAIL"} ({diagnostic.faq.score}%)
-                          </span>
-                        </div>
-
-                        {/* LocalBusiness Schema Badge */}
-                        <div className="text-center">
-                          <span className="text-[9px] uppercase font-mono text-neutral-500 block">LocalBusiness</span>
-                          <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-mono font-bold mt-0.5 ${
-                            diagnostic.localBusiness.status === "pass" 
-                              ? "bg-amber-950/60 text-amber-400 border border-amber-850" 
-                              : diagnostic.localBusiness.status === "warn"
-                              ? "bg-amber-950/60 text-amber-400 border border-amber-850"
-                              : "bg-rose-950/60 text-rose-400 border border-rose-850"
-                          }`}>
-                            {diagnostic.localBusiness.status === "pass" ? "PASS" : diagnostic.localBusiness.status === "warn" ? "WARN" : "FAIL"} ({diagnostic.localBusiness.score}%)
-                          </span>
-                        </div>
-
-                        {/* Expand Icon */}
-                        <div className="text-neutral-500 bg-neutral-950 p-1 rounded hover:text-white border border-neutral-850">
-                          {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Expandable Diagnostic details */}
-                    {isExpanded && (
-                      <div className="border-t border-neutral-850 p-5 bg-neutral-950/40 text-xs space-y-5">
-                        
-                        {/* Overall post index summary */}
-                        <div className="flex items-center justify-between bg-neutral-900/60 p-3 rounded-lg border border-neutral-850">
-                          <div>
-                            <span className="text-[10px] text-neutral-400 uppercase font-mono tracking-wider">Crawl Ready Index Score</span>
-                            <div className="flex items-center gap-2 mt-0.5">
-                              <span className="text-lg font-bold text-white">{diagnostic.totalScore}%</span>
-                              <span className="text-[10px] text-neutral-500">for Google Search result snippets</span>
-                            </div>
-                          </div>
-                          
-                          <div className="flex gap-2">
-                            <button
-                              onClick={() => handleLoadBlogToEditor(blog)}
-                              className="px-3 py-1.5 bg-amber-600 hover:bg-amber-500 text-black font-extrabold rounded text-[10px] uppercase tracking-wider transition-all flex items-center gap-1"
-                            >
-                              <Edit className="h-3 w-3" />
-                              Edit in CMS
-                            </button>
-                            <button
-                              onClick={() => {
-                                if (confirm("Are you sure you want to delete this blog post and remove it from dynamic index schemas?")) {
-                                  onDeleteBlog(blog.id);
-                                }
-                              }}
-                              className="px-2.5 py-1.5 border border-neutral-850 hover:border-rose-500/40 text-neutral-400 hover:text-rose-400 rounded text-[10px] uppercase transition-colors"
-                            >
-                              Delete
-                            </button>
-                          </div>
-                        </div>
-
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                          
-                          {/* Article Schema detail card */}
-                          <div className="space-y-3 bg-neutral-900/20 p-4 rounded-lg border border-neutral-850">
-                            <div className="flex items-center justify-between border-b border-neutral-850 pb-1.5">
-                              <span className="font-bold text-white flex items-center gap-1">
-                                <FileText className="h-3.5 w-3.5 text-neutral-400" />
-                                Article Schema
-                              </span>
-                              <span className={`text-[10px] font-mono font-bold ${diagnostic.article.status === 'pass' ? 'text-amber-400' : 'text-amber-400'}`}>
-                                {diagnostic.article.score}%
-                              </span>
-                            </div>
-                            
-                            {/* Passed */}
-                            {diagnostic.article.passed.length > 0 && (
-                              <div className="space-y-1.5">
-                                {diagnostic.article.passed.map((msg, i) => (
-                                  <div key={i} className="flex items-start gap-1.5 text-[11px] text-neutral-300">
-                                    <CheckCircle2 className="h-3.5 w-3.5 text-amber-500 shrink-0 mt-0.5" />
-                                    <span>{msg}</span>
-                                  </div>
-                                ))}
-                              </div>
-                            )}
-
-                            {/* Issues */}
-                            {diagnostic.article.issues.length > 0 && (
-                              <div className="space-y-1.5 pt-2 border-t border-neutral-850/30">
-                                <span className="text-[9px] uppercase font-mono text-neutral-500 block">Missing Fields / Warnings:</span>
-                                {diagnostic.article.issues.map((msg, i) => (
-                                  <div key={i} className="flex items-start gap-1.5 text-[11px] text-neutral-400">
-                                    <AlertTriangle className="h-3.5 w-3.5 text-amber-500 shrink-0 mt-0.5" />
-                                    <span>{msg}</span>
-                                  </div>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-
-                          {/* FAQ Schema detail card */}
-                          <div className="space-y-3 bg-neutral-900/20 p-4 rounded-lg border border-neutral-850">
-                            <div className="flex items-center justify-between border-b border-neutral-850 pb-1.5">
-                              <span className="font-bold text-white flex items-center gap-1">
-                                <HelpCircle className="h-3.5 w-3.5 text-neutral-400" />
-                                FAQ Schema
-                              </span>
-                              <span className={`text-[10px] font-mono font-bold ${diagnostic.faq.status === 'pass' ? 'text-amber-400' : 'text-amber-400'}`}>
-                                {diagnostic.faq.score}%
-                              </span>
-                            </div>
-                            
-                            {/* Passed */}
-                            {diagnostic.faq.passed.length > 0 && (
-                              <div className="space-y-1.5">
-                                {diagnostic.faq.passed.map((msg, i) => (
-                                  <div key={i} className="flex items-start gap-1.5 text-[11px] text-neutral-300">
-                                    <CheckCircle2 className="h-3.5 w-3.5 text-amber-500 shrink-0 mt-0.5" />
-                                    <span>{msg}</span>
-                                  </div>
-                                ))}
-                              </div>
-                            )}
-
-                            {/* Issues */}
-                            {diagnostic.faq.issues.length > 0 && (
-                              <div className="space-y-1.5 pt-2 border-t border-neutral-850/30">
-                                <span className="text-[9px] uppercase font-mono text-neutral-500 block">Missing Fields / Warnings:</span>
-                                {diagnostic.faq.issues.map((msg, i) => (
-                                  <div key={i} className="flex items-start gap-1.5 text-[11px] text-neutral-400">
-                                    <XCircle className="h-3.5 w-3.5 text-rose-500 shrink-0 mt-0.5" />
-                                    <span>{msg}</span>
-                                  </div>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-
-                          {/* LocalBusiness Schema detail card */}
-                          <div className="space-y-3 bg-neutral-900/20 p-4 rounded-lg border border-neutral-850">
-                            <div className="flex items-center justify-between border-b border-neutral-850 pb-1.5">
-                              <span className="font-bold text-white flex items-center gap-1">
-                                <ShieldCheck className="h-3.5 w-3.5 text-neutral-400" />
-                                LocalBusiness Grounding
-                              </span>
-                              <span className={`text-[10px] font-mono font-bold ${diagnostic.localBusiness.status === 'pass' ? 'text-amber-400' : 'text-amber-400'}`}>
-                                {diagnostic.localBusiness.score}%
-                              </span>
-                            </div>
-                            
-                            {/* Passed */}
-                            {diagnostic.localBusiness.passed.length > 0 && (
-                              <div className="space-y-1.5">
-                                {diagnostic.localBusiness.passed.map((msg, i) => (
-                                  <div key={i} className="flex items-start gap-1.5 text-[11px] text-neutral-300">
-                                    <CheckCircle2 className="h-3.5 w-3.5 text-amber-500 shrink-0 mt-0.5" />
-                                    <span>{msg}</span>
-                                  </div>
-                                ))}
-                              </div>
-                            )}
-
-                            {/* Issues */}
-                            {diagnostic.localBusiness.issues.length > 0 && (
-                              <div className="space-y-1.5 pt-2 border-t border-neutral-850/30">
-                                <span className="text-[9px] uppercase font-mono text-neutral-500 block">Missing Fields / Warnings:</span>
-                                {diagnostic.localBusiness.issues.map((msg, i) => (
-                                  <div key={i} className="flex items-start gap-1.5 text-[11px] text-neutral-400">
-                                    <AlertTriangle className="h-3.5 w-3.5 text-amber-500 shrink-0 mt-0.5" />
-                                    <span>{msg}</span>
-                                  </div>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
+          {/* MySQL & phpMyAdmin Database Management */}
+          {activeTab === "database" && (
+            <div className="pt-4 border-t border-neutral-900">
+              <AdminDatabaseManager />
             </div>
           )}
         </div>

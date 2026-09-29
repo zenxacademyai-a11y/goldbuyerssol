@@ -47,7 +47,7 @@ export default function FairValuationSection({ currentLang }: FairValuationProps
   ];
 
   return (
-    <section className="py-20 px-4 bg-amber-50/80 dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 border-t border-amber-200/60 dark:border-neutral-800 relative overflow-hidden">
+    <section className="py-20 px-4 bg-amber-50/40 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 border-t border-amber-200/50 dark:border-neutral-800 relative overflow-hidden transition-colors">
       {/* Subtle gold glow background effects */}
       <div className="absolute top-1/2 left-0 -translate-y-1/2 w-96 h-96 bg-amber-400/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -85,7 +85,7 @@ export default function FairValuationSection({ currentLang }: FairValuationProps
           {points.map((pt, idx) => (
             <div 
               key={idx}
-              className="p-6 rounded-2xl bg-white dark:bg-neutral-950 border border-amber-200/80 dark:border-neutral-800 hover:border-amber-500/50 transition-all duration-300 shadow-md backdrop-blur-md flex flex-col justify-between group"
+              className="p-6 rounded-2xl bg-white dark:bg-neutral-900 border border-amber-200/60 dark:border-neutral-800 hover:border-amber-500/50 transition-all duration-300 shadow-xs hover:shadow-md flex flex-col justify-between group"
             >
               <div>
                 <div className="h-12 w-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">

@@ -48,7 +48,7 @@ export default function WhyChooseUs({ currentLang }: WhyChooseUsProps) {
   ];
 
   return (
-    <section className="py-20 px-4 bg-slate-50/90 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 border-t border-slate-200/60 dark:border-neutral-800 transition-colors">
+    <section className="py-20 px-4 bg-neutral-50/60 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 border-t border-neutral-200/80 dark:border-neutral-800 transition-colors">
       <div className="max-w-6xl mx-auto">
         
         {/* Header Block */}
@@ -59,7 +59,7 @@ export default function WhyChooseUs({ currentLang }: WhyChooseUsProps) {
           <h2 className="text-3xl sm:text-4xl font-serif font-bold text-neutral-950 dark:text-white mb-4">
             {t.whyTitle}
           </h2>
-          <p className="text-neutral-600 dark:text-neutral-300 max-w-2xl mx-auto text-sm sm:text-base">
+          <p className="text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto text-sm sm:text-base">
             {t.whySubtitle}
           </p>
         </div>
@@ -69,15 +69,15 @@ export default function WhyChooseUs({ currentLang }: WhyChooseUsProps) {
           {benefits.map((benefit, index) => (
             <div
               key={index}
-              className="bg-white dark:bg-neutral-900 rounded-xl border border-neutral-200 dark:border-neutral-800 p-6 hover:border-amber-500/30 dark:hover:border-amber-500/40 transition-all duration-300 shadow-sm"
+              className="bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200/80 dark:border-neutral-800 p-6 hover:border-amber-500/40 dark:hover:border-amber-500/40 transition-all duration-300 shadow-xs hover:shadow-md"
             >
-              <div className="h-12 w-12 rounded bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/20 dark:border-amber-500/40 flex items-center justify-center mb-6">
+              <div className="h-12 w-12 rounded-xl bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/20 dark:border-amber-500/40 flex items-center justify-center mb-6">
                 {benefit.icon}
               </div>
               <h3 className="text-lg font-serif font-bold text-neutral-900 dark:text-white mb-2.5">
                 {benefit.title}
               </h3>
-              <p className="text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed">
+              <p className="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
                 {benefit.desc}
               </p>
             </div>

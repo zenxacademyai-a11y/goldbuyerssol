@@ -10,7 +10,7 @@ import { Language } from "../lib/translations.js";
 
 interface AboutPageProps {
   currentLang: Language;
-  setView: (view: "home" | "blog" | "admin" | "about" | "contact") => void;
+  setView: (view: "home" | "admin" | "about" | "contact") => void;
 }
 
 const aboutTranslations = {
@@ -204,7 +204,7 @@ export default function AboutPage({ currentLang, setView }: AboutPageProps) {
 
           {/* Visual Showcase (lg:col-span-5) */}
           <div className="lg:col-span-5">
-            <div className="relative p-2 bg-gradient-to-b from-neutral-100 to-neutral-200 dark:from-neutral-800 dark:to-neutral-900 border border-neutral-300 dark:border-neutral-700 rounded-3xl shadow-xl overflow-hidden group">
+            <div className="relative p-2 bg-gradient-to-b from-neutral-100 to-neutral-200 dark:from-neutral-850 dark:to-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-3xl shadow-xl overflow-hidden group">
               {/* Glass container inside */}
               <div className="bg-white dark:bg-neutral-900 rounded-2xl p-6 md:p-8 space-y-6">
                 <div className="flex justify-between items-center pb-4 border-b border-neutral-100 dark:border-neutral-800">
@@ -348,13 +348,13 @@ export default function AboutPage({ currentLang, setView }: AboutPageProps) {
                     if (el) el.scrollIntoView({ behavior: "smooth" });
                   }, 100);
                 }}
-                className="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-amber-600 to-yellow-500 hover:from-amber-500 hover:to-yellow-400 text-black font-extrabold uppercase tracking-widest text-xs rounded transition-all cursor-pointer shadow-lg shadow-amber-500/10"
+                className="w-full sm:w-auto px-6 py-3.5 bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 hover:from-amber-600 hover:to-amber-500 text-neutral-950 font-black uppercase tracking-widest text-xs rounded-xl transition-all cursor-pointer shadow-lg shadow-amber-500/20"
               >
                 {t.ctaBtn1}
               </button>
               <button
                 onClick={() => setView("contact")}
-                className="w-full sm:w-auto px-6 py-3 bg-neutral-800 hover:bg-neutral-700 border border-neutral-700 text-white font-extrabold uppercase tracking-widest text-xs rounded transition-all cursor-pointer"
+                className="w-full sm:w-auto px-6 py-3.5 bg-neutral-800 hover:bg-neutral-700 border border-neutral-700 text-white font-extrabold uppercase tracking-widest text-xs rounded-xl transition-all cursor-pointer"
               >
                 {t.ctaBtn2}
               </button>

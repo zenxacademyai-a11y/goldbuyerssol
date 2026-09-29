@@ -60,17 +60,33 @@ export default function Hero({ currentLang, todayRate24k, todayRate22k }: HeroPr
 
   const handleBookAppointment = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!name.trim() || !phone.trim()) return;
+
     setIsSubmitting(true);
-    setTimeout(() => {
-      const text = `Hi Gold Buyers Colombo,\nI would like to book a VIP appointment.\nName: ${name}\nPhone: ${phone}\nPreferred Date/Time: ${date}`;
-      const url = `https://wa.me/94718321321?text=${encodeURIComponent(text)}`;
-      window.open(url, "_blank");
-      setIsModalOpen(false);
-      setName("");
-      setPhone("");
-      setDate("");
-      setIsSubmitting(false);
-    }, 600);
+
+    fetch("/api/leads", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name,
+        phone,
+        message: `VIP Appointment Preferred Date/Time: ${date}`,
+        id: Date.now().toString(),
+        createdAt: new Date().toISOString(),
+        status: "new",
+        source: "hero_vip_appointment_modal"
+      }),
+    }).catch(() => {});
+
+    const text = `*VIP Gold Valuation Appointment — Gold Buyers Colombo*\n• *Name:* ${name}\n• *Phone:* ${phone}\n• *Preferred Date/Time:* ${date}\n\nPlease confirm my private appraisal appointment.`;
+    const url = `https://wa.me/94718321321?text=${encodeURIComponent(text)}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+    
+    setIsModalOpen(false);
+    setName("");
+    setPhone("");
+    setDate("");
+    setIsSubmitting(false);
   };
 
   return (
@@ -288,7 +304,7 @@ export default function Hero({ currentLang, todayRate24k, todayRate22k }: HeroPr
             </div>
 
             {/* Compact Review Card */}
-            <div className="mt-4 sm:mt-5 mb-2 sm:mb-4 w-full p-2.5 sm:p-3 rounded-xl bg-white/95 dark:bg-neutral-900/95 border border-neutral-200/90 dark:border-neutral-800 shadow-sm backdrop-blur-md flex items-center justify-between text-xs">
+            <div className="mt-4 sm:mt-5 mb-2 sm:mb-3 w-full p-2.5 sm:p-3 rounded-xl bg-white/95 dark:bg-neutral-900/95 border border-neutral-200/90 dark:border-neutral-800 shadow-sm backdrop-blur-md flex items-center justify-between text-xs">
               <div className="flex items-center gap-2">
                 <div className="flex -space-x-2 overflow-hidden items-center">
                   <img
@@ -331,28 +347,78 @@ export default function Hero({ currentLang, todayRate24k, todayRate22k }: HeroPr
               </span>
             </div>
 
+            {/* Live Gold Rates Board */}
+            {todayRate24k > 0 && todayRate22k > 0 && (
+              <div className="w-full p-3 sm:p-3.5 rounded-2xl bg-white/95 dark:bg-neutral-900/95 border border-amber-500/30 shadow-md backdrop-blur-md">
+                <div className="flex items-center justify-between pb-2 mb-2 border-b border-neutral-200/80 dark:border-neutral-800">
+                  <div className="flex items-center gap-1.5">
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
+                    <span className="text-[11px] font-mono font-bold tracking-wider uppercase text-amber-700 dark:text-amber-400">
+                      Live Colombo Cash Payout Rates
+                    </span>
+                  </div>
+                  <a 
+                    href="#live-rates" 
+                    className="text-[10px] font-mono font-bold text-amber-600 hover:text-amber-700 dark:hover:text-amber-300 no-underline"
+                  >
+                    View All →
+                  </a>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="p-2.5 rounded-xl bg-neutral-50 dark:bg-neutral-950/60 border border-neutral-200/80 dark:border-neutral-800">
+                    <span className="text-[9px] font-mono uppercase text-neutral-500 dark:text-neutral-400 block font-semibold">
+                      24K Pure Gold (1g)
+                    </span>
+                    <span className="text-base sm:text-lg font-mono font-black text-amber-600 dark:text-amber-400 block">
+                      LKR {Math.round(todayRate24k).toLocaleString()}
+                    </span>
+                    <span className="text-[9px] font-mono text-neutral-500 dark:text-neutral-400 block">
+                      Pavan (8g): LKR {Math.round(todayRate24k * 8).toLocaleString()}
+                    </span>
+                  </div>
+
+                  <div className="p-2.5 rounded-xl bg-amber-500/10 dark:bg-amber-950/30 border border-amber-500/30">
+                    <span className="text-[9px] font-mono uppercase text-amber-700 dark:text-amber-300 block font-bold">
+                      22K Sovereign (1g)
+                    </span>
+                    <span className="text-base sm:text-lg font-mono font-black text-amber-700 dark:text-yellow-300 block">
+                      LKR {Math.round(todayRate22k).toLocaleString()}
+                    </span>
+                    <span className="text-[9px] font-mono text-amber-800 dark:text-amber-400 block font-semibold">
+                      Pavan (8g): LKR {Math.round(todayRate22k * 8).toLocaleString()}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+
           </motion.div>
 
         </div>
 
       </div>
 
-      {/* Docked Horizontal Marquee Ticker with Generous Top Spacing */}
+      {/* Docked Horizontal Marquee Ticker with Dynamic Live Rates */}
       <div className="w-full py-2.5 sm:py-3 bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 text-neutral-950 font-black text-[11px] sm:text-xs tracking-wider uppercase overflow-hidden rounded-xl shadow-sm mt-8 sm:mt-12 relative z-10">
         <div className="flex w-max animate-marquee-left gap-8 items-center">
           {[
-            "⚡ NO.1 TRUSTED GOLD BUYER IN COLOMBO",
-            "★ HIGHEST DAILY MARKET PAYOUTS",
+            `⚡ TODAY 24K: LKR ${Math.round(todayRate24k || 25500).toLocaleString()}/G`,
+            `★ TODAY 22K (916): LKR ${Math.round(todayRate22k || 23380).toLocaleString()}/G`,
+            `⚡ 22K 1 PAVAN (8G): LKR ${Math.round((todayRate22k || 23380) * 8).toLocaleString()}`,
+            "★ NO.1 TRUSTED GOLD BUYER IN COLOMBO",
             "⚡ 100% XRF COMPUTERIZED PURITY TESTING",
             "★ INSTANT CASH & BANK TRANSFER",
             "⚡ ZERO ACID & DIRT DEDUCTIONS",
             "★ LICENSED SLGJA GOLD MERCHANT",
             "⚡ 50+ YEARS TRUSTED LEGACY",
             "★ 3,500+ SATISFIED CLIENTS",
-            "⚡ NO.1 TRUSTED GOLD BUYER IN COLOMBO",
-            "★ HIGHEST DAILY MARKET PAYOUTS",
-            "⚡ 100% XRF COMPUTERIZED PURITY TESTING",
-            "★ INSTANT CASH & BANK TRANSFER",
+            `⚡ TODAY 24K: LKR ${Math.round(todayRate24k || 25500).toLocaleString()}/G`,
+            `★ TODAY 22K (916): LKR ${Math.round(todayRate22k || 23380).toLocaleString()}/G`,
+            `⚡ 22K 1 PAVAN (8G): LKR ${Math.round((todayRate22k || 23380) * 8).toLocaleString()}`,
           ].map((item, idx) => (
             <span key={idx} className="flex items-center gap-2 whitespace-nowrap">
               {item}
@@ -377,28 +443,28 @@ export default function Hero({ currentLang, todayRate24k, todayRate22k }: HeroPr
               initial={{ opacity: 0, scale: 0.95, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 10 }}
-              className="bg-white rounded-3xl border border-amber-500/30 p-6 sm:p-8 w-full max-w-md relative z-10 shadow-2xl pointer-events-auto"
+              className="bg-white dark:bg-neutral-900 rounded-3xl border border-amber-500/30 dark:border-neutral-800 p-6 sm:p-8 w-full max-w-md relative z-10 shadow-2xl pointer-events-auto"
             >
               <button 
                 onClick={() => setIsModalOpen(false)} 
-                className="absolute top-5 right-5 p-1 rounded-full text-neutral-400 hover:text-neutral-800 hover:bg-neutral-100 transition-colors"
+                className="absolute top-5 right-5 p-1 rounded-full text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
               >
                 <X className="h-5 w-5" />
               </button>
 
               <div className="mb-6 text-left">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-[11px] font-bold uppercase tracking-wider mb-2">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-500/10 text-amber-800 dark:text-amber-400 text-[11px] font-bold uppercase tracking-wider mb-2">
                   <ShieldCheck className="h-3 w-3" /> Confidential VIP Desk
                 </div>
-                <h3 className="text-2xl font-black text-neutral-900">Book VIP Appointment</h3>
-                <p className="text-xs text-neutral-600 mt-1">
+                <h3 className="text-2xl font-black text-neutral-900 dark:text-white">Book VIP Appointment</h3>
+                <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">
                   Schedule your private gold valuation at our Colombo branch.
                 </p>
               </div>
 
               <form onSubmit={handleBookAppointment} className="space-y-4 text-left">
                 <div>
-                  <label className="block text-[11px] font-bold uppercase tracking-wider text-neutral-700 mb-1">
+                  <label className="block text-[11px] font-bold uppercase tracking-wider text-neutral-700 dark:text-neutral-300 mb-1">
                     Your Full Name *
                   </label>
                   <input 
@@ -406,13 +472,13 @@ export default function Hero({ currentLang, todayRate24k, todayRate22k }: HeroPr
                     value={name} 
                     onChange={(e) => setName(e.target.value)} 
                     required 
-                    className="w-full bg-neutral-50 border border-neutral-200 rounded-xl px-4 py-3 text-sm text-neutral-900 focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition-all" 
+                    className="w-full bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl px-4 py-3 text-sm text-neutral-900 dark:text-white focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition-all" 
                     placeholder="e.g. Ruwan Perera" 
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-bold uppercase tracking-wider text-neutral-700 mb-1">
+                  <label className="block text-[11px] font-bold uppercase tracking-wider text-neutral-700 dark:text-neutral-300 mb-1">
                     Phone / WhatsApp Number *
                   </label>
                   <input 
@@ -420,13 +486,13 @@ export default function Hero({ currentLang, todayRate24k, todayRate22k }: HeroPr
                     value={phone} 
                     onChange={(e) => setPhone(e.target.value)} 
                     required 
-                    className="w-full bg-neutral-50 border border-neutral-200 rounded-xl px-4 py-3 text-sm text-neutral-900 focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition-all font-mono" 
+                    className="w-full bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl px-4 py-3 text-sm text-neutral-900 dark:text-white focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition-all font-mono" 
                     placeholder="077 123 4567" 
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-bold uppercase tracking-wider text-neutral-700 mb-1">
+                  <label className="block text-[11px] font-bold uppercase tracking-wider text-neutral-700 dark:text-neutral-300 mb-1">
                     Preferred Date & Time *
                   </label>
                   <input 
@@ -434,7 +500,7 @@ export default function Hero({ currentLang, todayRate24k, todayRate22k }: HeroPr
                     value={date} 
                     onChange={(e) => setDate(e.target.value)} 
                     required 
-                    className="w-full bg-neutral-50 border border-neutral-200 rounded-xl px-4 py-3 text-sm text-neutral-900 focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition-all" 
+                    className="w-full bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl px-4 py-3 text-sm text-neutral-900 dark:text-white focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition-all" 
                     placeholder="e.g. Tomorrow at 10:30 AM" 
                   />
                 </div>

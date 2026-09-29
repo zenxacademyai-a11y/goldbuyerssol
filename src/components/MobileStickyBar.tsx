@@ -17,7 +17,7 @@ export default function MobileStickyBar({ currentLang, todayRate24k, todayRate22
   const t = translations[currentLang];
 
   return (
-    <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-neutral-950/95 border-t border-amber-500/30 px-3 py-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] z-40 shadow-2xl backdrop-blur-xl transition-colors duration-200">
+    <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-neutral-950/95 border-t border-amber-500/30 px-3 py-2 pb-[calc(0.5rem+env(safe-area-inset-bottom,0px))] pl-[max(0.75rem,env(safe-area-inset-left,0px))] pr-[max(0.75rem,env(safe-area-inset-right,0px))] z-40 shadow-2xl backdrop-blur-xl transition-colors duration-200">
       <div className="flex items-center justify-between gap-2 max-w-lg mx-auto">
         {/* Rate Ticker */}
         <div className="flex flex-col min-w-0 flex-1">

@@ -7,7 +7,6 @@ import React, { useState } from "react";
 import { motion } from "motion/react";
 import { MapPin, Phone, Clock, Car, Compass, CheckCircle2, MessageCircle, HelpCircle, Mail, ShieldAlert, Navigation, PhoneCall } from "lucide-react";
 import { Language, translations } from "../lib/translations.js";
-import { safeStorage } from "../lib/localDb.js";
 
 interface ContactPageProps {
   currentLang: Language;
@@ -70,57 +69,43 @@ export default function ContactPage({ currentLang }: ContactPageProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !phone) return;
+    if (!name.trim() || !phone.trim()) return;
 
     setIsSubmitting(true);
-    try {
-      const payload = {
+    
+    // Background log to database
+    fetch("/api/leads", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
         name,
         phone,
         email,
         message,
         id: Date.now().toString(),
         createdAt: new Date().toISOString(),
-        status: "new"
-      };
-      
-      let isOk = false;
-      try {
-        const response = await fetch("/api/leads", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
-        isOk = response.ok;
-      } catch (err) {
-        isOk = false;
-      }
+        status: "new",
+        source: "contact_page_form"
+      }),
+    }).catch(() => {});
 
-      if (!isOk) {
-        // Fallback for static hosting
-        const existing = JSON.parse(safeStorage.getItem("gbc_leads") || "[]");
-        existing.push(payload);
-        safeStorage.setItem("gbc_leads", JSON.stringify(existing));
-        isOk = true;
-      }
+    // Prepare WhatsApp inquiry message
+    const waText = 
+`*New Gold Valuation Request — Gold Buyers Colombo*
+• *Client Name:* ${name}
+• *Phone:* ${phone}
+${email ? `• *Email:* ${email}\n` : ""}${message ? `• *Gold Items / Details:* ${message}\n` : ""}
+I would like to lock in today's best cash payout valuation.`;
 
-      if (isOk) {
-        setIsSuccess(true);
-        setName("");
-        setPhone("");
-        setEmail("");
-        setMessage("");
-      } else {
-        alert("Submission failed. Please try again.");
-      }
-    } catch (e) {
-      console.error(e);
-      alert("An error occurred. Please call 0718 321 321 directly.");
-    } finally {
-      setIsSubmitting(false);
-    }
+    const whatsappUrl = `https://wa.me/94718321321?text=${encodeURIComponent(waText)}`;
+    
+    // Direct submission to WhatsApp
+    window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+
+    setIsSuccess(true);
+    setIsSubmitting(false);
   };
 
   return (
@@ -315,14 +300,17 @@ export default function ContactPage({ currentLang }: ContactPageProps) {
               </p>
 
               {isSuccess ? (
-                <div className="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-8 text-center animate-fade-in flex flex-col justify-center items-center">
-                  <CheckCircle2 className="h-12 w-12 text-amber-600 dark:text-amber-400 mb-4 animate-bounce" />
-                  <p className="text-sm text-amber-800 dark:text-amber-300 font-sans font-bold leading-relaxed">
-                    {g.submitSuccess}
+                <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-2xl p-8 text-center animate-fade-in flex flex-col justify-center items-center">
+                  <MessageCircle className="h-12 w-12 text-emerald-600 dark:text-emerald-400 mb-4 animate-bounce" />
+                  <h4 className="text-base font-bold text-neutral-900 dark:text-white mb-2">
+                    Inquiry Submitted Directly to WhatsApp
+                  </h4>
+                  <p className="text-xs text-neutral-600 dark:text-neutral-300 font-sans leading-relaxed">
+                    Your gold valuation request has been opened directly with our senior appraisal desk on WhatsApp (+94 718 321 321).
                   </p>
                   <button
                     onClick={() => setIsSuccess(false)}
-                    className="text-xs text-amber-700 dark:text-amber-400 underline uppercase tracking-wider mt-6 hover:text-amber-600 font-bold block"
+                    className="text-xs text-amber-700 dark:text-amber-400 underline uppercase tracking-wider mt-6 hover:text-amber-600 font-bold block cursor-pointer"
                   >
                     Submit Another Request
                   </button>
@@ -339,7 +327,7 @@ export default function ContactPage({ currentLang }: ContactPageProps) {
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         required
-                        className="w-full bg-white dark:bg-neutral-800 border border-neutral-250 dark:border-neutral-700 rounded-lg px-3 py-2.5 text-sm text-neutral-800 dark:text-neutral-100 focus:outline-none focus:border-amber-500 shadow-sm"
+                        className="w-full bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg px-3 py-2.5 text-sm text-neutral-900 dark:text-neutral-100 focus:outline-none focus:border-amber-500 shadow-xs"
                       />
                     </div>
                     
@@ -352,7 +340,7 @@ export default function ContactPage({ currentLang }: ContactPageProps) {
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                         required
-                        className="w-full bg-white dark:bg-neutral-800 border border-neutral-250 dark:border-neutral-700 rounded-lg px-3 py-2.5 text-sm text-neutral-800 dark:text-neutral-100 font-mono focus:outline-none focus:border-amber-500 shadow-sm"
+                        className="w-full bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg px-3 py-2.5 text-sm text-neutral-900 dark:text-neutral-100 font-mono focus:outline-none focus:border-amber-500 shadow-xs"
                       />
                     </div>
                   </div>
@@ -365,7 +353,7 @@ export default function ContactPage({ currentLang }: ContactPageProps) {
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full bg-white dark:bg-neutral-800 border border-neutral-250 dark:border-neutral-700 rounded-lg px-3 py-2.5 text-sm text-neutral-800 dark:text-neutral-100 focus:outline-none focus:border-amber-500 shadow-sm"
+                      className="w-full bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg px-3 py-2.5 text-sm text-neutral-900 dark:text-neutral-100 focus:outline-none focus:border-amber-500 shadow-xs"
                     />
                   </div>
 
@@ -378,16 +366,17 @@ export default function ContactPage({ currentLang }: ContactPageProps) {
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
                       placeholder="e.g., 22k Gold necklace weight approx 16g (2 pavans)"
-                      className="w-full bg-white dark:bg-neutral-800 border border-neutral-250 dark:border-neutral-700 rounded-lg px-3 py-2.5 text-sm text-neutral-800 dark:text-neutral-100 focus:outline-none focus:border-amber-500 shadow-sm"
+                      className="w-full bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg px-3 py-2.5 text-sm text-neutral-900 dark:text-neutral-100 focus:outline-none focus:border-amber-500 shadow-xs"
                     ></textarea>
                   </div>
 
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full py-3.5 bg-gradient-to-r from-amber-600 to-yellow-500 hover:from-amber-500 hover:to-yellow-400 text-black font-extrabold uppercase tracking-widest text-xs rounded-lg transition-all transform active:scale-[0.98] shadow-md shadow-amber-500/10 cursor-pointer"
+                    className="w-full py-3.5 bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-600 hover:from-emerald-500 hover:to-emerald-400 text-white font-extrabold uppercase tracking-wider text-xs rounded-xl transition-all transform active:scale-[0.98] shadow-md shadow-emerald-500/20 cursor-pointer flex items-center justify-center gap-2"
                   >
-                    {isSubmitting ? t.calculating : "Submit Valuation Request"}
+                    <MessageCircle className="h-4 w-4 shrink-0 fill-white" />
+                    <span>{isSubmitting ? "Opening WhatsApp..." : "Submit to WhatsApp (0718 321 321)"}</span>
                   </button>
                 </form>
               )}
@@ -409,9 +398,9 @@ export default function ContactPage({ currentLang }: ContactPageProps) {
                   href="https://maps.google.com/?q=Gold+Buyers+Colombo,+68+S.+De+S.+Jayasinghe+Mawatha,+Nugegoda+10250"
                   target="_blank"
                   rel="noreferrer"
-                  className="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded-xl text-xs font-mono font-bold shadow-sm flex items-center gap-2 transition-all shrink-0 no-underline"
+                  className="px-4 py-2 bg-amber-500/10 hover:bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-500/30 rounded-xl text-xs font-mono font-bold shadow-2xs flex items-center gap-2 transition-all shrink-0 no-underline"
                 >
-                  <Navigation className="h-4 w-4" />
+                  <Navigation className="h-4 w-4 text-amber-600 dark:text-amber-400" />
                   <span>Open in Google Maps</span>
                 </a>
               </div>

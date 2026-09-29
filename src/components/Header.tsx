@@ -16,13 +16,14 @@ import {
   Sparkles,
   MapPin,
   Calculator,
-  TrendingUp,
   HelpCircle,
   Building2,
   Info,
   MessageCircle,
   Clock,
-  ShieldCheck
+  ShieldCheck,
+  ExternalLink,
+  BookOpen
 } from "lucide-react";
 import { Language, translations } from "../lib/translations.js";
 import { ThemeToggle } from "./ThemeToggle.js";
@@ -31,8 +32,8 @@ import InstallWebAppButton from "./InstallWebAppButton.js";
 interface HeaderProps {
   currentLang: Language;
   setLang: (lang: Language) => void;
-  activeView: "home" | "blog" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "services";
-  setView: (view: "home" | "blog" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "services") => void;
+  activeView: "home" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "services" | "sitemap";
+  setView: (view: "home" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "services" | "sitemap") => void;
   todayRate24k: number;
   todayRate22k: number;
   showAdmin?: boolean;
@@ -84,7 +85,7 @@ export default function Header({
     };
   }, [mobileMenuOpen]);
 
-  const handleNav = (view: "home" | "blog" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "services") => {
+  const handleNav = (view: "home" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "services") => {
     setView(view);
     setMobileMenuOpen(false);
     setMoreMenuOpen(false);
@@ -115,10 +116,10 @@ export default function Header({
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 dark:bg-neutral-950/95 border-b border-neutral-200/90 dark:border-neutral-800/90 backdrop-blur-xl shadow-xs transition-colors duration-200">
+    <header className="sticky top-0 z-50 bg-white/95 dark:bg-neutral-950/95 border-b border-neutral-200/90 dark:border-neutral-800/90 backdrop-blur-xl shadow-xs transition-colors duration-200 pt-[env(safe-area-inset-top,0px)]">
       
       {/* Main Responsive Navbar */}
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pl-[max(0.75rem,env(safe-area-inset-left,0px))] pr-[max(0.75rem,env(safe-area-inset-right,0px))]">
         <div className="flex justify-between h-16 sm:h-20 items-center gap-2 sm:gap-4">
           
           {/* Brand Logo & Name */}
@@ -182,18 +183,6 @@ export default function Header({
             </a>
 
             <a
-              href="/rates"
-              onClick={(e) => { e.preventDefault(); handleNav("rates"); }}
-              className={`px-2.5 py-2 rounded-xl text-xs xl:text-sm font-bold transition-all duration-150 whitespace-nowrap ${
-                activeView === "rates" 
-                  ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20 shadow-2xs" 
-                  : "text-neutral-700 dark:text-neutral-200 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-neutral-100 dark:hover:bg-neutral-900"
-              }`}
-            >
-              {t.rates}
-            </a>
-
-            <a
               href="/calculator"
               onClick={(e) => { e.preventDefault(); handleNav("calculator"); }}
               className={`px-2.5 py-2 rounded-xl text-xs xl:text-sm font-bold transition-all duration-150 whitespace-nowrap ${
@@ -217,6 +206,16 @@ export default function Header({
               {t.branches}
             </a>
 
+            <a
+              href="https://goldbuyerscolombo.com/blog/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-2.5 py-2 rounded-xl text-xs xl:text-sm font-bold transition-all duration-150 whitespace-nowrap text-neutral-700 dark:text-neutral-200 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-neutral-100 dark:hover:bg-neutral-900 flex items-center gap-1"
+            >
+              <span>Blogs</span>
+              <ExternalLink className="h-3 w-3 opacity-60 shrink-0" />
+            </a>
+
             {/* "More" Dropdown Menu */}
             <div 
               ref={moreMenuRef}
@@ -226,7 +225,7 @@ export default function Header({
                 type="button"
                 onClick={() => setMoreMenuOpen(!moreMenuOpen)}
                 className={`px-2.5 py-2 rounded-xl text-xs xl:text-sm font-bold transition-all duration-150 flex items-center gap-1 focus:outline-none cursor-pointer whitespace-nowrap ${
-                  ["about", "blog", "contact", "admin"].includes(activeView)
+                  ["about", "contact", "admin"].includes(activeView)
                     ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20 shadow-2xs"
                     : "text-neutral-700 dark:text-neutral-200 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-neutral-100 dark:hover:bg-neutral-900"
                 }`}
@@ -251,22 +250,6 @@ export default function Header({
                   >
                     <Info className="h-4 w-4 text-amber-600 shrink-0" />
                     <span>{t.about}</span>
-                  </a>
-
-                  <a
-                    href="/blog"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleNav("blog");
-                    }}
-                    className={`w-full text-left px-4 py-2.5 text-xs font-bold transition-colors flex items-center gap-2.5 ${
-                      activeView === "blog"
-                        ? "bg-amber-500/10 text-amber-700 dark:text-amber-400"
-                        : "text-neutral-800 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-amber-600 dark:hover:text-amber-400"
-                    }`}
-                  >
-                    <FileText className="h-4 w-4 text-amber-600 shrink-0" />
-                    <span>{t.blog}</span>
                   </a>
 
                   <a
@@ -388,8 +371,8 @@ export default function Header({
 
       {/* Mobile Menu Full Drawer with Backdrop */}
       {mobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 z-40 bg-neutral-950/60 backdrop-blur-sm pt-[calc(4rem+28px)]">
-          <div className="bg-white dark:bg-neutral-950 border-b border-neutral-200 dark:border-neutral-800 shadow-2xl px-5 py-6 flex flex-col gap-3 max-h-[calc(100vh-5rem)] overflow-y-auto animate-in slide-in-from-top-4 duration-200">
+        <div className="md:hidden fixed inset-0 z-40 bg-neutral-950/60 backdrop-blur-sm pt-[calc(4rem+env(safe-area-inset-top,0px))]">
+          <div className="bg-white dark:bg-neutral-950 border-b border-neutral-200 dark:border-neutral-800 shadow-2xl px-5 py-6 pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))] flex flex-col gap-3 max-h-[calc(100vh-4rem-env(safe-area-inset-top,0px))] overflow-y-auto animate-in slide-in-from-top-4 duration-200">
             
             {/* Header Language Picker inside Drawer */}
             <div className="flex items-center justify-between pb-3 border-b border-neutral-200 dark:border-neutral-800">
@@ -441,19 +424,6 @@ export default function Header({
               </a>
 
               <a
-                href="/rates"
-                onClick={(e) => { e.preventDefault(); handleNav("rates"); }}
-                className={`flex items-center justify-between py-3 px-3.5 rounded-xl text-sm font-bold transition-colors ${
-                  activeView === "rates" 
-                    ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20" 
-                    : "text-neutral-900 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-900"
-                }`}
-              >
-                <span>{t.rates}</span>
-                <TrendingUp className="h-4 w-4 text-amber-500" />
-              </a>
-
-              <a
                 href="/calculator"
                 onClick={(e) => { e.preventDefault(); handleNav("calculator"); }}
                 className={`flex items-center justify-between py-3 px-3.5 rounded-xl text-sm font-bold transition-colors ${
@@ -480,6 +450,20 @@ export default function Header({
               </a>
 
               <a
+                href="https://goldbuyerscolombo.com/blog/"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center justify-between py-3 px-3.5 rounded-xl text-sm font-bold transition-colors text-neutral-900 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-900"
+              >
+                <div className="flex items-center gap-2">
+                  <BookOpen className="h-4 w-4 text-amber-500" />
+                  <span>Blogs</span>
+                </div>
+                <ExternalLink className="h-4 w-4 text-neutral-400" />
+              </a>
+
+              <a
                 href="/about"
                 onClick={(e) => { e.preventDefault(); handleNav("about"); }}
                 className={`flex items-center justify-between py-3 px-3.5 rounded-xl text-sm font-bold transition-colors ${
@@ -490,19 +474,6 @@ export default function Header({
               >
                 <span>{t.about}</span>
                 <Info className="h-4 w-4 text-amber-500" />
-              </a>
-
-              <a
-                href="/blog"
-                onClick={(e) => { e.preventDefault(); handleNav("blog"); }}
-                className={`flex items-center justify-between py-3 px-3.5 rounded-xl text-sm font-bold transition-colors ${
-                  activeView === "blog" 
-                    ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20" 
-                    : "text-neutral-900 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-900"
-                }`}
-              >
-                <span>{t.blog}</span>
-                <FileText className="h-4 w-4 text-amber-500" />
               </a>
 
               <a

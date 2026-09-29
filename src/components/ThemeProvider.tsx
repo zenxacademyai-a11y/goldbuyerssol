@@ -1,12 +1,10 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { safeStorage } from "../lib/localDb.js";
 
 type Theme = "dark" | "light";
 
 type ThemeProviderProps = {
   children: React.ReactNode;
   defaultTheme?: Theme;
-  storageKey?: string;
 };
 
 type ThemeProviderState = {
@@ -24,12 +22,9 @@ const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
 export function ThemeProvider({
   children,
   defaultTheme = "light",
-  storageKey = "vite-ui-theme",
   ...props
 }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>(
-    () => (safeStorage.getItem(storageKey) as Theme) || defaultTheme
-  );
+  const [theme, setTheme] = useState<Theme>(defaultTheme);
 
   useEffect(() => {
     if (typeof window !== "undefined" && window.document) {
@@ -42,7 +37,6 @@ export function ThemeProvider({
   const value = {
     theme,
     setTheme: (newTheme: Theme) => {
-      safeStorage.setItem(storageKey, newTheme);
       setTheme(newTheme);
     },
   };

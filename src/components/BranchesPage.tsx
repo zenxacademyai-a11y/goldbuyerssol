@@ -32,8 +32,6 @@ import {
   Filter
 } from "lucide-react";
 import { Language } from "../lib/translations.js";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
 
 interface BranchesPageProps {
   currentLang: Language;
@@ -658,7 +656,7 @@ export const branchesData: Branch[] = [
     },
     landmark: "Galle Road, Near Savoy Cinema Wellawatte",
     hours: "9:00 AM - 6:00 PM (Mon-Sat)",
-    facilities: ["Pawned Ticket Redemption", "XRF Assaying"],
+    facilities: ["Instant Cash Settlement", "XRF Assaying"],
     lat: 6.8712,
     lng: 79.8610,
     badges: [
@@ -816,13 +814,13 @@ export function BranchCarousel({ branchName, images }: { branchName: string; ima
   const currentImg = images[currentIndex] || images[0];
 
   return (
-    <div className="bg-neutral-950 border border-neutral-800 rounded-3xl p-5 sm:p-7 space-y-4 shadow-xl">
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-neutral-800 pb-3">
+    <div className="bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 rounded-3xl p-5 sm:p-7 space-y-4 shadow-xs">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-neutral-200/80 dark:border-neutral-800 pb-3">
         <div className="flex items-center gap-2">
           <Image className="h-5 w-5 text-amber-500" />
           <div>
-            <h3 className="text-base font-serif font-bold text-white">Branch Gallery & Security Showcase</h3>
-            <p className="text-xs text-neutral-400">Explore interior lounge, XRF testing equipment, and security features</p>
+            <h3 className="text-base font-serif font-bold text-neutral-900 dark:text-white">Branch Gallery & Security Showcase</h3>
+            <p className="text-xs text-neutral-600 dark:text-neutral-400">Explore interior lounge, XRF testing equipment, and security features</p>
           </div>
         </div>
 
@@ -1003,73 +1001,91 @@ export default function BranchesPage({
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const mapElementId = activeBranch ? "single-branch-map" : "colombo-branches-map";
-    const mapContainer = document.getElementById(mapElementId);
-    if (!mapContainer) return;
+    let isMounted = true;
 
-    if (mapRef.current) {
-      mapRef.current.remove();
-      mapRef.current = null;
-    }
+    (async () => {
+      try {
+        const leafletModule = await import("leaflet");
+        const L = (leafletModule as any).default || leafletModule;
+        if (!isMounted) return;
 
-    delete (mapContainer as any)._leaflet_id;
+        const mapElementId = activeBranch ? "single-branch-map" : "colombo-branches-map";
+        const mapContainer = document.getElementById(mapElementId);
+        if (!mapContainer) return;
 
-    const centerLat = activeBranch ? activeBranch.lat : 6.8900;
-    const centerLng = activeBranch ? activeBranch.lng : 79.8850;
-    const zoomLevel = activeBranch ? 15 : 12;
+        if (mapRef.current) {
+          mapRef.current.remove();
+          mapRef.current = null;
+        }
 
-    const map = L.map(mapElementId, {
-      center: [centerLat, centerLng],
-      zoom: zoomLevel,
-      scrollWheelZoom: false,
-    });
+        delete (mapContainer as any)._leaflet_id;
 
-    mapRef.current = map;
+        const centerLat = activeBranch ? activeBranch.lat : 6.8900;
+        const centerLng = activeBranch ? activeBranch.lng : 79.8850;
+        const zoomLevel = activeBranch ? 15 : 12;
 
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
-      attribution: '&copy; <a href="https://carto.com/">CARTO</a>',
-      subdomains: "abcd",
-      maxZoom: 20
-    }).addTo(map);
+        const map = L.map(mapElementId, {
+          center: [centerLat, centerLng],
+          zoom: zoomLevel,
+          scrollWheelZoom: false,
+        });
 
-    const createCustomIcon = (isFlagship: boolean) => {
-      return L.divIcon({
-        html: `
-          <div class="relative flex items-center justify-center">
-            <div class="absolute w-8 h-8 ${isFlagship ? 'bg-amber-500/30' : 'bg-neutral-500/20'} rounded-full animate-ping"></div>
-            <div class="relative w-5 h-5 ${isFlagship ? 'bg-amber-600 border-2 border-white' : 'bg-neutral-700 border-2 border-white'} rounded-full flex items-center justify-center shadow-md">
-              <div class="w-1.5 h-1.5 bg-white rounded-full"></div>
+        if (!isMounted) {
+          map.remove();
+          return;
+        }
+
+        mapRef.current = map;
+
+        L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+          attribution: '&copy; <a href="https://carto.com/">CARTO</a>',
+          subdomains: "abcd",
+          maxZoom: 20
+        }).addTo(map);
+
+        const createCustomIcon = (isFlagship: boolean) => {
+          return L.divIcon({
+            html: `
+              <div class="relative flex items-center justify-center">
+                <div class="absolute w-8 h-8 ${isFlagship ? 'bg-amber-500/30' : 'bg-neutral-500/20'} rounded-full animate-ping"></div>
+                <div class="relative w-5 h-5 ${isFlagship ? 'bg-amber-600 border-2 border-white' : 'bg-neutral-700 border-2 border-white'} rounded-full flex items-center justify-center shadow-md">
+                  <div class="w-1.5 h-1.5 bg-white rounded-full"></div>
+                </div>
+              </div>
+            `,
+            className: "custom-leaflet-pin",
+            iconSize: [24, 24],
+            iconAnchor: [12, 12]
+          });
+        };
+
+        const targetBranches = activeBranch ? [activeBranch] : branchesData;
+
+        targetBranches.forEach((b) => {
+          const marker = L.marker([b.lat, b.lng], {
+            icon: createCustomIcon(b.isFlagship)
+          }).addTo(map);
+
+          const popupHtml = `
+            <div style="font-family: sans-serif; padding: 4px; min-width: 200px;">
+              <div style="font-weight: 800; font-size: 13px; color: #171717; margin-bottom: 4px;">${b.name[currentLang]}</div>
+              <div style="font-size: 11px; color: #525252; margin-bottom: 8px; line-height: 1.4;">${b.address[currentLang]}</div>
+              <a href="https://www.google.com/maps/search/?api=1&query=${b.lat},${b.lng}" target="_blank" style="display: block; text-align: center; background: #d97706; color: white; padding: 6px 10px; border-radius: 6px; font-weight: bold; font-size: 10px; text-decoration: none;">Open Directions</a>
             </div>
-          </div>
-        `,
-        className: "custom-leaflet-pin",
-        iconSize: [24, 24],
-        iconAnchor: [12, 12]
-      });
-    };
+          `;
 
-    const targetBranches = activeBranch ? [activeBranch] : branchesData;
-
-    targetBranches.forEach((b) => {
-      const marker = L.marker([b.lat, b.lng], {
-        icon: createCustomIcon(b.isFlagship)
-      }).addTo(map);
-
-      const popupHtml = `
-        <div style="font-family: sans-serif; padding: 4px; min-width: 200px;">
-          <div style="font-weight: 800; font-size: 13px; color: #171717; margin-bottom: 4px;">${b.name[currentLang]}</div>
-          <div style="font-size: 11px; color: #525252; margin-bottom: 8px; line-height: 1.4;">${b.address[currentLang]}</div>
-          <a href="https://www.google.com/maps/search/?api=1&query=${b.lat},${b.lng}" target="_blank" style="display: block; text-align: center; background: #d97706; color: white; padding: 6px 10px; border-radius: 6px; font-weight: bold; font-size: 10px; text-decoration: none;">Open Directions</a>
-        </div>
-      `;
-
-      marker.bindPopup(popupHtml);
-      if (activeBranch) {
-        marker.openPopup();
+          marker.bindPopup(popupHtml);
+          if (activeBranch) {
+            marker.openPopup();
+          }
+        });
+      } catch (err) {
+        console.warn("Leaflet map load warning:", err);
       }
-    });
+    })();
 
     return () => {
+      isMounted = false;
       if (mapRef.current) {
         mapRef.current.remove();
         mapRef.current = null;
@@ -1078,31 +1094,31 @@ export default function BranchesPage({
   }, [activeBranch, currentLang, selectedBranchId]);
 
   return (
-    <div className="pt-24 pb-16 bg-neutral-900 text-white min-h-screen">
+    <div className="pt-24 pb-16 bg-neutral-50/50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 min-h-screen transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Navigation Breadcrumb */}
-        <div className="flex items-center justify-between gap-3 mb-8 pb-4 border-b border-neutral-800">
-          <div className="flex items-center gap-2 text-xs text-neutral-400">
+        <div className="flex items-center justify-between gap-3 mb-8 pb-4 border-b border-neutral-200 dark:border-neutral-800">
+          <div className="flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400">
             <button
               type="button"
               onClick={() => { if (setView) setView("home"); }}
-              className="hover:text-amber-400 transition-colors cursor-pointer"
+              className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors cursor-pointer"
             >
               Home
             </button>
-            <ChevronRight className="h-3 w-3 text-neutral-600" />
+            <ChevronRight className="h-3 w-3 text-neutral-400 dark:text-neutral-600" />
             <button
               type="button"
               onClick={() => handleBranchSelect(null)}
-              className={`hover:text-amber-400 transition-colors cursor-pointer ${!activeBranch ? "text-amber-400 font-bold" : ""}`}
+              className={`hover:text-amber-600 dark:hover:text-amber-400 transition-colors cursor-pointer ${!activeBranch ? "text-amber-700 dark:text-amber-400 font-bold" : ""}`}
             >
               16 Branches
             </button>
             {activeBranch && (
               <>
-                <ChevronRight className="h-3 w-3 text-neutral-600" />
-                <span className="text-amber-400 font-bold truncate max-w-[200px] sm:max-w-xs">{activeBranch.name[currentLang]}</span>
+                <ChevronRight className="h-3 w-3 text-neutral-400 dark:text-neutral-600" />
+                <span className="text-amber-700 dark:text-amber-400 font-bold truncate max-w-[200px] sm:max-w-xs">{activeBranch.name[currentLang]}</span>
               </>
             )}
           </div>
@@ -1110,7 +1126,7 @@ export default function BranchesPage({
           {activeBranch && (
             <button
               onClick={() => handleBranchSelect(null)}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-xs font-bold text-neutral-200 transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white dark:bg-neutral-800 hover:bg-neutral-100 dark:hover:bg-neutral-700 text-xs font-bold text-neutral-700 dark:text-neutral-200 border border-neutral-200 dark:border-neutral-700 transition-colors cursor-pointer shadow-xs"
             >
               <ArrowLeft className="h-3.5 w-3.5 text-amber-500" />
               <span>All 16 Branches</span>
@@ -1123,17 +1139,17 @@ export default function BranchesPage({
           /* INDIVIDUAL BRANCH LOCATION PAGE */
           <div className="space-y-10 animate-in fade-in duration-300">
             {/* Location Hero Card */}
-            <div className="bg-neutral-950 border border-neutral-800 rounded-3xl p-6 sm:p-10 relative overflow-hidden">
+            <div className="bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 rounded-3xl p-6 sm:p-10 relative overflow-hidden shadow-xs">
               <div className="absolute top-0 right-0 -mt-10 -mr-10 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
                 <div className="space-y-4 max-w-2xl">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-400 text-xs font-bold uppercase tracking-wider">
-                    <Sparkles className="h-3.5 w-3.5 text-amber-400" />
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-400 text-xs font-bold uppercase tracking-wider">
+                    <Sparkles className="h-3.5 w-3.5 text-amber-500" />
                     <span>{activeBranch.isFlagship ? "Flagship Appraisal Lounge" : "Express Location Desk"}</span>
                   </div>
 
-                  <h1 className="text-2xl sm:text-4xl font-serif font-black text-white leading-tight">
+                  <h1 className="text-2xl sm:text-4xl font-serif font-black text-neutral-900 dark:text-white leading-tight">
                     {activeBranch.name[currentLang]}
                   </h1>
 
@@ -1142,19 +1158,19 @@ export default function BranchesPage({
                     <BranchBadgePills badges={activeBranch.badges} currentLang={currentLang} branch={activeBranch} />
                   </div>
 
-                  <div className="flex items-start gap-2.5 text-neutral-300 text-sm">
+                  <div className="flex items-start gap-2.5 text-neutral-600 dark:text-neutral-300 text-sm">
                     <MapPin className="h-5 w-5 text-amber-500 shrink-0 mt-0.5" />
                     <span>{activeBranch.address[currentLang]}</span>
                   </div>
 
-                  <div className="flex flex-wrap items-center gap-4 text-xs text-neutral-400 pt-2">
-                    <div className="flex items-center gap-1.5 bg-neutral-900 px-3 py-1.5 rounded-lg border border-neutral-800">
-                      <Clock className="h-4 w-4 text-amber-400" />
+                  <div className="flex flex-wrap items-center gap-4 text-xs text-neutral-500 dark:text-neutral-400 pt-2">
+                    <div className="flex items-center gap-1.5 bg-neutral-50 dark:bg-neutral-900 px-3 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300">
+                      <Clock className="h-4 w-4 text-amber-600 dark:text-amber-400" />
                       <span>{activeBranch.hours || "8:30 AM - 6:00 PM (Mon-Sat)"}</span>
                     </div>
 
-                    <div className="flex items-center gap-1.5 bg-neutral-900 px-3 py-1.5 rounded-lg border border-neutral-800">
-                      <Lock className="h-4 w-4 text-emerald-400" />
+                    <div className="flex items-center gap-1.5 bg-neutral-50 dark:bg-neutral-900 px-3 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300">
+                      <Lock className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                       <span>{activeBranch.status[currentLang]}</span>
                     </div>
                   </div>
@@ -1163,7 +1179,7 @@ export default function BranchesPage({
                   <div className="flex flex-wrap items-center gap-3 pt-4">
                     <a
                       href={`tel:${activeBranch.phone}`}
-                      className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-neutral-950 font-black text-xs sm:text-sm transition-all shadow-lg shadow-amber-500/20 no-underline shrink-0"
+                      className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-neutral-950 font-black text-xs sm:text-sm transition-all shadow-md shadow-amber-500/20 no-underline shrink-0"
                     >
                       <PhoneCall className="h-4 w-4" />
                       <span>Click to Call {activeBranch.phone}</span>
@@ -1183,22 +1199,22 @@ export default function BranchesPage({
                       href={`https://www.google.com/maps/search/?api=1&query=${activeBranch.lat},${activeBranch.lng}`}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-neutral-100 font-bold text-xs sm:text-sm transition-all no-underline shrink-0"
+                      className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-100 border border-neutral-200 dark:border-neutral-700 font-bold text-xs sm:text-sm transition-all no-underline shrink-0"
                     >
-                      <Navigation className="h-4 w-4 text-amber-400" />
+                      <Navigation className="h-4 w-4 text-amber-600 dark:text-amber-400" />
                       <span>Google Maps Directions</span>
                     </a>
                   </div>
                 </div>
 
                 {/* Quick Info Box */}
-                <div className="bg-neutral-900/90 border border-neutral-800 rounded-2xl p-6 space-y-4 lg:w-80 shrink-0">
-                  <h3 className="text-sm font-serif font-bold text-amber-400 flex items-center gap-2">
+                <div className="bg-neutral-50 dark:bg-neutral-900/90 border border-neutral-200/80 dark:border-neutral-800 rounded-2xl p-6 space-y-4 lg:w-80 shrink-0">
+                  <h3 className="text-sm font-serif font-bold text-amber-700 dark:text-amber-400 flex items-center gap-2">
                     <ShieldCheck className="h-4 w-4" />
                     <span>Branch Security & Facilities</span>
                   </h3>
 
-                  <ul className="space-y-2.5 text-xs text-neutral-300">
+                  <ul className="space-y-2.5 text-xs text-neutral-700 dark:text-neutral-300">
                     {(activeBranch.facilities || [
                       "Computerized XRF Assaying",
                       "Certified 0.001g Scale",
@@ -1206,14 +1222,14 @@ export default function BranchesPage({
                       "Instant Cash Counter"
                     ]).map((fac, idx) => (
                       <li key={idx} className="flex items-center gap-2">
-                        <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
+                        <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
                         <span>{fac}</span>
                       </li>
                     ))}
                   </ul>
 
-                  <div className="pt-3 border-t border-neutral-800 text-[11px] text-neutral-400">
-                    <span className="font-bold text-neutral-200">Landmark: </span>
+                  <div className="pt-3 border-t border-neutral-200 dark:border-neutral-800 text-[11px] text-neutral-500 dark:text-neutral-400">
+                    <span className="font-bold text-neutral-800 dark:text-neutral-200">Landmark: </span>
                     <span>{activeBranch.landmark || "Located in Colombo commercial zone"}</span>
                   </div>
                 </div>
@@ -1227,26 +1243,26 @@ export default function BranchesPage({
             />
 
             {/* Dedicated Interactive Map */}
-            <div className="bg-neutral-950 border border-neutral-800 rounded-2xl p-4 sm:p-6 space-y-4">
+            <div className="bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 rounded-2xl p-4 sm:p-6 space-y-4 shadow-xs">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <MapPin className="h-5 w-5 text-amber-500" />
-                  <h3 className="text-base font-serif font-bold text-white">Branch Location Map</h3>
+                  <h3 className="text-base font-serif font-bold text-neutral-900 dark:text-white">Branch Location Map</h3>
                 </div>
-                <span className="text-xs text-neutral-400 font-mono">Lat: {activeBranch.lat} | Lng: {activeBranch.lng}</span>
+                <span className="text-xs text-neutral-500 dark:text-neutral-400 font-mono">Lat: {activeBranch.lat} | Lng: {activeBranch.lng}</span>
               </div>
 
-              <div id="single-branch-map" className="w-full h-80 rounded-xl overflow-hidden border border-neutral-800 z-10"></div>
+              <div id="single-branch-map" className="w-full h-80 rounded-xl overflow-hidden border border-neutral-200 dark:border-neutral-800 z-10"></div>
             </div>
 
             {/* Other Branches Selector Grid */}
-            <div className="pt-8 border-t border-neutral-800">
+            <div className="pt-8 border-t border-neutral-200 dark:border-neutral-800">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-lg font-serif font-bold text-white">Explore Other GBC Branches in Colombo</h3>
+                <h3 className="text-lg font-serif font-bold text-neutral-900 dark:text-white">Explore Other GBC Branches in Colombo</h3>
                 <button
                   type="button"
                   onClick={() => handleBranchSelect(null)}
-                  className="text-xs text-amber-400 font-bold hover:underline"
+                  className="text-xs text-amber-600 dark:text-amber-400 font-bold hover:underline"
                 >
                   View All 16 Branches &rarr;
                 </button>
@@ -1257,24 +1273,24 @@ export default function BranchesPage({
                   <div
                     key={otherBranch.id}
                     onClick={() => handleBranchSelect(otherBranch.id)}
-                    className="p-4 rounded-xl bg-neutral-950 border border-neutral-800 hover:border-amber-500/40 transition-all cursor-pointer group flex flex-col justify-between"
+                    className="p-4 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 hover:border-amber-500/40 transition-all cursor-pointer group flex flex-col justify-between shadow-xs hover:shadow-md"
                   >
                     <div>
                       <div className="flex items-center gap-2 mb-2">
                         <div className="h-2 w-2 rounded-full bg-amber-500"></div>
-                        <span className="text-[10px] font-mono font-bold text-amber-400 uppercase">
+                        <span className="text-[10px] font-mono font-bold text-amber-700 dark:text-amber-400 uppercase">
                           {otherBranch.isFlagship ? "Flagship" : "Express"}
                         </span>
                       </div>
-                      <h4 className="text-xs sm:text-sm font-bold text-white group-hover:text-amber-300 transition-colors">
+                      <h4 className="text-xs sm:text-sm font-bold text-neutral-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-300 transition-colors">
                         {otherBranch.name[currentLang]}
                       </h4>
-                      <p className="text-[11px] text-neutral-400 line-clamp-2 mt-1">
+                      <p className="text-[11px] text-neutral-600 dark:text-neutral-400 line-clamp-2 mt-1">
                         {otherBranch.address[currentLang]}
                       </p>
                     </div>
 
-                    <div className="mt-4 pt-3 border-t border-neutral-800/60 flex items-center justify-between text-xs font-bold text-amber-400">
+                    <div className="mt-4 pt-3 border-t border-neutral-100 dark:border-neutral-800/60 flex items-center justify-between text-xs font-bold text-amber-600 dark:text-amber-400">
                       <span>View Location</span>
                       <ChevronRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
                     </div>
@@ -1288,13 +1304,13 @@ export default function BranchesPage({
           <div className="space-y-12 animate-in fade-in duration-300">
             {/* Master Header */}
             <div className="text-center max-w-3xl mx-auto space-y-4">
-              <span className="text-xs uppercase font-mono tracking-widest text-amber-500 font-semibold block">
+              <span className="text-xs uppercase font-mono tracking-widest text-amber-700 dark:text-amber-400 font-semibold block">
                 Colombo Branch Network
               </span>
-              <h1 className="text-3xl sm:text-5xl font-serif font-black text-white leading-tight">
+              <h1 className="text-3xl sm:text-5xl font-serif font-black text-neutral-900 dark:text-white leading-tight">
                 Our 16 Secure Colombo Locations
               </h1>
-              <p className="text-xs sm:text-base text-neutral-400 leading-relaxed">
+              <p className="text-xs sm:text-base text-neutral-600 dark:text-neutral-400 leading-relaxed">
                 With 16 strategic locations across Colombo, we offer convenient private lounges with computerized XRF testing and instant top-tier cash payouts.
               </p>
 
@@ -1307,12 +1323,12 @@ export default function BranchesPage({
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     placeholder="Type city or neighborhood (e.g. Dehiwala, Kohuwala, Bambalapitiya)..."
-                    className="w-full pl-12 pr-10 py-3.5 rounded-2xl bg-neutral-950 border border-neutral-800 text-sm text-white focus:outline-none focus:border-amber-500 transition-colors shadow-inner"
+                    className="w-full pl-12 pr-10 py-3.5 rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-sm text-neutral-900 dark:text-white focus:outline-none focus:border-amber-500 transition-colors shadow-xs"
                   />
                   {searchTerm && (
                     <button
                       onClick={() => setSearchTerm("")}
-                      className="absolute right-3.5 top-1/2 -translate-y-1/2 p-1 rounded-full bg-neutral-800 text-neutral-400 hover:text-white transition-colors"
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 p-1 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors"
                     >
                       <X className="h-4 w-4" />
                     </button>
@@ -1321,7 +1337,7 @@ export default function BranchesPage({
 
                 {/* Quick Area Filter Pills */}
                 <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
-                  <span className="text-xs text-neutral-400 font-mono flex items-center gap-1 mr-1">
+                  <span className="text-xs text-neutral-500 dark:text-neutral-400 font-mono flex items-center gap-1 mr-1">
                     <Filter className="h-3 w-3 text-amber-500" /> Area:
                   </span>
                   {[
@@ -1340,7 +1356,7 @@ export default function BranchesPage({
                       className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer border ${
                         selectedArea === area.id
                           ? "bg-amber-500 text-neutral-950 border-amber-400 shadow-md shadow-amber-500/20"
-                          : "bg-neutral-950 text-neutral-300 border-neutral-800 hover:border-neutral-700"
+                          : "bg-white dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 border-neutral-200 dark:border-neutral-800 hover:border-amber-500/40"
                       }`}
                     >
                       {area.label}
@@ -1351,28 +1367,28 @@ export default function BranchesPage({
             </div>
 
             {/* Interactive Leaflet Map showing all pins */}
-            <div className="bg-neutral-950 border border-neutral-800 rounded-2xl p-4 sm:p-6 space-y-3">
+            <div className="bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 rounded-2xl p-4 sm:p-6 space-y-3 shadow-xs">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <MapPin className="h-5 w-5 text-amber-500" />
-                  <h3 className="text-sm sm:text-base font-serif font-bold text-white">Colombo Interactive Map</h3>
+                  <h3 className="text-sm sm:text-base font-serif font-bold text-neutral-900 dark:text-white">Colombo Interactive Map</h3>
                 </div>
-                <span className="text-xs font-mono font-bold text-amber-400 bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20">
+                <span className="text-xs font-mono font-bold text-amber-700 dark:text-amber-400 bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20">
                   {filteredBranches.length} {filteredBranches.length === 1 ? "Branch" : "Branches"} Found
                 </span>
               </div>
 
-              <div id="colombo-branches-map" className="w-full h-80 sm:h-96 rounded-xl overflow-hidden border border-neutral-800 z-10"></div>
+              <div id="colombo-branches-map" className="w-full h-80 sm:h-96 rounded-xl overflow-hidden border border-neutral-200 dark:border-neutral-800 z-10"></div>
             </div>
 
             {/* Empty State when no branches match filters */}
             {filteredBranches.length === 0 && (
-              <div className="text-center py-16 px-6 bg-neutral-950 border border-neutral-800 rounded-3xl space-y-4 max-w-xl mx-auto">
-                <div className="h-12 w-12 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-500 mx-auto">
+              <div className="text-center py-16 px-6 bg-neutral-50 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-3xl space-y-4 max-w-xl mx-auto shadow-sm">
+                <div className="h-12 w-12 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-600 dark:text-amber-500 mx-auto">
                   <Search className="h-6 w-6" />
                 </div>
-                <h3 className="text-lg font-serif font-bold text-white">No Branches Match Your Filter</h3>
-                <p className="text-xs text-neutral-400 leading-relaxed">
+                <h3 className="text-lg font-serif font-bold text-neutral-950 dark:text-white">No Branches Match Your Filter</h3>
+                <p className="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
                   We couldn't find a branch matching "{searchTerm}" in the selected area. Try clearing your search term or select "All Areas".
                 </p>
                 <button
@@ -1380,7 +1396,7 @@ export default function BranchesPage({
                     setSearchTerm("");
                     setSelectedArea("all");
                   }}
-                  className="px-5 py-2.5 bg-amber-500 text-neutral-950 font-black text-xs rounded-xl hover:bg-amber-400 transition-colors cursor-pointer"
+                  className="px-5 py-2.5 bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 hover:from-amber-600 hover:to-amber-500 text-neutral-950 font-black text-xs rounded-xl transition-colors cursor-pointer shadow-md shadow-amber-500/20"
                 >
                   Reset All Filters
                 </button>
@@ -1390,9 +1406,9 @@ export default function BranchesPage({
             {/* Flagship Centers */}
             {flagshipBranches.length > 0 && (
               <div className="space-y-6">
-                <div className="flex items-center gap-3 border-b border-neutral-800 pb-3">
+                <div className="flex items-center gap-3 border-b border-neutral-200 dark:border-neutral-800 pb-3">
                   <div className="h-3 w-3 rounded-full bg-amber-500"></div>
-                  <h2 className="text-xl sm:text-2xl font-serif font-bold text-white">
+                  <h2 className="text-xl sm:text-2xl font-serif font-bold text-neutral-900 dark:text-white">
                     Flagship Appraisal Centers
                   </h2>
                 </div>
@@ -1401,33 +1417,33 @@ export default function BranchesPage({
                   {flagshipBranches.map((branch) => (
                     <div
                       key={branch.id}
-                      className="bg-neutral-950 border border-neutral-800 hover:border-amber-500/50 rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 group shadow-lg"
+                      className="bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 hover:border-amber-500/50 rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 group shadow-xs hover:shadow-md"
                     >
                       <div className="space-y-3">
                         <div className="flex items-center justify-between">
-                          <span className="px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[10px] font-mono font-bold uppercase">
+                          <span className="px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-700 dark:text-amber-400 text-[10px] font-mono font-bold uppercase">
                             Flagship Lounge
                           </span>
-                          <span className="text-[10px] text-neutral-400 font-mono">0718 321 321</span>
+                          <span className="text-[10px] text-neutral-500 dark:text-neutral-400 font-mono">0718 321 321</span>
                         </div>
 
                         {/* Location Badges / Tags */}
                         <BranchBadgePills badges={branch.badges} currentLang={currentLang} branch={branch} />
 
-                        <h3 className="text-base font-serif font-bold text-white group-hover:text-amber-300 transition-colors">
+                        <h3 className="text-base font-serif font-bold text-neutral-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-300 transition-colors">
                           {branch.name[currentLang]}
                         </h3>
 
-                        <p className="text-xs text-neutral-400 leading-relaxed">
+                        <p className="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
                           {branch.address[currentLang]}
                         </p>
 
-                        <div className="text-[11px] text-amber-400/90 font-medium pt-1">
+                        <div className="text-[11px] text-amber-700 dark:text-amber-400/90 font-medium pt-1">
                           {branch.status[currentLang]}
                         </div>
                       </div>
 
-                      <div className="pt-6 mt-6 border-t border-neutral-800/80 space-y-2">
+                      <div className="pt-6 mt-6 border-t border-neutral-100 dark:border-neutral-800/80 space-y-2">
                         <button
                           type="button"
                           onClick={() => handleBranchSelect(branch.id)}
@@ -1440,9 +1456,9 @@ export default function BranchesPage({
                         <div className="grid grid-cols-2 gap-2">
                           <a
                             href={`tel:${branch.phone}`}
-                            className="py-2 rounded-lg bg-neutral-900 hover:bg-neutral-800 text-neutral-200 text-[11px] font-bold text-center flex items-center justify-center gap-1.5 transition-colors no-underline"
+                            className="py-2 rounded-lg bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 text-[11px] font-bold text-center flex items-center justify-center gap-1.5 transition-colors no-underline"
                           >
-                            <Phone className="h-3.5 w-3.5 text-amber-400" />
+                            <Phone className="h-3.5 w-3.5 text-amber-500" />
                             <span>Call</span>
                           </a>
 
@@ -1450,9 +1466,9 @@ export default function BranchesPage({
                             href={`https://www.google.com/maps/search/?api=1&query=${branch.lat},${branch.lng}`}
                             target="_blank"
                             rel="noreferrer"
-                            className="py-2 rounded-lg bg-neutral-900 hover:bg-neutral-800 text-neutral-200 text-[11px] font-bold text-center flex items-center justify-center gap-1.5 transition-colors no-underline"
+                            className="py-2 rounded-lg bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 text-[11px] font-bold text-center flex items-center justify-center gap-1.5 transition-colors no-underline"
                           >
-                            <Navigation className="h-3.5 w-3.5 text-amber-400" />
+                            <Navigation className="h-3.5 w-3.5 text-amber-500" />
                             <span>Map</span>
                           </a>
                         </div>
@@ -1466,9 +1482,9 @@ export default function BranchesPage({
             {/* Express Branches */}
             {expressBranches.length > 0 && (
               <div className="space-y-6 pt-6">
-                <div className="flex items-center gap-3 border-b border-neutral-800 pb-3">
-                  <div className="h-3 w-3 rounded-full bg-neutral-500"></div>
-                  <h2 className="text-xl sm:text-2xl font-serif font-bold text-white">
+                <div className="flex items-center gap-3 border-b border-neutral-200 dark:border-neutral-800 pb-3">
+                  <div className="h-3 w-3 rounded-full bg-neutral-400 dark:bg-neutral-500"></div>
+                  <h2 className="text-xl sm:text-2xl font-serif font-bold text-neutral-900 dark:text-white">
                     Express Valuation Branches & Regional Desks
                   </h2>
                 </div>
@@ -1477,31 +1493,31 @@ export default function BranchesPage({
                   {expressBranches.map((branch) => (
                     <div
                       key={branch.id}
-                      className="bg-neutral-950/80 border border-neutral-800/80 hover:border-amber-500/40 rounded-xl p-5 flex flex-col justify-between transition-all group"
+                      className="bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800/80 hover:border-amber-500/40 rounded-xl p-5 flex flex-col justify-between transition-all group shadow-xs hover:shadow-md"
                     >
                       <div>
                         <div className="flex items-center gap-2 mb-2">
                           <div className="h-2 w-2 rounded-full bg-amber-500"></div>
-                          <span className="text-[10px] font-mono font-bold text-amber-400 uppercase">Available Desk</span>
+                          <span className="text-[10px] font-mono font-bold text-amber-700 dark:text-amber-400 uppercase">Available Desk</span>
                         </div>
 
                         {/* Location Badges / Tags */}
                         <BranchBadgePills badges={branch.badges} currentLang={currentLang} branch={branch} />
 
-                        <h3 className="text-sm font-bold text-white group-hover:text-amber-300 transition-colors">
+                        <h3 className="text-sm font-bold text-neutral-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-300 transition-colors">
                           {branch.name[currentLang]}
                         </h3>
 
-                        <p className="text-[11px] text-neutral-400 mt-1 line-clamp-2">
+                        <p className="text-[11px] text-neutral-600 dark:text-neutral-400 mt-1 line-clamp-2">
                           {branch.address[currentLang]}
                         </p>
                       </div>
 
-                      <div className="pt-4 mt-4 border-t border-neutral-800/60 space-y-2">
+                      <div className="pt-4 mt-4 border-t border-neutral-100 dark:border-neutral-800/60 space-y-2">
                         <button
                           type="button"
                           onClick={() => handleBranchSelect(branch.id)}
-                          className="w-full py-2 rounded-lg bg-neutral-900 hover:bg-amber-500 text-neutral-300 hover:text-neutral-950 text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                          className="w-full py-2 rounded-lg bg-neutral-100 hover:bg-amber-500 dark:bg-neutral-800 dark:hover:bg-amber-500 text-neutral-800 hover:text-neutral-950 dark:text-neutral-300 dark:hover:text-neutral-950 text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer"
                         >
                           <span>Location Details</span>
                           <ChevronRight className="h-3.5 w-3.5" />
@@ -1509,9 +1525,9 @@ export default function BranchesPage({
 
                         <a
                           href={`tel:${branch.phone}`}
-                          className="w-full py-1.5 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 text-[11px] font-bold text-center flex items-center justify-center gap-1.5 transition-colors no-underline border border-amber-500/20"
+                          className="w-full py-1.5 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-700 dark:text-amber-400 text-[11px] font-bold text-center flex items-center justify-center gap-1.5 transition-colors no-underline border border-amber-500/20"
                         >
-                          <PhoneCall className="h-3 w-3 text-amber-400" />
+                          <PhoneCall className="h-3 w-3 text-amber-500" />
                           <span>Click to Call {branch.phone}</span>
                         </a>
                       </div>

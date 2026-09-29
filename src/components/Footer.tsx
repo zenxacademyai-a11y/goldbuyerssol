@@ -4,13 +4,35 @@
  */
 
 import React from "react";
-import { Award, ShieldCheck, Mail, Phone, MapPin, Building2, ChevronRight, Navigation, ArrowUp, Clock, HelpCircle, FileText, Calculator, TrendingUp, Sparkles, Info } from "lucide-react";
+import { 
+  Award, 
+  ShieldCheck, 
+  Mail, 
+  Phone, 
+  MapPin, 
+  Building2, 
+  ChevronRight, 
+  Navigation, 
+  ArrowUp, 
+  Clock, 
+  HelpCircle, 
+  FileText, 
+  Calculator, 
+  TrendingUp, 
+  Sparkles, 
+  Info, 
+  BookOpen, 
+  ExternalLink,
+  Globe,
+  Layers,
+  CheckCircle2
+} from "lucide-react";
 import { Language, translations } from "../lib/translations.js";
 import InstallWebAppButton from "./InstallWebAppButton.js";
 
 interface FooterProps {
   currentLang: Language;
-  setView: (view: "home" | "blog" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "services") => void;
+  setView: (view: "home" | "admin" | "about" | "contact" | "branches" | "rates" | "calculator" | "services" | "sitemap") => void;
   showAdmin?: boolean;
   onLogoClick?: () => void;
 }
@@ -23,7 +45,7 @@ export default function Footer({ currentLang, setView, showAdmin = false, onLogo
   };
 
   return (
-    <footer className="bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 border-t border-neutral-200/90 dark:border-neutral-800/90 pt-12 sm:pt-16 pb-28 sm:pb-24 md:pb-12 px-4 sm:px-6 lg:px-8 relative transition-colors duration-200">
+    <footer className="bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 border-t border-neutral-200/90 dark:border-neutral-800/90 pt-12 sm:pt-16 pb-[calc(7rem+env(safe-area-inset-bottom,0px))] sm:pb-[calc(6rem+env(safe-area-inset-bottom,0px))] md:pb-12 px-4 sm:px-6 lg:px-8 pl-[max(1rem,env(safe-area-inset-left,0px))] pr-[max(1rem,env(safe-area-inset-right,0px))] relative transition-colors duration-200">
  
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
         
@@ -144,22 +166,34 @@ export default function Footer({ currentLang, setView, showAdmin = false, onLogo
             </li>
             <li>
               <a 
-                href="/blog" 
-                onClick={(e) => { e.preventDefault(); setView("blog"); window.scrollTo(0,0); }} 
-                className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors cursor-pointer flex items-center gap-1.5 py-1"
-              >
-                <FileText className="h-3.5 w-3.5 text-amber-500 shrink-0" />
-                <span>{t.blog}</span>
-              </a>
-            </li>
-            <li>
-              <a 
                 href="/contact" 
                 onClick={(e) => { e.preventDefault(); setView("contact"); window.scrollTo(0,0); }} 
                 className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors cursor-pointer flex items-center gap-1.5 py-1"
               >
                 <MapPin className="h-3.5 w-3.5 text-amber-500 shrink-0" />
                 <span>{t.contact}</span>
+              </a>
+            </li>
+            <li>
+              <a 
+                href="/sitemap" 
+                onClick={(e) => { e.preventDefault(); setView("sitemap"); window.scrollTo(0,0); }} 
+                className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors cursor-pointer flex items-center gap-1.5 py-1"
+              >
+                <Layers className="h-3.5 w-3.5 text-amber-500 shrink-0" />
+                <span>HTML Sitemap</span>
+              </a>
+            </li>
+            <li>
+              <a 
+                href="https://goldbuyerscolombo.com/blog/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors flex items-center gap-1.5 py-1"
+              >
+                <BookOpen className="h-3.5 w-3.5 text-amber-500 shrink-0" />
+                <span>Blogs</span>
+                <ExternalLink className="h-3 w-3 text-neutral-400 shrink-0" />
               </a>
             </li>
             <li className="col-span-2 lg:col-span-1 pt-1">
@@ -358,9 +392,170 @@ export default function Footer({ currentLang, setView, showAdmin = false, onLogo
           </div>
         </div>
       </div>
+
+      {/* Sri Lanka Location Directory — All Areas Served by Name */}
+      <div className="max-w-7xl mx-auto mt-12 pt-8 border-t border-neutral-200 dark:border-neutral-800 space-y-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+          <div>
+            <h4 className="text-xs sm:text-sm font-mono uppercase tracking-wider text-amber-700 dark:text-amber-400 font-bold flex items-center gap-2">
+              <Globe className="h-4.5 w-4.5 text-amber-600 shrink-0" />
+              <span>Sri Lanka Coverage — All Areas Served Across Sri Lanka by Name</span>
+            </h4>
+            <p className="text-[11px] text-neutral-500 dark:text-neutral-400 mt-0.5">
+              Providing certified physical lounge appraisals, doorstep VIP visits, and instant bank settlements across Western, Central, Southern and North Western Provinces.
+            </p>
+          </div>
+          <button
+            onClick={() => { setView("sitemap"); window.scrollTo(0,0); }}
+            className="text-xs font-mono font-bold text-amber-700 dark:text-amber-400 hover:underline cursor-pointer flex items-center gap-1 shrink-0"
+          >
+            <span>View Full Sitemap Directory</span>
+            <ChevronRight className="h-3 w-3" />
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+          {/* Group 1: Colombo Municipal Districts (01 - 15) */}
+          <div className="bg-neutral-50 dark:bg-neutral-900/60 p-4 rounded-2xl border border-neutral-200/80 dark:border-neutral-800/80 space-y-2.5">
+            <h5 className="text-xs font-mono font-bold uppercase tracking-wider text-neutral-900 dark:text-white flex items-center gap-1.5 pb-2 border-b border-neutral-200 dark:border-neutral-800">
+              <MapPin className="h-3.5 w-3.5 text-amber-500 shrink-0" />
+              <span>Colombo 01 – 15 City</span>
+            </h5>
+            <div className="flex flex-wrap gap-1.5 text-[11px]">
+              {[
+                "Colombo 01 (Fort)",
+                "Colombo 02 (Slave Island)",
+                "Colombo 03 (Kollupitiya)",
+                "Colombo 04 (Bambalapitiya)",
+                "Colombo 05 (Havelock / Kirulapone)",
+                "Colombo 06 (Wellawatte)",
+                "Colombo 07 (Cinnamon Gardens)",
+                "Colombo 08 (Borella)",
+                "Colombo 09 (Dematagoda)",
+                "Colombo 10 (Maradana)",
+                "Colombo 11 (Pettah / Sea St)",
+                "Colombo 12 (Hultsdorf)",
+                "Colombo 13 (Kotahena)",
+                "Colombo 14 (Grandpass)",
+                "Colombo 15 (Mutwal / Modara)"
+              ].map((loc, idx) => (
+                <span
+                  key={idx}
+                  onClick={() => { setView("branches"); window.scrollTo(0,0); }}
+                  className="px-2 py-0.5 rounded-md bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 border border-neutral-200 dark:border-neutral-700/80 hover:border-amber-500 hover:text-amber-600 transition-colors cursor-pointer"
+                >
+                  {loc}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Group 2: Greater Colombo & Suburban Hubs */}
+          <div className="bg-neutral-50 dark:bg-neutral-900/60 p-4 rounded-2xl border border-neutral-200/80 dark:border-neutral-800/80 space-y-2.5">
+            <h5 className="text-xs font-mono font-bold uppercase tracking-wider text-neutral-900 dark:text-white flex items-center gap-1.5 pb-2 border-b border-neutral-200 dark:border-neutral-800">
+              <Building2 className="h-3.5 w-3.5 text-amber-500 shrink-0" />
+              <span>Greater Colombo Hubs</span>
+            </h5>
+            <div className="flex flex-wrap gap-1.5 text-[11px]">
+              {[
+                "Nugegoda (Head Lounge)",
+                "Dehiwala",
+                "Mount Lavinia",
+                "Ratmalana",
+                "Moratuwa",
+                "Panadura",
+                "Wadduwa",
+                "Kalutara",
+                "Maharagama",
+                "Kottawa",
+                "Homagama",
+                "Piliyandala",
+                "Battaramulla",
+                "Rajagiriya",
+                "Kotte",
+                "Malabe",
+                "Kaduwela",
+                "Athurugiriya"
+              ].map((loc, idx) => (
+                <span
+                  key={idx}
+                  onClick={() => { setView("branches"); window.scrollTo(0,0); }}
+                  className="px-2 py-0.5 rounded-md bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 border border-neutral-200 dark:border-neutral-700/80 hover:border-amber-500 hover:text-amber-600 transition-colors cursor-pointer"
+                >
+                  {loc}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Group 3: Gampaha & Northern Corridors */}
+          <div className="bg-neutral-50 dark:bg-neutral-900/60 p-4 rounded-2xl border border-neutral-200/80 dark:border-neutral-800/80 space-y-2.5">
+            <h5 className="text-xs font-mono font-bold uppercase tracking-wider text-neutral-900 dark:text-white flex items-center gap-1.5 pb-2 border-b border-neutral-200 dark:border-neutral-800">
+              <Navigation className="h-3.5 w-3.5 text-amber-500 shrink-0" />
+              <span>Gampaha & Northern Corridors</span>
+            </h5>
+            <div className="flex flex-wrap gap-1.5 text-[11px]">
+              {[
+                "Kelaniya",
+                "Kiribathgoda",
+                "Wattala",
+                "Hendala",
+                "Ja-Ela",
+                "Kandana",
+                "Ragama",
+                "Negombo",
+                "Katunayake (BIA)",
+                "Gampaha City",
+                "Kadawatha",
+                "Minuwangoda",
+                "Yakkala",
+                "Veyangoda"
+              ].map((loc, idx) => (
+                <span
+                  key={idx}
+                  onClick={() => { setView("branches"); window.scrollTo(0,0); }}
+                  className="px-2 py-0.5 rounded-md bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 border border-neutral-200 dark:border-neutral-700/80 hover:border-amber-500 hover:text-amber-600 transition-colors cursor-pointer"
+                >
+                  {loc}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Group 4: Islandwide Regional Coverage */}
+          <div className="bg-neutral-50 dark:bg-neutral-900/60 p-4 rounded-2xl border border-neutral-200/80 dark:border-neutral-800/80 space-y-2.5">
+            <h5 className="text-xs font-mono font-bold uppercase tracking-wider text-neutral-900 dark:text-white flex items-center gap-1.5 pb-2 border-b border-neutral-200 dark:border-neutral-800">
+              <Award className="h-3.5 w-3.5 text-amber-500 shrink-0" />
+              <span>Islandwide Regional Coverage</span>
+            </h5>
+            <div className="flex flex-wrap gap-1.5 text-[11px]">
+              {[
+                "Kandy City",
+                "Peradeniya",
+                "Galle Fort",
+                "Karapitiya",
+                "Kurunegala",
+                "Matara",
+                "Ratnapura",
+                "Kegalle",
+                "Gampola",
+                "Avissawella"
+              ].map((loc, idx) => (
+                <span
+                  key={idx}
+                  onClick={() => { setView("contact"); window.scrollTo(0,0); }}
+                  className="px-2 py-0.5 rounded-md bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 border border-neutral-200 dark:border-neutral-700/80 hover:border-amber-500 hover:text-amber-600 transition-colors cursor-pointer"
+                >
+                  {loc}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
  
       {/* Footer Bottom Bar */}
-      <div className="max-w-7xl mx-auto mt-10 pt-6 border-t border-neutral-200 dark:border-neutral-800 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-neutral-500 dark:text-neutral-400 font-mono text-center md:text-left">
+      <div className="max-w-7xl mx-auto mt-10 pt-6 border-t border-neutral-200 dark:border-neutral-800 flex flex-col lg:flex-row justify-between items-center gap-4 text-xs text-neutral-500 dark:text-neutral-400 font-mono text-center lg:text-left">
         <div className="space-y-1">
           <div 
             onClick={() => {
@@ -375,7 +570,24 @@ export default function Footer({ currentLang, setView, showAdmin = false, onLogo
           </div>
         </div>
 
-        <div className="flex items-center gap-4 text-xs font-medium shrink-0">
+        {/* Quick Reference & Navigation Links */}
+        <div className="flex flex-wrap items-center justify-center gap-3 text-xs font-mono font-medium">
+          <button
+            onClick={() => { setView("sitemap"); window.scrollTo(0,0); }}
+            className="hover:text-amber-600 dark:hover:text-amber-400 cursor-pointer"
+          >
+            Sitemap
+          </button>
+          <span>•</span>
+          <a
+            href="/sitemap.xml"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-amber-600 dark:hover:text-amber-400"
+          >
+            sitemap.xml
+          </a>
+          <span>•</span>
           <button
             onClick={scrollToTop}
             className="flex items-center gap-1 text-amber-700 dark:text-amber-400 font-mono font-bold hover:underline bg-amber-500/10 px-3 py-1.5 rounded-lg border border-amber-500/20 cursor-pointer"

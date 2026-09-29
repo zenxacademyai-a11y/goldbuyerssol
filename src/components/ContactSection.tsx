@@ -4,9 +4,8 @@
  */
 
 import React, { useState } from "react";
-import { MapPin, Phone, Clock, Car, Compass, CheckCircle, ExternalLink } from "lucide-react";
+import { MapPin, Phone, Clock, Car, Compass, CheckCircle, ExternalLink, MessageCircle } from "lucide-react";
 import { Language, translations } from "../lib/translations.js";
-import { safeStorage } from "../lib/localDb.js";
 
 interface ContactSectionProps {
   currentLang: Language;
@@ -23,57 +22,43 @@ export default function ContactSection({ currentLang }: ContactSectionProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !phone) return;
+    if (!name.trim() || !phone.trim()) return;
 
     setIsSubmitting(true);
-    try {
-      const payload = {
+
+    // Background log to database
+    fetch("/api/leads", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
         name,
         phone,
         email,
         message,
         id: Date.now().toString(),
         createdAt: new Date().toISOString(),
-        status: "new"
-      };
-      
-      let isOk = false;
-      try {
-        const response = await fetch("/api/leads", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
-        isOk = response.ok;
-      } catch (err) {
-        isOk = false;
-      }
+        status: "new",
+        source: "home_contact_form"
+      }),
+    }).catch(() => {});
 
-      if (!isOk) {
-        // Fallback for static hosting
-        const existing = JSON.parse(safeStorage.getItem("gbc_leads") || "[]");
-        existing.push(payload);
-        safeStorage.setItem("gbc_leads", JSON.stringify(existing));
-        isOk = true;
-      }
+    // Prepare WhatsApp message
+    const waText = 
+`*New Gold Valuation Inquiry — Gold Buyers Colombo*
+• *Client Name:* ${name}
+• *Phone:* ${phone}
+${email ? `• *Email:* ${email}\n` : ""}${message ? `• *Gold Details / Inquiry:* ${message}\n` : ""}
+I would like to receive an immediate cash valuation quote.`;
 
-      if (isOk) {
-        setIsSuccess(true);
-        setName("");
-        setPhone("");
-        setEmail("");
-        setMessage("");
-      } else {
-        alert("Submission failed. Please try again.");
-      }
-    } catch (e) {
-      console.error(e);
-      alert("An error occurred. Please call 0718 321 321 directly.");
-    } finally {
-      setIsSubmitting(false);
-    }
+    const whatsappUrl = `https://wa.me/94718321321?text=${encodeURIComponent(waText)}`;
+    
+    // Direct submission to WhatsApp
+    window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+
+    setIsSuccess(true);
+    setIsSubmitting(false);
   };
 
   return (
@@ -100,7 +85,7 @@ export default function ContactSection({ currentLang }: ContactSectionProps) {
           <div className="lg:col-span-5 space-y-6">
             
             {/* Quick Details Cards */}
-            <div className="bg-neutral-50 dark:bg-neutral-900 rounded-xl border border-neutral-200 dark:border-neutral-800 p-6 space-y-5 shadow-sm">
+            <div className="bg-white dark:bg-neutral-900 rounded-xl border border-neutral-200/80 dark:border-neutral-800 p-6 space-y-5 shadow-xs">
               
               <div className="flex gap-4">
                 <div className="h-10 w-10 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-700 dark:text-amber-400 flex-shrink-0">
@@ -153,7 +138,7 @@ export default function ContactSection({ currentLang }: ContactSectionProps) {
             </div>
  
             {/* Parking & Landmark Info Box */}
-            <div className="bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl p-6 space-y-4 shadow-sm">
+            <div className="bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 rounded-xl p-6 space-y-4 shadow-xs">
               
               <div className="flex gap-3 text-xs text-neutral-600 dark:text-neutral-300">
                 <Car className="h-5 w-5 text-amber-700 dark:text-amber-400 flex-shrink-0" />
@@ -183,16 +168,19 @@ export default function ContactSection({ currentLang }: ContactSectionProps) {
           <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
             
             {/* Contact Form Container */}
-            <div className="bg-neutral-50 dark:bg-neutral-900 rounded-xl border border-neutral-200 dark:border-neutral-800 p-6 shadow-sm">
+            <div className="bg-white dark:bg-neutral-900 rounded-xl border border-neutral-200/80 dark:border-neutral-800 p-6 shadow-xs">
               <h3 className="text-lg font-serif font-bold text-neutral-950 dark:text-white mb-6 border-b border-neutral-200 dark:border-neutral-800 pb-3">
                 Send Digital Enquiry
               </h3>
  
               {isSuccess ? (
-                <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-6 text-center animate-fade-in h-full flex flex-col justify-center items-center">
-                  <CheckCircle className="h-10 w-10 text-amber-600 dark:text-amber-400 mb-3 animate-bounce" />
-                  <p className="text-xs text-amber-800 dark:text-amber-300 font-sans leading-relaxed">
-                    {t.formSuccess}
+                <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-6 text-center animate-fade-in h-full flex flex-col justify-center items-center">
+                  <MessageCircle className="h-10 w-10 text-emerald-600 dark:text-emerald-400 mb-3 animate-bounce" />
+                  <h4 className="text-sm font-bold text-neutral-900 dark:text-white mb-1">
+                    Inquiry Submitted to WhatsApp
+                  </h4>
+                  <p className="text-xs text-neutral-600 dark:text-neutral-300 font-sans leading-relaxed">
+                    Your inquiry has been opened directly with our senior appraisal desk on WhatsApp (+94 718 321 321).
                   </p>
                   <button
                     onClick={() => setIsSuccess(false)}
@@ -212,7 +200,7 @@ export default function ContactSection({ currentLang }: ContactSectionProps) {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       required
-                      className="w-full bg-white dark:bg-neutral-800 border border-neutral-250 dark:border-neutral-700 rounded px-3 py-2 text-sm text-neutral-800 dark:text-neutral-100 focus:outline-none focus:border-amber-500 shadow-sm"
+                      className="w-full bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg px-3 py-2 text-sm text-neutral-900 dark:text-neutral-100 focus:outline-none focus:border-amber-500 shadow-xs"
                     />
                   </div>
                   
@@ -225,7 +213,7 @@ export default function ContactSection({ currentLang }: ContactSectionProps) {
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       required
-                      className="w-full bg-white dark:bg-neutral-800 border border-neutral-250 dark:border-neutral-700 rounded px-3 py-2 text-sm text-neutral-800 dark:text-neutral-100 font-mono focus:outline-none focus:border-amber-500 shadow-sm"
+                      className="w-full bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg px-3 py-2 text-sm text-neutral-900 dark:text-neutral-100 font-mono focus:outline-none focus:border-amber-500 shadow-xs"
                     />
                   </div>
  
@@ -237,7 +225,7 @@ export default function ContactSection({ currentLang }: ContactSectionProps) {
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full bg-white dark:bg-neutral-800 border border-neutral-250 dark:border-neutral-700 rounded px-3 py-2 text-sm text-neutral-800 dark:text-neutral-100 focus:outline-none focus:border-amber-500 shadow-sm"
+                      className="w-full bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg px-3 py-2 text-sm text-neutral-900 dark:text-neutral-100 focus:outline-none focus:border-amber-500 shadow-xs"
                     />
                   </div>
  
@@ -249,23 +237,24 @@ export default function ContactSection({ currentLang }: ContactSectionProps) {
                       rows={3}
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
-                      className="w-full bg-white dark:bg-neutral-800 border border-neutral-250 dark:border-neutral-700 rounded px-3 py-2 text-sm text-neutral-800 dark:text-neutral-100 focus:outline-none focus:border-amber-500 shadow-sm"
+                      className="w-full bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg px-3 py-2 text-sm text-neutral-900 dark:text-neutral-100 focus:outline-none focus:border-amber-500 shadow-xs"
                     ></textarea>
                   </div>
  
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full py-3 bg-gradient-to-r from-amber-600 to-yellow-500 hover:from-amber-500 hover:to-yellow-400 text-black font-extrabold uppercase tracking-widest text-xs rounded transition-all transform active:scale-95 shadow-md shadow-amber-500/10 cursor-pointer"
+                    className="w-full py-3.5 bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-600 hover:from-emerald-500 hover:to-emerald-400 text-white font-extrabold uppercase tracking-wider text-xs rounded-xl transition-all transform active:scale-95 shadow-md shadow-emerald-500/20 cursor-pointer flex items-center justify-center gap-2"
                   >
-                    {isSubmitting ? t.calculating : t.submitForm}
+                    <MessageCircle className="h-4 w-4 shrink-0 fill-white" />
+                    <span>{isSubmitting ? "Opening WhatsApp..." : "Submit to WhatsApp (0718 321 321)"}</span>
                   </button>
                 </form>
               )}
             </div>
  
             {/* Interactive Google Map */}
-            <div className="bg-neutral-50 dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-800 p-6 flex flex-col justify-between overflow-hidden relative shadow-sm">
+            <div className="bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200/80 dark:border-neutral-800 p-6 flex flex-col justify-between overflow-hidden relative shadow-xs">
               <div>
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-sm font-mono uppercase tracking-widest text-neutral-800 dark:text-neutral-200 font-bold flex items-center gap-2">

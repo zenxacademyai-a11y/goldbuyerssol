@@ -1,5 +1,5 @@
 import {StrictMode} from 'react';
-import {createRoot} from 'react-dom/client';
+import {createRoot, hydrateRoot} from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
 import { ThemeProvider } from './components/ThemeProvider.js';
@@ -18,12 +18,19 @@ if ('serviceWorker' in navigator && (import.meta as any).env?.PROD) {
   });
 }
 
-createRoot(document.getElementById('root')!).render(
+const rootElement = document.getElementById('root')!;
+const appElement = (
   <StrictMode>
     <ThemeProvider defaultTheme="light">
       <ErrorBoundary>
-      <App />
-    </ErrorBoundary>
+        <App />
+      </ErrorBoundary>
     </ThemeProvider>
-  </StrictMode>,
+  </StrictMode>
 );
+
+if (rootElement.hasChildNodes()) {
+  hydrateRoot(rootElement, appElement);
+} else {
+  createRoot(rootElement).render(appElement);
+}

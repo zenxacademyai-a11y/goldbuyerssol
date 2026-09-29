@@ -3,7 +3,6 @@ import {
   Coins, 
   Gem, 
   Watch, 
-  FileText, 
   CheckCircle2, 
   ShieldCheck, 
   ChevronRight, 
@@ -58,7 +57,7 @@ export const servicesData: ServiceDetail[] = [
       "Gold Chains, Bangles, Necklaces & Rings",
       "Gold Coins, Sovereigns & Investment Bars",
       "Broken, Damaged & Scrap Gold Items",
-      "Pawned Gold Receipt Settlement"
+      "Estate Jewelry & Heirloom Gold"
     ],
     processSteps: [
       { title: "1. Visit Our Lounge", desc: "Bring your gold items to any of our 16 Colombo branches. No appointment necessary." },
@@ -125,32 +124,6 @@ export const servicesData: ServiceDetail[] = [
     ]
   },
   {
-    id: "pawned-gold-release",
-    title: "Pawned Gold Release & Ticket Settlement",
-    subtitle: "We Settle Bank Debt & Pawn Tickets so You Walk Away with Cash Profit",
-    badge: "Debt Relief Service",
-    icon: <FileText className="h-6 w-6 text-amber-500" />,
-    image: "/assest/img-2.jpeg",
-    desc: "Is your gold pledged at a bank or pawn shop with high monthly compound interest rates? Don't let your valuable gold get auctioned! GBC offers a specialized Pawn Ticket Settlement Service. We pay off your bank debt or pawn balance on your behalf, retrieve your gold items, evaluate them at today's peak market gold rates, and hand you the remaining cash profit!",
-    acceptedItems: [
-      "Commercial Bank Pawn Receipts",
-      "People's Bank & BOC Pawn Tickets",
-      "HNB, Sampath & Seylan Pawn Receipts",
-      "Private Pawn Shop Pledges",
-      "Pawned Gold Chains, Bangles & Rings"
-    ],
-    processSteps: [
-      { title: "1. Review Your Receipt", desc: "Bring your pawn receipt or bank statement to GBC Colombo office." },
-      { title: "2. Calculate Surplus Profit", desc: "We calculate today's gold payout minus the bank payoff debt." },
-      { title: "3. Ticket Settlement", desc: "We accompany you to the bank or settle the balance directly with the institution." },
-      { title: "4. Receive Cash Surplus", desc: "Your gold is released, verified, and you walk away with the remaining cash profit!" }
-    ],
-    faqs: [
-      { q: "How do I know how much surplus cash I will receive?", a: "Bring your pawn ticket to GBC. We calculate today's gold rate minus the debt owed—the difference is instant cash in your pocket." },
-      { q: "Is the process safe and confidential?", a: "100% safe, legal, and confidential. We handle all redemption documentation securely." }
-    ]
-  },
-  {
     id: "sovereign-bullion",
     title: "Gold Sovereigns, Coins & Bullion Bars",
     subtitle: "Maximum Payouts for 24K & 22K Investment Gold Sovereigns & Bars",
@@ -206,33 +179,33 @@ export default function ServicesPage({
   };
 
   return (
-    <div className="pt-24 pb-16 bg-neutral-900 text-white min-h-screen">
+    <div className="pt-24 pb-16 bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 min-h-screen transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Navigation Breadcrumbs Bar */}
-        <div className="flex flex-wrap items-center justify-between gap-3 mb-8 pb-4 border-b border-neutral-800">
-          <div className="flex items-center gap-2 text-xs text-neutral-400">
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-8 pb-4 border-b border-neutral-200 dark:border-neutral-800">
+          <div className="flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400">
             <button 
               type="button"
               onClick={() => {
                 if (setView) setView("home");
               }}
-              className="hover:text-amber-400 transition-colors cursor-pointer"
+              className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors cursor-pointer"
             >
               Home
             </button>
-            <ChevronRight className="h-3 w-3 text-neutral-600" />
+            <ChevronRight className="h-3 w-3 text-neutral-400 dark:text-neutral-600" />
             <button 
               type="button"
               onClick={handleBackToAllServices}
-              className={`hover:text-amber-400 transition-colors cursor-pointer ${!activeService ? "text-amber-400 font-bold" : ""}`}
+              className={`hover:text-amber-600 dark:hover:text-amber-400 transition-colors cursor-pointer ${!activeService ? "text-amber-600 dark:text-amber-400 font-bold" : ""}`}
             >
               Services
             </button>
             {activeService && (
               <>
-                <ChevronRight className="h-3 w-3 text-neutral-600" />
-                <span className="text-amber-400 font-bold truncate max-w-[200px] sm:max-w-xs">{activeService.title}</span>
+                <ChevronRight className="h-3 w-3 text-neutral-400 dark:text-neutral-600" />
+                <span className="text-amber-600 dark:text-amber-400 font-bold truncate max-w-[200px] sm:max-w-xs">{activeService.title}</span>
               </>
             )}
           </div>
@@ -240,9 +213,9 @@ export default function ServicesPage({
           {activeService && (
             <button
               onClick={handleBackToAllServices}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-xs font-bold text-neutral-200 transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-xs font-bold text-neutral-700 dark:text-neutral-200 border border-neutral-200 dark:border-neutral-700 transition-colors cursor-pointer"
             >
-              <ArrowLeft className="h-3.5 w-3.5 text-amber-500" />
+              <ArrowLeft className="h-3.5 w-3.5 text-amber-600 dark:text-amber-500" />
               <span>All Services</span>
             </button>
           )}
@@ -255,8 +228,8 @@ export default function ServicesPage({
             onClick={handleBackToAllServices}
             className={`px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all duration-200 cursor-pointer ${
               !activeService
-                ? "bg-amber-500 text-neutral-950 font-black shadow-lg shadow-amber-500/20"
-                : "bg-neutral-800/80 text-neutral-300 hover:bg-neutral-800 hover:text-white"
+                ? "bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 text-neutral-950 font-black shadow-lg shadow-amber-500/20"
+                : "bg-neutral-100 dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-800 border border-neutral-200 dark:border-neutral-800"
             }`}
           >
             All Services
@@ -270,8 +243,8 @@ export default function ServicesPage({
                 onClick={() => handleServiceClick(service.id)}
                 className={`px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all duration-200 flex items-center gap-2 cursor-pointer ${
                   isActive
-                    ? "bg-amber-500 text-neutral-950 font-black shadow-lg shadow-amber-500/20"
-                    : "bg-neutral-800/80 text-neutral-300 hover:bg-neutral-800 hover:text-white"
+                    ? "bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 text-neutral-950 font-black shadow-lg shadow-amber-500/20"
+                    : "bg-neutral-100 dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-800 border border-neutral-200 dark:border-neutral-800"
                 }`}
               >
                 <span>{service.title.split(" ")[0]} {service.title.split(" ")[1]}</span>
@@ -285,24 +258,24 @@ export default function ServicesPage({
           /* INDIVIDUAL SERVICE DETAIL PAGE */
           <div className="space-y-12 animate-in fade-in duration-300">
             {/* Header / Hero Section */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-neutral-950/80 border border-neutral-800 rounded-3xl p-6 sm:p-10 relative overflow-hidden">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-3xl p-6 sm:p-10 relative overflow-hidden shadow-sm">
               <div className="absolute top-0 right-0 -mt-10 -mr-10 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
               <div className="lg:col-span-7 space-y-4">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-400 text-xs font-bold uppercase tracking-wider">
-                  <Sparkles className="h-3.5 w-3.5 text-amber-400" />
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-400 text-xs font-bold uppercase tracking-wider">
+                  <Sparkles className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
                   <span>{activeService.badge}</span>
                 </div>
 
-                <h1 className="text-2xl sm:text-4xl font-serif font-black text-white leading-tight">
+                <h1 className="text-2xl sm:text-4xl font-serif font-black text-neutral-950 dark:text-white leading-tight">
                   {activeService.title}
                 </h1>
 
-                <p className="text-sm sm:text-base text-amber-400 font-semibold">
+                <p className="text-sm sm:text-base text-amber-700 dark:text-amber-400 font-semibold">
                   {activeService.subtitle}
                 </p>
 
-                <p className="text-xs sm:text-sm text-neutral-300 leading-relaxed">
+                <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed">
                   {activeService.desc}
                 </p>
 
@@ -310,7 +283,7 @@ export default function ServicesPage({
                 <div className="flex flex-wrap items-center gap-3 pt-2">
                   <a
                     href="tel:0718321321"
-                    className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-neutral-950 font-black text-xs sm:text-sm transition-all shadow-lg shadow-amber-500/20 no-underline"
+                    className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 hover:from-amber-600 hover:to-amber-500 text-neutral-950 font-black text-xs sm:text-sm transition-all shadow-lg shadow-amber-500/20 no-underline"
                   >
                     <Phone className="h-4 w-4" />
                     <span>Call 0718 321 321</span>
@@ -320,7 +293,7 @@ export default function ServicesPage({
                     href="https://wa.me/94718321321?text=Hi%20GBC,%20I%20am%20interested%20in%20your%20services"
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm transition-all no-underline"
+                    className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm transition-all no-underline shadow-sm"
                   >
                     <MessageCircle className="h-4 w-4" />
                     <span>WhatsApp Desk</span>
@@ -331,16 +304,16 @@ export default function ServicesPage({
                     onClick={() => {
                       if (setView) setView("calculator");
                     }}
-                    className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-neutral-100 font-bold text-xs sm:text-sm transition-all cursor-pointer"
+                    className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-900 dark:text-neutral-100 border border-neutral-200 dark:border-neutral-700 font-bold text-xs sm:text-sm transition-all cursor-pointer"
                   >
-                    <Calculator className="h-4 w-4 text-amber-400" />
+                    <Calculator className="h-4 w-4 text-amber-600 dark:text-amber-400" />
                     <span>Gold Calculator</span>
                   </button>
                 </div>
               </div>
 
               <div className="lg:col-span-5">
-                <div className="relative h-64 sm:h-80 rounded-2xl overflow-hidden border border-neutral-800 shadow-2xl">
+                <div className="relative h-64 sm:h-80 rounded-2xl overflow-hidden border border-neutral-200 dark:border-neutral-800 shadow-xl">
                   <img
                     src={activeService.image}
                     alt={activeService.title}
@@ -364,48 +337,48 @@ export default function ServicesPage({
             {/* Accepted Items & Features Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* Accepted Items */}
-              <div className="bg-neutral-950/60 border border-neutral-800/80 rounded-2xl p-6 sm:p-8">
+              <div className="bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 sm:p-8 shadow-sm">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="p-2.5 bg-amber-500/10 rounded-xl border border-amber-500/20 text-amber-400">
+                  <div className="p-2.5 bg-amber-500/10 rounded-xl border border-amber-500/20 text-amber-700 dark:text-amber-400">
                     <CheckCircle2 className="h-5 w-5" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-serif font-bold text-white">What We Accept</h3>
-                    <p className="text-xs text-neutral-400">Items eligible for instant cash valuation</p>
+                    <h3 className="text-lg font-serif font-bold text-neutral-950 dark:text-white">What We Accept</h3>
+                    <p className="text-xs text-neutral-500 dark:text-neutral-400">Items eligible for instant cash valuation</p>
                   </div>
                 </div>
 
                 <ul className="space-y-3">
                   {activeService.acceptedItems.map((item, idx) => (
-                    <li key={idx} className="flex items-start gap-3 p-3 rounded-xl bg-neutral-900/80 border border-neutral-800/60">
-                      <CheckCircle2 className="h-4 w-4 text-amber-400 shrink-0 mt-0.5" />
-                      <span className="text-xs sm:text-sm font-semibold text-neutral-200">{item}</span>
+                    <li key={idx} className="flex items-start gap-3 p-3 rounded-xl bg-white dark:bg-neutral-800/80 border border-neutral-200 dark:border-neutral-700/60 shadow-2xs">
+                      <CheckCircle2 className="h-4 w-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+                      <span className="text-xs sm:text-sm font-semibold text-neutral-800 dark:text-neutral-200">{item}</span>
                     </li>
                   ))}
                 </ul>
               </div>
 
               {/* Step-by-Step Testing & Valuation Process */}
-              <div className="bg-neutral-950/60 border border-neutral-800/80 rounded-2xl p-6 sm:p-8">
+              <div className="bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 sm:p-8 shadow-sm">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="p-2.5 bg-amber-500/10 rounded-xl border border-amber-500/20 text-amber-400">
+                  <div className="p-2.5 bg-amber-500/10 rounded-xl border border-amber-500/20 text-amber-700 dark:text-amber-400">
                     <ShieldCheck className="h-5 w-5" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-serif font-bold text-white">4-Step Valuation Process</h3>
-                    <p className="text-xs text-neutral-400">Transparent & damage-free</p>
+                    <h3 className="text-lg font-serif font-bold text-neutral-950 dark:text-white">4-Step Valuation Process</h3>
+                    <p className="text-xs text-neutral-500 dark:text-neutral-400">Transparent & damage-free</p>
                   </div>
                 </div>
 
                 <div className="space-y-4">
                   {activeService.processSteps.map((step, idx) => (
-                    <div key={idx} className="flex items-start gap-3 p-3 rounded-xl bg-neutral-900/80 border border-neutral-800/60">
-                      <div className="h-6 w-6 rounded-full bg-amber-500/20 border border-amber-500/30 text-amber-400 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
+                    <div key={idx} className="flex items-start gap-3 p-3 rounded-xl bg-white dark:bg-neutral-800/80 border border-neutral-200 dark:border-neutral-700/60 shadow-2xs">
+                      <div className="h-6 w-6 rounded-full bg-amber-500/20 border border-amber-500/30 text-amber-700 dark:text-amber-400 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
                         {idx + 1}
                       </div>
                       <div>
-                        <h4 className="text-xs sm:text-sm font-bold text-white">{step.title}</h4>
-                        <p className="text-[11px] sm:text-xs text-neutral-400 mt-0.5">{step.desc}</p>
+                        <h4 className="text-xs sm:text-sm font-bold text-neutral-900 dark:text-white">{step.title}</h4>
+                        <p className="text-[11px] sm:text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">{step.desc}</p>
                       </div>
                     </div>
                   ))}
@@ -414,32 +387,32 @@ export default function ServicesPage({
             </div>
 
             {/* Service Specific FAQs */}
-            <div className="bg-neutral-950/60 border border-neutral-800/80 rounded-2xl p-6 sm:p-8">
+            <div className="bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 sm:p-8 shadow-sm">
               <div className="flex items-center gap-3 mb-6">
-                <div className="p-2.5 bg-amber-500/10 rounded-xl border border-amber-500/20 text-amber-400">
+                <div className="p-2.5 bg-amber-500/10 rounded-xl border border-amber-500/20 text-amber-700 dark:text-amber-400">
                   <HelpCircle className="h-5 w-5" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-serif font-bold text-white">Frequently Asked Questions</h3>
-                  <p className="text-xs text-neutral-400">Common questions about {activeService.title}</p>
+                  <h3 className="text-lg font-serif font-bold text-neutral-950 dark:text-white">Frequently Asked Questions</h3>
+                  <p className="text-xs text-neutral-500 dark:text-neutral-400">Common questions about {activeService.title}</p>
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {activeService.faqs.map((faq, idx) => (
-                  <div key={idx} className="p-4 rounded-xl bg-neutral-900/80 border border-neutral-800/60 space-y-2">
-                    <h4 className="text-xs sm:text-sm font-bold text-amber-400 leading-snug">{faq.q}</h4>
-                    <p className="text-[11px] sm:text-xs text-neutral-300 leading-relaxed">{faq.a}</p>
+                  <div key={idx} className="p-4 rounded-xl bg-white dark:bg-neutral-800/80 border border-neutral-200 dark:border-neutral-700/60 space-y-2 shadow-2xs">
+                    <h4 className="text-xs sm:text-sm font-bold text-amber-700 dark:text-amber-400 leading-snug">{faq.q}</h4>
+                    <p className="text-[11px] sm:text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed">{faq.a}</p>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Find Branch Banner */}
-            <div className="bg-gradient-to-r from-amber-500/20 via-neutral-900 to-neutral-950 border border-amber-500/30 rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div className="bg-gradient-to-r from-amber-500/10 via-neutral-100 to-neutral-50 dark:from-amber-500/20 dark:via-neutral-900 dark:to-neutral-950 border border-amber-500/30 rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-sm">
               <div className="space-y-1 text-left">
-                <h3 className="text-lg sm:text-xl font-serif font-bold text-white">Find a Branch Offering This Service</h3>
-                <p className="text-xs text-neutral-300">All 16 GBC branches across Colombo offer instant valuation and cash payouts.</p>
+                <h3 className="text-lg sm:text-xl font-serif font-bold text-neutral-950 dark:text-white">Find a Branch Offering This Service</h3>
+                <p className="text-xs text-neutral-600 dark:text-neutral-300">All 16 GBC branches across Colombo offer instant valuation and cash payouts.</p>
               </div>
 
               <button
@@ -447,7 +420,7 @@ export default function ServicesPage({
                 onClick={() => {
                   if (setView) setView("branches");
                 }}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-neutral-950 font-black text-xs uppercase tracking-wider transition-all shrink-0 cursor-pointer shadow-lg shadow-amber-500/20"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 hover:from-amber-600 hover:to-amber-500 text-neutral-950 font-black text-xs uppercase tracking-wider transition-all shrink-0 cursor-pointer shadow-lg shadow-amber-500/20"
               >
                 <MapPin className="h-4 w-4" />
                 <span>Explore 16 Branches</span>
@@ -455,30 +428,30 @@ export default function ServicesPage({
             </div>
 
             {/* Other Services Navigation Grid */}
-            <div className="pt-8 border-t border-neutral-800">
-              <h3 className="text-base font-serif font-bold text-white mb-6">Explore Other Services</h3>
+            <div className="pt-8 border-t border-neutral-200 dark:border-neutral-800">
+              <h3 className="text-base font-serif font-bold text-neutral-950 dark:text-white mb-6">Explore Other Services</h3>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {servicesData.filter(s => s.id !== activeService.id).map((otherService) => (
                   <div
                     key={otherService.id}
                     onClick={() => handleServiceClick(otherService.id)}
-                    className="p-4 rounded-xl bg-neutral-950/60 border border-neutral-800 hover:border-amber-500/40 transition-all cursor-pointer group flex flex-col justify-between"
+                    className="p-4 rounded-xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 hover:border-amber-500/40 transition-all cursor-pointer group flex flex-col justify-between shadow-xs"
                   >
                     <div>
-                      <div className="flex items-center gap-2 text-amber-500 mb-2">
+                      <div className="flex items-center gap-2 text-amber-600 dark:text-amber-500 mb-2">
                         {otherService.icon}
-                        <span className="text-[10px] font-mono text-amber-400 uppercase font-bold">{otherService.badge}</span>
+                        <span className="text-[10px] font-mono text-amber-700 dark:text-amber-400 uppercase font-bold">{otherService.badge}</span>
                       </div>
-                      <h4 className="text-xs sm:text-sm font-bold text-white group-hover:text-amber-300 transition-colors">
+                      <h4 className="text-xs sm:text-sm font-bold text-neutral-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-300 transition-colors">
                         {otherService.title}
                       </h4>
-                      <p className="text-[11px] text-neutral-400 line-clamp-2 mt-1">
+                      <p className="text-[11px] text-neutral-500 dark:text-neutral-400 line-clamp-2 mt-1">
                         {otherService.subtitle}
                       </p>
                     </div>
 
-                    <div className="mt-4 pt-3 border-t border-neutral-800/60 flex items-center justify-between text-xs font-bold text-amber-400">
+                    <div className="mt-4 pt-3 border-t border-neutral-200 dark:border-neutral-800/60 flex items-center justify-between text-xs font-bold text-amber-700 dark:text-amber-400">
                       <span>View Service</span>
                       <ChevronRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
                     </div>
@@ -492,13 +465,13 @@ export default function ServicesPage({
           <div className="space-y-16 animate-in fade-in duration-300">
             {/* Master Header */}
             <div className="text-center max-w-3xl mx-auto space-y-4">
-              <span className="text-xs uppercase font-mono tracking-widest text-amber-500 font-semibold block">
+              <span className="text-xs uppercase font-mono tracking-widest text-amber-700 dark:text-amber-500 font-semibold block">
                 Our Expertise
               </span>
-              <h1 className="text-3xl sm:text-5xl font-serif font-black text-white leading-tight">
+              <h1 className="text-3xl sm:text-5xl font-serif font-black text-neutral-950 dark:text-white leading-tight">
                 Premium Asset Purchasing Services
               </h1>
-              <p className="text-xs sm:text-base text-neutral-400 leading-relaxed">
+              <p className="text-xs sm:text-base text-neutral-600 dark:text-neutral-400 leading-relaxed">
                 We specialize in providing secure, transparent, and high-value exchange services for your gold jewelry, certified diamonds, precious gemstones, and luxury timepieces in Colombo, Sri Lanka.
               </p>
             </div>
@@ -508,41 +481,41 @@ export default function ServicesPage({
               {servicesData.map((service) => (
                 <div
                   key={service.id}
-                  className="bg-neutral-950/70 rounded-2xl border border-neutral-800 overflow-hidden hover:border-amber-500/50 transition-all duration-300 flex flex-col group shadow-xl"
+                  className="bg-neutral-50 dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-800 overflow-hidden hover:border-amber-500/50 transition-all duration-300 flex flex-col group shadow-sm"
                 >
-                  <div className="relative h-56 w-full overflow-hidden bg-neutral-950">
+                  <div className="relative h-56 w-full overflow-hidden bg-neutral-100 dark:bg-neutral-950">
                     <img
                       src={service.image}
                       alt={service.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
-                    <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-neutral-900/90 border border-neutral-700/60 text-amber-400 text-[10px] font-mono font-bold uppercase tracking-wider backdrop-blur-md">
+                    <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-white/90 dark:bg-neutral-900/90 border border-neutral-200 dark:border-neutral-700/60 text-amber-700 dark:text-amber-400 text-[10px] font-mono font-bold uppercase tracking-wider backdrop-blur-md shadow-xs">
                       {service.badge}
                     </div>
                   </div>
 
                   <div className="p-6 sm:p-8 flex-1 flex flex-col">
                     <div className="flex items-center gap-3 mb-3">
-                      <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 shrink-0">
+                      <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-700 dark:text-amber-400 shrink-0">
                         {service.icon}
                       </div>
                       <div>
-                        <h3 className="text-lg font-serif font-bold text-white group-hover:text-amber-300 transition-colors">
+                        <h3 className="text-lg font-serif font-bold text-neutral-950 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-300 transition-colors">
                           {service.title}
                         </h3>
-                        <p className="text-[10px] font-bold text-amber-500 uppercase tracking-wider">{service.subtitle}</p>
+                        <p className="text-[10px] font-bold text-amber-700 dark:text-amber-500 uppercase tracking-wider">{service.subtitle}</p>
                       </div>
                     </div>
 
-                    <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed mb-6 line-clamp-3">
+                    <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed mb-6 line-clamp-3">
                       {service.desc}
                     </p>
 
                     <div className="mt-auto space-y-4">
-                      <ul className="space-y-2 border-t border-neutral-800/60 pt-4">
+                      <ul className="space-y-2 border-t border-neutral-200 dark:border-neutral-800/60 pt-4">
                         {service.acceptedItems.slice(0, 3).map((item, idx) => (
-                          <li key={idx} className="flex items-center gap-2 text-xs text-neutral-300">
-                            <CheckCircle2 className="h-3.5 w-3.5 text-amber-400 shrink-0" />
+                          <li key={idx} className="flex items-center gap-2 text-xs text-neutral-700 dark:text-neutral-300">
+                            <CheckCircle2 className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
                             <span className="truncate">{item}</span>
                           </li>
                         ))}
@@ -551,7 +524,7 @@ export default function ServicesPage({
                       <button
                         type="button"
                         onClick={() => handleServiceClick(service.id)}
-                        className="w-full py-3 px-4 rounded-xl bg-amber-500/10 hover:bg-amber-500 text-amber-400 hover:text-neutral-950 border border-amber-500/30 font-bold text-xs uppercase tracking-wider transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer group-hover:border-amber-500"
+                        className="w-full py-3 px-4 rounded-xl bg-amber-500/10 hover:bg-amber-500 text-amber-700 dark:text-amber-400 hover:text-neutral-950 border border-amber-500/30 font-bold text-xs uppercase tracking-wider transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer group-hover:border-amber-500"
                       >
                         <span>Explore Dedicated Page</span>
                         <ChevronRight className="h-4 w-4" />
@@ -563,15 +536,15 @@ export default function ServicesPage({
             </div>
 
             {/* Live Office & Appraisal Lab Gallery */}
-            <div className="border-t border-neutral-800/80 pt-16">
+            <div className="border-t border-neutral-200 dark:border-neutral-800/80 pt-16">
               <div className="text-center mb-10 max-w-2xl mx-auto space-y-2">
-                <span className="text-xs uppercase font-mono tracking-widest text-amber-500 font-semibold block">
+                <span className="text-xs uppercase font-mono tracking-widest text-amber-700 dark:text-amber-500 font-semibold block">
                   Live Office & Appraisal Lab
                 </span>
-                <h2 className="text-2xl sm:text-3xl font-serif font-bold text-white">
+                <h2 className="text-2xl sm:text-3xl font-serif font-bold text-neutral-950 dark:text-white">
                   GBC Colombo Office in Action
                 </h2>
-                <p className="text-xs sm:text-sm text-neutral-400">
+                <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400">
                   We operate fully equipped, secure private evaluation lounges in Colombo. Take a look at our transparent computerized testing workflow.
                 </p>
               </div>
@@ -590,7 +563,7 @@ export default function ServicesPage({
                     onClick={() => setActivePhoto(item)}
                     className="group cursor-pointer flex flex-col"
                   >
-                    <div className="relative h-40 rounded-xl overflow-hidden border border-neutral-800 bg-neutral-950 group-hover:border-amber-500/40 transition-all">
+                    <div className="relative h-40 rounded-xl overflow-hidden border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-950 group-hover:border-amber-500/40 transition-all">
                       <img
                         src={item.src}
                         alt={item.title}
@@ -601,8 +574,8 @@ export default function ServicesPage({
                       </div>
                     </div>
                     <div className="mt-2 text-left">
-                      <h4 className="text-xs font-bold text-white truncate">{item.title}</h4>
-                      <p className="text-[10px] text-neutral-400 line-clamp-1">{item.desc}</p>
+                      <h4 className="text-xs font-bold text-neutral-900 dark:text-white truncate">{item.title}</h4>
+                      <p className="text-[10px] text-neutral-500 dark:text-neutral-400 line-clamp-1">{item.desc}</p>
                     </div>
                   </div>
                 ))}
