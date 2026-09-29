@@ -32,17 +32,25 @@ const DOMAIN = "https://goldbuyerscolombo.com";
 // Base organization & physical headquarters schema
 const BASE_LOCAL_BUSINESS_SCHEMA = {
   "@context": "https://schema.org",
-  "@type": ["FinancialService", "LocalBusiness"],
-  "name": "Gold Buyers Colombo (GBC)",
-  "alternateName": "GBC Precious Metals Sri Lanka",
+  "@type": ["FinancialService", "LocalBusiness", "JewelryBuyer"],
+  "name": "Gold Buyers Colombo - No 1 Best Gold Buyers In Srilanka",
+  "alternateName": ["Gold Buyers Colombo", "GBC", "GBC Precious Metals Sri Lanka"],
   "url": DOMAIN,
+  "hasMap": "https://maps.app.goo.gl/YcxCiPqYvnc9yR219",
+  "map": "https://www.google.com/maps/place/Gold+Buyers+Colombo+-+No+1+Best+Gold+Buyers+In+Srilanka/@6.8950763,79.8391631,13z/data=!4m10!1m2!2m1!1sGold+Buyers+Colombo+-+No+1+Best+Gold+Buyers+In+Srilanka,+68+S.+De+S.+Jayasinghe+Mawatha,+Nugegoda+10250,+Sri+Lanka!3m6!1s0x3ae25bc3dca547e3:0x7a8686cc5a19d476!8m2!3d6.8661602!4d79.8820349!15sCnJHb2xkIEJ1eWVycyBDb2xvbWJvIC0gTm8gMSBCZXN0IEdvbGQgQnV5ZXJzIEluIFNyaWxhbmthLCA2OCBTLiBEZSBTLiBKYXlhc2luZ2hlIE1hd2F0aGEsIE51Z2Vnb2RhIDEwMjUwLCBTcmkgTGFua2FabSJrZ29sZCBidXllcnMgY29sb21ibyBubyAxIGJlc3QgZ29sZCBidXllcnMgaW4gc3JpbGFua2EgNjggcyBkZSBzIGpheWFzaW5naGUgbWF3YXRoYSBudWdlZ29kYSAxMDI1MCBzcmkgbGFua2GSAQ1qZXdlbHJ5X2J1eWVymgFEQ2k5RFFVbFJRVU52WkVOb2RIbGpSamx2VDJ0V1VXTkZPVVJrZWtKcFRqSmFNRk16VGs1amJWazFZbGhCTkZsdVl4QULgAQD6AQQIABA4!16s%2Fg%2F11zc_6ng9n?entry=ttu&g_ep=EgoyMDI2MDkyNy4wIKXMDSoASAFQAw%3D%3D",
+  "sameAs": [
+    "https://maps.app.goo.gl/YcxCiPqYvnc9yR219",
+    "https://www.google.com/maps/place/Gold+Buyers+Colombo+-+No+1+Best+Gold+Buyers+In+Srilanka/@6.8950763,79.8391631,13z/data=!4m10!1m2!2m1!1sGold+Buyers+Colombo+-+No+1+Best+Gold+Buyers+In+Srilanka,+68+S.+De+S.+Jayasinghe+Mawatha,+Nugegoda+10250,+Sri+Lanka!3m6!1s0x3ae25bc3dca547e3:0x7a8686cc5a19d476!8m2!3d6.8661602!4d79.8820349!15sCnJHb2xkIEJ1eWVycyBDb2xvbWJvIC0gTm8gMSBCZXN0IEdvbGQgQnV5ZXJzIEluIFNyaWxhbmthLCA2OCBTLiBEZSBTLiBKYXlhc2luZ2hlIE1hd2F0aGEsIE51Z2Vnb2RhIDEwMjUwLCBTcmkgTGFua2FabSJrZ29sZCBidXllcnMgY29sb21ibyBubyAxIGJlc3QgZ29sZCBidXllcnMgaW4gc3JpbGFua2EgNjggcyBkZSBzIGpheWFzaW5naGUgbWF3YXRoYSBudWdlZ29kYSAxMDI1MCBzcmkgbGFua2GSAQ1qZXdlbHJ5X2J1eWVymgFEQ2k5RFFVbFJRVU52WkVOb2RIbGpSamx2VDJ0V1VXTkZPVVJrZWtKcFRqSmFNRk16VGs1amJWazFZbGhCTkZsdVl4QULgAQD6AQQIABA4!16s%2Fg%2F11zc_6ng9n?entry=ttu&g_ep=EgoyMDI2MDkyNy4wIKXMDSoASAFQAw%3D%3D",
+    "https://facebook.com/GoldBuyersColombo",
+    "https://instagram.com/GoldBuyersColombo"
+  ],
   "logo": `${DOMAIN}/assest/gbc-logo.png`,
   "image": `${DOMAIN}/assest/gbc-logo.png`,
   "telephone": "+94718321321",
   "email": "Goldbuyerscolombolk@gmail.com",
   "priceRange": "$$$$",
   "currenciesAccepted": "LKR",
-  "paymentAccepted": "Cash, Instant Bank Transfer",
+  "paymentAccepted": "Cash, Instant Bank Wire Transfer",
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "68 S. De S. Jayasinghe Mawatha",
@@ -53,8 +61,8 @@ const BASE_LOCAL_BUSINESS_SCHEMA = {
   },
   "geo": {
     "@type": "GeoCoordinates",
-    "latitude": 6.8649,
-    "longitude": 79.8997
+    "latitude": 6.8661602,
+    "longitude": 79.8820349
   },
   "openingHoursSpecification": [
     {

@@ -262,19 +262,19 @@ export default function Footer({ currentLang, setView, showAdmin = false, onLogo
           <div className="pt-2">
             <div className="relative w-full h-32 rounded-xl overflow-hidden border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 shadow-xs mb-2">
               <iframe
-                title="GBC Google Maps Location"
-                src="https://maps.google.com/maps?q=Gold+Buyers+Colombo,+68+S.+De+S.+Jayasinghe+Mawatha,+Nugegoda+10250,+Sri+Lanka&t=&z=14&ie=UTF8&iwloc=&output=embed"
+                title="Gold Buyers Colombo - No 1 Best Gold Buyers In Srilanka"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63375.40169897043!2d79.83916309151799!3d6.895076334550599!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae25bc3dca547e3%3A0x7a8686cc5a19d476!2sGold%20Buyers%20Colombo%20-%20No%201%20Best%20Gold%20Buyers%20In%20Srilanka!5e0!3m2!1sen!2sin!4v1790703646958!5m2!1sen!2sin"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
-                allowFullScreen={false}
+                allowFullScreen={true}
                 loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
+                referrerPolicy="strict-origin-when-cross-origin"
                 className="w-full h-full"
               ></iframe>
             </div>
             <a
-              href="https://share.google/t37u08yDhse03dO6C"
+              href="https://maps.app.goo.gl/YcxCiPqYvnc9yR219"
               target="_blank"
               rel="noreferrer"
               className="w-full py-2 px-3 bg-amber-500/10 hover:bg-amber-500/20 text-amber-800 dark:text-amber-300 rounded-lg text-[11px] font-mono font-bold border border-amber-500/30 transition-all flex items-center justify-center gap-2 no-underline"

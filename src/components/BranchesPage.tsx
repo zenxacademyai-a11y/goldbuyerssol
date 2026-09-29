@@ -627,8 +627,8 @@ export const branchesData: Branch[] = [
     landmark: "Nugegoda Supermarket / Flyover Junction",
     hours: "8:30 AM - 6:30 PM (Mon-Sat)",
     facilities: ["XRF Purity Testing", "Instant Cash Counter"],
-    lat: 6.8756,
-    lng: 79.8903,
+    lat: 6.8661602,
+    lng: 79.8820349,
     badges: [
       { label: { en: "In City Center", si: "නගර මධ්‍යයේ", ta: "நகர மையத்தில்" }, iconName: "map-pin", variant: "amber" },
       { label: { en: "Secure Private Access", si: "ආරක්ෂිත පෞද්ගලික ප්‍රවේශය", ta: "பாதுகாப்பான தனிப்பட்ட பிரවේசம்" }, iconName: "shield-check", variant: "emerald" },
@@ -1196,7 +1196,9 @@ export default function BranchesPage({
                     </a>
 
                     <a
-                      href={`https://www.google.com/maps/search/?api=1&query=${activeBranch.lat},${activeBranch.lng}`}
+                      href={activeBranch.id === "head_office" || activeBranch.id === "nugegoda" 
+                        ? "https://maps.app.goo.gl/YcxCiPqYvnc9yR219"
+                        : `https://www.google.com/maps/search/?api=1&query=${activeBranch.lat},${activeBranch.lng}`}
                       target="_blank"
                       rel="noreferrer"
                       className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-100 border border-neutral-200 dark:border-neutral-700 font-bold text-xs sm:text-sm transition-all no-underline shrink-0"

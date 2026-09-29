@@ -262,7 +262,7 @@ I would like to receive an immediate cash valuation quote.`;
                     <span>Interactive Location Map</span>
                   </h3>
                   <a
-                    href="https://maps.google.com/?q=Gold+Buyers+Colombo,+68+S.+De+S.+Jayasinghe+Mawatha,+Nugegoda+10250"
+                    href="https://maps.app.goo.gl/YcxCiPqYvnc9yR219"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-[11px] font-bold text-amber-700 dark:text-amber-400 hover:underline flex items-center gap-1"
@@ -275,14 +275,14 @@ I would like to receive an immediate cash valuation quote.`;
                 {/* Embedded Interactive Google Map */}
                 <div className="h-64 sm:h-72 w-full rounded-xl bg-neutral-200 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 relative overflow-hidden shadow-inner">
                   <iframe
-                    title="Gold Buyers Colombo Location Map"
-                    src="https://maps.google.com/maps?q=Gold+Buyers+Colombo,+68+S.+De+S.+Jayasinghe+Mawatha,+Nugegoda+10250,+Sri+Lanka&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                    title="Gold Buyers Colombo - No 1 Best Gold Buyers In Srilanka"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63375.40169897043!2d79.83916309151799!3d6.895076334550599!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae25bc3dca547e3%3A0x7a8686cc5a19d476!2sGold%20Buyers%20Colombo%20-%20No%201%20Best%20Gold%20Buyers%20In%20Srilanka!5e0!3m2!1sen!2sin!4v1790703646958!5m2!1sen!2sin"
                     width="100%"
                     height="100%"
                     style={{ border: 0 }}
                     allowFullScreen={true}
                     loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
+                    referrerPolicy="strict-origin-when-cross-origin"
                     className="w-full h-full rounded-xl"
                   ></iframe>
                 </div>
@@ -294,7 +294,7 @@ I would like to receive an immediate cash valuation quote.`;
                   <span className="text-amber-700 dark:text-amber-400 font-bold">★ Direct Directions:</span> 68 S. De S. Jayasinghe Mawatha, Nugegoda 10250, Sri Lanka. Customer parking available.
                 </div>
                 <a
-                  href="https://maps.google.com/?q=Gold+Buyers+Colombo,+68+S.+De+S.+Jayasinghe+Mawatha,+Nugegoda+10250"
+                  href="https://maps.app.goo.gl/YcxCiPqYvnc9yR219"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-3.5 py-2 bg-gradient-to-r from-amber-600 to-yellow-500 hover:from-amber-500 hover:to-yellow-400 text-neutral-950 font-bold text-[11px] uppercase tracking-wider rounded-lg shadow-sm whitespace-nowrap transition-transform active:scale-95 flex items-center justify-center gap-1.5 no-underline shrink-0"
